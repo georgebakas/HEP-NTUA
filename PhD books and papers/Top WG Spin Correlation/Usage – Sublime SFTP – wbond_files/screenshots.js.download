@@ -1,0 +1,24 @@
+$(function(){
+	$(".screenshots ul a").fancybox({
+		'transitionIn'	: 'elastic',
+		'transitionOut'	: 'elastic',
+		'easingIn'      : 'easeOutBack',
+		'easingOut'     : 'easeInBack',
+		'titlePosition' : 'over',
+		'titleShow'     : true,
+		'onStart'       : function() {
+			if (typeof iframe != 'undefined' && iframe && iframe.is(":visible")) {
+				iframe.data('was_visible', true);
+				iframe.hide();
+			}
+		},
+		'onClosed'      : function() {
+			if (typeof iframe != 'undefined' && iframe && iframe.data('was_visible')) {
+				iframe.show();
+			}
+		}
+	}).each(function() {
+		var img = new Image();
+		img.src = $(this).attr('href');
+	});
+});

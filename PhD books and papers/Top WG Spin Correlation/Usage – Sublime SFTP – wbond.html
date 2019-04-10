@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://wbond.net/sublime_packages/sftp/usage -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>Usage – Sublime SFTP – wbond</title>
+				<link rel="stylesheet" href="./Usage – Sublime SFTP – wbond_files/main.css" type="text/css" media="all">
+		<link href="./Usage – Sublime SFTP – wbond_files/css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="./Usage – Sublime SFTP – wbond_files/sublime.css" type="text/css" media="all">
+		<script src="./Usage – Sublime SFTP – wbond_files/jquery.min.js.download"></script>
+		<script type="text/javascript" src="./Usage – Sublime SFTP – wbond_files/jquery.mousewheel-3.0.4.pack.js.download"></script>
+		<script type="text/javascript" src="./Usage – Sublime SFTP – wbond_files/jquery.easing-1.3.pack.js.download"></script>
+		<script type="text/javascript" src="./Usage – Sublime SFTP – wbond_files/jquery.fancybox-1.3.4.pack.js.download"></script>
+		<script type="text/javascript" src="./Usage – Sublime SFTP – wbond_files/bookmarks.js.download"></script>
+		<link rel="stylesheet" type="text/css" href="./Usage – Sublime SFTP – wbond_files/jquery.fancybox-1.3.4.css" media="screen">
+	</head>
+	<body>
+		<header>
+			<nav class="site group">
+				<a class="cart" href="https://wbond.net/sublime_packages/buy/cart">View Cart</a>
+				<a class="more_packages" href="https://wbond.net/sublime_packages">My Sublime Packages</a>
+			</nav>
+			<a href="https://wbond.net/"><img src="./Usage – Sublime SFTP – wbond_files/logo.png" alt="wbond" id="logo"></a>
+		</header>
+
+<h1>Sublime SFTP</h1>
+
+<nav class="page group">
+	<a href="https://wbond.net/sublime_packages/sftp">Overview</a>
+	<a href="https://wbond.net/sublime_packages/sftp/installation">Installation</a>
+	<a href="https://wbond.net/sublime_packages/sftp/workflows">Workflows</a>
+	<a href="https://wbond.net/sublime_packages/sftp/features">Features</a>
+	<a class="active" href="https://wbond.net/sublime_packages/sftp/usage">Usage</a>
+	<a href="https://wbond.net/sublime_packages/sftp/buy">Buy</a>
+	<a href="https://wbond.net/sublime_packages/sftp/settings">Settings</a>
+	<a href="https://wbond.net/sublime_packages/sftp/sidebar">Sidebar</a>
+	<a href="https://wbond.net/sublime_packages/sftp/faq">FAQ</a>
+	<a href="https://wbond.net/sublime_packages/sftp/changelog">Changelog</a>
+	<a href="https://wbond.net/sublime_packages/sftp/support">Support</a>
+</nav>
+
+<h2 id="Usage" style="cursor: pointer;">Usage</h2>
+
+<p>
+	Sublime SFTP can be used via menus or key bindings.
+</p>
+
+<div class="group menus">
+	
+	<h3 id="Menus" style="cursor: pointer;">Menus</h3>
+
+	<p>
+		There are a few different menus that are added by Sublime SFTP:
+	</p>
+	<ul>
+		<li>The <em>File &gt; SFTP/FTP</em> sub-menu</li>
+		<li>The <em>SFTP/FTP</em> sub-menu in the side bar context menu</li>
+		<li>The <em>SFTP/FTP</em> sub-menu in the editor context menu</li>
+		<li>
+			The  <em>Preferences &gt; Package Settings &gt; SFTP</em> sub-menu
+		</li>
+	</ul>
+
+	<h4 id="Menus_Remote_Workflow" style="cursor: pointer;">Remote Workflow</h4>
+	<p>
+		The side bar context menu contains an entry <em>Map to Remote…</em>.
+		This will create a new file called <tt>sftp-config.json</tt> in that
+		<em>root</em> folder and open it in the editor. This file contains the
+		configuration for the remote.
+	</p>
+
+	<div class="group screenshots usage">
+		<ul class="screenshots">
+			<li class="odd"><a rel="remote_shots" title="Mapping a Folder to a Remote" href="https://wbond.net/sublime_packages/img/sftp/sidebar_menu_unconfigured.png"><img src="./Usage – Sublime SFTP – wbond_files/sidebar_menu_unconfigured.png" alt="Mapping a Folder to a Remote"></a></li>
+			<li><a rel="remote_shots" title="Remote Configuration" href="https://wbond.net/sublime_packages/img/sftp/remote_config.png"><img src="./Usage – Sublime SFTP – wbond_files/remote_config.png" alt="Remote Configuration"></a></li>
+		</ul>
+	</div>
+
+	<p>
+		Once this file is saved, all files and
+		folders in the <em>root</em> folder will have new options in the
+		side bar context menu. In addition, contained files will have new
+		options in the editor context menu. Also shown below is the global
+		plugin settings menu – this is always available.
+	</p>
+
+	<div class="group screenshots usage">
+		<ul class="screenshots">
+			<li class="odd"><a rel="remote_shots_2" title="Sidebar Context Menu (File)" href="https://wbond.net/sublime_packages/img/sftp/sidebar_menu_configured.png"><img src="./Usage – Sublime SFTP – wbond_files/sidebar_menu_configured.png" alt="Sidebar Context Menu (File)"></a></li>
+			<li><a rel="remote_shots_2" title="Sidebar Context Menu (Folder)" href="https://wbond.net/sublime_packages/img/sftp/sidebar_menu_configured_folder.png"><img src="./Usage – Sublime SFTP – wbond_files/sidebar_menu_configured_folder.png" alt="Sidebar Context Menu (Folder)"></a></li>
+			<li class="odd"><a rel="remote_shots_2" title="Editor Menu" href="https://wbond.net/sublime_packages/img/sftp/editor_menu.png"><img src="./Usage – Sublime SFTP – wbond_files/editor_menu.png" alt="Editor Menu"></a></li>
+			<li><a rel="remote_shots_2" title="Settings Menu" href="https://wbond.net/sublime_packages/img/sftp/settings_menu.png"><img src="./Usage – Sublime SFTP – wbond_files/settings_menu.png" alt="Settings Menu"></a></li>
+		</ul>
+	</div>
+
+	<p>
+		Below are screenshots of the output panel, remote diff, sync
+		confirmation and overwrite newer interfaces.
+	</p>
+
+	<div class="group screenshots usage">
+		<ul class="screenshots">
+			<li class="odd"><a rel="remote_shots_3" title="Output Panel with Syntax Highlighting" href="https://wbond.net/sublime_packages/img/sftp/output_panel.png"><img src="./Usage – Sublime SFTP – wbond_files/output_panel.png" alt="Output Panel with Syntax Highlighting"></a></li>
+			<li><a rel="remote_shots_3" title="Result of Diff Remote File" href="https://wbond.net/sublime_packages/img/sftp/diff_remote_result.png"><img src="./Usage – Sublime SFTP – wbond_files/diff_remote_result.png" alt="Result of Diff Remote File"></a></li>
+			<li class="odd"><a rel="remote_shots_3" title="Confirmation when Syncing Remote -&gt; Local" href="https://wbond.net/sublime_packages/img/sftp/sync_remote_local_confirm.png"><img src="./Usage – Sublime SFTP – wbond_files/sync_remote_local_confirm.png" alt="Confirmation when running Sync Remote -&gt; Local"></a></li>
+			<li><a rel="remote_shots_3" title="Confirmation when Overwriting a Newer Remote File" href="https://wbond.net/sublime_packages/img/sftp/confirm_overwrite.png"><img src="./Usage – Sublime SFTP – wbond_files/confirm_overwrite.png" alt="Confirmation when Overwriting a Newer Remote File"></a></li>
+		</ul>
+	</div>
+
+	<h4 id="Menus_Server_Workflow" style="cursor: pointer;">Server Workflow</h4>
+	<p>
+		The <em>File &gt; SFTP/FTP</em> sub-menu includes options for working
+		with servers. The <em>Setup Server…</em> entry will open a configuration
+		file for a server. <strong>Please be aware that passwords saved in these
+		server config files may be exposed if you back up your User package to a
+		public place!</strong>
+	</p>
+
+	<div class="group screenshots usage">
+		<ul class="screenshots">
+			<li class="odd"><a rel="server_shots" title="File Menu" href="https://wbond.net/sublime_packages/img/sftp/file_menu.png"><img src="./Usage – Sublime SFTP – wbond_files/file_menu.png" alt="File Menu"></a></li>
+			<li><a rel="server_shots" title="Server Setup" href="https://wbond.net/sublime_packages/img/sftp/setup_server.png"><img src="./Usage – Sublime SFTP – wbond_files/setup_server.png" alt="Server Setup"></a></li>
+		</ul>
+	</div>
+
+	<p>
+		The settings should be customized and then the file
+		saved. It needs to be saved in the <em>sftp_servers</em> folder that
+		the save dialog will default to. The filename will be used to display
+		the server in a list, so it should not contain an extension. Example
+		filenames: <tt>My Web Server</tt>, <tt>wbond.net</tt>
+	</p>
+
+	<div class="group screenshots usage">
+		<ul class="screenshots">
+			<li class="odd"><a rel="server_shots_2" title="Saving a Server" href="https://wbond.net/sublime_packages/img/sftp/save_server.png"><img src="./Usage – Sublime SFTP – wbond_files/save_server.png" alt="Saving a Server"></a></li>
+			<li><a rel="server_shots_2" title="Server List" href="https://wbond.net/sublime_packages/img/sftp/select_server.png"><img src="./Usage – Sublime SFTP – wbond_files/select_server.png" alt="Server List"></a></li>
+		</ul>
+	</div>
+
+	<p>
+		Once the file is saved, the server browsing quick panel will be opened.
+		This is how all server operations are performed. Items with preceeded
+		with • represent actions that may be performed.
+	</p>
+
+	<div class="group screenshots usage">
+		<ul class="screenshots">
+			<li class="odd"><a rel="server_shots_3" title="Server File List" href="https://wbond.net/sublime_packages/img/sftp/remote_browsing_list.png"><img src="./Usage – Sublime SFTP – wbond_files/remote_browsing_list.png" alt="Server File List"></a></li>
+			<li><a rel="server_shots_3" title="Server Folder Actions" href="https://wbond.net/sublime_packages/img/sftp/remote_browsing_folder_actions.png"><img src="./Usage – Sublime SFTP – wbond_files/remote_browsing_folder_actions.png" alt="Server Folder Actions"></a></li>
+			<li class="odd"><a rel="server_shots_3" title="Create New Folder on Server" href="https://wbond.net/sublime_packages/img/sftp/remote_browsing_new_folder.png"><img src="./Usage – Sublime SFTP – wbond_files/remote_browsing_new_folder.png" alt="Create New Folder on Server"></a></li>
+			<li><a rel="server_shots_3" title="Server File Actions" href="https://wbond.net/sublime_packages/img/sftp/remote_browsing_file_actions.png"><img src="./Usage – Sublime SFTP – wbond_files/remote_browsing_file_actions.png" alt="Server File Actions"></a></li>
+		</ul>
+		<script src="./Usage – Sublime SFTP – wbond_files/screenshots.js.download"></script>
+	</div>
+		
+</div>
+
+<div class="key_bindings">
+	<h3 id="Key_Bindings" style="cursor: pointer;">Key Bindings</h3>
+
+	<p>
+		In addition to the menu-driven operation, Sublime SFTP offers key
+		bindings for all commands.
+	</p>
+
+	<h4 id="Key_Bindings_Remote_Workflow" style="cursor: pointer;">Remote Workflow</h4>
+
+	<dl>
+		<dt id="command-Upload_File" style="cursor: pointer;">Upload File</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+f</tt><br>
+			OS X: <tt>ctrl+cmd+u+f</tt><br>
+			Upload the current file
+		</dd>
+		<dt id="command-Upload_Changed_Files" style="cursor: pointer;">Upload Changed Files</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+c</tt><br>
+			OS X: <tt>ctrl+cmd+u+c</tt><br>
+			Upload all files changed or created since the last commit to
+			your VCS (SVN, Git or Hg)
+		</dd>
+		<dt id="command-Upload_Open_Files" style="cursor: pointer;">Upload Open Files</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+n</tt><br>
+			OS X: <tt>ctrl+cmd+u+n</tt><br>
+			Upload all open files that are configured with an SFTP/FTP remote
+		</dd>
+		<dt id="command-Download_File" style="cursor: pointer;">Download File</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+o</tt><br>
+			OS X: <tt>ctrl+cmd+u+o</tt><br>
+			Download the remote version of the selected file and overwrite the local copy
+		</dd>
+		<dt id="command-Upload_Folder" style="cursor: pointer;">Upload Folder</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+r</tt><br>
+			OS X: <tt>ctrl+cmd+u+r</tt><br>
+			Uploading the entire folder the current file is located in can be
+			accomplished by pressing <em>ctrl+alt+u+r</em> on Windows and Linux,
+			or <em>ctrl+cmd+u+r</em> on OS X.
+		</dd>
+		<dt id="command-Download_Folder" style="cursor: pointer;">Download Folder</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+e</tt><br>
+			OS X: <tt>ctrl+cmd+u+e</tt><br>
+			Download the entire folder
+		</dd>
+		<dt id="command-Diff_Remote_File" style="cursor: pointer;">Diff Remote File</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+i</tt><br>
+			OS X: <tt>ctrl+cmd+u+i</tt><br>
+			Download the remote version of a file to a temp location and diff it
+			with the local version
+		</dd>
+		<dt id="command-Rename_Local_and_Remote_Files" style="cursor: pointer;">Rename Local and Remote Files</dt>
+		<dd>
+			<em>Context menu only</em><br>
+			Rename the file on the server as well as the local copy
+		</dd>
+		<dt id="command-Delete_Remote_File" style="cursor: pointer;">Delete Remote File</dt>
+		<dd>
+			<em>Context menu only</em><br>
+			Delete the file off of the server
+		</dd>
+		<dt id="command-Delete_Local_and_Remote_Files" style="cursor: pointer;">Delete Local and Remote Files</dt>
+		<dd>
+			<em>Context menu only</em><br>
+			Delete the file off of the server in addition to the local copy
+		</dd>
+		<dt id="command-Sync_Local_Remote" style="cursor: pointer;">Sync Local -&gt; Remote</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+y</tt><br>
+			OS X: <tt>ctrl+cmd+u+y</tt><br>
+			Compare file modification times and confirm actions before uploading
+			the selected file or folder. This will also
+			delete files off of the remote server that do not exist locally.
+		</dd>
+		<dt id="command-Sync_Remote_Local" style="cursor: pointer;">Sync Remote -&gt; Local</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+d</tt><br>
+			OS X: <tt>ctrl+cmd+u+d</tt><br>
+			Compare file modification times and confirm actions before downloading
+			the selected file or folder. This will also
+			delete files off of the local machine that do not exist remotely.
+		</dd>
+		<dt id="command-Sync_Both_Directions" style="cursor: pointer;">Sync Both Directions</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+b</tt><br>
+			OS X: <tt>ctrl+cmd+u+b</tt><br>
+			Compare file modification times and confirm actions before uploading/downloading
+			the selected file or folder. This will never
+			delete files, and will always perform the action that causes the
+			newest file to be present in both locations.
+		</dd>
+		<dt id="command-Monitor_File" style="cursor: pointer;">Monitor File</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+m</tt><br>
+			OS X: <tt>ctrl+cmd+u+m</tt><br>
+			Watch the file for modifications (from Sublime or other applications).
+			When the file modification time changes, the file will be uploaded.
+			This was designed to be used with programs such as <a href="http://livereload.com/">LiveReload</a> and
+			CSS compliers. <strong>The file must remain open in Sublime to
+			be monitored.</strong> Once it is closed, monitoring stops.
+		</dd>
+		<dt id="command-Browse_Remote" style="cursor: pointer;">Browse Remote</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+w</tt><br>
+			OS X: <tt>ctrl+cmd+u+w</tt><br>
+			Open the server quick panel browser at the remote folder
+			corresponding to the selected file or folder
+		</dd>
+	</dl>
+
+	<h4 id="Key_Bindings_Server_Workflow" style="cursor: pointer;">Server Workflow</h4>
+	<dl>
+		<dt id="command-Setup_Server" style="cursor: pointer;">Setup Server</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+r+s</tt><br>
+			OS X: <tt>ctrl+cmd+r+s</tt><br>
+			Setup a new server.
+		</dd>
+		<dt id="command-Browse_Server" style="cursor: pointer;">Browse Server</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+r+b</tt><br>
+			OS X: <tt>ctrl+cmd+r+b</tt><br>
+			List the servers, with an option to
+			setup a new one.
+		</dd>
+		<dt id="command-Last_Server" style="cursor: pointer;">Last Server</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+r+n</tt><br>
+			OS X: <tt>ctrl+cmd+r+n</tt><br>
+			Show the current directory listing for the last used
+			server.
+		</dd>
+		<dt id="command-Edit_Server" style="cursor: pointer;">Edit Server</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+r+e</tt><br>
+			OS X: <tt>ctrl+cmd+r+e</tt><br>
+			List the servers for the purpose
+			of editing.
+		</dd>
+		<dt id="command-Delete_Server" style="cursor: pointer;">Delete Server</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+r+d</tt><br>
+			OS X: <tt>ctrl+cmd+r+d</tt><br>
+			List the servers for the purpose
+			of deletion.
+		</dd>
+	</dl>
+
+	<h4 id="Key_Bindings_Both_Workflows" style="cursor: pointer;">Both Workflows</h4>
+	<dl>
+		<dt id="command-Show_SFTP_Panel" style="cursor: pointer;">Show SFTP Panel</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+s</tt><br>
+			OS X: <tt>ctrl+cmd+u+s</tt><br>
+			Show the SFTP activity panel
+		</dd>
+		<dt id="command-Cancel" style="cursor: pointer;">Cancel</dt>
+		<dd>
+			Win/Linux: <tt>ctrl+alt+u+x</tt><br>
+			OS X: <tt>ctrl+cmd+u+x</tt><br>
+			Stop the current SFTP/FTP server activity (connection, upload or download)
+		</dd>
+	</dl>
+
+	<p>
+		<em>All keyboard shortcuts can be customized by going to the
+		<em>Preferences &gt; Package Settings &gt; SFTP</em>
+		menu and selecting <em>Key Bindings – Default</em>.
+		Shortcuts to be customized should be copied into <em>Key
+		Bindings – User</em> and customized there. This will prevent
+		updates from overriding the customizations.</em>
+	</p>
+</div>
+
+		<footer> 
+			© 2019 Will Bond
+		</footer>
+		
+		<script src="./Usage – Sublime SFTP – wbond_files/urchin.js.download" type="text/javascript"></script> 
+		<script type="text/javascript"> 
+			_uacct = "UA-688035-1";
+			urchinTracker();
+		</script> 
+	 
+<div id="fancybox-tmp" style="padding: 50px;"></div><div id="fancybox-loading" style="display: none;"><div></div></div><div id="fancybox-overlay" style="background-color: rgb(119, 119, 119); opacity: 0.7; cursor: pointer; height: 3477px; display: none;"></div><div id="fancybox-wrap" style="display: none; width: 244px; height: 146px; top: 953px; left: 121px;"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content" style="border-width: 10px; width: 224px; height: 126px;"></div><a id="fancybox-close" style="display: none;"></a><a href="javascript:;" id="fancybox-left" style="display: none;"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right" style="display: none;"><span class="fancy-ico" id="fancybox-right-ico"></span></a><div id="fancybox-title" class="fancybox-title-over" style="display: none; margin-left: 10px; width: 1163px; bottom: 10px;"></div></div></div></body></html>
