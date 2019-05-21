@@ -15,12 +15,15 @@ using std::endl;
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 
-void angularDistribution(TString fileName = "/eos/cms/store/user/gbakas/ZprimeToTT/ZprimeToTT_M-2000_W-200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_2016_Copy.root", 
-						float selMvaCut=0.3, float floatBTag = 0.8838)
+void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/mc/2017/ZprimeToTT_M3000_W300_TuneCP2_13TeV-madgraphMLM-pythia8_Copy.root", 
+						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime= true,int ZprimeMass = 2000, TString width = "200" )
 {
+	
+//TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
   //gStyle->SetOptStat(0);
-  TFile *inf     = TFile::Open(fileName);
+  TFile *inf     = TFile::Open(file);
   TTree *trIN    = (TTree*)inf->Get("events");
+  //cout<<"here"<<endl;
   
   float XSEC = 832.;
   float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
@@ -85,19 +88,23 @@ void angularDistribution(TString fileName = "/eos/cms/store/user/gbakas/ZprimeTo
   int NN = trIN->GetEntries();
 
   //int NN = 10000;
-  const int sizeBins = 6;
-  float BND[sizeBins+1] = {800,1000, 1200, 1500, 2000, 2500, 3000};
+  const int sizeBins = 4;
+  //float BND[sizeBins+1] = {1000, 2000, 3000, 4000, 5000};
+  float BND[sizeBins+1] = {1000, 2500, 3500, 5000, 6000};
   int counter =0;
   
-  TH1F *h_mTTbarParton = new TH1F("mTTbarParton", "mTTbarParton histogram", 50, 800,3000);
+  TH1F *h_mTTbarParton;
+  if(isZprime)h_mTTbarParton  = new TH1F("mTTbarParton", "mTTbarParton histogram", 60, 1000,ZprimeMass+1000);
+  else h_mTTbarParton = new TH1F("mTTbarParton", "mTTbarParton histogram", 60, 1000,6000);  
   
-  TH1F *hAngularDist[sizeBins];
-  std::vector<TString> massLimits = {"800-100","1000-1200","1200-1500", "1500-2000", "2000-2500", "2500-3000"};
+  TH1F *hAngularDist[sizeBins], *hChi[sizeBins];
+  std::vector<TString> massLimits = {"1000-2500","2500-3500", "3500-5000", "5000-Inf"};
   
   for(int i=0; i<=(sizeBins-1); i++)
   {
 	  TString temp = massLimits[i];
-	  hAngularDist[i] = new TH1F(TString::Format("cos(#theta) Distribution for mass limit: %s (GeV)", temp.Data()),TString::Format("cos(#theta) Distribution for mass limit: %s (GeV)", temp.Data()), 20, 0,1);
+	  hAngularDist[i] = new TH1F(TString::Format("#||{cos(#theta)} Distribution for mass limit: %s (GeV)", temp.Data()),TString::Format("#||{cos(#theta)} Distribution for mass limit: %s (GeV)", temp.Data()), 20, 0,1);
+	  hChi[i] = new TH1F(TString::Format("#chi Distribution for mass limit: %s (GeV)", temp.Data()),TString::Format("#chi Distribution for mass limit: %s (GeV)", temp.Data()), 20, 0,16);
   }
   
   
@@ -110,76 +117,124 @@ void angularDistribution(TString fileName = "/eos/cms/store/user/gbakas/ZprimeTo
       cout<<10*k<<" %"<<endl;
     decade = k;
     trIN->GetEntry(iev);
-			
-	
-	bool recoCuts   = nJets > 1  && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1] <2.4) &&(*jetPt)[0] > 400 && (*jetPt)[1] > 400;
-	bool partonCuts = (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) < 2.4 &&  mTTbarParton > 800;
-	bool btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
-	bool topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-	//cout<<"ok"<<endl;
-	if(recoCuts && partonCuts && topTagger && btagging)
+	bool recoCuts, partonCuts, btagging, topTagger, massCut;	
+	if (nJets >1)
 	{
-		h_mTTbarParton->Fill(mTTbarParton);
-		//split the mttbar phase space into regions and for each region I will calculate the thetas dists
-		p4T[0].SetPtEtaPhiM((*partonPt)[0], (*partonEta)[0], (*partonPhi)[0], (*partonMass)[0]);
-		p4T[1].SetPtEtaPhiM((*partonPt)[1], (*partonEta)[1], (*partonPhi)[1], (*partonMass)[1]);
-		
-		TVector3 ttbarBoostVector = getBoostVector(p4T[0], p4T[1], p4TTbar);
-		
-		p4T_ZMF[0].SetPtEtaPhiM(p4T[0].Pt(), p4T[0].Eta(), p4T[0].Phi(), p4T[0].M());
-		p4T_ZMF[1].SetPtEtaPhiM(p4T[1].Pt(), p4T[1].Eta(), p4T[1].Phi(), p4T[1].M());
-		p4T_ZMF[0].Boost(ttbarBoostVector);
-		p4T_ZMF[1].Boost(ttbarBoostVector);
-				
-		//cout<<"-------------------------------------"<<endl;		
-		//cout<< p4T_ZMF[0].Pt()<<endl;
-		//cout<< p4T_ZMF[1].Pt()<<endl;
-		
-		if(mTTbarParton >= 800 && mTTbarParton < 1000 )
+		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1] <2.4) &&(*jetPt)[0] > 400 && (*jetPt)[1] > 400;
+		partonCuts = (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) < 2.4 &&  mTTbarParton > 1000;
+		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
+		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+		massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+		//cout<<"ok"<<endl;
+		if(recoCuts && partonCuts && topTagger && btagging)
 		{
-			hAngularDist[0]->Fill(TMath::Cos(p4T_ZMF[0].Theta()));
-			hAngularDist[0]->Fill(TMath::Cos(p4T_ZMF[1].Theta()));
-		}
-		else if(mTTbarParton >= 1000 && mTTbarParton < 1200)
-		{
-			hAngularDist[1]->Fill(TMath::Cos(p4T_ZMF[0].Theta()));
-			hAngularDist[1]->Fill(TMath::Cos(p4T_ZMF[1].Theta()));
-		}
-		else if(mTTbarParton >= 1200 && mTTbarParton < 1500)
-		{
-			hAngularDist[2]->Fill(TMath::Cos(p4T_ZMF[0].Theta()));
-			hAngularDist[2]->Fill(TMath::Cos(p4T_ZMF[1].Theta()));
-		}
-		else if(mTTbarParton >= 1500 && mTTbarParton < 2000)
-		{
-			hAngularDist[3]->Fill(TMath::Cos(p4T_ZMF[0].Theta()));
-			hAngularDist[3]->Fill(TMath::Cos(p4T_ZMF[1].Theta()));
-		}
-		else if(mTTbarParton >= 2000 && mTTbarParton < 2500)
-		{
-			hAngularDist[4]->Fill(TMath::Cos(p4T_ZMF[0].Theta()));
-			hAngularDist[4]->Fill(TMath::Cos(p4T_ZMF[1].Theta()));
-		}
-		else if(mTTbarParton >= 2500 && mTTbarParton < 3000)
-		{
-			hAngularDist[5]->Fill(TMath::Cos(p4T_ZMF[0].Theta()));
-			hAngularDist[5]->Fill(TMath::Cos(p4T_ZMF[1].Theta()));
+			h_mTTbarParton->Fill(mTTbarParton);
+			//split the mttbar phase space into regions and for each region I will calculate the thetas dists
+			p4T[0].SetPtEtaPhiM((*partonPt)[0], (*partonEta)[0], (*partonPhi)[0], (*partonMass)[0]);
+			p4T[1].SetPtEtaPhiM((*partonPt)[1], (*partonEta)[1], (*partonPhi)[1], (*partonMass)[1]);
+			
+			TVector3 ttbarBoostVector = getBoostVector(p4T[0], p4T[1], p4TTbar);
+			
+			p4T_ZMF[0].SetPtEtaPhiM(p4T[0].Pt(), p4T[0].Eta(), p4T[0].Phi(), p4T[0].M());
+			p4T_ZMF[1].SetPtEtaPhiM(p4T[1].Pt(), p4T[1].Eta(), p4T[1].Phi(), p4T[1].M());
+			p4T_ZMF[0].Boost(ttbarBoostVector);
+			p4T_ZMF[1].Boost(ttbarBoostVector);
+					
+			//cout<<"-------------------------------------"<<endl;		
+			//cout<< p4T_ZMF[0].Pt()<<endl;
+			//cout<< p4T_ZMF[1].Pt()<<endl;
+			float chi0(0), chi1(0);
+			chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+			chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+			//chi0 = TMath::Exp(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity());
+			
+			
+			if(mTTbarParton >= BND[0] && mTTbarParton < BND[1] )
+			{
+				hChi[0] ->Fill(chi0);
+				hChi[0] ->Fill(chi1);
+				hAngularDist[0]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+				hAngularDist[0]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+			}
+			else if(mTTbarParton >= BND[1] && mTTbarParton < BND[2])
+			{
+				hChi[1] ->Fill(chi0);
+				hChi[1] ->Fill(chi1);
+				hAngularDist[1]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+				hAngularDist[1]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+			}
+			else if(mTTbarParton >= BND[2] && mTTbarParton < BND[3])
+			{
+				hChi[2] ->Fill(chi0);
+				hChi[2] ->Fill(chi1);
+				hAngularDist[2]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+				hAngularDist[2]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+			}
+			else if(mTTbarParton >= BND[3] )
+			{
+				hChi[3] ->Fill(chi0);
+				hChi[3] ->Fill(chi1);
+				hAngularDist[3]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+				hAngularDist[3]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+			}
+			
 		}
 	}
   }	
   
-  TCanvas *can[sizeBins];
-  for(int i =0; i<=(sizeBins-1); i++)
+  /*TCanvas *can[sizeBins];
+  for(int i =0; i<sizeBins; i++)
   {
 	can[i] = new TCanvas(TString::Format("can %d", (i+1)), TString::Format("can %d", (i+1)), 900, 600);
 	hAngularDist[i]->GetXaxis()->SetTitle("cos(#theta)");
 	hAngularDist[i]->Draw();
+  }*/
+  
+  TCanvas *canChi[sizeBins];
+  for(int i =0; i<sizeBins; i++)
+  {
+	canChi[i] = new TCanvas(TString::Format("can chi %d", (i+1)), TString::Format("can chi %d", (i+1)), 900, 600);
+	hChi[i]->GetXaxis()->SetTitle("#chi");
+	hChi[i]->Draw();
   }
   
   TCanvas *can_mTTbarParton = new TCanvas("mTTbarParton can", "mTTbarParton can", 900, 600);
   h_mTTbarParton->GetXaxis()->SetTitle("mTTbarParton (GeV)");
   h_mTTbarParton->Draw();
   
+  
+  TString tempMass;
+  if(ZprimeMass == 2000) tempMass = "2TeV";
+  else if(ZprimeMass == 3000) tempMass = "3TeV";
+  else if(ZprimeMass == 4000) tempMass = "4TeV";
+  else if(ZprimeMass == 2500) tempMass = "2.5TeV";
+  else if(ZprimeMass == 5000) tempMass = "5TeV";
+    
+  TFile *outf;
+
+  if(isZprime)  outf = new TFile(TString::Format("Output_M%s.root", tempMass.Data()), "UPDATE");
+  else outf = new TFile("Output_TT_QCD.root", "UPDATE");
+  
+  if (isZprime) h_mTTbarParton->Write(TString::Format("h_mTTbarParton_M%s_W%s",tempMass.Data(), width.Data() ));
+  else h_mTTbarParton->Write("h_mTTbarParton_TT"); 
+  
+  
+  
+  for(int i =0; i<sizeBins; i++)
+  {
+	  TString temp = massLimits[i];
+	  if(isZprime) 
+	  {
+		  hAngularDist[i]->Write(TString::Format("abs_cosTheta_%s_M%s_W%s",temp.Data(), tempMass.Data(), width.Data()));
+		  hChi[i]->Write(TString::Format("chi_%s_M%s_W%s",temp.Data(), tempMass.Data(), width.Data()));
+	  }
+	  else 
+	  {
+		  hAngularDist[i]->Write(TString::Format("abs_cosTheta_%s_TT",temp.Data() ));
+		  hChi[i]->Write(TString::Format("chi_%s_TT", temp.Data()));
+	  }
+	  
+  }	  
   
 }
 
