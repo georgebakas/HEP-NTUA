@@ -12,9 +12,9 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void compareAngular(int ZprimeMass = 2000, bool is2016=true)
+void compareAngular(int ZprimeMass = 2000, bool is2016=true, bool isParton=true)
 {
-  
+  gStyle->SetOptStat(0);
   TString eosPath;
   if(is2016) eosPath = "/eos/cms/store/user/gbakas/ZprimeToTT/mc/2016/";
   else eosPath = "/eos/cms/store/user/gbakas/ZprimeToTT/mc/2017/";
@@ -29,7 +29,7 @@ void compareAngular(int ZprimeMass = 2000, bool is2016=true)
   float NORM;
   float LUMI;
   if(is2016) LUMI = 35900;
-  else LUMI = 0;
+  else LUMI = 44980;
   
   if(ZprimeMass == 2000)
   {
@@ -75,8 +75,18 @@ void compareAngular(int ZprimeMass = 2000, bool is2016=true)
 	  XSEC  = {0.04169,0.005061};
 	  
   }
-  TFile *inf_Zprime = TFile::Open(TString::Format("Output_M%s.root", tempMass.Data()));
-  TFile *inf_TT = TFile::Open("Output_TT_QCD.root");
+  TFile *inf_Zprime, *inf_TT;
+  if(isParton) 
+  {
+	  inf_Zprime = TFile::Open(TString::Format("Output_M%s_%s.root", tempMass.Data(), "Parton"));
+	  inf_TT = TFile::Open(TString::Format("Output_TT_QCD_%s.root", "Parton"));
+  }
+  else 
+  {
+	  inf_Zprime = TFile::Open(TString::Format("Output_M%s_%s.root", tempMass.Data(), "Reco"));
+	  inf_TT = TFile::Open(TString::Format("Output_TT_QCD_%s.root", "Reco"));
+  }
+  
 
   float NORM_TT(0), WEIGHT_TT(0);
   float XSEC_TT = 16.74;
@@ -171,6 +181,7 @@ void compareAngular(int ZprimeMass = 2000, bool is2016=true)
 	leg_theta[i]->Draw();
 	
 	//----------------------------------------------------------------------------------------------------------------------
+	
 	can_chi[i] = new TCanvas(TString::Format("can #chi %d", i),TString::Format("can #chi %d", i),900, 600); 
 	can_chi[i]->cd();
 	leg_chi[i] = new TLegend(0.5, 0.5, 0.7, 0.7); 
@@ -189,7 +200,7 @@ void compareAngular(int ZprimeMass = 2000, bool is2016=true)
 		hChiZ[i][wid]->Draw("same");
 		leg_chi[i]->AddEntry(hAngularDistZ[i][wid], TString::Format("#chi %s_M%s_W%s",temp.Data(), tempMass.Data(), width[wid].Data()), "l");
 	}
-	leg_chi[i]->Draw();
+	leg_chi[i]->Draw(); 
   }
 
 	

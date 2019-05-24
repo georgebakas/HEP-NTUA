@@ -16,7 +16,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 
 void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/mc/2017/ZprimeToTT_M3000_W300_TuneCP2_13TeV-madgraphMLM-pythia8_Copy.root", 
-						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime= true,int ZprimeMass = 2000, TString width = "200" )
+						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime= true,bool isParton=true, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
@@ -88,9 +88,10 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
   int NN = trIN->GetEntries();
 
   //int NN = 10000;
-  const int sizeBins = 4;
+  const int sizeBins = 1;
   //float BND[sizeBins+1] = {1000, 2000, 3000, 4000, 5000};
-  float BND[sizeBins+1] = {1000, 2500, 3500, 5000, 6000};
+  //float BND[sizeBins+1] = {1000, 2500, 3500, 5000, 6000};
+  float BND[sizeBins+1] = {1000, 6000};
   int counter =0;
   
   TH1F *h_mTTbarParton;
@@ -120,7 +121,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
 	bool recoCuts, partonCuts, btagging, topTagger, massCut;	
 	if (nJets >1)
 	{
-		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1] <2.4) &&(*jetPt)[0] > 400 && (*jetPt)[1] > 400;
+		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1] <2.4) &&(*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0;
 		partonCuts = (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) < 2.4 &&  mTTbarParton > 1000;
 		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
 		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
@@ -130,8 +131,16 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
 		{
 			h_mTTbarParton->Fill(mTTbarParton);
 			//split the mttbar phase space into regions and for each region I will calculate the thetas dists
-			p4T[0].SetPtEtaPhiM((*partonPt)[0], (*partonEta)[0], (*partonPhi)[0], (*partonMass)[0]);
-			p4T[1].SetPtEtaPhiM((*partonPt)[1], (*partonEta)[1], (*partonPhi)[1], (*partonMass)[1]);
+			if(isParton)
+			{
+				p4T[0].SetPtEtaPhiM((*partonPt)[0], (*partonEta)[0], (*partonPhi)[0], (*partonMass)[0]);
+				p4T[1].SetPtEtaPhiM((*partonPt)[1], (*partonEta)[1], (*partonPhi)[1], (*partonMass)[1]);
+			}
+			else
+			{
+				p4T[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
+				p4T[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
+			}
 			
 			TVector3 ttbarBoostVector = getBoostVector(p4T[0], p4T[1], p4TTbar);
 			
@@ -156,6 +165,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
 				hAngularDist[0]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
 				hAngularDist[0]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
 			}
+			/*
 			else if(mTTbarParton >= BND[1] && mTTbarParton < BND[2])
 			{
 				hChi[1] ->Fill(chi0);
@@ -176,25 +186,27 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
 				hChi[3] ->Fill(chi1);
 				hAngularDist[3]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
 				hAngularDist[3]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
-			}
+			}*/
 			
 		}
 	}
   }	
   
-  /*TCanvas *can[sizeBins];
+  TCanvas *can[sizeBins];
   for(int i =0; i<sizeBins; i++)
   {
 	can[i] = new TCanvas(TString::Format("can %d", (i+1)), TString::Format("can %d", (i+1)), 900, 600);
-	hAngularDist[i]->GetXaxis()->SetTitle("cos(#theta)");
+	if(isParton) hAngularDist[i]->GetXaxis()->SetTitle("cos(#theta)");
+	else hAngularDist[i]->GetXaxis()->SetTitle(TString::Format("cos(#theta) %s","reco"));
 	hAngularDist[i]->Draw();
-  }*/
+  }
   
   TCanvas *canChi[sizeBins];
   for(int i =0; i<sizeBins; i++)
   {
 	canChi[i] = new TCanvas(TString::Format("can chi %d", (i+1)), TString::Format("can chi %d", (i+1)), 900, 600);
-	hChi[i]->GetXaxis()->SetTitle("#chi");
+	if(isParton) hChi[i]->GetXaxis()->SetTitle("#chi");
+	else hChi[i]->GetXaxis()->SetTitle(TString::Format("#chi %s", "reco"));
 	hChi[i]->Draw();
   }
   
@@ -211,9 +223,11 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
   else if(ZprimeMass == 5000) tempMass = "5TeV";
     
   TFile *outf;
-
-  if(isZprime)  outf = new TFile(TString::Format("Output_M%s.root", tempMass.Data()), "UPDATE");
-  else outf = new TFile("Output_TT_QCD.root", "UPDATE");
+  TString recoParton ="";
+  if(isParton) recoParton = "Parton";
+  else recoParton = "Reco";
+  if(isZprime)  outf = new TFile(TString::Format("Output_M%s_%s_test.root", tempMass.Data(), recoParton.Data()), "UPDATE");
+  else outf = new TFile(TString::Format("Output_TT_QCD_%s_test.root", recoParton.Data()), "UPDATE");
   
   if (isZprime) h_mTTbarParton->Write(TString::Format("h_mTTbarParton_M%s_W%s",tempMass.Data(), width.Data() ));
   else h_mTTbarParton->Write("h_mTTbarParton_TT"); 
