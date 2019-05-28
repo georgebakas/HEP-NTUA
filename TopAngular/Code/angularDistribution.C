@@ -15,12 +15,12 @@ using std::endl;
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 
-void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/mc/2017/ZprimeToTT_M3000_W300_TuneCP2_13TeV-madgraphMLM-pythia8_Copy.root", 
-						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime= true,bool isParton=true, int ZprimeMass = 2000, TString width = "200" )
+void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root", 
+						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime= false,bool isParton=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
-  //gStyle->SetOptStat(0);
+  gStyle->SetOptStat(0);
   TFile *inf     = TFile::Open(file);
   TTree *trIN    = (TTree*)inf->Get("events");
   //cout<<"here"<<endl;
@@ -98,6 +98,18 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
   if(isZprime)h_mTTbarParton  = new TH1F("mTTbarParton", "mTTbarParton histogram", 60, 1000,ZprimeMass+1000);
   else h_mTTbarParton = new TH1F("mTTbarParton", "mTTbarParton histogram", 60, 1000,6000);  
   
+  const int chiSize =9;
+  float BND_chi[chiSize+1] = {1,2,3,4,5,6,8,10,13,16};
+  const int cosSize = 6;
+  float BND_cos[cosSize+1] = {0,0.2,0.4,0.6,0.7,0.8,1};
+  TH1F *h_Chi_all = new TH1F("#chi dist", "#chi dist", chiSize, BND_chi);
+  TH1F *h_Cos_all = new TH1F("#||{cos(#theta)} dist", "#||{cos(#theta)} dist", cosSize, BND_cos);
+  
+  TH1F *hChiExp = new TH1F("#chi from e^{y^{*}} dist", "#chi from e^{y^{*}} dist", chiSize, BND_chi);
+  
+  TH1F *hChiBoost = new TH1F("#chi boost dist", "#chi boost dist", chiSize, BND_chi);
+  TH1F *hCosBoost = new TH1F("#||{cos(#theta)} boost dist", "#||{cos(#theta)} boost dist", cosSize, BND_cos);
+  
   TH1F *hAngularDist[sizeBins], *hChi[sizeBins];
   std::vector<TString> massLimits = {"1000-2500","2500-3500", "3500-5000", "5000-Inf"};
   
@@ -107,7 +119,19 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
 	  hAngularDist[i] = new TH1F(TString::Format("#||{cos(#theta)} Distribution for mass limit: %s (GeV)", temp.Data()),TString::Format("#||{cos(#theta)} Distribution for mass limit: %s (GeV)", temp.Data()), 20, 0,1);
 	  hChi[i] = new TH1F(TString::Format("#chi Distribution for mass limit: %s (GeV)", temp.Data()),TString::Format("#chi Distribution for mass limit: %s (GeV)", temp.Data()), 20, 0,16);
   }
+  //for matching
+  std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
+  std::vector<float> *jetMatchedDr = new std::vector<float>(0);
+  std::vector<float> *eta_ = new std::vector<float>(0);
+  std::vector<float> *phi_ = new std::vector<float>(0);
+  std::vector<float> *mass_ = new std::vector<float>(0);
+  std::vector<float> *pt_ = new std::vector<float>(0);
   
+  std::vector<float> *partonPt_ = new std::vector<float>(0);
+  std::vector<float> *partonEta_ = new std::vector<float>(0);
+  std::vector<float> *partonMass_ = new std::vector<float>(0);
+  std::vector<float> *partonPhi_ = new std::vector<float>(0);
+  float jetDr_(0);
   
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=0;iev<NN;iev++) 
@@ -118,79 +142,160 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
       cout<<10*k<<" %"<<endl;
     decade = k;
     trIN->GetEntry(iev);
+	eta_->clear();
+	mass_->clear();
+	pt_->clear();
+	phi_->clear();
+	
+	
+	partonPt_->clear();
+	partonMass_->clear();
+	partonPhi_->clear();
+	partonEta_->clear();
+	
+	int isMatched=0;
 	bool recoCuts, partonCuts, btagging, topTagger, massCut;	
 	if (nJets >1)
 	{
-		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1] <2.4) &&(*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0;
-		partonCuts = (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) < 2.4 &&  mTTbarParton > 1000;
-		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
-		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-		massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
-		//cout<<"ok"<<endl;
-		if(recoCuts && partonCuts && topTagger && btagging)
+		
+		//----------------------MATCHING------------------------------------------------------
+		
+		for(int ijet =0; ijet<nJets; ijet++)
 		{
-			h_mTTbarParton->Fill(mTTbarParton);
-			//split the mttbar phase space into regions and for each region I will calculate the thetas dists
-			if(isParton)
-			{
-				p4T[0].SetPtEtaPhiM((*partonPt)[0], (*partonEta)[0], (*partonPhi)[0], (*partonMass)[0]);
-				p4T[1].SetPtEtaPhiM((*partonPt)[1], (*partonEta)[1], (*partonPhi)[1], (*partonMass)[1]);
-			}
-			else
-			{
-				p4T[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
-				p4T[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
-			}
+			//cout<<"ok"<<endl;
+		   jetMatchedIndexes->clear();
+		   jetMatchedDr->clear();
+		   std::vector<int>::iterator it = std::find(partonMatchIdx->begin(), partonMatchIdx->end(), ijet);
+		   //get all entries that match our jet.
+		   while(it != partonMatchIdx->end())
+		   {
+			   int index = it - partonMatchIdx->begin();
+			   jetMatchedIndexes->push_back(index); //has the positions where I found the jet i in partonMatchedIdx
+			   jetMatchedDr->push_back((*partonMatchDR)[index]); //same here for the DR: DR that correspond to the jet i
+
+			   //cout<<"jetFound at: "<<index<<endl;
+			   ++it;
+			   it = std::find(it, partonMatchIdx->end(), ijet);
+		   }
+		   //if we actually selected something
+		   if(jetMatchedIndexes->size() > 0)
+		   {
 			
-			TVector3 ttbarBoostVector = getBoostVector(p4T[0], p4T[1], p4TTbar);
-			
-			p4T_ZMF[0].SetPtEtaPhiM(p4T[0].Pt(), p4T[0].Eta(), p4T[0].Phi(), p4T[0].M());
-			p4T_ZMF[1].SetPtEtaPhiM(p4T[1].Pt(), p4T[1].Eta(), p4T[1].Phi(), p4T[1].M());
-			p4T_ZMF[0].Boost(ttbarBoostVector);
-			p4T_ZMF[1].Boost(ttbarBoostVector);
+				float dRmin = (*jetMatchedDr)[0];
+				int indexMin = (*jetMatchedIndexes)[0];
+				
+				//cout<<"dRmin[0]: "<<dRmin<<endl;
+				for(int k=1; k<jetMatchedIndexes->size(); k++)
+				{
+					//cout<<"jetMatchedIndexes at k = "<<k<<" is: "<<(*jetMatchedIndexes)[k]<<endl;
+					//cout<<"jetMatchedDr at k =  "<<k<<" is: "<<(*jetMatchedDr)[k]<<endl;
+					if((*jetMatchedDr)[k] < dRmin)
+					{
+						dRmin = (*jetMatchedDr)[k];
+						indexMin = (*jetMatchedIndexes)[k];
+					}
+				//cout<<"dRmin is: "<<dRmin<<endl;
+				}
+				if(dRmin < 0.4)
+				{
+					isMatched++;
+					//cout<<"int isMatched: "<<isMatched<<endl;
+					jetDr_ = dRmin;
+					pt_->push_back((*jetPt)[(*partonMatchIdx)[indexMin]]);
+					mass_->push_back((*jetMassSoftDrop)[(*partonMatchIdx)[indexMin]]);
+					eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
+					phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
 					
-			//cout<<"-------------------------------------"<<endl;		
-			//cout<< p4T_ZMF[0].Pt()<<endl;
-			//cout<< p4T_ZMF[1].Pt()<<endl;
-			float chi0(0), chi1(0);
-			chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-			chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));
-			//chi0 = TMath::Exp(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity());
+					partonPt_->push_back( (*partonPt)[indexMin]);
+					partonMass_->push_back( (*partonMass)[indexMin]);
+					partonPhi_->push_back( (*partonPhi)[indexMin]);
+					partonEta_->push_back( (*partonEta)[indexMin]);
+					
+				}
+					
+		   }
+		   
+		 }//---------------------------end of MATCHING---------------------------------------------------------
+		 
+		if(isMatched >1)	 
+		{
+				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 500 && (*pt_)[1] > 500 && nLeptons==0;
+				partonCuts = (*partonPt_)[0] > 500 && (*partonPt_)[1] > 500 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000;
+				btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
+				topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+				massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+				//cout<<"ok"<<endl;
+					
+					//split the mttbar phase space into regions and for each region I will calculate the thetas dists
+					if(isParton)
+					{
+						p4T[0].SetPtEtaPhiM((*partonPt_)[0], (*partonEta_)[0], (*partonPhi_)[0], (*partonMass_)[0]);
+						p4T[1].SetPtEtaPhiM((*partonPt_)[1], (*partonEta_)[1], (*partonPhi_)[1], (*partonMass_)[1]);
+					}
+					else
+					{
+						p4T[0].SetPtEtaPhiM((*pt_)[0], (*eta_)[0], (*phi_)[0], (*mass_)[0]);
+						p4T[1].SetPtEtaPhiM((*pt_)[1], (*eta_)[1], (*phi_)[1], (*mass_)[1]);
+					}
+					
+					TVector3 ttbarBoostVector = getBoostVector(p4T[0], p4T[1], p4TTbar);
+					
+					p4T_ZMF[0].SetPtEtaPhiM(p4T[0].Pt(), p4T[0].Eta(), p4T[0].Phi(), p4T[0].M());
+					p4T_ZMF[1].SetPtEtaPhiM(p4T[1].Pt(), p4T[1].Eta(), p4T[1].Phi(), p4T[1].M());
+					p4T_ZMF[0].Boost(ttbarBoostVector);
+					p4T_ZMF[1].Boost(ttbarBoostVector);
+							
+					//cout<<"-------------------------------------"<<endl;		
+					//cout<< p4T_ZMF[0].Pt()<<endl;
+					//cout<< p4T_ZMF[1].Pt()<<endl;
+					float chi0(0), chi1(0);
+					chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+					chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+					
+					
+					
+					if(recoCuts && partonCuts && topTagger && btagging)
+					{
+						//cout<<"---------------------------------"<<endl;
+						//cout <<fabs(TMath::Cos(p4T_ZMF[0].Theta()))<<endl;
+						//cout <<fabs(TMath::Cos(p4T_ZMF[1].Theta()))<<endl;
+						h_mTTbarParton->Fill(mTTbarParton);
+						h_Chi_all->Fill(chi0);
+						
+						float yStar = TMath::Exp(fabs((p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())));
+						hChiExp->Fill(yStar);
+						
+						h_Cos_all->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+						//h_Cos_all->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+						if(fabs((0.5)*(p4T_ZMF[0].Rapidity() + p4T_ZMF[1].Rapidity())) < 1.1 )
+						{
+							hChiBoost->Fill(chi0);
+							hCosBoost->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+						}
+						
+						
+						bool found =false;
+						int imass = 0;
+						while(!found && imass<sizeBins)
+						{
+							//cout<<imass<<endl;
+							//cout<<"------------------------"<<endl;
+							if(mTTbarParton >= BND[imass] && mTTbarParton < BND[imass+1] )
+							{
+								found =true;
+								hAngularDist[imass]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+								hAngularDist[imass]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+								hChi[imass]->Fill(chi0);
+								hChi[imass]->Fill(chi1);
+							}
+							imass++;
+						}
+								
 			
-			
-			if(mTTbarParton >= BND[0] && mTTbarParton < BND[1] )
-			{
-				hChi[0] ->Fill(chi0);
-				hChi[0] ->Fill(chi1);
-				hAngularDist[0]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-				hAngularDist[0]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
-			}
-			/*
-			else if(mTTbarParton >= BND[1] && mTTbarParton < BND[2])
-			{
-				hChi[1] ->Fill(chi0);
-				hChi[1] ->Fill(chi1);
-				hAngularDist[1]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-				hAngularDist[1]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
-			}
-			else if(mTTbarParton >= BND[2] && mTTbarParton < BND[3])
-			{
-				hChi[2] ->Fill(chi0);
-				hChi[2] ->Fill(chi1);
-				hAngularDist[2]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-				hAngularDist[2]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
-			}
-			else if(mTTbarParton >= BND[3] )
-			{
-				hChi[3] ->Fill(chi0);
-				hChi[3] ->Fill(chi1);
-				hAngularDist[3]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-				hAngularDist[3]->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
-			}*/
-			
-		}
-	}
-  }	
+				}//----end of cuts
+		}//----end of isMatched	
+	}//----end of nJets
+  }	//---end of event loop
   
   TCanvas *can[sizeBins];
   for(int i =0; i<sizeBins; i++)
@@ -215,6 +320,61 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
   h_mTTbarParton->Draw();
   
   
+  TCanvas *can_cosAll = new TCanvas("|cos(#theta)|can", "#|cos(#theta)| exp can", 900, 600);
+  h_Cos_all->GetXaxis()->SetTitle("|cos(#theta^{*})|");
+  h_Cos_all->Scale(1./h_Cos_all->Integral());
+  h_Cos_all->Draw();
+  
+  TCanvas *can_chiAll = new TCanvas("#chi All can", "#chi all can", 900, 600);
+  h_Chi_all->GetXaxis()->SetTitle("#chi");
+  h_Chi_all->Scale(1./h_Chi_all->Integral());
+  h_Chi_all->Draw();
+  //can_chiAll->BuildLegend();
+  
+ 
+  auto c3 = new TCanvas("#chi No yBoost/yBoost", "#chi No yBoost/yBoost", 900,600);
+  TLegend *leg_chi = new TLegend(0.6,0.7,0.8,0.9);
+  leg_chi->AddEntry(h_Cos_all, "#chi no |y_{boost}| cut", "l"); 
+  leg_chi->AddEntry(hCosBoost, "#chi with |y_{boost}| < 1.19", "l"); 
+  h_Chi_all->GetXaxis()->SetTitle("#chi");
+  h_Chi_all->Scale(1./h_Chi_all->Integral());
+  hChiBoost->Scale(1./hChiBoost->Integral());
+  hChiBoost->SetLineColor(kRed);
+  auto rp_chi = new TRatioPlot(h_Chi_all, hChiBoost);
+  c3->SetTicks(0,1);
+  rp_chi->Draw();
+  leg_chi->Draw();
+  c3->Update();  
+  
+  auto c2 = new TCanvas("Cos No yBoost/yBoost", "Cos No yBoost/yBoost", 900,600);
+  TLegend *leg_cos = new TLegend(0.6,0.7,0.8,0.9);
+  leg_cos->AddEntry(h_Cos_all, "cos(#theta^{*}) no |y_{boost}| cut", "l"); 
+  leg_cos->AddEntry(hCosBoost, "cos(#theta^{*}) with |y_{boost}| < 1.19", "l"); 
+  h_Cos_all->GetXaxis()->SetTitle("#||{cos(#theta)}");
+  h_Cos_all->Scale(1./h_Cos_all->Integral());
+  hCosBoost->Scale(1./hCosBoost->Integral());
+  hCosBoost->SetLineColor(kRed);
+  auto rp_cos = new TRatioPlot(h_Cos_all, hCosBoost);
+  c2->SetTicks(0,1);
+  rp_cos->Draw();
+  c2->Update();
+  leg_cos->Draw();
+
+  
+  auto c1 = new TCanvas("hChi over hChiExp", "hChi over hChiExp", 900,600);
+  TLegend *leg_rp = new TLegend(0.6,0.7,0.8,0.9);
+  leg_rp->AddEntry(h_Chi_all,"#chi distibution using angle #theta", "l");
+  leg_rp->AddEntry(h_Chi_all,"#chi distibution using e^{|2y^{*}|}", "l");
+  h_Chi_all->GetXaxis()->SetTitle("#chi");
+  h_Chi_all->Scale(1./h_Chi_all->Integral());
+  hChiExp->Scale(1./hChiBoost->Integral());
+  hChiExp->SetLineColor(kRed);
+  auto rp = new TRatioPlot(h_Chi_all, hChiExp);
+  c1->SetTicks(0,1);
+  rp->Draw();
+  leg_rp->Draw();
+  c1->Update();
+    
   TString tempMass;
   if(ZprimeMass == 2000) tempMass = "2TeV";
   else if(ZprimeMass == 3000) tempMass = "3TeV";
@@ -229,8 +389,24 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
   if(isZprime)  outf = new TFile(TString::Format("Output_M%s_%s_test.root", tempMass.Data(), recoParton.Data()), "UPDATE");
   else outf = new TFile(TString::Format("Output_TT_QCD_%s_test.root", recoParton.Data()), "UPDATE");
   
-  if (isZprime) h_mTTbarParton->Write(TString::Format("h_mTTbarParton_M%s_W%s",tempMass.Data(), width.Data() ));
-  else h_mTTbarParton->Write("h_mTTbarParton_TT"); 
+  if (isZprime) 
+  {
+	  h_mTTbarParton->Write(TString::Format("h_mTTbarParton_M%s_W%s",tempMass.Data(), width.Data()));
+	  h_Cos_all->Write(TString::Format("hCos_M%s_W%s",tempMass.Data(), width.Data()));
+	  h_Chi_all->Write(TString::Format("hChi_M%s_W%s",tempMass.Data(), width.Data()));
+	  hChiBoost->Write(TString::Format("hChiBoost_M%s_W%s",tempMass.Data(), width.Data()));
+	  hCosBoost->Write(TString::Format("hCosBoost_M%s_W%s",tempMass.Data(), width.Data()));
+	  hChiExp->Write(TString::Format("hChiExp_M%s_W%s",tempMass.Data(), width.Data()));
+  }
+  else 
+  {
+	  h_mTTbarParton->Write("h_mTTbarParton_TT"); 
+	  h_Cos_all->Write("hCos_TT");
+	  h_Chi_all->Write("hChi_TT");
+	  hChiBoost->Write("hChiBoost_TT");
+	  hCosBoost->Write("hCosBoost_TT");
+	  hChiExp->Write("hChiExp_TT");
+  }
   
   
   
@@ -248,7 +424,9 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ZprimeToTT/m
 		  hChi[i]->Write(TString::Format("chi_%s_TT", temp.Data()));
 	  }
 	  
-  }	  
+  }
+  
+  
   
 }
 

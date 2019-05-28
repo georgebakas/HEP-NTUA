@@ -132,7 +132,16 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   //for matching
   std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
   std::vector<float> *jetMatchedDr = new std::vector<float>(0);
-  float jetDr_(0), eta_(0), phi_(0), mass_(0), pt_(0);  
+  std::vector<float> *eta_ = new std::vector<float>(0);
+  std::vector<float> *phi_ = new std::vector<float>(0);
+  std::vector<float> *mass_ = new std::vector<float>(0);
+  std::vector<float> *pt_ = new std::vector<float>(0);
+  
+  std::vector<float> *partonPt_ = new std::vector<float>(0);
+  std::vector<float> *partonEta_ = new std::vector<float>(0);
+  std::vector<float> *partonMass_ = new std::vector<float>(0);
+  std::vector<float> *partonPhi_ = new std::vector<float>(0);
+  float jetDr_(0);// eta_(0), phi_(0), mass_(0), pt_(0);  
   
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=0;iev<NN;iev++) 
@@ -143,138 +152,164 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
       cout<<10*k<<" %"<<endl;
     decade = k;
     trIN->GetEntry(iev);
+	int isMatched = 0;
 	bool recoCuts, partonCuts, btagging, topTagger, massCut;	
+	eta_->clear();
+	mass_->clear();
+	pt_->clear();
+	phi_->clear();
+	
+	
+	partonPt_->clear();
+	partonMass_->clear();
+	partonPhi_->clear();
+	partonEta_->clear();
 	if (nJets >1)
-	{
-		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1] <2.4) &&(*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0;
-		partonCuts = (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) < 2.4 &&  mTTbarParton > 1000;
-		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
-		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-		massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
-		//cout<<"ok"<<endl;
-		bool isMatched = true;
-       //----------------------MATCHING------------------------------------------------------
-       jetMatchedIndexes->clear();
-       jetMatchedDr->clear();
-       std::vector<int>::iterator it = std::find(partonMatchIdx->begin(), partonMatchIdx->end(), iev);
-       //get all entries that match our jet.
-       while(it != partonMatchIdx->end())
-       {
-           int index = it - partonMatchIdx->begin();
-		   jetMatchedIndexes->push_back(index); //has the positions where I found the jet i in partonMatchedIdx
-           jetMatchedDr->push_back((*partonMatchDR)[index]); //same here for the DR: DR that correspond to the jet i
+	{	
 
-           //cout<<"jetFound at: "<<index<<endl;
-           ++it;
-           it = std::find(it, partonMatchIdx->end(), iev);
-	   }
-       //if we actually selected something
-       if(jetMatchedIndexes->size() > 0)
-       {
-        
-			float dRmin = (*jetMatchedDr)[0];
-			int indexMin = (*jetMatchedIndexes)[0];
-			
-			//cout<<"dRmin[0]: "<<dRmin<<endl;
-			for(int k=1; k<jetMatchedIndexes->size(); k++)
-			{
-				//cout<<"jetMatchedIndexes at k = "<<k<<" is: "<<(*jetMatchedIndexes)[k]<<endl;
-				//cout<<"jetMatchedDr at k =  "<<k<<" is: "<<(*jetMatchedDr)[k]<<endl;
-				if((*jetMatchedDr)[k] < dRmin)
-				{
-					dRmin = (*jetMatchedDr)[k];
-					indexMin = (*jetMatchedIndexes)[k];
-				}
-			//cout<<"dRmin is: "<<dRmin<<endl;
-			}
-			if(dRmin < 0.4)
-			{
-				isMatched = true;
-				jetDr_ = dRmin;
-				pt_    = (*jetPt)[(*partonMatchIdx)[indexMin]];
-				mass_  = (*jetMassSoftDrop)[(*partonMatchIdx)[indexMin]];
-				eta_   = (*jetEta)[(*partonMatchIdx)[indexMin]];
-				phi_   = (*jetPhi)[(*partonMatchIdx)[indexMin]];
-			}
-	    }
-		//---------------------------end of MATCHING---------------------------------------------------------
-		// Do anything ONLY if matching is ok
-		if(isMatched)
+		//----------------------MATCHING------------------------------------------------------
+		
+		for(int ijet =0; ijet<nJets; ijet++)
 		{
-			//split the mttbar phase space into regions and for each region I will calculate the thetas dists
-			responseMatrix_mTTTbar->Fill(mTTbarParton, mJJ);
+			//cout<<"ok"<<endl;
+		   jetMatchedIndexes->clear();
+		   jetMatchedDr->clear();
+		   std::vector<int>::iterator it = std::find(partonMatchIdx->begin(), partonMatchIdx->end(), ijet);
+		   //get all entries that match our jet.
+		   while(it != partonMatchIdx->end())
+		   {
+			   int index = it - partonMatchIdx->begin();
+			   jetMatchedIndexes->push_back(index); //has the positions where I found the jet i in partonMatchedIdx
+			   jetMatchedDr->push_back((*partonMatchDR)[index]); //same here for the DR: DR that correspond to the jet i
+
+			   //cout<<"jetFound at: "<<index<<endl;
+			   ++it;
+			   it = std::find(it, partonMatchIdx->end(), ijet);
+		   }
+		   //if we actually selected something
+		   if(jetMatchedIndexes->size() > 0)
+		   {
 			
-			p4T_parton[0].SetPtEtaPhiM((*partonPt)[0], (*partonEta)[0], (*partonPhi)[0], (*partonMass)[0]);
-			p4T_parton[1].SetPtEtaPhiM((*partonPt)[1], (*partonEta)[1], (*partonPhi)[1], (*partonMass)[1]);
-			
-			p4T_reco[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
-			p4T_reco[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
-			
-			TVector3 ttbarBoostVector_parton = getBoostVector(p4T_parton[0], p4T_parton[1], p4TTbar_parton);
-			
-			p4T_parton_ZMF[0].SetPtEtaPhiM(p4T_parton[0].Pt(), p4T_parton[0].Eta(), p4T_parton[0].Phi(), p4T_parton[0].M());
-			p4T_parton_ZMF[1].SetPtEtaPhiM(p4T_parton[1].Pt(), p4T_parton[1].Eta(), p4T_parton[1].Phi(), p4T_parton[1].M());
-			p4T_parton_ZMF[0].Boost(ttbarBoostVector_parton);
-			p4T_parton_ZMF[1].Boost(ttbarBoostVector_parton);
-			
-			TVector3 ttbarBoostVector_reco = getBoostVector(p4T_reco[0], p4T_reco[1], p4TTbar_reco);
-			
-			p4T_reco_ZMF[0].SetPtEtaPhiM(p4T_reco[0].Pt(), p4T_reco[0].Eta(), p4T_reco[0].Phi(), p4T_reco[0].M());
-			p4T_reco_ZMF[1].SetPtEtaPhiM(p4T_reco[1].Pt(), p4T_reco[1].Eta(), p4T_reco[1].Phi(), p4T_reco[1].M());
-			p4T_reco_ZMF[0].Boost(ttbarBoostVector_reco);
-			p4T_reco_ZMF[1].Boost(ttbarBoostVector_reco);
-					
-			//cout<<"-------------------------------------"<<endl;		
-			//cout<< p4T_ZMF[0].Pt()<<endl;
-			//cout<< p4T_ZMF[1].Pt()<<endl;
-			float chi0_parton(0), chi1_parton(0);
-			float chi0_reco(0), chi1_reco(0);
-			chi0_parton = (1 + fabs(TMath::Cos(p4T_parton_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[0].Theta())));
-			chi1_parton = (1 + fabs(TMath::Cos(p4T_parton_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[1].Theta())));
-			//chi0 = TMath::Exp(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity());
-			
-			chi0_reco = (1 + fabs(TMath::Cos(p4T_reco_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[0].Theta())));
-			chi1_reco = (1 + fabs(TMath::Cos(p4T_reco_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[1].Theta())));
-			
-			/*
-			cout<<"-------------------------------------------------------------"<<endl;
-			cout<<chi0_parton<<endl;
-			cout<<chi0_reco<<endl;
-			cout<<chi1_parton<<endl;
-			cout<<chi1_reco<<endl;
-			*/
-			if(recoCuts && partonCuts && topTagger && btagging)
-			{
-				responseMatrix_chi->Fill(chi0_parton, chi0_reco);
-				responseMatrix_chi->Fill(chi1_parton, chi1_reco);
-				bool found =false;
-				int imass = 0;
-				while(!found && imass<sizeBins)
+				float dRmin = (*jetMatchedDr)[0];
+				int indexMin = (*jetMatchedIndexes)[0];
+				
+				//cout<<"dRmin[0]: "<<dRmin<<endl;
+				for(int k=1; k<jetMatchedIndexes->size(); k++)
 				{
-					//cout<<imass<<endl;
-					//cout<<"------------------------"<<endl;
-					if(mTTbarParton >= BND[imass] && mTTbarParton < BND[imass+1] )
+					//cout<<"jetMatchedIndexes at k = "<<k<<" is: "<<(*jetMatchedIndexes)[k]<<endl;
+					//cout<<"jetMatchedDr at k =  "<<k<<" is: "<<(*jetMatchedDr)[k]<<endl;
+					if((*jetMatchedDr)[k] < dRmin)
 					{
-						found =true;
-						responseMatrix[imass]->Fill(chi0_parton, chi0_reco);
-						responseMatrix[imass]->Fill(chi1_parton, chi1_reco);
+						dRmin = (*jetMatchedDr)[k];
+						indexMin = (*jetMatchedIndexes)[k];
 					}
-					imass++;
+				//cout<<"dRmin is: "<<dRmin<<endl;
+				}
+				if(dRmin < 0.4)
+				{
+					isMatched++;
+					//cout<<"int isMatched: "<<isMatched<<endl;
+					jetDr_ = dRmin;
+					pt_->push_back((*jetPt)[(*partonMatchIdx)[indexMin]]);
+					mass_->push_back((*jetMassSoftDrop)[(*partonMatchIdx)[indexMin]]);
+					eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
+					phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
+					
+					partonPt_->push_back((*partonPt)[indexMin]);
+					partonMass_->push_back((*partonMass)[indexMin]);
+					partonPhi_->push_back((*partonPhi)[indexMin]);
+					partonEta_->push_back((*partonEta)[indexMin]);
+				}
+					
+		   }
+		   
+		 }//---------------------------end of MATCHING---------------------------------------------------------
+	     if(isMatched >1)
+		 {
+				//cout<<"------------------------------------------------------"<<endl;
+				//cout<<"pt[0]: "<<(*pt_)[0]<<endl;
+				//cout<<"pt[1]: "<<(*pt_)[1]<<endl;
+				// Do anything ONLY if matching is ok
+				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0;
+				partonCuts = (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000;
+				btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
+				topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+				massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+			
+				//split the mttbar phase space into regions and for each region I will calculate the thetas dists
+				responseMatrix_mTTTbar->Fill(mTTbarParton, mJJ);
+			
+				p4T_parton[0].SetPtEtaPhiM((*partonPt_)[0], (*partonEta_)[0], (*partonPhi_)[0], (*partonMass_)[0]);
+				p4T_parton[1].SetPtEtaPhiM((*partonPt_)[1], (*partonEta_)[1], (*partonPhi_)[1], (*partonMass_)[1]);
+			
+				p4T_reco[0].SetPtEtaPhiM((*pt_)[0], (*eta_)[0], (*phi_)[0], (*mass_)[0]);
+				p4T_reco[1].SetPtEtaPhiM((*pt_)[1], (*eta_)[1], (*phi_)[1], (*mass_)[1]);
+				
+				TVector3 ttbarBoostVector_parton = getBoostVector(p4T_parton[0], p4T_parton[1], p4TTbar_parton);
+				
+				p4T_parton_ZMF[0].SetPtEtaPhiM(p4T_parton[0].Pt(), p4T_parton[0].Eta(), p4T_parton[0].Phi(), p4T_parton[0].M());
+				p4T_parton_ZMF[1].SetPtEtaPhiM(p4T_parton[1].Pt(), p4T_parton[1].Eta(), p4T_parton[1].Phi(), p4T_parton[1].M());
+				p4T_parton_ZMF[0].Boost(ttbarBoostVector_parton);
+				p4T_parton_ZMF[1].Boost(ttbarBoostVector_parton);
+				
+				TVector3 ttbarBoostVector_reco = getBoostVector(p4T_reco[0], p4T_reco[1], p4TTbar_reco);
+				
+				p4T_reco_ZMF[0].SetPtEtaPhiM(p4T_reco[0].Pt(), p4T_reco[0].Eta(), p4T_reco[0].Phi(), p4T_reco[0].M());
+				p4T_reco_ZMF[1].SetPtEtaPhiM(p4T_reco[1].Pt(), p4T_reco[1].Eta(), p4T_reco[1].Phi(), p4T_reco[1].M());
+				p4T_reco_ZMF[0].Boost(ttbarBoostVector_reco);
+				p4T_reco_ZMF[1].Boost(ttbarBoostVector_reco);
+						
+				//cout<<"-------------------------------------"<<endl;		
+				//cout<< p4T_ZMF[0].Pt()<<endl;
+				//cout<< p4T_ZMF[1].Pt()<<endl;
+				float chi0_parton(0), chi1_parton(0);
+				float chi0_reco(0), chi1_reco(0);
+				chi0_parton = (1 + fabs(TMath::Cos(p4T_parton_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[0].Theta())));
+				chi1_parton = (1 + fabs(TMath::Cos(p4T_parton_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[1].Theta())));
+				//chi0 = TMath::Exp(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity());
+				
+				chi0_reco = (1 + fabs(TMath::Cos(p4T_reco_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[0].Theta())));
+				chi1_reco = (1 + fabs(TMath::Cos(p4T_reco_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[1].Theta())));
+				
+				/*
+				cout<<"-------------------------------------------------------------"<<endl;
+				cout<<chi0_parton<<endl;
+				cout<<chi1_parton<<endl;
+				cout<<chi0_reco<<endl;
+				cout<<chi1_reco<<endl;
+				*/
+				if(recoCuts && partonCuts && topTagger && btagging)
+				{
+					responseMatrix_chi->Fill(chi0_parton, chi0_reco);
+					//responseMatrix_chi->Fill(chi1_parton, chi1_reco);
+					bool found =false;
+					int imass = 0;
+					while(!found && imass<sizeBins)
+					{
+						//cout<<imass<<endl;
+						//cout<<"------------------------"<<endl;
+						if(mTTbarParton >= BND[imass] && mTTbarParton < BND[imass+1] )
+						{
+							found =true;
+							responseMatrix[imass]->Fill(chi0_parton, chi0_reco);
+							//responseMatrix[imass]->Fill(chi1_parton, chi1_reco);
+						}
+						imass++;
+					}
+					
+				}
+				if(recoCuts && topTagger && btagging)
+				{
+				  hDivReco->Fill(chi0_reco);
+				  //hDivReco->Fill(chi1_reco);
+				}
+				if(partonCuts)
+				{
+				  hDivParton->Fill(chi0_parton);
+				  //hDivParton->Fill(chi1_parton);
 				}
 				
-			}
-			if(recoCuts && topTagger && btagging)
-			{
-			  hDivReco->Fill(chi0_reco);
-			  hDivReco->Fill(chi1_reco);
-			}
-			if(partonCuts)
-			{
-			  hDivParton->Fill(chi0_parton);
-			  hDivParton->Fill(chi1_parton);
-			}
-		
-	  }//-----end of isMatched loop 
+		 }//----end of isMatched
 	  
 	}//---end of nJets >1 loop
 	
