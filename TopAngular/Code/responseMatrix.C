@@ -20,7 +20,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
-  //gStyle->SetOptStat(0);
+  gStyle->SetOptStat(0);
   TFile *inf     = TFile::Open(file);
   TTree *trIN    = (TTree*)inf->Get("events");
   //cout<<"here"<<endl;
@@ -100,16 +100,16 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   std::vector<TString> massLimits = {"1000-1600","1600-2200", "2200-3000","3000-3600", "3600-6000"};									 
 
   int counter =0;
-  std::vector< std::vector <Float_t> > const Resp_BND = {{1,2,3,4,5,6,7,8,9,10,12,14,16},
-														 {1,2,3,4,5,6,7,8,9,10,12,14,16},
-														 {1,2,3,4,5,6,7,8,9,10,12,14,16},
-														 {1,2,3,4,5,6,7,8,9,10,12,14,16},
-														 {1,2,3,4,5,6,7,8,9,10,12,14,16}};
+  std::vector< std::vector <Float_t> > const Resp_BND = {{1,2,3,4,5,6,8,10,13,16},
+														 {1,2,3,4,5,6,8,10,13,16},
+														 {1,2,3,4,5,6,8,10,13,16},
+														 {1,2,3,4,5,6,8,10,13,16},
+														 {1,2,3,4,5,6,8,10,13,16}};
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16},
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16},
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16}};
   
- int NBINS[sizeBins] = {12,12,12,12,12}; 
+ int NBINS[sizeBins] = {chiSize,chiSize,chiSize,chiSize,chiSize}; 
  
  
   TH2F *responseMatrix[sizeBins]; 
