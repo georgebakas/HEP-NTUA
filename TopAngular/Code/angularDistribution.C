@@ -39,7 +39,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   vector<bool> *bit(0);
   float mTTbarParton(0),mJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
-  //matching info
+  //matching info 
   vector<float> *jetPhi(0), *jetEta(0);
   vector<int> *partonId(0), *partonMatchIdx(0);
   
@@ -105,7 +105,9 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   TH1F *h_Chi_all = new TH1F("#chi dist", "#chi dist", chiSize, BND_chi);
   TH1F *h_Cos_all = new TH1F("#||{cos(#theta)} dist", "#||{cos(#theta)} dist", cosSize, BND_cos);
   
-  TH1F *hChiExp = new TH1F("#chi from e^{y^{*}} dist", "#chi from e^{y^{*}} dist", chiSize, BND_chi);
+  //relation between x from costheta and x from exp(2y*)
+  TH1F *hChiExp = new TH1F("#chi from e^{y^{*}} dist", "#chi from e^{y^{*}} dist", chiSize, BND_chi); //actual distribution for exp(2y*)
+  TH1F *hChi_Diff = new TH1F("#chi_{cos(#theta)} - #chi_{e^{|2y^{*}|}} dist", "#chi_{cos(#theta)} - #chi_{e^{|2y^{*}|}} dist", 10, 0,1); //this is the x_fromCosTheta - x_fromExp
   
   TH1F *hChiBoost = new TH1F("#chi boost dist", "#chi boost dist", chiSize, BND_chi);
   TH1F *hCosBoost = new TH1F("#||{cos(#theta)} boost dist", "#||{cos(#theta)} boost dist", cosSize, BND_cos);
@@ -256,17 +258,24 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
 					
 					if(recoCuts && partonCuts && topTagger && btagging)
 					{
-						//cout<<"---------------------------------"<<endl;
-						//cout <<fabs(TMath::Cos(p4T_ZMF[0].Theta()))<<endl;
-						//cout <<fabs(TMath::Cos(p4T_ZMF[1].Theta()))<<endl;
+						
 						h_mTTbarParton->Fill(mTTbarParton);
 						h_Chi_all->Fill(chi0);
 						
-						float yStar = TMath::Exp(fabs((p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())));
-						hChiExp->Fill(yStar);
+						float yStarExp = TMath::Exp(fabs((p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())));
+						hChiExp->Fill(yStarExp);
 						
 						h_Cos_all->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
 						//h_Cos_all->Fill(fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+						
+						hChi_Diff->Fill(chi0-yStarExp);
+						
+						if(chi0-yStarExp < 0) cout<<"Found less that 0"<<endl;
+						
+						//cout<<"---------------------------------"<<endl;
+						//cout <<chi0-yStarExp<<endl;
+						//cout <<chi0<<endl;
+						
 						if(fabs((0.5)*(p4T_ZMF[0].Rapidity() + p4T_ZMF[1].Rapidity())) < 1.1 )
 						{
 							hChiBoost->Fill(chi0);
@@ -319,26 +328,29 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   h_mTTbarParton->GetXaxis()->SetTitle("mTTbarParton (GeV)");
   h_mTTbarParton->Draw();
   
+  TCanvas *can_chiDiff = new TCanvas("chi Diff","chi Diff" ,900, 600);
+  hChi_Diff->GetXaxis()->SetTitle("#chi");
+  hChi_Diff->Draw();
   
   TCanvas *can_cosAll = new TCanvas("|cos(#theta)|can", "#|cos(#theta)| exp can", 900, 600);
   h_Cos_all->GetXaxis()->SetTitle("|cos(#theta^{*})|");
-  h_Cos_all->Scale(1./h_Cos_all->Integral());
+  h_Cos_all->Scale(1./h_Cos_all->Integral(), "width");
   h_Cos_all->Draw();
   
   TCanvas *can_chiAll = new TCanvas("#chi All can", "#chi all can", 900, 600);
   h_Chi_all->GetXaxis()->SetTitle("#chi");
-  h_Chi_all->Scale(1./h_Chi_all->Integral());
+  h_Chi_all->Scale(1./h_Chi_all->Integral(), "width");
   h_Chi_all->Draw();
   //can_chiAll->BuildLegend();
-  
+
  
   auto c3 = new TCanvas("#chi No yBoost/yBoost", "#chi No yBoost/yBoost", 900,600);
   TLegend *leg_chi = new TLegend(0.6,0.7,0.8,0.9);
   leg_chi->AddEntry(h_Cos_all, "#chi no |y_{boost}| cut", "l"); 
   leg_chi->AddEntry(hCosBoost, "#chi with |y_{boost}| < 1.19", "l"); 
-  h_Chi_all->GetXaxis()->SetTitle("#chi");
-  h_Chi_all->Scale(1./h_Chi_all->Integral());
-  hChiBoost->Scale(1./hChiBoost->Integral());
+  //h_Chi_all->GetXaxis()->SetTitle("#chi");
+  //h_Chi_all->Scale(1./h_Chi_all->Integral());
+  hChiBoost->Scale(1./hChiBoost->Integral(), "width");
   hChiBoost->SetLineColor(kRed);
   auto rp_chi = new TRatioPlot(h_Chi_all, hChiBoost);
   c3->SetTicks(0,1);
@@ -350,9 +362,9 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   TLegend *leg_cos = new TLegend(0.6,0.7,0.8,0.9);
   leg_cos->AddEntry(h_Cos_all, "cos(#theta^{*}) no |y_{boost}| cut", "l"); 
   leg_cos->AddEntry(hCosBoost, "cos(#theta^{*}) with |y_{boost}| < 1.19", "l"); 
-  h_Cos_all->GetXaxis()->SetTitle("#||{cos(#theta)}");
-  h_Cos_all->Scale(1./h_Cos_all->Integral());
-  hCosBoost->Scale(1./hCosBoost->Integral());
+  //h_Cos_all->GetXaxis()->SetTitle("#||{cos(#theta)}");
+  //h_Cos_all->Scale(1./h_Cos_all->Integral());
+  hCosBoost->Scale(1./hCosBoost->Integral(), "width");
   hCosBoost->SetLineColor(kRed);
   auto rp_cos = new TRatioPlot(h_Cos_all, hCosBoost);
   c2->SetTicks(0,1);
@@ -365,9 +377,9 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   TLegend *leg_rp = new TLegend(0.6,0.7,0.8,0.9);
   leg_rp->AddEntry(h_Chi_all,"#chi distibution using angle #theta", "l");
   leg_rp->AddEntry(h_Chi_all,"#chi distibution using e^{|2y^{*}|}", "l");
-  h_Chi_all->GetXaxis()->SetTitle("#chi");
-  h_Chi_all->Scale(1./h_Chi_all->Integral());
-  hChiExp->Scale(1./hChiBoost->Integral());
+  //h_Chi_all->GetXaxis()->SetTitle("#chi");
+  //h_Chi_all->Scale(1./h_Chi_all->Integral());
+  hChiExp->Scale(1./hChiExp->Integral(),"width");
   hChiExp->SetLineColor(kRed);
   auto rp = new TRatioPlot(h_Chi_all, hChiExp);
   c1->SetTicks(0,1);
@@ -386,8 +398,8 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   TString recoParton ="";
   if(isParton) recoParton = "Parton";
   else recoParton = "Reco";
-  if(isZprime)  outf = new TFile(TString::Format("Output_M%s_%s_test.root", tempMass.Data(), recoParton.Data()), "UPDATE");
-  else outf = new TFile(TString::Format("Output_TT_QCD_%s_test.root", recoParton.Data()), "UPDATE");
+  if(isZprime)  outf = new TFile(TString::Format("Output_M%s_%s_Chi.root", tempMass.Data(), recoParton.Data()), "UPDATE");
+  else outf = new TFile(TString::Format("Output_TT_QCD_%s_Chi.root", recoParton.Data()), "UPDATE");
   
   if (isZprime) 
   {
