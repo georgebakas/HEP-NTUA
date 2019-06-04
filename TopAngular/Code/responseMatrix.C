@@ -89,27 +89,27 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   int NN = trIN->GetEntries();
 
   //int NN = 10000;
-  const int sizeBins = 5;
+  const int sizeBins = 4;
   const int chiSize =9;
   //float BND[sizeBins+1] = {1000, 2000, 3000, 4000, 5000};
   //float BND[sizeBins+1] = {1000, 2400, 3000, 3600,4200,4800,5400, 6000, 13000};
-  float BND[sizeBins+1] = {1000,1600,2200,3000,3600,6000};
+  float BND[sizeBins+1] = {1000,1600,2200,3200,6000};
   float BND_chi[chiSize+1] = {1,2,3,4,5,6,8,10,13,16};
   //std::vector<TString> massLimits = {"1000-2400","2400-3000", "3000-3600","3600-4200","4200-4800",
 	//								 "4200-4800","4800-5400", "5400-6000","6000-Inf"};
-  std::vector<TString> massLimits = {"1000-1600","1600-2200", "2200-3000","3000-3600", "3600-6000"};									 
+  std::vector<TString> massLimits = {"1000-1600","1600-2200", "2200-3200","3200-6000"};									 
 
   int counter =0;
   std::vector< std::vector <Float_t> > const Resp_BND = {{1,2,3,4,5,6,8,10,13,16},
 														 {1,2,3,4,5,6,8,10,13,16},
 														 {1,2,3,4,5,6,8,10,13,16},
-														 {1,2,3,4,5,6,8,10,13,16},
 														 {1,2,3,4,5,6,8,10,13,16}};
+														 //{1,2,3,4,5,6,8,10,13,16}};
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16},
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16},
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16}};
   
- int NBINS[sizeBins] = {chiSize,chiSize,chiSize,chiSize,chiSize}; 
+ int NBINS[sizeBins] = {chiSize,chiSize,chiSize,chiSize}; 
  
  
   TH2F *responseMatrix[sizeBins]; 
@@ -136,6 +136,9 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   std::vector<float> *phi_ = new std::vector<float>(0);
   std::vector<float> *mass_ = new std::vector<float>(0);
   std::vector<float> *pt_ = new std::vector<float>(0);
+  std::vector<float> *jetBtagSub0_ = new std::vector<float>(0);
+  std::vector<float> *jetBtagSub1_ = new std::vector<float>(0);
+  std::vector<float> *jetTtag_ = new std::vector<float>(0);
   
   std::vector<float> *partonPt_ = new std::vector<float>(0);
   std::vector<float> *partonEta_ = new std::vector<float>(0);
@@ -158,6 +161,9 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 	mass_->clear();
 	pt_->clear();
 	phi_->clear();
+	jetBtagSub0_->clear();
+	jetBtagSub1_->clear();
+	jetTtag_->clear();
 	
 	
 	partonPt_->clear();
@@ -214,6 +220,10 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 					mass_->push_back((*jetMassSoftDrop)[(*partonMatchIdx)[indexMin]]);
 					eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
 					phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
+					jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
+					jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
+					jetTtag_->push_back( (*jetTtag_)[(*partonMatchIdx)[indexMin]]);
+					
 					
 					partonPt_->push_back((*partonPt)[indexMin]);
 					partonMass_->push_back((*partonMass)[indexMin]);
@@ -232,9 +242,9 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 				// Do anything ONLY if matching is ok
 				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0;
 				partonCuts = (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000;
-				btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
-				topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-				massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+				btagging   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
+				topTagger  = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
+				massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 			
 				//split the mttbar phase space into regions and for each region I will calculate the thetas dists
 				responseMatrix_mTTTbar->Fill(mTTbarParton, mJJ);
