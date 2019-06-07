@@ -20,8 +20,6 @@ TString eosPath;
 
 void initFileNames()
 {
-  	
-	
   eosPath = "/eos/cms/store/user/ipapakri/ttbar/MC/";
   listOfFiles.push_back("Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root");
   listOfFiles.push_back("Bkg/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
@@ -34,7 +32,7 @@ void initFileNames()
 
 void initXsections()
 {
-  XSEC.push_back(16.74);
+  XSEC.push_back(16.74); //this is the TT xsec
   XSEC.push_back(3.67e+5);
   XSEC.push_back(2.94e+4);
   XSEC.push_back(6.524e+03);
@@ -81,12 +79,13 @@ void qcdWork()
   TH1F *hCosCR_TT = (TH1F*)infTT->Get("hCosCR_TT"); 
   hChiCR_TT->Scale(weights[0]*LUMI);
   hCosCR_TT->Scale(weights[0]*LUMI);
+  hCosCR_TT->GetXaxis()->SetTitle("|cos(#theta^{*})|");
   hChiCR_TT->SetLineColor(kBlue);
   hCosCR_TT->SetLineColor(kBlue);
   
   TH1F *hChi_QCD_CR_Clone=(TH1F*)hChi_QCD_CR->Clone("hChi_QCD_CR_Clone");
   TH1F *hCos_QCD_CR_Clone=(TH1F*)hCos_QCD_CR->Clone("hCos_QCD_CR_Clone");
-
+  hCos_QCD_CR_Clone->GetXaxis()->SetTitle("|cos(#theta^{*})|");
   
   TCanvas *canDifferences = new TCanvas("can chi", "can chi", 700, 600);
   TLegend *leg = new TLegend(0.5,0.6,0.7,0.8);
@@ -96,7 +95,7 @@ void qcdWork()
   hChi_QCD_CR_Clone->Draw();
   hChiCR_TT->Draw("same");
   leg->Draw();
-  
+   
   TCanvas *canDifferencesCos = new TCanvas("can cos", "can cos", 700, 600);
   TLegend *legCos= new TLegend(0.5,0.6,0.7,0.8);
   legCos->AddEntry(hCosCR_TT, "TT in CR", "l");
@@ -105,6 +104,20 @@ void qcdWork()
   hCos_QCD_CR_Clone->Draw();
   hCosCR_TT->Draw("same");
   legCos->Draw();
+
+
+  auto c0 = new TCanvas("#chi TT contamination", "#chi TT contamination", 700,600);
+  auto rp_chiContamination = new TRatioPlot(hChiCR_TT, hChi_QCD_CR_Clone);
+  c0->SetTicks(0,1);
+  rp_chiContamination->Draw();
+  c0->Update();
+
+  auto c1 = new TCanvas("cos TT contamination", "cos TT contamination", 700,600);
+  auto rp_cosContamination = new TRatioPlot(hCosCR_TT, hCos_QCD_CR_Clone);
+  c1->SetTicks(0,1);
+  rp_cosContamination->Draw();
+  c1->Update();    
+
 
   auto c3 = new TCanvas("#chi", "#chi", 700,600);
   TLegend *leg_chi = new TLegend(0.6,0.7,0.8,0.9);

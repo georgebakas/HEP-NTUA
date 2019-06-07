@@ -93,10 +93,10 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
   float BND[sizeBins+1] = {1000,1600,2200,3200,6000};
   int counter =0;
     
-  const int chiSize =9;
-  float BND_chi[chiSize+1] = {1,2,3,4,5,6,8,10,13,16};
-  const int cosSize = 6;
-  float BND_cos[cosSize+1] = {0,0.2,0.4,0.6,0.7,0.8,1};
+  const int chiSize =11;
+  float BND_chi[chiSize+1] = {1,2,3,4,5,6,7,8,9,10,13,16};
+  const int cosSize = 10;
+  float BND_cos[cosSize+1] = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
   
   int fileSize = listOfFiles.size();
   TH1F *h_Chi_all[fileSize],*h_Cos_all[fileSize], *hChiRevertBtag[fileSize], *hCosRevertBtag[fileSize]; 
@@ -224,9 +224,9 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
 		//cout<< p4T_ZMF[0].Pt()<<endl;
 		//cout<< p4T_ZMF[1].Pt()<<endl;
 		float chi0(0), chi1(0);
-		chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-		chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));	
-					
+		//chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+		//chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));	
+		chi0 = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity()));		//take it from exp	
 		if(recoCuts && topTagger && btagging)
 		{
 		  //cout<<"SR chi: "<<chi0<<endl;
@@ -301,7 +301,9 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
   hCosRevertBtag[0]->Write("hCos_QCD_CR");
   
   
-  
+  listOfFiles.clear();
+  XSEC.clear();
+  histoNames.clear();
   
   
   /*

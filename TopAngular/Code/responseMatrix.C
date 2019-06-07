@@ -15,14 +15,14 @@ using std::endl;
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 
-void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root", 
+void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root", 
 						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
   gStyle->SetOptStat(0);
   TFile *inf     = TFile::Open(file);
-  TTree *trIN    = (TTree*)inf->Get("events");
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
   //cout<<"here"<<endl;
   
   float XSEC = 832.;
@@ -78,48 +78,62 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   trIN->SetBranchAddress("partonPhi" 	  ,&partonPhi);
   trIN->SetBranchAddress("partonE"	 	  ,&partonE);
   trIN->SetBranchAddress("partonMass"	  ,&partonMass);
-
   
   
   
   TLorentzVector p4T_parton[2], p4TTbar_parton, p4T_parton_ZMF[2];
   TLorentzVector p4T_reco[2], p4TTbar_reco, p4T_reco_ZMF[2];
 
-  int decade(0);
+  int decade(0); 
   int NN = trIN->GetEntries();
 
   //int NN = 10000;
   const int sizeBins = 4;
-  const int chiSize =9;
+  const int chiSize =11;
   //float BND[sizeBins+1] = {1000, 2000, 3000, 4000, 5000};
   //float BND[sizeBins+1] = {1000, 2400, 3000, 3600,4200,4800,5400, 6000, 13000};
   float BND[sizeBins+1] = {1000,1600,2200,3200,6000};
-  float BND_chi[chiSize+1] = {1,2,3,4,5,6,8,10,13,16};
+  float BND_chi[chiSize+1] = {1,2,3,4,5,6,7,8,9,10,13,16};
   //std::vector<TString> massLimits = {"1000-2400","2400-3000", "3000-3600","3600-4200","4200-4800",
 	//								 "4200-4800","4800-5400", "5400-6000","6000-Inf"};
   std::vector<TString> massLimits = {"1000-1600","1600-2200", "2200-3200","3200-6000"};									 
 
   int counter =0;
-  std::vector< std::vector <Float_t> > const Resp_BND = {{1,2,3,4,5,6,8,10,13,16},
-														 {1,2,3,4,5,6,8,10,13,16},
-														 {1,2,3,4,5,6,8,10,13,16},
-														 {1,2,3,4,5,6,8,10,13,16}};
+  std::vector< std::vector <Float_t> > const Resp_BND = {{1,2,3,4,5,6,7,8,9,10,13,16},
+														 {1,2,3,4,5,6,7,8,9,10,13,16},
+														 {1,2,3,4,5,6,7,8,9,10,13,16},
+														 {1,2,3,4,5,6,7,8,9,10,13,16}};
 														 //{1,2,3,4,5,6,8,10,13,16}};
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16},
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16},
 														 //{1,2,3,4,5,6,7,8,9,10,12,14,16}};
   
  int NBINS[sizeBins] = {chiSize,chiSize,chiSize,chiSize}; 
- 
+ const int cosSize = 10;
+ //float BND_cos[cosSize+1] = {0,0.1,0.2,0.3,0.4,0.6,0.8,1};
  
   TH2F *responseMatrix[sizeBins]; 
   TH2F *responseMatrix_mTTTbar = new TH2F("mTTbarParton response", "mTTbarParton response", sizeBins, BND, sizeBins, BND); 
   TH2F *responseMatrix_chi = new TH2F("#chi response", "#chi response", chiSize, BND_chi, chiSize, BND_chi); 
+  TH2F *responseMatrix_cos = new TH2F("|cos(#theta)| response", "|cos(#theta)| response",cosSize ,0, 1, cosSize, 0,1); 
  
-  
-  TH1F *hDivReco   = new TH1F("hDivReco","hDivReco", chiSize, BND_chi);
-  TH1F *hDivParton = new TH1F("hDivParton","hDivParton", chiSize, BND_chi);
+  TH1F *hDivReco      = new TH1F("hDivReco","hDivReco", chiSize, BND_chi);
+  TH1F *hDivRecoCos   = new TH1F("hDivRecoCos","hDivRecoCos", cosSize, 0,1);
+  TH1F *hDivParton    = new TH1F("hDivParton","hDivParton", chiSize, BND_chi);
+  TH1F *hDivPartonCos = new TH1F("hDivPartonCos","hDivPartonCos", cosSize, 0,1);
  // std::vector<TString> massLimits = {"1000-2500","2500-3500", "3500-5000", "5000-Inf"};
+ 
+ 
+ //for testing
+ TH1F *hChiPartonTest[3], *hChiRecoTest[3];
+ hChiPartonTest[0]   = new TH1F("hChiPartonTest with exp ZMF","hChiPartonTest with exp ZMF", chiSize, BND_chi);
+ hChiPartonTest[1]   = new TH1F("hChiPartonTest with cos","hChiPartonTest with cos", chiSize, BND_chi);
+ hChiPartonTest[2]   = new TH1F("hChiPartonTest with #DeltaY LB","hChiPartonTest #DeltaY LB", chiSize, BND_chi);
+ 
+ hChiRecoTest[0]   = new TH1F("hChiRecoTest with exp","hChiRecoTest with exp", chiSize, BND_chi);
+ hChiRecoTest[1]   = new TH1F("hChiRecoTest with cos","hChiRecoTest with cos", chiSize, BND_chi);
+ hChiRecoTest[2]   = new TH1F("hChiRecoTest with #DeltaY LB","hChiRecoTest #DeltaY LB", chiSize, BND_chi);
+
 
   for(int i=0; i<sizeBins; i++)
   {
@@ -222,8 +236,8 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 					phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
 					jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
 					jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
-					jetTtag_->push_back( (*jetTtag_)[(*partonMatchIdx)[indexMin]]);
-					
+					jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
+					 
 					
 					partonPt_->push_back((*partonPt)[indexMin]);
 					partonMass_->push_back((*partonMass)[indexMin]);
@@ -240,7 +254,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 				//cout<<"pt[0]: "<<(*pt_)[0]<<endl;
 				//cout<<"pt[1]: "<<(*pt_)[1]<<endl;
 				// Do anything ONLY if matching is ok
-				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0;
+				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000;
 				partonCuts = (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000;
 				btagging   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
 				topTagger  = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -269,28 +283,39 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 				p4T_reco_ZMF[0].Boost(ttbarBoostVector_reco);
 				p4T_reco_ZMF[1].Boost(ttbarBoostVector_reco);
 						
-				//cout<<"-------------------------------------"<<endl;		
-				//cout<< p4T_ZMF[0].Pt()<<endl;
-				//cout<< p4T_ZMF[1].Pt()<<endl;
-				float chi0_parton(0), chi1_parton(0);
-				float chi0_reco(0), chi1_reco(0);
-				chi0_parton = (1 + fabs(TMath::Cos(p4T_parton_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[0].Theta())));
-				chi1_parton = (1 + fabs(TMath::Cos(p4T_parton_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[1].Theta())));
-				//chi0 = TMath::Exp(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity());
 				
-				chi0_reco = (1 + fabs(TMath::Cos(p4T_reco_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[0].Theta())));
-				chi1_reco = (1 + fabs(TMath::Cos(p4T_reco_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[1].Theta())));
+				float chi_parton(0);
+				float chi_reco(0);
 				
-				/*
-				cout<<"-------------------------------------------------------------"<<endl;
-				cout<<chi0_parton<<endl;
-				cout<<chi1_parton<<endl;
-				cout<<chi0_reco<<endl;
-				cout<<chi1_reco<<endl;
-				*/
-				if(recoCuts && partonCuts && topTagger && btagging)
+				float chi_parton_TEST= (1 + fabs(TMath::Cos(p4T_parton_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_parton_ZMF[0].Theta())));
+				float chi_reco_TEST  = (1 + fabs(TMath::Cos(p4T_reco_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_reco_ZMF[0].Theta())));
+				
+				chi_parton = TMath::Exp(fabs(p4T_parton_ZMF[0].Rapidity() - p4T_parton_ZMF[1].Rapidity()));
+				chi_reco   = TMath::Exp(fabs(p4T_reco_ZMF[0].Rapidity() - p4T_reco_ZMF[1].Rapidity()));
+				
+				float chi_partonLF = TMath::Exp(fabs(p4T_parton[0].Rapidity() - p4T_parton[1].Rapidity()));
+				float chi_recoLF   = TMath::Exp(fabs(p4T_reco[0].Rapidity() - p4T_reco[1].Rapidity()));
+				
+				//float chi0_partonT = TMath::Exp(fabs(p4T_parton[0].Rapidity() - p4T_parton[1].Rapidity()));
+				//float chi0_recoT   = TMath::Exp(fabs(p4T_reco[0].Rapidity() - p4T_reco[1].Rapidity()));
+				//cout<<TMath::Exp(fabs(p4T_reco_ZMF[0].Rapidity() - p4T_reco_ZMF[1].Rapidity()))<<endl;
+				hChiPartonTest[0]->Fill(chi_parton);
+				hChiPartonTest[1]->Fill(chi_parton_TEST);
+				hChiPartonTest[2]->Fill(chi_partonLF);
+				
+				hChiRecoTest[0]->Fill(chi_reco);
+				hChiRecoTest[1]->Fill(chi_reco_TEST);
+				hChiRecoTest[2]->Fill(chi_recoLF);
+				
+				
+				//cout<<"-------------------------------------------------------------"<<endl;
+				//cout<<chi_parton<<endl;
+				//cout<<chi0_partonT<<endl;
+				
+				if(recoCuts && partonCuts && topTagger && btagging && massCut)
 				{
-					responseMatrix_chi->Fill(chi0_parton, chi0_reco);
+					responseMatrix_chi->Fill(chi_parton, chi_reco);
+					responseMatrix_cos->Fill(fabs(TMath::Cos(p4T_parton_ZMF[0].Theta())), fabs(TMath::Cos(p4T_reco_ZMF[0].Theta())));
 					//responseMatrix_chi->Fill(chi1_parton, chi1_reco);
 					bool found =false;
 					int imass = 0;
@@ -301,47 +326,169 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 						if(mTTbarParton >= BND[imass] && mTTbarParton < BND[imass+1] )
 						{
 							found =true;
-							responseMatrix[imass]->Fill(chi0_parton, chi0_reco);
+							responseMatrix[imass]->Fill(chi_parton, chi_reco);
 							//responseMatrix[imass]->Fill(chi1_parton, chi1_reco);
 						}
 						imass++;
 					}
 					
 				}
-				if(recoCuts && topTagger && btagging)
+				if(recoCuts && topTagger && btagging && massCut)
 				{
-				  hDivReco->Fill(chi0_reco);
-				  //hDivReco->Fill(chi1_reco);
+				  hDivReco->Fill(chi_reco);
+				  hDivRecoCos->Fill(fabs(TMath::Cos(p4T_reco_ZMF[0].Theta())));
 				}
-				if(partonCuts)
-				{
-				  hDivParton->Fill(chi0_parton);
-				  //hDivParton->Fill(chi1_parton);
-				}
+
 				
 		 }//----end of isMatched
 	  
 	}//---end of nJets >1 loop
 	
  }//----end of iev loop	
+ 
+ hChiPartonTest[0]->GetXaxis()->SetTitle("#chi");
+ hChiPartonTest[1]->GetXaxis()->SetTitle("#chi");
+ hChiPartonTest[2]->GetXaxis()->SetTitle("#chi");
+ TCanvas *c1 = new TCanvas ("c1", "c1", 700, 600);
+ TLegend *leg1 = new TLegend(0.5,0.6,0.7,0.8);
+ leg1->AddEntry(hChiPartonTest[0],"Chi parton #DeltaY ZMF", "l");
+ leg1->AddEntry(hChiPartonTest[1],"Chi parton with Cos", "l");
+ leg1->AddEntry(hChiPartonTest[2],"Chi EvntCnt #DeltaY Lab Frame", "l"); 
+ hChiPartonTest[0]->SetLineColor(kBlue);
+ hChiPartonTest[0]->Draw();
+ hChiPartonTest[1]->SetLineColor(kRed);
+ hChiPartonTest[1]->Draw("same");
+ hChiPartonTest[2]->SetLineColor(kMagenta);
+ hChiPartonTest[2]->Draw("same");
+ leg1->Draw();
+ 
+ 
+ TCanvas *c2 = new TCanvas ("c2", "c2", 700, 600);
+ TLegend *leg2 = new TLegend(0.5,0.6,0.7,0.8);
+ leg2->AddEntry(hChiRecoTest[0],"Chi reco Exp #DeltaY ZMF", "l");
+ leg2->AddEntry(hChiRecoTest[1],"Chi reco with Cos", "l");
+ leg2->AddEntry(hChiRecoTest[2],"Chi EvntCnt #DeltaY Lab Frame", "l"); 
+
+ hChiRecoTest[0]->GetXaxis()->SetTitle("#chi");
+ hChiRecoTest[1]->GetXaxis()->SetTitle("#chi");
+ hChiRecoTest[2]->GetXaxis()->SetTitle("#chi");
+ hChiRecoTest[0]->SetLineColor(kBlue);
+ hChiRecoTest[0]->Draw();
+ hChiRecoTest[1]->SetLineColor(kRed);
+ hChiRecoTest[1]->Draw("same");
+ hChiRecoTest[2]->SetLineColor(kMagenta);
+ hChiRecoTest[2]->Draw("same");
+ leg2->Draw();
+  //--------------------------------------------START OF EVENT COUNTER LOOP -------------------------------------------------------------------
+
+  //now another for that fills the denominators for the parton efficiencies
+  //loop over other tree -> eventCounter
+  TFile *eventCounterFile = TFile::Open("/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_EventCounter.root");
+  TTree *trCnt = (TTree*)eventCounterFile->Get("eventCounter/events");
+  float ptTTbarPartonCnt(0), mTTbarPartonCnt(0), yTTbarPartonCnt(0);
+  float partonPtCnt[2], partonEtaCnt[2],partonYCnt[2], partonMassCnt[2], phiTopParton[2];
+  //tree for eventCounter
+  trCnt->SetBranchAddress("ptTopParton"    ,&partonPtCnt);
+  trCnt->SetBranchAddress("etaTopParton"   ,&partonEtaCnt);
+  trCnt->SetBranchAddress("yTopParton"     ,&partonYCnt);
+  trCnt->SetBranchAddress("mTopParton"     ,&partonMassCnt);
+  trCnt->SetBranchAddress("phiTopParton"   ,&phiTopParton);
+  trCnt->SetBranchAddress("mTTbarParton"   ,&mTTbarPartonCnt);
+  trCnt->SetBranchAddress("yTTbarParton"   ,&yTTbarPartonCnt);
+  trCnt->SetBranchAddress("ptTTbarParton"  ,&ptTTbarPartonCnt);
+
+  int NNCnt = trCnt->GetEntries();
+  TH1F *hChiEventCounter[3];
+  hChiEventCounter[0]   = new TH1F("hChiEventCounter exp ZMF","hChiEventCounter exp ZMF", chiSize, BND_chi);
+  hChiEventCounter[1]   = new TH1F("hChiEventCounter with COS","hChiEventCounter with cos", chiSize, BND_chi);
+  hChiEventCounter[2]   = new TH1F("hChiEventCounter exp y1-y2 lab frame","hChiEventCounter exp y1-y2 lab frame", chiSize, BND_chi);
   
-  TFile *outf = new TFile("resp.root", "RECREATE");
+  TLorentzVector p4T_EventCounter[2],p4T_EventCounter_ZMF[2] ,p4TTbar_EventCounter;
+  for(int iev = 0; iev < NNCnt; iev++)
+  {
+	trCnt->GetEntry(iev);
+	
+    bool partonCuts = fabs(partonEtaCnt[0]) < 2.4 && fabs(partonEtaCnt[1]) <2.4 && partonPtCnt[0] > 400 && partonPtCnt[1] > 400 && mTTbarPartonCnt > 1000;
+	if(partonCuts)
+	{
+	  p4T_EventCounter[0].SetPtEtaPhiM(partonPtCnt[0], partonEtaCnt[0], phiTopParton[0], partonMassCnt[0]);	
+	  p4T_EventCounter[1].SetPtEtaPhiM(partonPtCnt[1], partonEtaCnt[1], phiTopParton[1], partonMassCnt[1]);	
+	
+	  TVector3 ttbarBoostVector_partonEvent = getBoostVector(p4T_EventCounter[0], p4T_EventCounter[1], p4TTbar_EventCounter);	
+	  p4T_EventCounter_ZMF[0].SetPtEtaPhiM(p4T_EventCounter[0].Pt(), p4T_EventCounter[0].Eta(), p4T_EventCounter[0].Phi(), p4T_EventCounter[0].M());
+	  p4T_EventCounter_ZMF[1].SetPtEtaPhiM(p4T_EventCounter[1].Pt(), p4T_EventCounter[1].Eta(), p4T_EventCounter[1].Phi(), p4T_EventCounter[1].M());
+	  p4T_EventCounter_ZMF[0].Boost(ttbarBoostVector_partonEvent);
+      p4T_EventCounter_ZMF[1].Boost(ttbarBoostVector_partonEvent);
+   	
+      float chi_parton = TMath::Exp(fabs(p4T_EventCounter_ZMF[0].Rapidity() - p4T_EventCounter_ZMF[1].Rapidity()));	  
+      float chi_partonEvent = TMath::Exp(fabs(partonYCnt[0] - partonYCnt[1]));	  
+      float chi_partonEventTEST = TMath::Exp(fabs(p4T_EventCounter[0].Rapidity() - p4T_EventCounter[1].Rapidity()));	  
+	  float chi_partonCos = (1 + fabs(TMath::Cos(p4T_EventCounter_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_EventCounter_ZMF[0].Theta())));
+	    
+	  	/*
+	  cout<<"--------------Combined--------------------"<<endl;
+	  cout<<p4TTbar_EventCounter.Pt()<<endl;
+	  cout<<p4TTbar_EventCounter.M()<<endl;
+	  cout<<p4TTbar_EventCounter.Eta()<<endl;
+	  cout<<p4TTbar_EventCounter.Rapidity()<<endl;
+	  cout<<"--------------Y--------------------"<<endl;
+	  cout<<chi_parton<<endl;
+	  cout<<chi_partonEvent<<endl;
+	  cout<<chi_partonEventTEST<<endl;
+	  cout<<chi_partonCos<<endl;
+		*/
+	  hChiEventCounter[0]->Fill(chi_parton);
+	  hChiEventCounter[1]->Fill(chi_partonCos);
+	  hChiEventCounter[2]->Fill(chi_partonEvent);
+	  hDivParton->Fill(chi_parton);
+	  hDivPartonCos->Fill(fabs(TMath::Cos(p4T_EventCounter_ZMF[0].Theta())));
+	}
+         
+  }
+  cout<<hDivParton->GetBinContent(1)<<endl;
+  //--------------------------------------------END OF EVENT COUNTER LOOP -------------------------------------------------------------------
+  TCanvas *c3 = new TCanvas("c3", "c3", 700, 600);
+  TLegend *leg3 = new TLegend(0.5,0.6,0.7,0.8);
+  leg3->AddEntry(hChiEventCounter[0],"Chi EvntCnt #DeltaY ZMF", "l");
+  leg3->AddEntry(hChiEventCounter[1],"Chi EvntCnt with Cos", "l"); 
+  leg3->AddEntry(hChiEventCounter[2],"Chi EvntCnt #DeltaY Lab Frame", "l"); 
+  hChiEventCounter[0]->SetLineColor(kBlue);
+  hChiEventCounter[0]->GetXaxis()->SetTitle("#chi");
+  hChiEventCounter[1]->GetXaxis()->SetTitle("#chi");
+  hChiEventCounter[2]->GetXaxis()->SetTitle("#chi");
+  hChiEventCounter[0]->Draw();
+  hChiEventCounter[1]->SetLineColor(kRed);
+  hChiEventCounter[1]->Draw("same");
+  hChiEventCounter[2]->SetLineColor(kMagenta);
+  hChiEventCounter[2]->Draw("same");
+  leg3->Draw();
   
+  TFile *outf = new TFile("ResponseMatricesChiCos.root", "RECREATE");
+  hDivParton->Write("testParton");
   TCanvas *can_resp[sizeBins];	
   for(int imass=0; imass<sizeBins; imass++)
   {
-	can_resp[imass] = new TCanvas(TString::Format("responseMatrix %d",imass+1),TString::Format("responseMatrix %d", imass+1), 900, 600); 
+	can_resp[imass] = new TCanvas(TString::Format("responseMatrix_%d",imass+1),TString::Format("responseMatrix_%d", imass+1), 900, 600); 
 	can_resp[imass]->cd();
 	responseMatrix[imass]->Draw("textcolz");
 	responseMatrix[imass]->Write();
+	can_resp[imass]->Write();
   }
   
   
-  TCanvas *can_mTTbarParton = new TCanvas("responseMatrix_chi can", "responseMatrix_chi can", 900, 600);
+  TCanvas *can_chiResp = new TCanvas("responseMatrix_chi_can", "responseMatrix_chi_can", 900, 600);
   responseMatrix_chi->GetXaxis()->SetTitle("#chi parton");
   responseMatrix_chi->GetYaxis()->SetTitle("#chi reco");  
   responseMatrix_chi->Draw("textColz");
-  responseMatrix_chi->Write();
+  responseMatrix_chi->Write("chiResponse");
+  can_chiResp->Write();
+  
+  TCanvas *can_cosThetaResp = new TCanvas("responseMatrix_cosTheta_can", "responseMatrix_cosTheta_can", 900, 600);
+  responseMatrix_cos->GetXaxis()->SetTitle("|cos(#theta)| parton");
+  responseMatrix_cos->GetYaxis()->SetTitle("|cos(#theta)| reco");  
+  responseMatrix_cos->Draw("textColz");
+  responseMatrix_cos->Write("cosResponse");
+  can_cosThetaResp->Write();
   
   
   
@@ -353,8 +500,8 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   {
 	  bins[i]=i+1;
   }
-  TH1F *purity = new TH1F ("purity", "purity", chiSize, bins);
-  TH1F *stability = new TH1F ("stability", "stability", chiSize, bins);
+  TH1F *purity = new TH1F ("purity_Chi", "purity_Chi", chiSize, bins);
+  TH1F *stability = new TH1F ("stability_Chi", "stability_Chi", chiSize, bins);
   float sumOfRows[chiSize], sumOfCols[chiSize];
   for(int i=0; i<chiSize+1; i++)
   {
@@ -371,9 +518,35 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
 		}		
 	 }
   }
+  
+  //this is now for purity and stability for cos(theta)
+  //first find sums
+  float binsCos[cosSize+1];
+  for(int i=0; i<cosSize; i++)
+  {
+	  bins[i]=i+1;
+  }
+  TH1F *purityCos = new TH1F ("purity_CosTheta", "purity_CosTheta", cosSize, bins);
+  TH1F *stabilityCos = new TH1F ("stability_CosTheta", "stability_CosTheta", cosSize, bins);
+  float sumOfRowsCos[cosSize], sumOfColsCos[cosSize];
+  for(int i=0; i<cosSize+1; i++)
+  {
+	 sumOfColsCos[i] = ((TH1D*)responseMatrix_cos->ProjectionX())->GetBinContent(i);
+	 sumOfRowsCos[i] = ((TH1D*)responseMatrix_cos->ProjectionY())->GetBinContent(i);
+	 
+	 for(int j=0; j<chiSize+1; j++)
+	 {
+		if(i==j)
+		{
+			float initContent = responseMatrix_cos->GetBinContent(i,j);
+			purityCos->SetBinContent(i,initContent/sumOfColsCos[i]);
+			stabilityCos->SetBinContent(i,initContent/sumOfRowsCos[i]);
+		}		
+	 }
+  }
   //purity: sum all over the columns and find binContent(i,j)/SumOfColumn(j) for all i 
   //stability: sum all over the lines and find binContent/SumOfLine(i) for all jetBtagSub0
-  TCanvas *can_pur = new TCanvas("test", "test", 900, 600);
+  TCanvas *can_pur = new TCanvas("purityStability_Chi", "purityStability_Chi", 900, 600);
   TLegend *leg_purityStability = new TLegend(0.5,0.6,0.7,0.9);
   leg_purityStability->AddEntry(purity, "Purity", "l");
   leg_purityStability->AddEntry(stability, "Stability", "l");
@@ -386,31 +559,70 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/A
   leg_purityStability->Draw();
   
   
-  TH1D *efficiency, *acceptance;
+  TCanvas *can_purCos = new TCanvas("purityStability_Cos", "purityStability_Cos", 900, 600);
+  TLegend *leg_purityStabilityCos = new TLegend(0.5,0.6,0.7,0.9);
+  leg_purityStabilityCos->AddEntry(purityCos, "Purity", "l");
+  leg_purityStabilityCos->AddEntry(stabilityCos, "Stability", "l");
+  purityCos->GetXaxis()->SetTitle("Bin Number");
+  stabilityCos->GetXaxis()->SetTitle("Bin Number");
+  purityCos->SetLineColor(kRed);
+  stabilityCos->SetLineColor(kBlue);
+  purityCos->Draw();
+  stabilityCos->Draw("same");
+  leg_purityStabilityCos->Draw();
+  
+  
+  TH1D *efficiency, *acceptance, *efficiencyCos, *acceptanceCos;
   
   efficiency = responseMatrix_chi->ProjectionX();
   acceptance = responseMatrix_chi->ProjectionY();
   
-  acceptance->Divide(hDivReco);
-  efficiency->Divide(hDivParton);
-  TCanvas *can_test = new TCanvas("acceptance, efficiency can", "acceptance, efficiency can", 900, 600);
+  efficiencyCos = responseMatrix_cos->ProjectionX();
+  acceptanceCos = responseMatrix_cos->ProjectionY();
+	
+  TEfficiency *acc = new TEfficiency(*acceptance,*hDivReco);
+  TEfficiency *eff = new TEfficiency(*efficiency,*hDivParton);
+  TCanvas *can_effAcc = new TCanvas("acceptance, efficiency can", "acceptance, efficiency can", 900, 600);
   TLegend *leg_accEff = new TLegend(0.5,0.6,0.7,0.9);
-  efficiency->GetXaxis()->SetTitle("#chi");
-  acceptance->GetXaxis()->SetTitle("#chi");
-  efficiency->SetLineColor(kRed);
-  acceptance->SetLineColor(kBlue);
-  efficiency->Draw();
-  acceptance->Draw("same");
-  leg_accEff->AddEntry(acceptance, "Acceptance", "l");
-  leg_accEff->AddEntry(efficiency, "Efficiency", "l");
+  eff->SetTitle("Efficiency;#chi;Efficiency");
+  acc->SetTitle("Acceptance;#chi;Acceptance");
+  eff->SetLineColor(kRed);
+  acc->SetLineColor(kBlue);
+  eff->Draw();
+  acc->Draw("same");
+  leg_accEff->AddEntry(acc, "Acceptance", "l");
+  leg_accEff->AddEntry(eff, "Efficiency", "l");
   leg_accEff->Draw();
+  
+  TEfficiency *accCos = new TEfficiency(*acceptanceCos,*hDivRecoCos);
+  TEfficiency *effCos = new TEfficiency(*efficiencyCos,*hDivPartonCos);
+  TCanvas *can_effAccCos = new TCanvas("acceptance, efficiency can for Cos", "acceptance, efficiency can for Cos", 900, 600);
+  TLegend *leg_accEffCos = new TLegend(0.5,0.6,0.7,0.9);
+  effCos->SetTitle("Efficiency;|cos(#theta)|;Efficiency");
+  accCos->SetTitle("Acceptance;|cos(#theta)|;Acceptance");
+  effCos->SetLineColor(kRed);
+  accCos->SetLineColor(kBlue);
+  effCos->Draw();
+  accCos->Draw("same");
+  leg_accEffCos->AddEntry(acc, "Acceptance", "l");
+  leg_accEffCos->AddEntry(eff, "Efficiency", "l");
+  leg_accEffCos->Draw();
 
   
   
-  acceptance->Write("chiAcceptance");
-  efficiency->Write("chiEfficiency");
+  acc->Write("chiAcceptance");
+  eff->Write("chiEfficiency");
   stability->Write("chiStability");
   purity->Write("chiPurity");
+  accCos->Write("cosAcceptance");
+  effCos->Write("cosEfficiency");
+  stabilityCos->Write("cosStability");
+  purityCos->Write("cosPurity");
+  can_purCos->Write("PurityStability_Cos_can");
+  can_pur->Write("PurityStability_Chi_can");
+  can_effAccCos->Write("EfficiencyAcceptance_Cos_can");
+  can_effAcc->Write("EfficiencyAcceptance_Chi_can");
+  
   
   //outf->Close();
 }
@@ -419,7 +631,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 {
 	//define the combined Lorentz vector of ttbar 
 	//TLorentzVector p4CombinedVector;
-	p4CombinedVector.SetPxPyPzE(p4_1.Px()+p4_2.Px(),p4_1.Py()+p4_2.Py(), p4_1.Pz()+p4_2.Pz(), p4_1.Energy()+p4_2.Energy()); 
+	p4CombinedVector.SetPxPyPzE((p4_1+p4_2).Px(),(p4_1+p4_2).Py(), (p4_1+p4_2).Pz(), (p4_1+p4_2).Energy()); 
 	//get boost from this vector
 	TVector3 TTbar_boostVector = p4CombinedVector.BoostVector();
 	p4CombinedVector.Boost(-TTbar_boostVector);
