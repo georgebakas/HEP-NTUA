@@ -58,7 +58,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
+void angularDistributionQCD(float selMvaCut=0.2, float floatBTag = 0.8838)
 {
 
   initGlobals();	
@@ -93,10 +93,10 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
   float BND[sizeBins+1] = {1000,1600,2200,3200,6000};
   int counter =0;
     
-  const int chiSize =9;
-  float BND_chi[chiSize+1] = {1,2,3,4,5,6,8,10,13,16};
-  const int cosSize = 6;
-  float BND_cos[cosSize+1] = {0,0.2,0.4,0.6,0.7,0.8,1};
+  const int chiSize =11;
+  float BND_chi[chiSize+1] = {1,2,3,4,5,6,7,8,9,10,13,16};
+  const int cosSize = 10;
+  float BND_cos[cosSize+1] = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
   
   int fileSize = listOfFiles.size();
   TH1F *h_Chi_all[fileSize],*h_Cos_all[fileSize], *hChiRevertBtag[fileSize], *hCosRevertBtag[fileSize]; 
@@ -207,9 +207,11 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
 	{		
 		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
 		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
+		//btagging   = category-=
 		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
 		massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
-		revertBtag = category==0;
+		//revertBtag = category==0;
+		revertBtag =((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
 				
 		p4T[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
 		p4T[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
@@ -224,9 +226,9 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
 		//cout<< p4T_ZMF[0].Pt()<<endl;
 		//cout<< p4T_ZMF[1].Pt()<<endl;
 		float chi0(0), chi1(0);
-		chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
-		chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));	
-					
+		//chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+		//chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));	
+		chi0 = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity()));		//take it from exp	
 		if(recoCuts && topTagger && btagging)
 		{
 		  //cout<<"SR chi: "<<chi0<<endl;
@@ -293,7 +295,7 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
 	}
   }
 
-  TFile *outf = new TFile("Closure_QCDBkg_Chi.root", "RECREATE");
+  TFile *outf = new TFile("Closure_QCDBkg_Chi_0.2.root", "RECREATE");
   outf->cd();
   h_Cos_all[0]->Write("hCos_QCD_SR");
   h_Chi_all[0]->Write("hChi_QCD_SR");
@@ -301,7 +303,9 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
   hCosRevertBtag[0]->Write("hCos_QCD_CR");
   
   
-  
+  listOfFiles.clear();
+  XSEC.clear();
+  histoNames.clear();
   
   
   /*
