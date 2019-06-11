@@ -64,7 +64,7 @@ void qcdWork()
   
   
   //files to get histograms
-  TFile *infQCD = TFile::Open("Closure_QCDBkg_Chi.root");
+  TFile *infQCD = TFile::Open("Closure_QCDBkg_Chi_0.2.root");
   TFile *infTT  = TFile::Open("Output_TT_QCD_Reco_Chi.root");
   
   //TH1F used for the TRatioPlot

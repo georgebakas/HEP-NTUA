@@ -16,7 +16,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 
 void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root", 
-						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime= false,bool isParton=false, int ZprimeMass = 2000, TString width = "200" )
+						float selMvaCut=0.2, float floatBTag = 0.8838, bool isZprime= false,bool isParton=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
@@ -238,7 +238,9 @@ void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/S
 				btagging   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
 				topTagger  = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
 				massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
-				btaggingReverted = category==0;
+				//btaggingReverted = category==0;
+				btaggingReverted = ((*jetBtagSub0_)[0] < floatBTag && (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] < floatBTag && (*jetBtagSub1_)[1] < floatBTag);
+
 				//cout<<"ok"<<endl;
 					
 					//split the mttbar phase space into regions and for each region I will calculate the thetas dists
@@ -430,7 +432,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/S
   if(isParton) recoParton = "Parton";
   else recoParton = "Reco";
   if(isZprime)  outf = new TFile(TString::Format("Output_M%s_%s_Chi.root", tempMass.Data(), recoParton.Data()), "UPDATE");
-  else outf = new TFile(TString::Format("Output_TT_QCD_%s_Chi.root", recoParton.Data()), "RECREATE");
+  else outf = new TFile(TString::Format("Output_TT_QCD_%s_Chi_0.2.root", recoParton.Data()), "RECREATE");
   
   if (isZprime) 
   {

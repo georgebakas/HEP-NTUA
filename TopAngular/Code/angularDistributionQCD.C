@@ -58,7 +58,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
+void angularDistributionQCD(float selMvaCut=0.2, float floatBTag = 0.8838)
 {
 
   initGlobals();	
@@ -207,9 +207,11 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
 	{		
 		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
 		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
+		//btagging   = category-=
 		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
 		massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
-		revertBtag = category==0;
+		//revertBtag = category==0;
+		revertBtag =((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
 				
 		p4T[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
 		p4T[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
@@ -293,7 +295,7 @@ void angularDistributionQCD(float selMvaCut=0.3, float floatBTag = 0.8838)
 	}
   }
 
-  TFile *outf = new TFile("Closure_QCDBkg_Chi.root", "RECREATE");
+  TFile *outf = new TFile("Closure_QCDBkg_Chi_0.2.root", "RECREATE");
   outf->cd();
   h_Cos_all[0]->Write("hCos_QCD_SR");
   h_Chi_all[0]->Write("hChi_QCD_SR");

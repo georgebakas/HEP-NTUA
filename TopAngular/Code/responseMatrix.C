@@ -16,7 +16,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 
 void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root", 
-						float selMvaCut=0.3, float floatBTag = 0.8838, bool isZprime=false, int ZprimeMass = 2000, TString width = "200" )
+						float selMvaCut=0.2, float floatBTag = 0.8838, bool isZprime=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
@@ -353,7 +353,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal
  TLegend *leg1 = new TLegend(0.5,0.6,0.7,0.8);
  leg1->AddEntry(hChiPartonTest[0],"Chi parton #DeltaY ZMF", "l");
  leg1->AddEntry(hChiPartonTest[1],"Chi parton with Cos", "l");
- leg1->AddEntry(hChiPartonTest[2],"Chi EvntCnt #DeltaY Lab Frame", "l"); 
+ leg1->AddEntry(hChiPartonTest[2],"Chi parton #DeltaY Lab Frame", "l"); 
  hChiPartonTest[0]->SetLineColor(kBlue);
  hChiPartonTest[0]->Draw();
  hChiPartonTest[1]->SetLineColor(kRed);
@@ -367,7 +367,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal
  TLegend *leg2 = new TLegend(0.5,0.6,0.7,0.8);
  leg2->AddEntry(hChiRecoTest[0],"Chi reco Exp #DeltaY ZMF", "l");
  leg2->AddEntry(hChiRecoTest[1],"Chi reco with Cos", "l");
- leg2->AddEntry(hChiRecoTest[2],"Chi EvntCnt #DeltaY Lab Frame", "l"); 
+ leg2->AddEntry(hChiRecoTest[2],"Chi reco #DeltaY Lab Frame", "l"); 
 
  hChiRecoTest[0]->GetXaxis()->SetTitle("#chi");
  hChiRecoTest[1]->GetXaxis()->SetTitle("#chi");
@@ -463,7 +463,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal
   hChiEventCounter[2]->Draw("same");
   leg3->Draw();
   
-  TFile *outf = new TFile("ResponseMatricesChiCos.root", "RECREATE");
+  TFile *outf = new TFile("ResponseMatricesChiCos_0.2.root", "RECREATE");
   hDivParton->Write("testParton");
   TCanvas *can_resp[sizeBins];	
   for(int imass=0; imass<sizeBins; imass++)
