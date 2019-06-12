@@ -16,7 +16,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 
 void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root", 
-						float selMvaCut=0.2, float floatBTag = 0.8838, bool isZprime=false, int ZprimeMass = 2000, TString width = "200" )
+						float selMvaCut=0.1, float floatBTag = 0.8838, bool isZprime=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
@@ -463,7 +463,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal
   hChiEventCounter[2]->Draw("same");
   leg3->Draw();
   
-  TFile *outf = new TFile("ResponseMatricesChiCos_0.2.root", "RECREATE");
+  TFile *outf = new TFile(TString::Format("ResponseMatricesChiCos_%0.1f.root",selMvaCut), "RECREATE");
   hDivParton->Write("testParton");
   TCanvas *can_resp[sizeBins];	
   for(int imass=0; imass<sizeBins; imass++)

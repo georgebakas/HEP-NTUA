@@ -47,7 +47,7 @@ void initGlobals()
   initFileNames();
   initXsections();
 }
-void qcdWork()
+void qcdWork(float selMvaCut = 0.1)
 {
   initGlobals();
   std::vector<float> weights(0);
@@ -64,8 +64,8 @@ void qcdWork()
   
   
   //files to get histograms
-  TFile *infQCD = TFile::Open("Closure_QCDBkg_Chi_0.2.root");
-  TFile *infTT  = TFile::Open("Output_TT_QCD_Reco_Chi.root");
+  TFile *infQCD = TFile::Open(TString::Format("Closure_QCDBkg_Chi_%0.1f.root", selMvaCut));
+  TFile *infTT  = TFile::Open(TString::Format("Output_TT_QCD_Reco_Chi_%0.1f.root", selMvaCut));
   
   //TH1F used for the TRatioPlot
   TH1F *hChi_QCD_CR = (TH1F*)infQCD->Get("hChi_QCD_CR");

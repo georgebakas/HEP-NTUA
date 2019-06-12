@@ -58,7 +58,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void angularDistributionQCD(float selMvaCut=0.2, float floatBTag = 0.8838)
+void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
 {
 
   initGlobals();	
@@ -295,7 +295,7 @@ void angularDistributionQCD(float selMvaCut=0.2, float floatBTag = 0.8838)
 	}
   }
 
-  TFile *outf = new TFile("Closure_QCDBkg_Chi_0.2.root", "RECREATE");
+  TFile *outf = new TFile(TString::Format("Closure_QCDBkg_Chi_%0.1f.root",selMvaCut), "RECREATE");
   outf->cd();
   h_Cos_all[0]->Write("hCos_QCD_SR");
   h_Chi_all[0]->Write("hChi_QCD_SR");
