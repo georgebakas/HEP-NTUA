@@ -44,7 +44,7 @@ void executeQCDClosure()
   
   const int sizeDAK8 = 5;
   
-  float selMVACut = 0.3;
+  float selMVACut = 0.2;
   float btagWP = 0.8838;
   bool isSignal = false; //false if you want QCD, true if you want Signal
   float deepAK8Wp[sizeDAK8]  = {0.2,0.3,0.4,0.5,0.6};  

@@ -38,7 +38,9 @@ void plot_QCDClosure(TString recoVar = "mJJ")
   hBkg_CRExpYield[1]->SetLineColor(kRed);
   
   hSig_CR[0] = (TH1F*)infTT->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
+  hSig_CR[0] -> SetLineColor(kBlue);
   hSig_CR[1] = (TH1F*)infTT->Get(TString::Format("CR_deepAK8_0.6_%s_expYield",recoVar.Data()));
+  hSig_CR[1] -> SetLineColor(kBlue);
   
   TRatioPlot *trQCD[2];
   
@@ -63,7 +65,7 @@ void plot_QCDClosure(TString recoVar = "mJJ")
    
 
   auto c3 = new TCanvas("TT contamination tTagger", "TT contamination tTagger", 700,600);
-  auto rp_tTagger = new TRatioPlot(hSig_CR[0],hBkg_CRExpYield[0] );
+  auto rp_tTagger = new TRatioPlot(hSig_CR[0],hBkg_CRExpYield[0]);
   c3->SetTicks(0,1);
   rp_tTagger->Draw();
   c3->Update();

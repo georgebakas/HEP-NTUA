@@ -83,7 +83,7 @@ void initGlobals()
   initHistoNames();
 }
  
-void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,float BND[] ,  bool saveTTagger= true, float selMvaCut=0.3, float floatBTag = 0.8838, bool 				isSig = false, float deepAK8CutValue= 0.6)
+void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,float BND[] ,  bool saveTTagger= true, float selMvaCut=0.2, float floatBTag = 0.8838, bool 				isSig = false, float deepAK8CutValue= 0.6)
 {
   isSignal = isSig;
   initGlobals();	
@@ -99,9 +99,10 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
  //number of checks: one for Top Tagger and one for DAK8
  const int nChecks = 2;
  //initialize the required histograms 
- TH1F *hCR[nChecks][listOfFiles.size()];
- TH1F *hSR[nChecks][listOfFiles.size()];
+ TH1F *hCR[3][listOfFiles.size()];
+ TH1F *hSR[3][listOfFiles.size()];
  TH1F *hTestBtag[nChecks][listOfFiles.size()];
+ TH1F *hTest1Btag[nChecks][listOfFiles.size()];
  
  for(int f=0; f<listOfFiles.size(); f++)
  {
@@ -182,14 +183,17 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
   //histograms for Signal/QCD in CR 
   hCR[0][f] = new TH1F(TString::Format("hCR_%s_%s", "tTagger",histoNames[f].Data()), TString::Format("hCR_%s_%s","tTagger",histoNames[f].Data()), sizeBins, BND);
   hCR[1][f] = new TH1F(TString::Format("hCR_%s_%s", "deepAK8",histoNames[f].Data()), TString::Format("hCR_%s_%s","deepAK8",histoNames[f].Data()), sizeBins, BND);
+  hCR[2][f] = new TH1F(TString::Format("hCR_%s_%s", "oldMva" ,histoNames[f].Data()), TString::Format("hCR_%s_%s","oldMva" ,histoNames[f].Data()), sizeBins, BND);
   
   //histograms for Signal/QCD in SR
   hSR[0][f] = new TH1F(TString::Format("hSR_%s_%s", "tTagger",histoNames[f].Data()), TString::Format("hSR_%s_%s","tTagger",histoNames[f].Data()), sizeBins, BND);
   hSR[1][f] = new TH1F(TString::Format("hSR_%s_%s", "deepAK8",histoNames[f].Data()), TString::Format("hSR_%s_%s","deepAK8",histoNames[f].Data()), sizeBins, BND);
+  hSR[2][f] = new TH1F(TString::Format("hSR_%s_%s", "oldMva" ,histoNames[f].Data()), TString::Format("hSR_%s_%s","oldMva" ,histoNames[f].Data()), sizeBins, BND);
   
   hTestBtag[0][f] = new TH1F(TString::Format("hSR_%s_%s", "noBtag_tTagger",histoNames[f].Data()), TString::Format("hSR_%s_%s","noBtag_tTagger",histoNames[f].Data()), sizeBins, BND);
   hTestBtag[1][f] = new TH1F(TString::Format("hSR_%s_%s", "noBtag_deepAK8",histoNames[f].Data()), TString::Format("hSR_%s_%s","noBtag_deepAK8",histoNames[f].Data()), sizeBins, BND);
-  
+  hTest1Btag[0][f] = new TH1F(TString::Format("hSR_%s_%s", "1Btag_tTagger",histoNames[f].Data()), TString::Format("hSR_%s_%s","1Btag_tTagger",histoNames[f].Data()), sizeBins, BND);
+  hTest1Btag[1][f] = new TH1F(TString::Format("hSR_%s_%s", "1Btag_deepAK8",histoNames[f].Data()), TString::Format("hSR_%s_%s","1Btag_deepAK8",histoNames[f].Data()), sizeBins, BND);
   
   //for matching
   std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
@@ -249,14 +253,14 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 	 if(isSignal) xParton = yTTbarParton;
 	 xReco   = yJJ;
 	}
-	bool partonCuts, recoCuts, btagging, massCut, revertBtag,tTaggerCut, deepAK8Cut;	
+	bool partonCuts, recoCuts, btagging, massCut, revertBtag,tTaggerCut, deepAK8Cut, btag1,oldMva;	
 	if (nJets >1)
 	{				
 		//matching only if we have Signal/
 		if(isSignal)
 		{
 		//----------------------MATCHING------------------------------------------------------
-
+		
 		for(int ijet =0; ijet<nJets; ijet++)
 		{
 		   jetMatchedIndexes->clear();
@@ -299,8 +303,8 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 				phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
 				jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
 				jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
-				jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
-				deepAK8_->push_back( (*deepAK8)[(*partonMatchIdx)[indexMin]]);
+				jetTtag_->push_back((*jetTtag)[(*partonMatchIdx)[indexMin]]);
+				deepAK8_->push_back((*deepAK8)[(*partonMatchIdx)[indexMin]]);
 				//PARTON MATCHED
 				partonPt_->push_back( (*partonPt)[indexMin]);
 				partonMass_->push_back( (*partonMass)[indexMin]);
@@ -315,7 +319,10 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 	  btagging   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
       massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
+	  oldMva 	 =  mva >0.8;
 	  revertBtag = ((*jetBtagSub0_)[0] < floatBTag && (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] < floatBTag && (*jetBtagSub1_)[1] < floatBTag);
+	  btag1 	 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag || (*jetBtagSub1_)[1] < floatBTag)) ||
+					(((*jetBtagSub0_)[0] < floatBTag || (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
 
 	  tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
 	  deepAK8Cut = (*deepAK8_)[0] > deepAK8CutValue && (*deepAK8_)[1] > deepAK8CutValue;
@@ -347,13 +354,17 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 	
 	else //we are in QCD samples
 	{
-	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0 && mJJ > 1000;
+		
+	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000; //nLeptons==0 &&
 	  btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
       massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
 	  revertBtag = ((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
-	  //revertBtag = category==0;
 	  tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+	  oldMva 	 =  mva >0.8;
 	  deepAK8Cut = (*deepAK8)[0] > deepAK8CutValue && (*deepAK8)[1] > deepAK8CutValue;
+	  btag1 	 = (((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] < floatBTag || (*jetBtagSub1)[1] < floatBTag)) ||
+					(((*jetBtagSub0)[0] < floatBTag || (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag));
+	  
 	  if (varNum ==4)
 	  {
 		xJetReco[0] = (*jetPt)[0];
@@ -367,8 +378,28 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 	  
 	  
 	}//---end of else of isSignal
-	 
-	 
+	/*
+	 cout<<"---------------------"<<endl;
+	 cout<<(*jetEta)[0]<<endl;
+	 cout<<(*jetEta)[1]<<endl;
+	 cout<<(*jetPt)[0]<<endl;
+	 cout<<(*jetPt)[1]<<endl;
+	 cout<<mJJ<<endl;
+	 cout<<"jet 0: "<<(*jetBtagSub0)[0]<<"  "<<(*jetBtagSub1)[0]<<endl;
+	 cout<<"jet 1: "<<(*jetBtagSub0)[1]<<"  "<<(*jetBtagSub1)[1]<<endl;
+	 cout<<(*jetMassSoftDrop)[1]<<"   "<<(*jetMassSoftDrop)[0]<<endl;
+	 cout<<(*jetTtag)[0]<<"   "<<(*jetTtag)[0]<<endl;
+	 cout<<(*deepAK8)[0]<<"   "<<(*deepAK8)[0]<<endl;
+	 cout<<"booleans"<<endl;
+	 cout<<"SR tTagger: "<<(recoCuts && btagging && massCut && tTaggerCut)<<endl;
+	 cout<<"SR deepAK8: "<<(recoCuts && btagging && massCut && deepAK8Cut)<<endl;
+	 cout<<"CR tTagger: "<<(recoCuts && revertBtag && massCut && tTaggerCut)<<endl;
+	 cout<<"CR deepAK8: "<<(recoCuts && revertBtag && massCut && deepAK8Cut)<<endl;
+	 cout<<"1 btag tTagger: "<<(recoCuts && btag1 && massCut && tTaggerCut)<<endl;
+	 cout<<"1 btag deepAK8: "<<(recoCuts && btag1 && massCut && deepAK8Cut)<<endl;
+	 cout<<"No b tag requirement tTagger: "<<(recoCuts && massCut && tTaggerCut)<<endl;
+	 cout<<"No b tag requirement deepAK8: "<<(recoCuts && massCut && deepAK8Cut)<<endl;
+	*/
 	 //Signal Region with tTagger
 	 if(recoCuts && btagging && massCut && tTaggerCut)
 	 {
@@ -410,6 +441,26 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 	        hCR[1][f]->Fill(xJetReco[1]);
 		}
 	 }
+	 //Signal Region with oldMva
+	 if(recoCuts && btagging && massCut && oldMva)
+	 {
+		if(!isJetVar) hSR[2][f]->Fill(xReco);
+	    else 
+		{
+			hSR[2][f]->Fill(xJetReco[0]);
+	        hSR[2][f]->Fill(xJetReco[1]);
+		}
+	 }
+	 //Control Region with oldMva
+	 if(recoCuts && revertBtag && massCut && oldMva)
+	 {
+		if(!isJetVar) hCR[2][f]->Fill(xReco);
+	    else 
+		{
+			hCR[2][f]->Fill(xJetReco[0]);
+	        hCR[2][f]->Fill(xJetReco[1]);
+		}
+	 }
 	 
 	 //Control Region with DeepAK8
 	 //this is just for testing
@@ -430,6 +481,25 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 		{
 			hTestBtag[1][f]->Fill(xJetReco[0]);
 	        hTestBtag[1][f]->Fill(xJetReco[1]);
+		}
+	 }
+	 //1 btag region
+	 if(recoCuts && massCut && tTaggerCut && btag1)
+	 {
+		if(!isJetVar) hTest1Btag[0][f]->Fill(xReco);
+	    else 
+		{
+			hTest1Btag[0][f]->Fill(xJetReco[0]);
+	        hTest1Btag[0][f]->Fill(xJetReco[1]);
+		}
+	 }
+	 if(recoCuts && massCut && deepAK8Cut && btag1)
+	 {
+		if(!isJetVar) hTest1Btag[1][f]->Fill(xReco);
+	    else 
+		{
+			hTest1Btag[1][f]->Fill(xJetReco[0]);
+	        hTest1Btag[1][f]->Fill(xJetReco[1]);
 		}
 	 }
 	
@@ -457,8 +527,17 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
 		  hCR_Clone[i][j]=(TH1F*)hCR[i][j]->Clone(TString::Format("hCR_%s_%s_Clone","deepAK8",histoNames[j].Data()));	
 		  hSR_Clone[i][j]=(TH1F*)hSR[i][j]->Clone(TString::Format("hSR_%s_%s_Clone","deepAK8",histoNames[j].Data()));	
 	  }
-      hCR_Clone[i][j]->Scale(weights[j]*LUMI);
-      hSR_Clone[i][j]->Scale(weights[j]*LUMI);
+	  
+      hCR_Clone[i][j]->Scale(weights[j]*LUMI); //this is 0 btagged (CR)
+      hSR_Clone[i][j]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
+	
+	  hCR[i][j]->Scale(weights[j]);
+	  hSR[i][j]->Scale(weights[j]);
+	  
+	  hTest1Btag[i][j]->Scale(weights[j]*LUMI); //this is 1 btag
+	  
+	  hTestBtag[i][j]->Scale(weights[j]*LUMI); //this is no b tag
+	 
     }
     
     for(int j=1; j<listOfFiles.size(); j++)
@@ -469,56 +548,89 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
       hCR_Clone[i][0]->Add(hCR_Clone[i][j]);
       hSR_Clone[i][0]->Add(hSR_Clone[i][j]);
       hTestBtag[i][0]->Add(hTestBtag[i][j]);	  
+      hTest1Btag[i][0]->Add(hTest1Btag[i][j]);	  
 	}
   }
-  /*
-  cout<<hCR[0][0]->GetEntries()<<endl;
-  cout<<hCR[1][0]->GetEntries()<<endl;
-  cout<<hSR[0][0]->GetEntries()<<endl;
-  cout<<hSR[1][0]->GetEntries()<<endl;
-  */
+  //for old mva
+  for(int i=2; i<3; i++)
+  {
+	  for(int j =0;j <listOfFiles.size(); j++)
+	  {
+		  hSR[i][j]->Scale(weights[j]);
+		  hCR[i][j]->Scale(weights[j]);
+	  }
+	  for(int j =1; j<listOfFiles.size(); j++)
+	  {
+		  hCR[i][0]->Add(hCR[i][j]);
+		  hSR[i][0]->Add(hSR[i][j]);
+	  }
+  }	  
+  
    
   TCanvas *test1 = new TCanvas("test1", "test1", 700, 600);  
   TLegend *tLeg = new TLegend(0.6,0.7,0.8,0.9);
-  hCR[1][0]->SetLineColor(kRed);
+  hCR_Clone[1][0]->SetLineColor(kRed);
   hTestBtag[1][0]->SetLineColor(kMagenta);
-  hSR[1][0]->SetLineColor(kBlue);
-  tLeg->AddEntry(hSR[1][0], "Signal Region (2btag)", "l");
-  tLeg->AddEntry(hCR[1][0], "Control Region (0btag)", "l");
+  hSR_Clone[1][0]->SetLineColor(kBlue);
+  hTest1Btag[1][0]->SetLineColor(kGreen);
+  tLeg->AddEntry(hSR_Clone[1][0], "Signal Region (2btag)", "l");
+  tLeg->AddEntry(hCR_Clone[1][0], "Control Region (0btag)", "l");
   tLeg->AddEntry(hTestBtag[1][0], "Region No b tagging requirement", "l");
-  hSR[1][0]->Draw();
-  hCR[1][0]->Draw("same");
+  tLeg->AddEntry(hTest1Btag[1][0], "Region 1b tag requirement", "l");
+  hSR_Clone[1][0]->Draw();
+  hCR_Clone[1][0]->Draw("same");
   hTestBtag[1][0]->Draw("same");
+  hTest1Btag[1][0]->Draw("same");
   tLeg->Draw();
+  
+  test1->Write("testCan_deepAK8");
   
   TCanvas *test2 = new TCanvas("test2 tTagger", "test2 tTagger", 700, 600);  
   TLegend *tLeg2 = new TLegend(0.6,0.7,0.8,0.9);
-  hCR[0][0]->SetLineColor(kRed);
+  hCR_Clone[0][0]->SetLineColor(kRed);
   hTestBtag[0][0]->SetLineColor(kMagenta);
-  hSR[0][0]->SetLineColor(kBlue);
-  tLeg2->AddEntry(hSR[0][0], "Signal Region (2btag)", "l");
-  tLeg2->AddEntry(hCR[0][0], "Control Region (0btag)", "l");
+  hSR_Clone[0][0]->SetLineColor(kBlue);
+  hTest1Btag[0][0]->SetLineColor(kGreen);
+  tLeg2->AddEntry(hSR_Clone[0][0], "Signal Region (2btag)", "l");
+  tLeg2->AddEntry(hCR_Clone[0][0], "Control Region (0btag)", "l");
   tLeg2->AddEntry(hTestBtag[0][0], "Region No b tagging requirement", "l");
-  hSR[0][0]->Draw();
-  hCR[0][0]->Draw("same");
+  tLeg2->AddEntry(hTest1Btag[0][0], "Region 1btag requirement", "l");
+  hSR_Clone[0][0]->Draw();
+  hCR_Clone[0][0]->Draw("same");
   hTestBtag[0][0]->Draw("same");
+  hTest1Btag[0][0]->Draw("same");
   tLeg2->Draw();
   
-  return;
+  
+  cout<<"no btag tTagger:"<<hTestBtag[0][0]->GetEntries()<<endl;
+  cout<<"no btag deepAk8:"<<hTestBtag[1][0]->GetEntries()<<endl;
+  cout<<"0btag tTagger:"<<hCR_Clone[0][0]->GetEntries()<<endl;
+  cout<<"0btag deepAk8:"<<hCR_Clone[1][0]->GetEntries()<<endl;
+  cout<<"1btag tTagger:"<<hTest1Btag[0][0]->GetEntries()<<endl;
+  cout<<"1btag deepAk8:"<<hTest1Btag[1][0]->GetEntries()<<endl;
+  cout<<"2btag tTagger:"<<hSR_Clone[0][0]->GetEntries()<<endl;
+  cout<<"2btag deepAk8:"<<hSR_Clone[1][0]->GetEntries()<<endl;
+  
+  
+   
   hCR[0][0]->SetTitle("CR tTagger");
   hCR[1][0]->SetTitle("CR deepAK8");
   hSR[0][0]->SetTitle("SR tTagger");
   hSR[1][0]->SetTitle("SR deepAK8");
-  
+
   hCR[0][0]->Scale(1./hCR[0][0]->Integral());
   hCR[1][0]->Scale(1./hCR[1][0]->Integral());
   hSR[0][0]->Scale(1./hSR[0][0]->Integral());
   hSR[1][0]->Scale(1./hSR[1][0]->Integral());
+  hCR[2][0]->Scale(1./hCR[2][0]->Integral());
+  hSR[2][0]->Scale(1./hSR[2][0]->Integral());
   
   hCR[0][0]->SetLineColor(kBlue);
   hCR[1][0]->SetLineColor(kBlue);
+  hCR[2][0]->SetLineColor(kBlue);
   hSR[0][0]->SetLineColor(kRed);
   hSR[1][0]->SetLineColor(kRed);
+  hSR[2][0]->SetLineColor(kRed);
   
   for(int i=0; i<sizeof(hCR)/sizeof(*hCR); i++)
   {
@@ -554,9 +666,20 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
   leg_deepAK8->AddEntry(hSR[1][0],"Signal Region", "l");
   leg_deepAK8->Draw();
   
+  
+  TCanvas *can_CR_oldMva = new TCanvas("can_CR oldMva", "can_CR oldMva", 700, 600);
+  hCR[2][0]->Draw();
+  
+  hSR[2][0]->Draw("same");
+  TLegend *leg_oldMva = new TLegend(0.6,0.7,0.8,0.9);
+  leg_oldMva->AddEntry(hCR[2][0],"Control Region", "l");
+  leg_oldMva->AddEntry(hSR[2][0],"Signal Region", "l");
+  leg_oldMva->Draw();
+  
+  
   TFile *outFile;
   if(isSignal) outFile = new TFile("SignalOutput_AllRegions.root", "UPDATE");
-  else outFile = new TFile("BkgOutput_AllRegions.root", "UPDATE");
+  else outFile = new TFile("BkgOutput_AllRegions_1.root", "UPDATE");
   
   outFile->cd();
   if(saveTTagger) 
@@ -571,21 +694,32 @@ void qcdClosure(TString varName,TString varNameReco, int varNum,  int sizeBins,f
   hSR_Clone[1][0]->Write(TString::Format("SR_deepAK8_%0.1f_%s_expYield",deepAK8CutValue, varNameReco.Data()));
   hCR_Clone[1][0]->Write(TString::Format("CR_deepAK8_%0.1f_%s_expYield",deepAK8CutValue, varNameReco.Data()));
   
+  test1->Write("testCan_deepAK8");
+  test2->Write("testCan_tTagger");
+  
+  
   if(!isSignal)
   {
 	auto c1 = new TCanvas("Control Region tTagger", "Control Region tTagger", 900,600);
-	auto rp = new TRatioPlot(hCR[0][0],hSR[0][0]);
+	auto rp = new TRatioPlot(hSR[0][0],hCR[0][0]);
 	c1->SetTicks(0,1);
 	rp->Draw();
 	//leg_deepAK8->Draw();
 	c1->Update();
   
 	auto c2 = new TCanvas("Control Region deepAK8", "Control Region deepAK8", 900,600);
-	auto rp2 = new TRatioPlot(hCR[1][0],hSR[1][0]);
+	auto rp2 = new TRatioPlot(hSR[1][0],hCR[1][0]);
 	c2->SetTicks(0,1);
 	rp2->Draw();
 	//leg_deepAK8->Draw();
 	c2->Update();
+	
+	auto c3 = new TCanvas("Control Region old mva", "Control Region oldMva", 900,600);
+	auto rp3 = new TRatioPlot(hSR[2][0],hCR[2][0]);
+	c3->SetTicks(0,1);
+	rp3->Draw();
+	//leg_deepAK8->Draw();
+	c3->Update();
 	
 	if(saveTTagger) c1->Write(TString::Format("TRatioPlot_tTagger_%s", varNameReco.Data()));
     c2->Write(TString::Format("TRatioPlot_deepAK8_%0.1f_%s",deepAK8CutValue,varNameReco.Data()));
