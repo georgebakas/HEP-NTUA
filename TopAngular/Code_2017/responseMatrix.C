@@ -15,15 +15,16 @@ using std::endl;
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 
-void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root", 
+void responseMatrix(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2017/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root", 
 						float selMvaCut=0.1, float floatBTag = 0.8838, bool isDeepCSV = true, bool isZprime=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
+//TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
   gStyle->SetOptStat(0);
   TFile *inf     = TFile::Open(file);
   TTree *trIN    = (TTree*)inf->Get("boosted/events");
   //cout<<"here"<<endl;
-  float deepCSVFloat = 0.6321;
+  float deepCSVFloat = 0.4941;
   float XSEC = 832.;
   float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
   float weight = XSEC/NORM;
@@ -423,7 +424,8 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/m
 
   //now another for that fills the denominators for the parton efficiencies
   //loop over other tree -> eventCounter
-  TTree *trCnt = (TTree*)inf->Get("eventCounter/events");
+  TFile *infCnt = TFile::Open("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2017/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8_EventCounter.root");
+  TTree *trCnt = (TTree*)infCnt->Get("eventCounter/events");
   float ptTTbarPartonCnt(0), mTTbarPartonCnt(0), yTTbarPartonCnt(0), genEvtWeightCnt(0);
   float partonPtCnt[2], partonEtaCnt[2],partonYCnt[2], partonMassCnt[2], phiTopParton[2];
   //tree for eventCounter

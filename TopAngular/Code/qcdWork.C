@@ -20,14 +20,14 @@ TString eosPath;
 
 void initFileNames()
 {
-  eosPath = "/eos/cms/store/user/ipapakri/ttbar/MC/";
-  listOfFiles.push_back("Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root");
-  listOfFiles.push_back("Bkg/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("Bkg/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("Bkg/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("Bkg/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("Bkg/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("Bkg/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
+  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/";
+  listOfFiles.push_back("Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+  listOfFiles.push_back("Bkg/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("Bkg/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("Bkg/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("Bkg/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("Bkg/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("Bkg/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
 }
 
 void initXsections()
@@ -64,8 +64,8 @@ void qcdWork(float selMvaCut = 0.1)
   
   
   //files to get histograms
-  TFile *infQCD = TFile::Open(TString::Format("Closure_QCDBkg_Chi_%0.1f.root", selMvaCut));
-  TFile *infTT  = TFile::Open(TString::Format("Output_TT_QCD_Reco_Chi_%0.1f.root", selMvaCut));
+  TFile *infQCD = TFile::Open(TString::Format("Closure_QCDBkg_Chi_%0.1f_deepCSV.root", selMvaCut));
+  TFile *infTT  = TFile::Open(TString::Format("Output_TT_QCD_Reco_Chi_%0.1f_deepCSV.root", selMvaCut));
   
   //TH1F used for the TRatioPlot
   TH1F *hChi_QCD_CR = (TH1F*)infQCD->Get("hChi_QCD_CR");

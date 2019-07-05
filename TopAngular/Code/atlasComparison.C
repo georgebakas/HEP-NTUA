@@ -238,8 +238,27 @@ void atlasComparison(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signa
 					p4T_ZMF[1].SetPtEtaPhiM(p4T[1].Pt(), p4T[1].Eta(), p4T[1].Phi(), p4T[1].M());
 					p4T_ZMF[0].Boost(ttbarBoostVector);
 					p4T_ZMF[1].Boost(ttbarBoostVector);
-							
-
+				/*
+					cout<<"-------------------"<<endl;
+					cout<<"cosTheta Lab: "<<TMath::Cos(p4T[0].Theta())<<endl;		
+					cout<<"cosTheta CM: "<<TMath::Cos(p4T_ZMF[0].Theta())<<endl;		
+					cout<<"gamma: "<<p4T[0].Gamma()<<endl;		
+					cout<<"beta: "<<p4T[0].Beta()<<endl;		
+					cout<<"|p|: "<<p4T[0].Px() + p4T[0].Py()+ p4T[0].Pz() <<endl;		
+					cout<<"|p|: "<<p4T[1].Px() + p4T[1].Py()+ p4T[1].Pz() <<endl;		
+					cout<<"|p|': "<<p4T_ZMF[0].Px() + p4T_ZMF[0].Py()+ p4T_ZMF[0].Pz() <<endl;		
+					cout<<"|p|': "<<p4T_ZMF[1].Px() + p4T_ZMF[1].Py()+ p4T_ZMF[1].Pz() <<endl;		
+					cout<<"Mag: "<<p4T[0].P() <<endl;		
+					cout<<"Mag': "<<p4T_ZMF[0].P() <<endl;		
+					cout<<"E0: "<<p4T[0].Energy()<<endl;		
+					cout<<"E1: "<<p4T[1].Energy()<<endl;		
+					cout<<"E0': "<<p4T_ZMF[0].Energy()<<endl;		
+					cout<<"E1': "<<p4T_ZMF[1].Energy()<<endl;		
+					cout<<"pz0': "<<p4T_ZMF[0].Pz()<<endl;		
+					cout<<"pz1': "<<p4T_ZMF[1].Pz()<<endl;		
+					cout<<"m1': "<<p4T_ZMF[0].M()<<endl;		
+					cout<<"m2': "<<p4T_ZMF[1].M()<<endl;		
+			*/
 					float chi0(0);
 					chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
 					float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity()));

@@ -17,18 +17,19 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 std::vector<TString> listOfFiles;
 std::vector<float> XSEC;
 std::vector<TString> histoNames;
-float LUMI = 35900;
+float LUMI = 31590;
 TString eosPath;
-
+float deepCSVFloat = 0.6321;
 void initFileNames()
 {
-  eosPath = "/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/";
-  listOfFiles.push_back("QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
-  listOfFiles.push_back("QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_deepAK8.root");
+  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Bkg/";
+  listOfFiles.push_back("QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+
 }
 
 void initXsections()
@@ -58,7 +59,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
+void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float isDeepCSV = true)
 {
 
   initGlobals();	
@@ -68,24 +69,7 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
   
   //cout<<"here"<<endl;
   
-  
-  
   //parton variables not existing in QCD samples
-  /*
-  trIN->SetBranchAddress("mTTbarParton"   ,&mTTbarParton);
-  trIN->SetBranchAddress("yTTbarParton"   ,&yTTbarParton);
-  trIN->SetBranchAddress("ptTTbarParton"  ,&ptTTbarParton);
-  trIN->SetBranchAddress("partonPt"		  ,&partonPt);
-  trIN->SetBranchAddress("partonEta"	  ,&partonEta);
-  trIN->SetBranchAddress("partonPhi" 	  ,&partonPhi);
-  trIN->SetBranchAddress("partonE"	 	  ,&partonE);
-  trIN->SetBranchAddress("partonMass"	  ,&partonMass);
- */
-
-
-
-  
-
   //int NN = 10000;
   const int sizeBins = 4;
   //float BND[sizeBins+1] = {1000, 2000, 3000, 4000, 5000};
@@ -99,7 +83,7 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
   float BND_cos[cosSize+1] = {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
   
   int fileSize = listOfFiles.size();
-  TH1F *h_Chi_all[fileSize],*h_Cos_all[fileSize], *hChiRevertBtag[fileSize], *hCosRevertBtag[fileSize]; 
+  TH1F *h_Chi_all[fileSize],*h_Cos_all[fileSize], *hChiRevertBtag[fileSize], *hCosRevertBtag[fileSize], *hChi1btag[fileSize], *hCos1btag[fileSize]; 
   TFile *inf;
   vector<float> weights(0);
   
@@ -133,7 +117,9 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
   vector<float> *partonEta(0), *partonPhi(0), *partonMatchDR(0),  *partonPt(0), *partonE(0), *partonMass(0);
   std::vector<int> *addedIndexes = new std::vector<int>(0);
   std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
-          
+  std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
+  std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);       
+  
   //------- input tree --------------
   trIN->SetBranchAddress("nJets"          ,&nJets);
   trIN->SetBranchAddress("nLeptons"       ,&nLeptons);
@@ -154,6 +140,11 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
   trIN->SetBranchAddress("mva"	  		  ,&mva);
   trIN->SetBranchAddress("category"	  	  ,&category);
   trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
+   //deepCSV
+  trIN->SetBranchAddress("jetBtagSub0DCSVbb" ,&jetBtagSub0DCSVbb);
+  trIN->SetBranchAddress("jetBtagSub1DCSVbb" ,&jetBtagSub1DCSVbb);
+  trIN->SetBranchAddress("jetBtagSub0DCSVbbb",&jetBtagSub0DCSVbbb);
+  trIN->SetBranchAddress("jetBtagSub1DCSVbbb",&jetBtagSub1DCSVbbb);
   
   TLorentzVector p4T[2], p4TTbar, p4T_ZMF[2];
   
@@ -163,6 +154,9 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
 
   hChiRevertBtag[f] = new TH1F(TString::Format("%s_#chi_CR", histoNames[f].Data()), TString::Format("%s_#chi_CR", histoNames[f].Data()), chiSize, BND_chi);
   hCosRevertBtag[f] = new TH1F(TString::Format("%s_#||{cos(#theta)}_CR", histoNames[f].Data()),TString::Format("%s_#||{cos(#theta)}_CR",histoNames[f].Data()),cosSize, BND_cos);
+  
+  hChi1btag[f] = new TH1F(TString::Format("%s_#chi_1btag", histoNames[f].Data()), TString::Format("%s_#chi_1btag", histoNames[f].Data()), chiSize, BND_chi);
+  hCos1btag[f] = new TH1F(TString::Format("%s_#||{cos(#theta)}_1btag", histoNames[f].Data()),TString::Format("%s_#||{cos(#theta)}_1btag",histoNames[f].Data()),cosSize, BND_cos);
   
   //TH1F *hAngularDist[sizeBins], *hChi[sizeBins];
   //std::vector<TString> massLimits = {"1000-2500","2500-3500", "3500-5000", "5000-Inf"};
@@ -202,17 +196,51 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
 	phi_->clear();
 
 	int isMatched=0;
-	bool recoCuts, btagging, topTagger, massCut, revertBtag;	
+	bool recoCuts, btagging, topTagger, massCut, revertBtag, btag1;	
+	bool CSVv2Cut, deepCSV, btag1CSVv2, btag1DeepCSV, revertBtagCSVv2, revertBtagDeepCSV;
+
 	if (nJets >1)
 	{		
-		recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
-		btagging   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
-		//btagging   = category-=
-		topTagger  = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-		massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
-		//revertBtag = category==0;
-		revertBtag =((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
-				
+		  float dCSVScoreSub0[2], dCSVScoreSub1[2];
+          dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0];
+          dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1];
+          dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
+          dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
+		  bool CSVv2Cut, deepCSV, btag1CSVv2, btag1DeepCSV, revertBtagCSVv2, revertBtagDeepCSV;
+		  
+          recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000; //nLeptons==0 &&
+		  massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+          topTagger = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+          //2 btag category with csvv2 and deepCSV
+          CSVv2Cut   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
+
+          deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
+                                         (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
+          //1 btag category with csvv2 and deepCSV
+          btag1CSVv2 = (((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] < floatBTag || (*jetBtagSub1)[1] < floatBTag)) ||
+                                        (((*jetBtagSub0)[0] < floatBTag || (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag));
+
+          btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat || dCSVScoreSub1[1] < deepCSVFloat)) ||
+                                          ((dCSVScoreSub0[0] < deepCSVFloat || dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
+
+          //0 btag category with csvv2 and deepCSV
+		 revertBtagCSVv2 = ((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
+         revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+		
+		if(isDeepCSV)
+		{
+          btagging = deepCSV;
+          revertBtag = revertBtagDeepCSV;
+          btag1 = btag1DeepCSV;
+        }
+        else
+        {
+          btagging = CSVv2Cut;
+          revertBtag = revertBtagCSVv2;
+          btag1 = btag1CSVv2;
+		}
+
+		
 		p4T[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
 		p4T[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
 		
@@ -242,30 +270,19 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
 		  hChiRevertBtag[f]->Fill(chi0);
 		  hCosRevertBtag[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));							//cout<<"---------------------------------"<<endl;
 		} //---end of control region cuts
+		
+		if(recoCuts && topTagger && btag1)
+		{
+		 //cout<<"CR chi: "<<chi0<<endl;
+		  hChi1btag[f]->Fill(chi0);
+		  hCos1btag[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));							//cout<<"---------------------------------"<<endl;
+		} //1 btag region
 					
 
 	}//----end of nJets
   }	//---end of event loop
   }//----end of fileSize loop 
-  /*
-  TCanvas *can[sizeBins];
-  for(int i =0; i<sizeBins; i++)
-  {
-	can[i] = new TCanvas(TString::Format("can %d", (i+1)), TString::Format("can %d", (i+1)), 900, 600);
-	if(isParton) hAngularDist[i]->GetXaxis()->SetTitle("cos(#theta)");
-	else hAngularDist[i]->GetXaxis()->SetTitle(TString::Format("cos(#theta) %s","reco"));
-	hAngularDist[i]->Draw();
-  }
-  
-  TCanvas *canChi[sizeBins];
-  for(int i =0; i<sizeBins; i++)
-  {
-	canChi[i] = new TCanvas(TString::Format("can chi %d", (i+1)), TString::Format("can chi %d", (i+1)), 900, 600);
-	if(isParton) hChi[i]->GetXaxis()->SetTitle("#chi");
-	else hChi[i]->GetXaxis()->SetTitle(TString::Format("#chi %s", "reco"));
-	hChi[i]->Draw();
-  }
-  */
+
 
     
   for(int i=0; i< fileSize; i++)
@@ -279,11 +296,20 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
 	hCosRevertBtag[i]->GetXaxis()->SetTitle("|cos(#theta^{*})|");
     hCosRevertBtag[i]->SetLineColor(kRed);
 	
+	hChi1btag[i]->GetXaxis()->SetTitle("#chi");
+    hChi1btag[i]->SetLineColor(kMagenta);
+	
+	hCos1btag[i]->GetXaxis()->SetTitle("|cos(#theta^{*})|");
+    hCos1btag[i]->SetLineColor(kMagenta);
+	
 	
 	h_Chi_all[i]->Scale(weights[i]*LUMI);
     hChiRevertBtag[i]->Scale(weights[i]*LUMI);
-    h_Cos_all[i]->Scale(weights[i]*LUMI);
+   	hChi1btag[i]->Scale(weights[i]*LUMI);
+
+	h_Cos_all[i]->Scale(weights[i]*LUMI);
     hCosRevertBtag[i]->Scale(weights[i]*LUMI);
+    hCos1btag[i]->Scale(weights[i]*LUMI);
   
 	if(i !=0) 
 	{	
@@ -292,16 +318,22 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838)
 	 
 	 hChiRevertBtag[0]->Add(hChiRevertBtag[i]);
 	 hCosRevertBtag[0]->Add(hCosRevertBtag[i]);
+	 
+	 hCos1btag[0]->Add(hCos1btag[i]);
+	 hChi1btag[0]->Add(hChi1btag[i]);
 	}
   }
 
-  TFile *outf = new TFile(TString::Format("Closure_QCDBkg_Chi_%0.1f.root",selMvaCut), "RECREATE");
+  TFile *outf;
+  if(isDeepCSV) outf = new TFile(TString::Format("Closure_QCDBkg_Chi_%0.1f_deepCSV.root",selMvaCut), "RECREATE");
+  else outf = new TFile(TString::Format("Closure_QCDBkg_Chi_%0.1f.root",selMvaCut), "RECREATE");
   outf->cd();
   h_Cos_all[0]->Write("hCos_QCD_SR");
   h_Chi_all[0]->Write("hChi_QCD_SR");
   hChiRevertBtag[0]->Write("hChi_QCD_CR");
   hCosRevertBtag[0]->Write("hCos_QCD_CR");
-  
+  hCos1btag[0]->Write("hCos_QCD_1btag");
+  hChi1btag[0]->Write("hChi_QCD_1btag");
   
   listOfFiles.clear();
   XSEC.clear();
