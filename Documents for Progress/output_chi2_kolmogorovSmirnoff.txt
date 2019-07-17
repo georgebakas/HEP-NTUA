@@ -1,0 +1,22 @@
+W+/- cos(Angle) chi2 value
+Chi2 = 200.823938, Prob = 6.60095e-09, NDF = 99, igood = 0
+W/top cos(Angle) chi2 value
+Chi2 = 109.199213, Prob = 0.227128, NDF = 99, igood = 0
+W deltaPhi chi2 value
+Chi2 = 119.003486, Prob = 0.0834245, NDF = 99, igood = 0
+W+/- cos(Angle) Kolmogorov Test value
+ Kolmo Prob  h1 = W+/- angle in ZMF SC_sample, sum bin content =500  effective entries =1.28541e+06
+ Kolmo Prob  h2 = W+/- angle in ZMF noSC_sample, sum bin content =500  effective entries =1.36392e+06
+ Kolmo Prob     = 7.54039e-13, Max Dist = 0.00464911
+W/top cos(Angle) Kolmogorov Test value
+ Kolmo Prob  h1 = top/W angle in ZMF SC_sample, sum bin content =500  effective entries =3.08935e+06
+ Kolmo Prob  h2 = top/W angle in ZMF noSC_sample, sum bin content =500  effective entries =3.2712e+06
+ Kolmo Prob     = 0.646774, Max Dist = 0.000585777
+W deltaPhi Kolmogorov Test value
+ Kolmo Prob  h1 = dilepton #Delta#phi W+/- SC_sample, sum bin content =33.3333  effective entries =494757
+ Kolmo Prob  h2 = dilepton #Delta#phi W+/- noSC_sample, sum bin content =33.3333  effective entries =528881
+ Kolmo Prob     = 5.17052e-08, Max Dist = 0.00584575
+dilepton deltaPhi Kolmogorov Test value
+ Kolmo Prob  h1 = dilepton #Delta#phi SC_sample, sum bin content =33.3333  effective entries =46984
+ Kolmo Prob  h2 = dilepton #Delta#phi noSC_sample, sum bin content =33.3333  effective entries =50647
+ Kolmo Prob     = 0.119028, Max Dist = 0.00760771
