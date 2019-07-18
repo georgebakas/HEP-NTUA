@@ -47,15 +47,9 @@ void BoostedAnalysisInitializer::initXsections()
 {
   if(isSignal)
   {
-    if(year.EqualTo("2018"))
-    {
-      XSEC.push_back(16.74);
-    }
-    else
-    {
-     //XSEC.push_back(69.64);
-     XSEC.push_back(16.74);
-    }
+    
+    XSEC.push_back(69.64);
+    XSEC.push_back(16.74);
   }
   else
   {
@@ -72,15 +66,9 @@ void BoostedAnalysisInitializer::initHistoNames()
 {
   if(isSignal)
   {
-    if(year.EqualTo("2018"))
-    {
-      histoNames.push_back("Signal_histo_Mtt_1000_Inf");
-    }
-    else
-    {
-      //histoNames.push_back("Signal_histo_Mtt_700_1000");
-      histoNames.push_back("Signal_histo_Mtt_1000_Inf");
-    }
+    histoNames.push_back("Signal_histo_Mtt_700_1000");
+    histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+    
   }
   else
   {
@@ -97,16 +85,17 @@ void BoostedAnalysisInitializer::initSignalFiles()
 {
   if(year.EqualTo("2016"))
   {
-    //listOfFiles.push_back("TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root");
+    listOfFiles.push_back("TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
     listOfFiles.push_back("TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
   }
   else if(year.EqualTo("2017"))
   {
-    //listOfFiles.push_back("TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root");
+    listOfFiles.push_back("TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root");
     listOfFiles.push_back("TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
   }
   else if(year.EqualTo("2018"))
   {
+    listOfFiles.push_back("TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root");
     listOfFiles.push_back("TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
   }
 }

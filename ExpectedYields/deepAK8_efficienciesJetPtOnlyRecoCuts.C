@@ -53,7 +53,7 @@ void deepAK8_efficienciesJetPtOnlyRecoCuts(TString inYear = "2017", float tTagge
     TFile *file = TFile::Open(utils.eosPath+utils.listOfFiles[f]);
     TTree *eventTree;
 	if(year.EqualTo("2017") || year.EqualTo("2016")) eventTree	 = (TTree*)file->Get("boosted/events");
-	else if(year.EqualTo("2018")) eventTree = (TTree*)file->Get("events");
+	else if(year.EqualTo("2018")) eventTree = (TTree*)file->Get("boosted/events");
     
     eventTree->SetBranchAddress("nJets"          ,&nJets);
     eventTree->SetBranchAddress("nLeptons"       ,&nLeptons);
