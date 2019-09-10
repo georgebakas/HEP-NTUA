@@ -15,8 +15,8 @@ using std::endl;
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 
-void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2017/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root", 
-						float selMvaCut=0.1, float floatBTag = 0.8838,bool isDeepCSV=false, bool isZprime= false,bool isParton=false, int ZprimeMass = 2000, TString width = "200" )
+void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root", 
+						float selMvaCut=0.1, float floatBTag = 0.8838,bool isDeepCSV=true, bool isZprime= false,bool isParton=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
 //TString TTbarFile = "/eos/cms/store/user/gbakas/ttbar/topTagger/April19/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8_Copy.root"	
@@ -36,7 +36,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/S
 
   float mva(0);
   vector<float> *jetTtag(0);
-  vector<bool> *bit(0);
+  vector<bool> *bit = new vector<bool>;
   float mTTbarParton(0),mJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
   //matching info 
@@ -270,7 +270,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/S
 				
 				
 				
-				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
+				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5] && massCut;
 				partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 				massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 				topTagger = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -283,8 +283,8 @@ void angularDistribution(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/S
 				btag1CSVv2 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag || (*jetBtagSub1_)[1] < floatBTag)) ||
                                         (((*jetBtagSub0_)[0] < floatBTag || (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
 
-				btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat || dCSVScoreSub1[1] < deepCSVFloat)) ||
-                                          ((dCSVScoreSub0[0] < deepCSVFloat || dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
+				btag1DeepCSV	= ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
+					  ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
 
 				//0 btag category with csvv2 and deepCSV
 				revertBtagCSVv2 = ((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);

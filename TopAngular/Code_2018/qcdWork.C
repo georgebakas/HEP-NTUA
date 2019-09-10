@@ -134,8 +134,8 @@ void qcdWork(float selMvaCut = 0.1, bool isDeepCSV = true)
 
   auto c3 = new TCanvas("#chi", "#chi", 700,600);
   TLegend *leg_chi = new TLegend(0.6,0.7,0.8,0.9);
-  hChi_QCD_SR->Scale(1./hChi_QCD_SR->Integral());
-  hChi_QCD_CR->Scale(1./hChi_QCD_CR->Integral());
+  hChi_QCD_SR->Scale(1./hChi_QCD_SR->Integral(),"width");
+  hChi_QCD_CR->Scale(1./hChi_QCD_CR->Integral(),"width");
   leg_chi->AddEntry(hChi_QCD_SR, "#chi SR 2 btag", "l"); 
   leg_chi->AddEntry(hChi_QCD_CR, "#chi CR 0 btag", "l"); 
   auto rp_chi = new TRatioPlot(hChi_QCD_SR, hChi_QCD_CR);
@@ -147,8 +147,8 @@ void qcdWork(float selMvaCut = 0.1, bool isDeepCSV = true)
 
   auto c2 = new TCanvas("Cos(#theta)", "Cos(#theta)", 700,600);
   TLegend *leg_cos = new TLegend(0.6,0.7,0.8,0.9);
-  hCos_QCD_SR->Scale(1./hCos_QCD_SR->Integral());
-  hCos_QCD_CR->Scale(1./hCos_QCD_CR->Integral());
+  hCos_QCD_SR->Scale(1./hCos_QCD_SR->Integral(),"width");
+  hCos_QCD_CR->Scale(1./hCos_QCD_CR->Integral(),"width");
   leg_cos->AddEntry(hCos_QCD_SR, "cos(#theta^{*}) SR 2 btag", "l"); 
   leg_cos->AddEntry(hCos_QCD_CR, "cos(#theta^{*}) CR 0 btag", "l"); 
   auto rp_cos = new TRatioPlot(hCos_QCD_SR, hCos_QCD_CR);

@@ -36,7 +36,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/m
 
   float mva(0);
   vector<float> *jetTtag(0);
-  vector<bool> *bit(0);
+  vector<bool> *bit = new vector<bool>;
   float mTTbarParton(0),mJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
   //matching info
@@ -284,7 +284,7 @@ void responseMatrix(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/m
 				//cout<<"pt[0]: "<<(*pt_)[0]<<endl;
 				//cout<<"pt[1]: "<<(*pt_)[1]<<endl;
 				// Do anything ONLY if matching is ok
-				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000;
+				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && (*bit)[5];
 				partonCuts = (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000;
 				CSVv2Cut   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
 				deepCSVCut = (dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat);

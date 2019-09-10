@@ -22,7 +22,7 @@ TString eosPath;
 void initFileNames()
 {
   listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");	//2016
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2017/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"); //2017
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"); //2017
   listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"); //2018
   
 }
@@ -67,19 +67,19 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
    std::vector<Color_t> colors = {kBlue,kRed, kBlack, kMagenta};
    if(isDeepCSV)
    {
-    cout<<"It's deepCSV"<<endl;
+       cout<<"It's deepCSV"<<endl;
 	   //for closure tests [0] is 16, [1] is 17 and [2] is 18
 	   signal[0] = TFile::Open("./Code/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root"); 
-	   signal[1] = TFile::Open("./Code_2017/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root");
+	   signal[1] = TFile::Open("./Code_2017/Output_TT_QCD_Reco_Chi_0.0_deepCSV.root");
 	   signal[2] = TFile::Open("./Code_2018/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root");
 
 	   bkg[0] = TFile::Open("./Code/Closure_QCDBkg_Chi_0.1_deepCSV.root");
-	   bkg[1] = TFile::Open("./Code_2017/Closure_QCDBkg_Chi_0.1_deepCSV.root");
+	   bkg[1] = TFile::Open("./Code_2017/Closure_QCDBkg_Chi_0.0_deepCSV.root");
 	   bkg[2] = TFile::Open("./Code_2018/Closure_QCDBkg_Chi_0.1_deepCSV.root");
 	   
  	   //for efficiencies
        eff[0] = TFile::Open("./Code/ResponseMatricesChiCos_0.1_deepCSV.root"); 
-	   eff[1] = TFile::Open("./Code_2017/ResponseMatricesChiCos_0.1_deepCSV.root");
+	   eff[1] = TFile::Open("./Code_2017/ResponseMatricesChiCos_0.0_deepCSV.root");
 	   eff[2] = TFile::Open("./Code_2018/ResponseMatricesChiCos_0.1_deepCSV.root");
    }
    else
@@ -144,7 +144,9 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
    effLeg->AddEntry(eff18[0], "tTagger '18", "lp");
 
    TCanvas *can_eff = new TCanvas("Efficiency can", "Efficiency can", 700, 600);
-   eff18[0]->SetTitle(TString::Format("Efficiency '16,'17,'18;%s (GeV);Efficiency",recoVar.Data())); 
+   eff18[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
+   eff17[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
+   eff16[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
    eff18[0]->Draw();
    eff17[0]->Draw("same");
    eff16[0]->Draw("same");
@@ -152,7 +154,8 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
    
    
    TCanvas *can_acc = new TCanvas("Acceptance can", "Acceptance can", 700, 600);
-   acc18[0]->SetTitle(TString::Format("Acceptance '16,'17,'18;%s (GeV);Acceptance",recoVar.Data()));  
+   //acc18[0]->SetTitle(TString::Format("Acceptance '16,'17,'18;%s (GeV);Acceptance",recoVar.Data()));  
+   acc18[0]->SetTitle(TString::Format("#%s Acceptance '16,'17,'18;#%s;Acceptance",partonVar.Data(),partonVar.Data()));
    acc18[0]->Draw();
    acc17[0]->Draw("same");
    acc16[0]->Draw("same");
@@ -186,17 +189,17 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   hBkg_CRExpYield[2]->SetLineColor(kRed);
   
   //scale these to 1 because I need shape
-  hBkg_SR[0] ->Scale(1./hBkg_SR[0]->Integral());  
-  hBkg_SR[1] ->Scale(1./hBkg_SR[1]->Integral());  
-  hBkg_SR[2] ->Scale(1./hBkg_SR[2]->Integral());
+  hBkg_SR[0] ->Scale(1./hBkg_SR[0]->Integral(),"width");  
+  hBkg_SR[1] ->Scale(1./hBkg_SR[1]->Integral(),"width");  
+  hBkg_SR[2] ->Scale(1./hBkg_SR[2]->Integral(),"width");
   
-  hBkg_CR[0] ->Scale(1./hBkg_CR[0]->Integral());  
-  hBkg_CR[1] ->Scale(1./hBkg_CR[1]->Integral());  
-  hBkg_CR[2] ->Scale(1./hBkg_CR[2]->Integral());
+  hBkg_CR[0] ->Scale(1./hBkg_CR[0]->Integral(),"width");  
+  hBkg_CR[1] ->Scale(1./hBkg_CR[1]->Integral(),"width");  
+  hBkg_CR[2] ->Scale(1./hBkg_CR[2]->Integral(),"width");
   
-  hBkg_1Btag[0] ->Scale(1./hBkg_1Btag[0]->Integral());  
-  hBkg_1Btag[1] ->Scale(1./hBkg_1Btag[1]->Integral());  
-  hBkg_1Btag[2] ->Scale(1./hBkg_1Btag[2]->Integral());  
+  hBkg_1Btag[0] ->Scale(1./hBkg_1Btag[0]->Integral(),"width");  
+  hBkg_1Btag[1] ->Scale(1./hBkg_1Btag[1]->Integral(),"width");  
+  hBkg_1Btag[2] ->Scale(1./hBkg_1Btag[2]->Integral(),"width");  
   
   
   hBkg_CRExpYield[0]->SetTitle("TT Contamination '16");
@@ -240,9 +243,15 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   hBkg_SR[2]->GetYaxis()->SetTitleOffset(1.55);  
   hBkg_SR[2]->SetTitle(TString::Format("%s QCD Closure '18",recoVar.Data()));
 
+  hBkg_CR[2]->ResetAttLine();
+  hBkg_CR[2]->ResetAttMarker();
+  hBkg_CR[2]->SetLineColor(33);
+  hBkg_CR[2]->SetFillStyle(3001);
+  hBkg_CR[2]->SetFillColor(33);
   // h2 settings
+  hBkg_SR[2]->SetLineColor(kRed);
   hBkg_SR[2]->Draw();
-  hBkg_CR[2]->Draw("same");
+  hBkg_CR[2]->Draw("Hist same");
   hBkg_1Btag[2]->Draw("same");
   closureLegend->Draw();
 
@@ -291,8 +300,16 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   hBkg_SR[1]->GetYaxis()->SetTitleOffset(1.55);  
   hBkg_SR[1]->SetTitle(TString::Format("%s QCD Closure '17",recoVar.Data()));
   // h2 settings
+  
+  hBkg_CR[1]->ResetAttLine();
+  hBkg_CR[1]->ResetAttMarker();
+  hBkg_CR[1]->SetLineColor(33);
+  hBkg_CR[1]->SetFillStyle(3001);
+  hBkg_CR[1]->SetFillColor(33);
+  
+  hBkg_SR[1]->SetLineColor(kRed);
   hBkg_SR[1]->Draw();
-  hBkg_CR[1]->Draw("same");
+  hBkg_CR[1]->Draw("Hist same");
   hBkg_1Btag[1]->Draw("same");
   closureLegend->Draw();
 
@@ -342,8 +359,16 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   hBkg_SR[0]->SetTitle(TString::Format("%s QCD Closure '16",recoVar.Data()));
   
   // h2 settings
+  
+  hBkg_CR[0]->ResetAttLine();
+  hBkg_CR[0]->ResetAttMarker();
+  hBkg_CR[0]->SetLineColor(33);
+  hBkg_CR[0]->SetFillStyle(3001);
+  hBkg_CR[0]->SetFillColor(33);
+  
+  hBkg_SR[0]->SetLineColor(kRed);
   hBkg_SR[0]->Draw();
-  hBkg_CR[0]->Draw("same");
+  hBkg_CR[0]->Draw("Hist same");
   hBkg_1Btag[0]->Draw("same");
   closureLegend->Draw();
 

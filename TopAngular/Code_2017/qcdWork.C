@@ -20,13 +20,13 @@ TString eosPath;
 
 void initFileNames()
 {
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2017/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/QCD_HT300to500_TuneCP5_13TeV-madgraph-pythia8.root");
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/QCD_HT500to700_TuneCP5_13TeV-madgraph-pythia8.root");
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/QCD_HT700to1000_TuneCP5_13TeV-madgraph-pythia8.root");
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8.root");
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8.root");
-  listOfFiles.push_back("/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/QCD_HT300to500_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/QCD_HT500to700_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/QCD_HT700to1000_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8.root");
 }
 
 void initXsections()
@@ -133,8 +133,8 @@ void qcdWork(float selMvaCut = 0.1, bool isDeepCSV = true)
 
   auto c3 = new TCanvas("#chi", "#chi", 700,600);
   TLegend *leg_chi = new TLegend(0.6,0.7,0.8,0.9);
-  hChi_QCD_SR->Scale(1./hChi_QCD_SR->Integral());
-  hChi_QCD_CR->Scale(1./hChi_QCD_CR->Integral());
+  hChi_QCD_SR->Scale(1./hChi_QCD_SR->Integral(),"width");
+  hChi_QCD_CR->Scale(1./hChi_QCD_CR->Integral(),"width");
   leg_chi->AddEntry(hChi_QCD_SR, "#chi SR 2 btag", "l"); 
   leg_chi->AddEntry(hChi_QCD_CR, "#chi CR 0 btag", "l"); 
   auto rp_chi = new TRatioPlot(hChi_QCD_SR, hChi_QCD_CR);
@@ -146,8 +146,8 @@ void qcdWork(float selMvaCut = 0.1, bool isDeepCSV = true)
 
   auto c2 = new TCanvas("Cos(#theta)", "Cos(#theta)", 700,600);
   TLegend *leg_cos = new TLegend(0.6,0.7,0.8,0.9);
-  hCos_QCD_SR->Scale(1./hCos_QCD_SR->Integral());
-  hCos_QCD_CR->Scale(1./hCos_QCD_CR->Integral());
+  hCos_QCD_SR->Scale(1./hCos_QCD_SR->Integral(),"width");
+  hCos_QCD_CR->Scale(1./hCos_QCD_CR->Integral(),"width");
   leg_cos->AddEntry(hCos_QCD_SR, "cos(#theta^{*}) SR 2 btag", "l"); 
   leg_cos->AddEntry(hCos_QCD_CR, "cos(#theta^{*}) CR 0 btag", "l"); 
   auto rp_cos = new TRatioPlot(hCos_QCD_SR, hCos_QCD_CR);

@@ -36,7 +36,7 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
 
   float mva(0);
   vector<float> *jetTtag(0);
-  vector<bool> *bit(0);
+  vector<bool> *bit = new vector<bool>;
   float mTTbarParton(0),mJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
   //matching info 
@@ -269,10 +269,9 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
 			    bool CSVv2Cut, deepCSVCut;
 				
 				
-				
-				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
-				partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 				massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
+				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[2] && massCut;
+				partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 				topTagger = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
 				//2 btag category with csvv2 and deepCSV
 				CSVv2Cut   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
@@ -283,8 +282,8 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
 				btag1CSVv2 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag || (*jetBtagSub1_)[1] < floatBTag)) ||
                                         (((*jetBtagSub0_)[0] < floatBTag || (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
 
-				btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat || dCSVScoreSub1[1] < deepCSVFloat)) ||
-                                          ((dCSVScoreSub0[0] < deepCSVFloat || dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
+				btag1DeepCSV	= ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
+					  ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
 
 				//0 btag category with csvv2 and deepCSV
 				revertBtagCSVv2 = ((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
@@ -439,30 +438,26 @@ void angularDistribution(TString file = "/eos/cms/store/user/gbakas/ttbar/topTag
   h_Chi_all->GetXaxis()->SetTitle("#chi");
   h_Chi_all->Scale(1./h_Chi_all->Integral(), "width");
   h_Chi_all->Draw();
-  //can_chiAll->BuildLegend();
+
 
   TCanvas *can_chiCR = new TCanvas("#chi hChiCR can", "#chi hChiCR can", 900, 600);
   hChiCR->SetTitle("#chi top contamination in CR ");
   hChiCR->GetXaxis()->SetTitle("#chi");
-  //hChiCR->Scale(1./hChiCR->Integral(), "width");
   hChiCR->Draw();
   
   TCanvas *can_cosCR = new TCanvas("#chi =hCosCR can", "#chi hCosCR can", 900, 600);
   hCosCR->SetTitle("cos(#theta) top contamination in CR ");
   hCosCR->GetXaxis()->SetTitle("cos(#theta)");
-  //hCosCR->Scale(1./hCosCR->Integral(), "width");
   hCosCR->Draw();
   
   TCanvas *can_hChi1btag = new TCanvas("#chi hChi1btag can", "#chi hChi1btag can", 900, 600);
   hChi1btag->SetTitle("#chi top contamination in 1btag region ");
   hChi1btag->GetXaxis()->SetTitle("#chi");
-  //hChi1btag->Scale(1./hChi1btag->Integral(), "width");
   hChi1btag->Draw();
   
   TCanvas *can_hCos1btag = new TCanvas("#chi hCos1btag can", "#chi hCos1btag can", 900, 600);
   hCos1btag->SetTitle("cos(#theta) top contamination in 1btag region ");
   hCos1btag->GetXaxis()->SetTitle("cos(#theta)");
-  //hCos1btag->Scale(1./hCos1btag->Integral(), "width");
   hCos1btag->Draw();
 
  

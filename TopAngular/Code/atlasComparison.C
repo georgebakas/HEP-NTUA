@@ -15,7 +15,7 @@ using std::endl;
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 
-void atlasComparison(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_legacy2016_deepAK8.root", 
+void atlasComparison(TString file = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root", 
 						float selMvaCut=0.1, float floatBTag = 0.8838, bool isZprime= false,bool isParton=false, int ZprimeMass = 2000, TString width = "200" )
 {
 	
@@ -36,7 +36,7 @@ void atlasComparison(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signa
 
   float mva(0);
   vector<float> *jetTtag(0);
-  vector<bool> *bit(0);
+  vector<bool> *bit = new vector<bool>;
   float mTTbarParton(0),mJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
   //matching info 
@@ -208,7 +208,7 @@ void atlasComparison(TString file = "/eos/cms/store/user/ipapakri/ttbar/MC/Signa
 		if(isMatched >1)	 
 		{
 				recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 500 && (*pt_)[1] > 500 && nLeptons==0 && mJJ > 1000;
-				partonCuts = (*partonPt_)[0] > 500 && (*partonPt_)[1] > 500 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000;
+				partonCuts = (*partonPt_)[0] > 500 && (*partonPt_)[1] > 500 && fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) < 2.4 &&  mTTbarParton > 1000 && (*bit)[2];
 				btagging   = ((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag);
 				topTagger  = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
 				massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;

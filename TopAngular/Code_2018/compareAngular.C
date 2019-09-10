@@ -28,7 +28,7 @@ void compareAngular(int ZprimeMass = 2000, bool is2016=false, bool isParton=fals
   std::vector<float> WEIGHT;
   float NORM;
   float LUMI;
-  LUMI = 41530;
+  LUMI = 59740;
   
   if(ZprimeMass == 2000)
   {

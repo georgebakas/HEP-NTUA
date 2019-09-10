@@ -22,7 +22,7 @@ TString eosPath;
 float deepCSVFloat = 0.4941;
 void initFileNames()
 {
-  eosPath = "/eos/cms/store/user/ipapakri/ttbar/MC/Bkg/2017/";
+  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/";
   listOfFiles.push_back("QCD_HT300to500_TuneCP5_13TeV-madgraph-pythia8.root");
   listOfFiles.push_back("QCD_HT500to700_TuneCP5_13TeV-madgraph-pythia8.root");
   listOfFiles.push_back("QCD_HT700to1000_TuneCP5_13TeV-madgraph-pythia8.root");
@@ -59,7 +59,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float isDeepCSV = false)
+void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float isDeepCSV = true)
 {
 
   initGlobals();	
@@ -107,7 +107,7 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float
 
   float mva(0);
   vector<float> *jetTtag(0);
-  vector<bool> *bit(0);
+  vector<bool> *bit = new vector<bool>;
   float mTTbarParton(0),mJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
   //matching info 
@@ -208,8 +208,8 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float
           dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
 		  bool CSVv2Cut, deepCSV, btag1CSVv2, btag1DeepCSV, revertBtagCSVv2, revertBtagDeepCSV;
 		  
-          recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000; //nLeptons==0 &&
 		  massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+          recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0 && (*bit)[5] && massCut;
           topTagger = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
           //2 btag category with csvv2 and deepCSV
           CSVv2Cut   = ((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag);
@@ -220,8 +220,8 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float
           btag1CSVv2 = (((*jetBtagSub0)[0] > floatBTag || (*jetBtagSub1)[0] > floatBTag) && ((*jetBtagSub0)[1] < floatBTag || (*jetBtagSub1)[1] < floatBTag)) ||
                                         (((*jetBtagSub0)[0] < floatBTag || (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] > floatBTag || (*jetBtagSub1)[1] > floatBTag));
 
-          btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat || dCSVScoreSub1[1] < deepCSVFloat)) ||
-                                          ((dCSVScoreSub0[0] < deepCSVFloat || dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
+          btag1DeepCSV	= ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
+					  ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
 
           //0 btag category with csvv2 and deepCSV
 		 revertBtagCSVv2 = ((*jetBtagSub0)[0] < floatBTag && (*jetBtagSub1)[0] < floatBTag) && ((*jetBtagSub0)[1] < floatBTag && (*jetBtagSub1)[1] < floatBTag);
@@ -260,22 +260,22 @@ void angularDistributionQCD(float selMvaCut=0.1, float floatBTag = 0.8838, float
 		if(recoCuts && topTagger && btagging)
 		{
 		  //cout<<"SR chi: "<<chi0<<endl;
-		  h_Chi_all[f]->Fill(chi0);
-		  h_Cos_all[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+		  h_Chi_all[f]->Fill(chi0,genEvtWeight);
+		  h_Cos_all[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())),genEvtWeight);
 		}//----end of Signal Region cuts
 			
 		if(recoCuts && topTagger && revertBtag)
 		{
 		 //cout<<"CR chi: "<<chi0<<endl;
-		  hChiRevertBtag[f]->Fill(chi0);
-		  hCosRevertBtag[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));							//cout<<"---------------------------------"<<endl;
+		  hChiRevertBtag[f]->Fill(chi0,genEvtWeight);
+		  hCosRevertBtag[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())),genEvtWeight);
 		} //---end of control region cuts
 		
 		if(recoCuts && topTagger && btag1)
 		{
 		 //cout<<"CR chi: "<<chi0<<endl;
-		  hChi1btag[f]->Fill(chi0);
-		  hCos1btag[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())));							//cout<<"---------------------------------"<<endl;
+		  hChi1btag[f]->Fill(chi0,genEvtWeight);
+		  hCos1btag[f]->Fill(fabs(TMath::Cos(p4T_ZMF[0].Theta())),genEvtWeight);
 		} //1 btag region
 					
 
