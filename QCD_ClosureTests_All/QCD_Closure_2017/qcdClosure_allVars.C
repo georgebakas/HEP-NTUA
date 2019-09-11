@@ -101,7 +101,7 @@ void qcdClosure_allVars(bool isSig = false)
   float selMvaCut=0.0;
   float floatBTag = 0.8838;
   float deepAK8CutValue= 0.6;
-  bool isDeepCSV= true;
+  bool isDeepCSV= false;
   
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
@@ -379,8 +379,8 @@ void qcdClosure_allVars(bool isSig = false)
 	  deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
 	  //1 btag category with csvv2 and deepCSV			 
-	  btag1CSVv2 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag || (*jetBtagSub1_)[1] < floatBTag)) ||
-					(((*jetBtagSub0_)[0] < floatBTag || (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
+	  btag1CSVv2 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag && (*jetBtagSub1_)[1] < floatBTag)) ||
+					(((*jetBtagSub0_)[0] < floatBTag && (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
 					
 	  btag1DeepCSV	= ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
 					  ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
@@ -652,12 +652,12 @@ void qcdClosure_allVars(bool isSig = false)
   if(isSignal) 
   {
 	  if(isDeepCSV) outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
-	  else outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f.root", selMvaCut), "UPDATE");
+	  else outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_CSVv2.root", selMvaCut), "UPDATE");
   }
   else 
   {
 	  if(isDeepCSV) outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV.root",selMvaCut), "UPDATE");
-	  else outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f.root",selMvaCut), "UPDATE");
+	  else outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_CSVv2.root",selMvaCut), "UPDATE");
   }
   
   outFile->cd();

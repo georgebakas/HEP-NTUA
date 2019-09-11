@@ -98,7 +98,7 @@ void qcdClosure_allVars(bool isSig = false)
   const int N_JETY = 12;
   
   bool saveTTagger= true;
-  float selMvaCut=0.1;
+  float selMvaCut=-0.2;
   float floatBTag = 0.8838;
   float deepAK8CutValue= 0.6;
   bool isDeepCSV= true;
