@@ -16,28 +16,28 @@ using std::endl;
 std::vector<TString> listOfFiles;
 std::vector<float> XSEC;
 std::vector<TString> histoNames;
-float LUMI = 41530;
+float LUMI = 35922;
 TString eosPath;
 bool isSignal;
-float deepCSVFloat = 0.4941;
+float deepCSVFloat = 0.6321;
 
 void initFileNames()
 {
   if(isSignal)
   {
-	eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/";  
-	listOfFiles.push_back("TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root");
-	listOfFiles.push_back("TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
+	eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/";  
+	listOfFiles.push_back("TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+	listOfFiles.push_back("TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
   }
   else
   {
-	eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/";
-	listOfFiles.push_back("QCD_HT300to500_TuneCP5_13TeV-madgraph-pythia8.root");
-	listOfFiles.push_back("QCD_HT500to700_TuneCP5_13TeV-madgraph-pythia8.root");
-	listOfFiles.push_back("QCD_HT700to1000_TuneCP5_13TeV-madgraph-pythia8.root");
-	listOfFiles.push_back("QCD_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8.root");
-	listOfFiles.push_back("QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8.root");
-	listOfFiles.push_back("QCD_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8.root");
+	eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Bkg/";
+	listOfFiles.push_back("QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+	listOfFiles.push_back("QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+	listOfFiles.push_back("QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+	listOfFiles.push_back("QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+	listOfFiles.push_back("QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+	listOfFiles.push_back("QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
 	
   }
 }
@@ -84,7 +84,8 @@ void initGlobals()
   initXsections();
   initHistoNames();
 }
- void qcdClosure_allVars(bool isSig = false)
+ 
+void qcdClosure_allVars(bool isSig = false)
 {
   isSignal = isSig;
   initGlobals();	
@@ -98,7 +99,7 @@ void initGlobals()
   const int N_JETMASS = 40;
 
   bool saveTTagger= true;
-  float selMvaCut=0.0;
+  float selMvaCut=0.2;
   float floatBTag = 0.8838;
   float deepAK8CutValue= 0.6;
   bool isDeepCSV= true;

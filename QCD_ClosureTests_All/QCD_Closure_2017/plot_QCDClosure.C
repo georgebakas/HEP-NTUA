@@ -16,12 +16,11 @@ using std::endl;
 void plot_QCDClosure(TString recoVar = "mJJ")
 {
   //TT file 
-  //TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_deepCSV.root");  
-  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_CSVv2.root");  
+  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_deepCSV.root");  
+  //TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_CSVv2.root");  
   //QCD file
-  //TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_deepCSV.root");
-  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_CSVv2.root");
-   
+  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_deepCSV.root");
+  //TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_CSVv2.root");
   TH1F *hBkg_CR[2], *hBkg_SR[2], *hBkg_CRExpYield[2];  
   TH1F *hSig_CR[2];    
   TH1F *hSig_1Btag[2], *hBkg_1Btag[2];
@@ -57,27 +56,48 @@ void plot_QCDClosure(TString recoVar = "mJJ")
   hSig_CR[1] = (TH1F*)infTT->Get(TString::Format("CR_deepAK8_0.60_%s_expYield",recoVar.Data()));
   hSig_CR[1] -> SetLineColor(kBlue);
   hSig_CR[1] -> SetTitle("TT Contamination deepAK8");
+
+  if(recoVar.EqualTo("jetMassSoftDrop"))
+  {
+    hBkg_CR[0]->Rebin(4);
+    hBkg_CR[1]->Rebin(4);
+
+    hBkg_SR[0]->Rebin(4);
+    hBkg_SR[1]->Rebin(4);
+
+    hBkg_1Btag[0]->Rebin(4);
+    //hBkg_1Btag[1]->Rebin(4);
+
+    hBkg_CRExpYield[0]->Rebin(4);
+    hBkg_CRExpYield[1]->Rebin(4);
+
+    hSig_CR[0]->Rebin(4);
+    hSig_CR[1]->Rebin(4);
+
+  }
   
   TLegend *closureLegend = new TLegend(0.5,0.6,0.7,0.8);
   closureLegend->AddEntry(hBkg_SR[0],"Signal Region (2btag)", "l");
-  closureLegend->AddEntry(hBkg_CR[0],"Control Region (0btag)", "l");
+  closureLegend->AddEntry(hBkg_CR[0],"Control Region (0btag)", "f");
   closureLegend->AddEntry(hBkg_1Btag[0],"1btag Region", "l");
   
   auto c1 = new TCanvas("QCD closure Test tTagger", "QCD closure Test tTagger", 700,600);
   auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3); 
   closure_pad2->Draw();
   closure_pad2->SetTopMargin(0.05);
-  closure_pad2->SetBottomMargin(0.1);
+  closure_pad2->SetBottomMargin(0.3);
   closure_pad2->SetGrid();
 
   auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.3,1.,1.);  
   closure_pad1->Draw();
-  closure_pad1->SetBottomMargin(0.001);
+  closure_pad1->SetBottomMargin(0.005);
   closure_pad1->cd();
   //closure_pad1->SetGrid();
   hBkg_SR[0]->GetYaxis()->SetTitleSize(20);
   hBkg_SR[0]->GetYaxis()->SetTitleFont(43);
-  hBkg_SR[0]->GetYaxis()->SetTitleOffset(1.55);  
+  hBkg_SR[0]->GetYaxis()->SetTitleOffset(1.4);  
+  //hBkg_SR[0]->GetXaxis()->SetTitleOffset(1.5);
+  hBkg_SR[0]->GetXaxis()->SetTitle(recoVar+" (GeV)");
   // h2 settings
   
   //hBkg_CR[0]->ResetAttFill();
@@ -87,6 +107,7 @@ void plot_QCDClosure(TString recoVar = "mJJ")
   hBkg_CR[0]->SetFillStyle(3001);
   hBkg_CR[0]->SetFillColor(33);
   
+  hBkg_1Btag[0]->SetLineColor(kBlue);
   hBkg_SR[0]->Draw();
   hBkg_CR[0]->Draw("Hist same");
   hBkg_1Btag[0]->Draw("same");
@@ -104,16 +125,18 @@ void plot_QCDClosure(TString recoVar = "mJJ")
   hClosure[0]->GetYaxis()->SetTitleOffset(1.55);
   hClosure[0]->GetYaxis()->SetLabelFont(43);
   hClosure[0]->GetYaxis()->SetLabelSize(15);
-  hClosure[0]->GetXaxis()->SetTitleSize(1);
-  hClosure[0]->GetXaxis()->SetTitleFont(43);
-  hClosure[0]->GetXaxis()->SetTitleOffset(4.);
-  hClosure[0]->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-  hClosure[0]->GetXaxis()->SetLabelSize(15);
+  hClosure[0]->GetXaxis()->SetTitleSize(0.09);
+  //hClosure[0]->GetXaxis()->SetTitleFont(43);
+  //hClosure[0]->GetXaxis()->SetTitleOffset(4.);
+  //hClosure[0]->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+  hClosure[0]->GetXaxis()->SetLabelSize(0.09);
   hClosure[1] = (TH1F*)hBkg_1Btag[0]->Clone("hClosure_1"); 
   hClosure[0]->Divide(hBkg_CR[0]);
   hClosure[1]->Divide(hBkg_CR[0]);
-  hClosure[0]->SetLineColor(kBlack);
-  hClosure[1]->SetLineColor(kRed);
+  hClosure[0]->SetLineColor(kRed);
+  hClosure[1]->SetLineColor(kBlue);
+  hClosure[0]->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  //hClosure[0]->GetXaxis()->SetTitleOffset(1);
   hClosure[0]->Draw();
   hClosure[1]->Draw("same");
   
@@ -150,6 +173,4 @@ void plot_QCDClosure(TString recoVar = "mJJ")
   rp_tTagger->GetUpperRefYaxis()->SetTitle("Exp. Yield");
   rp_tTagger->GetLowerRefYaxis()->SetTitle("ratio");
   c3->Update();
-
-  
 }

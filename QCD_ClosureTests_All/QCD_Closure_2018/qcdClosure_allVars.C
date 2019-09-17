@@ -90,20 +90,21 @@ void qcdClosure_allVars(bool isSig = false)
   isSignal = isSig;
   initGlobals();	
   gStyle->SetOptStat(0);
-  const int NVAR =7;
+  const int NVAR =8;
   const int N_MJJ = 10;
   const int N_PTJJ = 9;
   const int N_YJJ = 8;
   const int N_PT = 10;
   const int N_JETY = 12;
-  
+  const int N_JETMASS = 40;
+
   bool saveTTagger= true;
-  float selMvaCut=-0.2;
+  float selMvaCut=0.1;
   float floatBTag = 0.8838;
   float deepAK8CutValue= 0.6;
   bool isDeepCSV= true;
   
-  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY};
+  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 											 {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
 											 {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
@@ -112,8 +113,8 @@ void qcdClosure_allVars(bool isSig = false)
 											 {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
 											 {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 	
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"}; 
-  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "jetMassSoftDrop"}; 
+  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1", "topMass"}; 
  
   
   int fileSize = listOfFiles.size();
@@ -206,26 +207,44 @@ void qcdClosure_allVars(bool isSig = false)
 
   float xParton(0), xReco(0);
   std::vector<float> xRecoAll(0);
-  
   //book the histograms
   //histograms for Signal/QCD in CR 
   for(int ivar =0; ivar< NVAR; ivar++)
   {
-	  float tempBND[NBINS[ivar]+1];
-	  std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);	
 	  int sizeBins = NBINS[ivar];
-	  hCR[0][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-	  hCR[1][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-	  hCR[2][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+	  if(ivar < NVAR-1)
+	  {
+		  float tempBND[NBINS[ivar]+1];
+		  std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);	
+		  hCR[0][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  hCR[1][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  hCR[2][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  
+		  //histograms for Signal/QCD in SR
+		  hSR[0][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  hSR[1][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  hSR[2][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  
+		  h1Btag[0][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  h1Btag[1][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+		  h1Btag[2][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_oldMva",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_oldMva",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+	  }
+	  else 
+	  {
+	  	hCR[0][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	  	hCR[1][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	  	hCR[2][f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
 	  
-	  //histograms for Signal/QCD in SR
-	  hSR[0][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-	  hSR[1][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-	  hSR[2][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+	 	 //histograms for Signal/QCD in SR
+	  	hSR[0][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	 	hSR[1][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	  	hSR[2][f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","oldMva" ,histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
 	  
-	  h1Btag[0][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-	  h1Btag[1][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-	  h1Btag[2][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_oldMva",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_oldMva",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+	 	h1Btag[0][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	    h1Btag[1][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_deepAK8",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_deepAK8",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	    h1Btag[2][f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_oldMva",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_oldMva",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+	  }
+
   }
   //for matching
   std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
@@ -379,8 +398,8 @@ void qcdClosure_allVars(bool isSig = false)
 	  deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
 	  //1 btag category with csvv2 and deepCSV			 
-	  btag1CSVv2 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag || (*jetBtagSub1_)[1] < floatBTag)) ||
-					(((*jetBtagSub0_)[0] < floatBTag || (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
+	  btag1CSVv2 = (((*jetBtagSub0_)[0] > floatBTag || (*jetBtagSub1_)[0] > floatBTag) && ((*jetBtagSub0_)[1] < floatBTag && (*jetBtagSub1_)[1] < floatBTag)) ||
+					(((*jetBtagSub0_)[0] < floatBTag && (*jetBtagSub1_)[0] < floatBTag) && ((*jetBtagSub0_)[1] > floatBTag || (*jetBtagSub1_)[1] > floatBTag));
 					
 	  btag1DeepCSV	= ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
 					  ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
@@ -401,6 +420,7 @@ void qcdClosure_allVars(bool isSig = false)
 		xRecoAll.push_back((*jetPt)[1]);
 		xRecoAll.push_back((*jetY)[0]);
 		xRecoAll.push_back((*jetY)[1]); 
+		xRecoAll.push_back((*mass_)[0]);
 	  }
 
 
@@ -444,6 +464,7 @@ void qcdClosure_allVars(bool isSig = false)
 	 xRecoAll.push_back((*jetPt)[1]);
 	 xRecoAll.push_back((*jetY)[0]);
 	 xRecoAll.push_back((*jetY)[1]);
+	 xRecoAll.push_back((*jetMassSoftDrop)[0]);
 	
 	  
 	}//---end of else of isSignal
@@ -466,6 +487,10 @@ void qcdClosure_allVars(bool isSig = false)
 	 {
 		 xReco = xRecoAll[ivar];
 		 
+		 //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
+		 if(ivar == NVAR-1) 
+		 	massCut=(*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
+
 		 if(recoCuts && btagCut && massCut && tTaggerCut)
 			hSR[0][f][ivar]->Fill(xReco,genEvtWeight);
 		  //Control Region with tTagger
@@ -652,12 +677,12 @@ void qcdClosure_allVars(bool isSig = false)
   if(isSignal) 
   {
 	  if(isDeepCSV) outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
-	  else outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f.root", selMvaCut), "UPDATE");
+	  else outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_CSVv2.root", selMvaCut), "UPDATE");
   }
   else 
   {
 	  if(isDeepCSV) outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV.root",selMvaCut), "UPDATE");
-	  else outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f.root",selMvaCut), "UPDATE");
+	  else outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_CSVv2.root",selMvaCut), "UPDATE");
   }
   
   outFile->cd();
