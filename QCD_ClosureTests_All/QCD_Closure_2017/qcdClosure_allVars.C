@@ -89,7 +89,7 @@ void initGlobals()
   isSignal = isSig;
   initGlobals();	
   gStyle->SetOptStat(0);
-  const int NVAR =8;
+  const int NVAR =9;
   const int N_MJJ = 10;
   const int N_PTJJ = 9;
   const int N_YJJ = 8;
@@ -103,7 +103,7 @@ void initGlobals()
   float deepAK8CutValue= 0.6;
   bool isDeepCSV= true;
   
-  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY, N_JETMASS};
+  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY, N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 											 {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
 											 {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
@@ -112,8 +112,8 @@ void initGlobals()
 											 {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
 											 {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 	
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "jetMassSoftDrop"}; 
-  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1", "topMass"}; 
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "jetMassSoftDrop0", "jetMassSoftDrop1"}; 
+  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1", "topMass0", "topMass1"}; 
  
   
   int fileSize = listOfFiles.size();
@@ -159,7 +159,7 @@ void initGlobals()
   std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
   std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
   std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
-          
+   cout<<"ok"<<endl;
   //------- input tree --------------
   trIN->SetBranchAddress("nJets"          ,&nJets);
   trIN->SetBranchAddress("nLeptons"       ,&nLeptons);
@@ -211,7 +211,7 @@ void initGlobals()
   for(int ivar =0; ivar< NVAR; ivar++)
   {
 	  int sizeBins = NBINS[ivar];
-	  if(ivar < NVAR-1)
+	  if(ivar != 7 && ivar !=8)
 	  {
 		  float tempBND[NBINS[ivar]+1];
 		  std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);	
@@ -412,14 +412,23 @@ void initGlobals()
 	  
 	  if(isMatched > 1)
 	  {
+	  	int leadingPt = 0;
+	  	int subleadingPt = 1;
+	  	if ((*pt_)[0] < (*pt_)[1]) 
+	  	{
+	  		leadingPt = 1;
+	  		subleadingPt = 0;
+	  	}
+	  		
     	xRecoAll.push_back(mJJ);
 		xRecoAll.push_back(ptJJ);
 		xRecoAll.push_back(yJJ);
-		xRecoAll.push_back((*pt_)[0]);
-		xRecoAll.push_back((*pt_)[1]);
-		xRecoAll.push_back(fabs((*y_)[0]));
-		xRecoAll.push_back(fabs((*y_)[1])); 
-		xRecoAll.push_back((*mass_)[0]);
+		xRecoAll.push_back((*pt_)[leadingPt]);
+		xRecoAll.push_back((*pt_)[subleadingPt]);
+		xRecoAll.push_back(fabs((*y_)[leadingPt]));
+		xRecoAll.push_back(fabs((*y_)[subleadingPt])); 
+		xRecoAll.push_back((*mass_)[leadingPt]);
+		xRecoAll.push_back((*mass_)[subleadingPt]);
 	  }
 
 
@@ -464,7 +473,9 @@ void initGlobals()
 	 xRecoAll.push_back(fabs((*jetY)[0]));
 	 xRecoAll.push_back(fabs((*jetY)[1]));
 	 xRecoAll.push_back((*jetMassSoftDrop)[0]);
-	
+	 xRecoAll.push_back((*jetMassSoftDrop)[1]);
+	 if((*jetPt)[0] <   (*jetPt)[1])
+	  	cout<<"HOUSTON WE HAVE A PROBLEM"<<endl;
 	  
 	}//---end of else of isSignal
 	
@@ -487,7 +498,7 @@ void initGlobals()
 		 xReco = xRecoAll[ivar];
 		 
 		 //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-		 if(ivar == NVAR-1) 
+		 if(ivar == 7 || ivar ==8) 
 		 	massCut=(*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
 
 		 if(recoCuts && btagCut && massCut && tTaggerCut)
@@ -622,7 +633,7 @@ void initGlobals()
   for(int i=0; i<sizeof(hCR)/sizeof(*hCR); i++)
   {
 	
-    if(ivar ==1 || ivar ==2 || ivar == 4 || ivar == 5)
+    if(ivar ==0 || ivar ==1 || ivar == 3 || ivar == 4 || ivar == 7 || ivar ==8 )
 	{
 		hCR[i][0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
 		hSR[i][0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));

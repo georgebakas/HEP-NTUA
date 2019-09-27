@@ -16,9 +16,9 @@ using std::endl;
 void plot_QCDClosure(TString recoVar = "mJJ")
 {
   //TT file A
-  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_deepCSV.root");  
+  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.20_deepCSV_pT600.root");  
   //QCD file
-  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_deepCSV.root");
+  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.20_deepCSV_pT600.root");
    
   TH1F *hBkg_CR[2], *hBkg_SR[2], *hBkg_CRExpYield[2];  
   TH1F *hSig_CR[2];    
@@ -54,7 +54,7 @@ void plot_QCDClosure(TString recoVar = "mJJ")
   hSig_CR[1] = (TH1F*)infTT->Get(TString::Format("CR_deepAK8_0.60_%s_expYield",recoVar.Data()));
   hSig_CR[1] -> SetLineColor(kBlue);
   hSig_CR[1] -> SetTitle("TT Contamination deepAK8");
-/*
+
   if(recoVar.EqualTo("jetMassSoftDrop"))
   {
     hBkg_CR[0]->Rebin(4);
@@ -73,7 +73,7 @@ void plot_QCDClosure(TString recoVar = "mJJ")
     hSig_CR[1]->Rebin(4);
 
   }
- */
+ 
  
   
   TLegend *closureLegend = new TLegend(0.5,0.6,0.7,0.8);

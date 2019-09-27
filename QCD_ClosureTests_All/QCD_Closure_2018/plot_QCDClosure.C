@@ -16,9 +16,9 @@ using std::endl;
 void plot_QCDClosure(TString recoVar = "mJJ")
 {
   //TT file 
-  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.10_deepCSV.root");  
+  TFile *infTT = TFile::Open("SignalOutput_AllRegions_-0.10_deepCSV.root");  
   //QCD file
-  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.10_deepCSV.root");
+  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_-0.10_deepCSV.root");
    
   TH1F *hBkg_CR[2], *hBkg_SR[2], *hBkg_CRExpYield[2];  
   TH1F *hSig_CR[2];    

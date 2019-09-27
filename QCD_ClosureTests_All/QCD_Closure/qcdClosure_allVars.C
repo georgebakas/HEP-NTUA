@@ -90,7 +90,7 @@ void qcdClosure_allVars(bool isSig = false)
   isSignal = isSig;
   initGlobals();	
   gStyle->SetOptStat(0);
-  const int NVAR =8;
+  const int NVAR =9;
   const int N_MJJ = 10;
   const int N_PTJJ = 9;
   const int N_YJJ = 8;
@@ -99,12 +99,12 @@ void qcdClosure_allVars(bool isSig = false)
   const int N_JETMASS = 40;
 
   bool saveTTagger= true;
-  float selMvaCut=0.2;
+  float selMvaCut=0.0;
   float floatBTag = 0.8838;
   float deepAK8CutValue= 0.6;
   bool isDeepCSV= true;
   
-  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY, N_JETMASS};
+  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY, N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 											 {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
 											 {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
@@ -113,8 +113,8 @@ void qcdClosure_allVars(bool isSig = false)
 											 {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
 											 {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 	
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "jetMassSoftDrop"}; 
-  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1", "topMass"}; 
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "jetMassSoftDrop0", "jetMassSoftDrop1"}; 
+  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1", "topMass0", "topMass1"}; 
  
   
   int fileSize = listOfFiles.size();
@@ -160,7 +160,7 @@ void qcdClosure_allVars(bool isSig = false)
   std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
   std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
   std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
-          
+   cout<<"ok"<<endl;
   //------- input tree --------------
   trIN->SetBranchAddress("nJets"          ,&nJets);
   trIN->SetBranchAddress("nLeptons"       ,&nLeptons);
@@ -212,7 +212,7 @@ void qcdClosure_allVars(bool isSig = false)
   for(int ivar =0; ivar< NVAR; ivar++)
   {
 	  int sizeBins = NBINS[ivar];
-	  if(ivar < NVAR-1)
+	  if(ivar != 7 && ivar !=8)
 	  {
 		  float tempBND[NBINS[ivar]+1];
 		  std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);	
@@ -386,8 +386,8 @@ void qcdClosure_allVars(bool isSig = false)
 	  dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
 	  dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
 	  
-	  recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 600 && (*pt_)[1] > 600 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5];
-	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 600 && (*partonPt_)[1] > 600 && mTTbarParton > 1000;
+	  recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5];
+	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
       massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  oldMva 	 =  mva >0.8;
 	  tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -413,15 +413,25 @@ void qcdClosure_allVars(bool isSig = false)
 	  
 	  if(isMatched > 1)
 	  {
+	  	int leadingPt = 0;
+	  	int subleadingPt = 1;
+	  	if ((*pt_)[0] < (*pt_)[1]) 
+	  	{
+	  		leadingPt = 1;
+	  		subleadingPt = 0;
+	  	}
+	  		
     	xRecoAll.push_back(mJJ);
 		xRecoAll.push_back(ptJJ);
 		xRecoAll.push_back(yJJ);
-		xRecoAll.push_back((*pt_)[0]);
-		xRecoAll.push_back((*pt_)[1]);
-		xRecoAll.push_back(fabs((*y_)[0]));
-		xRecoAll.push_back(fabs((*y_)[1])); 
-		xRecoAll.push_back((*mass_)[0]);
+		xRecoAll.push_back((*pt_)[leadingPt]);
+		xRecoAll.push_back((*pt_)[subleadingPt]);
+		xRecoAll.push_back(fabs((*y_)[leadingPt]));
+		xRecoAll.push_back(fabs((*y_)[subleadingPt])); 
+		xRecoAll.push_back((*mass_)[leadingPt]);
+		xRecoAll.push_back((*mass_)[subleadingPt]);
 	  }
+	  else continue;
 
 
 	 
@@ -435,7 +445,7 @@ void qcdClosure_allVars(bool isSig = false)
 	  dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
 	  dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
 	  
-	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 600 && (*jetPt)[1] > 600 &&  mJJ > 1000 && (*bit)[5] && nLeptons==0;
+	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[5] && nLeptons==0;
       massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
 	  tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
 	  oldMva 	 =  mva >0.8;
@@ -465,7 +475,9 @@ void qcdClosure_allVars(bool isSig = false)
 	 xRecoAll.push_back(fabs((*jetY)[0]));
 	 xRecoAll.push_back(fabs((*jetY)[1]));
 	 xRecoAll.push_back((*jetMassSoftDrop)[0]);
-	
+	 xRecoAll.push_back((*jetMassSoftDrop)[1]);
+	 if((*jetPt)[0] <   (*jetPt)[1])
+	  	cout<<"HOUSTON WE HAVE A PROBLEM"<<endl;
 	  
 	}//---end of else of isSignal
 	
@@ -488,7 +500,7 @@ void qcdClosure_allVars(bool isSig = false)
 		 xReco = xRecoAll[ivar];
 		 
 		 //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-		 if(ivar == NVAR-1) 
+		 if(ivar == 7 || ivar ==8) 
 		 	massCut=(*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
 
 		 if(recoCuts && btagCut && massCut && tTaggerCut)
@@ -534,6 +546,8 @@ void qcdClosure_allVars(bool isSig = false)
 
 	}//----end of nJets
   }	//---end of event loop
+
+  xRecoAll.clear();
   }//----end of fileSize loop 
   
   TH1F *hCR_Clone[3][listOfFiles.size()][NVAR];
@@ -623,7 +637,7 @@ void qcdClosure_allVars(bool isSig = false)
   for(int i=0; i<sizeof(hCR)/sizeof(*hCR); i++)
   {
 	
-    if(ivar ==1 || ivar ==2 || ivar == 4 || ivar == 5)
+    if(ivar ==0 || ivar ==1 || ivar == 3 || ivar == 4 || ivar == 7 || ivar ==8 )
 	{
 		hCR[i][0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
 		hSR[i][0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
@@ -676,12 +690,12 @@ void qcdClosure_allVars(bool isSig = false)
   TFile *outFile;
   if(isSignal) 
   {
-	  if(isDeepCSV) outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV_pT600.root", selMvaCut), "UPDATE");
+	  if(isDeepCSV) outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
 	  else outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_CSVv2.root", selMvaCut), "UPDATE");
   }
   else 
   {
-	  if(isDeepCSV) outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV_pT600.root",selMvaCut), "UPDATE");
+	  if(isDeepCSV) outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV.root",selMvaCut), "UPDATE");
 	  else outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_CSVv2.root",selMvaCut), "UPDATE");
   }
   
