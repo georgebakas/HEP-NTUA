@@ -22,7 +22,7 @@ void FitQCDClosure(TString recoVar = "jetPt0")
 {
   // {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0 
   //QCD file
-  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.0_deepCSV.root");
+  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.10_deepCSV.root");
   //TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_CSVv2.root");
   TH1F *hBkg_CR, *hBkg_SR;  
   
@@ -43,19 +43,12 @@ void FitQCDClosure(TString recoVar = "jetPt0")
   TF1 *f1;
 
   //Now fit the hClosure which is the Bkg Signal Region over the Bkg Control Region   
-  if(recoVar.EqualTo("jetPt0") || recoVar.EqualTo("jetPt1"))
+  if(recoVar.EqualTo("jetPt0") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("mJJ"))
   {
     f1 = new TF1(TString::Format("func_%s", recoVar.Data()),"(0.8+[0]*pow(x,[2]))/(1+[1]*pow(x,[2]+2))",400,1500);
     f1->SetParameters(1.2,1.5, 1);
     f1->SetParNames("beta","delta", "alpha");
     //tested, ok
-  }
-  else if(recoVar.EqualTo("mJJ"))
-  {
-    f1 = new TF1(TString::Format("func_%s", recoVar.Data()),"(1-[0]*pow(x,[2]+1))/(1+[1]*pow(x,[2]))",1000,5000);
-    f1->SetParameters(1.2,1.5,1);
-    f1->SetParNames("beta","delta", "alpha");
-    //seems ok needs more testing
   }
   else if(recoVar.EqualTo("ptJJ")) //not yet ok
   {

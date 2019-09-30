@@ -16,10 +16,10 @@ using std::endl;
 void plot_QCDClosure_afterFit(TString recoVar = "jetPt0")
 {
   //TT file 
-  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_deepCSV.root");  
+  TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.10_deepCSV.root");  
   //TFile *infTT = TFile::Open("SignalOutput_AllRegions_0.00_CSVv2.root");  
   //QCD file
-  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_deepCSV.root");
+  TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.10_deepCSV.root");
   //TFile *infBkg = TFile::Open("BkgOutput_AllRegions_0.00_CSVv2.root");
   TH1F *hBkg_CR, *hBkg_SR, *hBkg_CRExpYield;  
   TH1F *hSig_CR;    
