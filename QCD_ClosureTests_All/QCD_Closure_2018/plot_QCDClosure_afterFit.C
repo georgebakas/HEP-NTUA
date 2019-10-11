@@ -42,6 +42,7 @@ void plot_QCDClosure_afterFit(TString recoVar = "jetPt0")
   cout<<"delta [1]: "<<fitResult->GetParameter("delta")<<" ± "<<fitResult->GetParError(1)<<endl;
   cout<<"alpha [2]: "<<fitResult->GetParameter("alpha")<<" ± "<<fitResult->GetParError(2)<<endl;
 
+  TH1F *hBkg_CR_uncorrected = (TH1F*)hBkg_CR->Clone("hBkg_CR_uncorrected");
 
   int NBINS = hBkg_CR->GetNbinsX();
 
@@ -143,7 +144,7 @@ void plot_QCDClosure_afterFit(TString recoVar = "jetPt0")
   hClosure[0]->GetXaxis()->SetLabelSize(0.09);
   hClosure[1] = (TH1F*)hBkg_1Btag->Clone("hClosure_1"); 
   hClosure[0]->Divide(hBkg_CR);
-  hClosure[1]->Divide(hBkg_CR);
+  hClosure[1]->Divide(hBkg_CR_uncorrected);
   hClosure[0]->SetLineColor(kRed);
   hClosure[1]->SetLineColor(kBlue);
   hClosure[0]->GetXaxis()->SetTitle(recoVar+" (GeV)");
