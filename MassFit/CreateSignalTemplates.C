@@ -6,7 +6,6 @@ void CreateSignalTemplates(TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  //TFile *infMC = TFile::Open("Histo_JetHT_Run2016-17Jul2018_New.root");
   TFile *infMC = TFile::Open("Histo_TT_Mtt-700toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_100.root");  
   float normMC;
   float XSEC(832.);
@@ -66,9 +65,9 @@ void CreateSignalTemplates(TString CUT = "")
 
     TCanvas *canS;
     RooRealVar *fSigJet,*fSigEvt;
-    TH1F *hSig  = (TH1F*)infMC->Get("hWt_mTop"+TAG);
-    TH1F *hSigJet = (TH1F*)infMC->Get("hWt_jetMassSoftDrop"+TAG);
-    TH1F *hSigEvt = (TH1F*)infMC->Get("hWt_mJJ"+TAG);
+    TH1F *hSig  = (TH1F*)infMC->Get("hWt_mTop"+TAG+"_expYield");
+    TH1F *hSigJet = (TH1F*)infMC->Get("hWt_jetMassSoftDrop"+TAG+"_expYield");
+    TH1F *hSigEvt = (TH1F*)infMC->Get("hWt_mJJ"+TAG+"_expYield");
     fSigJet = new RooRealVar("fSigJet_"+CAT,"fSigJet_"+CAT,hSigJet->Integral()/hSig->Integral());
     fSigEvt = new RooRealVar("fSigEvt_"+CAT,"fSigEvt_"+CAT,hSigEvt->Integral()/hSig->Integral());
 
@@ -85,7 +84,7 @@ void CreateSignalTemplates(TString CUT = "")
 
     cout<<"Yield "<<CAT<<": "<<signal_yield<<" +/- "<<signal_error<<endl;
     
-    roohMC = new RooDataHist("roohistTT_"+CAT,"roohistTT_"+CAT,RooArgList(*x),hMC);    
+    roohMC = new RooDataHist("roohistTT_"+CAT,"roohistTT_"+CAT,RooArgList(*x),hMC_yield);    
     RooRealVar mTop("ttbar_meanTop_"+CAT,"ttbar_meanTop_"+CAT,172,150,180);
     RooRealVar sTop("ttbar_sigmaTop_"+CAT,"ttbar_sigmaTop_"+CAT,20,5,30);
 

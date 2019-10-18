@@ -15,7 +15,7 @@ void CreateBkgTemplates(TString CUT = "")
   TFile *infST_t_top = TFile::Open("../Histo_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
   TFile *infST_t_antitop = TFile::Open("../Histo_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
   */
-  TFile *infBkg = TFile::Open("Histo_SubdominantBkgs_50.root");
+  TFile *infBkg = TFile::Open("Histo_SubdominantBkgs_100.root");
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);
@@ -54,15 +54,13 @@ void CreateBkgTemplates(TString CUT = "")
   RooGaussian qcd2("qcd_gaus" ,"qcd_gaus",*x,mQCD,sQCD);
 
   RooRealVar fqcd("qcd_f","qcd_f",0.5,0,1);
-  RooRealVar fqcd2("qcd_f","qcd_f",0.5,0,1);
 
   RooRealVar mW("meanW", "meanW", 80, 70, 90);
   RooRealVar sW("sigmaW", "sigmaW", 5, 0, 15);
   RooFormulaVar mWShift("meanWShifted", "@0*@1", RooArgList(mW, *(kMassScale)));
   RooFormulaVar sWShift("sigmaWShifted","@0*@1",RooArgList(sW,*(kMassResol)));
-  RooGaussian pdfW("pdfW", "pdfW", *x, mWShift,sWShift);
 
-  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2,pdfW), RooArgList(fqcd, fqcd2));
+  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd));
   
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);
@@ -74,7 +72,6 @@ void CreateBkgTemplates(TString CUT = "")
   qcd->plotOn(frameQCD);
   qcd->plotOn(frameQCD,RooFit::Components("qcd_brn"),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
   qcd->plotOn(frameQCD,RooFit::Components("qcd_gaus"),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
-  qcd->plotOn(frameQCD,RooFit::Components("pdfW"),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
   frameQCD->GetXaxis()->SetTitle("m_{t} (GeV)");
   frameQCD->Draw();
   gPad->Update();

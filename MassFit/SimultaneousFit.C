@@ -13,7 +13,18 @@ void SimultaneousFit(int REBIN =2)
   h0b->Rebin(REBIN);
   h2b->Rebin(REBIN);
   // -----------------------------------------
-  const float LUMI = 37000;
+  const float LUMI = 35922;
+
+  TFile *infTT = TFile::Open("Histo_TT_Mtt-700toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8_100.root");
+  TH1F *h2b_TT = (TH1F*)infTT->Get("hWt_mTop_2btag_expYield");
+  TH1F *h1b_TT = (TH1F*)infTT->Get("hWt_mTop_1btag_expYield");
+  TH1F *h0b_TT = (TH1F*)infTT->Get("hWt_mTop_0btag_expYield");
+  float Ntt_expected = h2b_TT->Integral() + h1b_TT->Integral() + h0b_TT->Integral();
+
+  TFile *infSubBkg = TFile::Open("Histo_SubdominantBkgs_100.root");
+  TH1F *h2b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_2btag_expYield");
+  TH1F *h1b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_1btag_expYield");
+  TH1F *h0b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_0btag_expYield");
   
   TFile *fTemplatesBkg = TFile::Open("templates_Bkg_100.root");
   TFile *fTemplatesSig = TFile::Open("templates_Sig_100.root");
@@ -27,9 +38,6 @@ void SimultaneousFit(int REBIN =2)
   kMassScale->setConstant(false);
   kMassResol->setConstant(false);
   
-
-
-
   RooDataHist *roohist_data_0b = new RooDataHist("roohist_data_0b","roohist_data_0b",*x,h0b);
   RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b","roohist_data_2b",*x,h2b);
 
@@ -38,44 +46,42 @@ void SimultaneousFit(int REBIN =2)
   sample.defineType("2btag");
   
   RooDataHist combData("combData","combData",*x,Index(sample),Import("0btag",*h0b),Import("2btag",*h2b));
-    
+  //subdominant bkg tempates 
   RooAbsPdf *pdf_bkg_0b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_0btag");
   RooAbsPdf *pdf_bkg_2b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_2btag");
+  
+  //CR templates taken from data for QCD bkg
   RooAbsPdf *pdf_qcd_0b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
   
-  //---- QCD correction factor ---------------------------
-  RooRealVar kQCD0b("kQCD_0b","kQCD_0b",1e-3,-1,1);
+  //---- QCD correction factor ---------------------------  
   RooRealVar kQCD2b("kQCD_2b","kQCD_2b",1e-3,-1,1);
-  kQCD0b.setConstant(false);
   kQCD2b.setConstant(false);
-  RooFormulaVar qcdCor_0b("qcdCor_0b","1+@0*@1",RooArgList(*x,kQCD0b)); 
   RooFormulaVar qcdCor_2b("qcdCor_2b","1+@0*@1",RooArgList(*x,kQCD2b));
+
   //---- corrected QCD -----------------------------------
-  RooEffProd pdf_qcdCor_0b("qcdCor_pdf_0b","qcdCor_pdf_0b",*pdf_qcd_0b,qcdCor_0b);
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
   
-  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",5000,0,2e+4);
+  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",20000,0,3e+4);
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,1e+4);
-  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0åb",80000,0,1e+5);
+
+  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",80000,0,1e+5);
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+4);  
 
-  RooRealVar *nFitSig   = new RooRealVar("nFitSig","nFitSig",20000,100,1e+6);
-  RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",2000,100,1e+5);
-  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,1e+5);
-  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.5,0.4,1);
+  RooRealVar *nFitSig   = new RooRealVar("nFitSig","nFitSig",18000,4000,1e+6);
+  RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",500,100,1e+5);
+  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",500,100,1e+5);
+  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.69,0.2,1);
 
-  RooFormulaVar nSig0b("nSig_0b","2*@0*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
+  RooFormulaVar nSig0b("nSig_0b","(1-@0)*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
   RooFormulaVar nSig2b("nSig_2b","@0*@0*@1",RooArgList(*btagEff,*nFitSig));
 
   RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
 
-  RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,pdf_qcdCor_0b,*pdf_bkg_0b),RooArgList(nSig0b,*nFitQCD0b,*nFitBkg0b)); 
-
+  RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b,*pdf_bkg_0b),RooArgList(nSig0b,*nFitQCD0b,*nFitBkg0b)); 
+  //RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b),RooArgList(nSig0b,*nFitQCD0b)); 
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(nSig2b,*nFitQCD2b,*nFitBkg2b));
-
-  //RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(nSig2b,*nFitQCD2b,*nFitBkg2b));
 
   RooSimultaneous simPdf("simPdf","simPdf",sample);
   simPdf.addPdf(*model_0b,"0btag");
@@ -83,7 +89,38 @@ void SimultaneousFit(int REBIN =2)
     
   RooFitResult *res = simPdf.fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
   res->Print();
-  cout<<"N1 = "<<nSig0b.getVal()<<", N2 = "<<nSig2b.getVal()<<endl;
+
+
+  cout<<"N0 = "<<nSig0b.getVal()<<", N2 = "<<nSig2b.getVal()<<endl;
+  cout<<"N_observed total= " <<nSig0b.getVal()+ nSig2b.getVal()<<endl;
+  //cout<<"N0 = "<<nFitSig0b->getVal()<<", N2 = "<<nFitSig2b->getVal()<<endl;
+  
+  //r- factors
+
+  float N_expected_2 = h2b_TT->Integral();
+  float N_observed_2 = nSig2b.getVal();
+  //float N_observed_2 = nFitSig2b->getVal();
+  cout<<"N_expected 2btag = "<<N_expected_2<<endl;
+  cout<<"N_observed 2btag = "<<N_observed_2<<endl;
+  float r2 = N_observed_2/N_expected_2;
+  cout<<"r2 = "<<r2<<endl;
+
+  //cout<<"Ntt 2btag = "<<nSig2b.getVal()<<endl;
+  //cout<<"Nqcd 2btag = "<<nFitQCD2b->getVal()<<endl;
+  //cout<<"Nbkg 2btag = "<<nFitBkg2b->getVal()<<endl;
+  
+  float N_expected_0 = h0b_TT->Integral();
+  float N_observed_0 = nSig0b.getVal();
+  //float N_observed_0 = nFitSig0b->getVal();
+  cout<<"N_expected 0btag = "<<N_expected_0<<endl;
+  cout<<"N_observed 0btag = "<<N_observed_0<<endl;
+  float r0 = N_observed_0/N_expected_0;
+  cout<<"r0 = "<<r0<<endl;
+
+  //expected Ntt is the sum of all 0btag and 1 btag and 2btag
+  cout<<"Ntt expected = "<<Ntt_expected<<endl;
+  //observed you have to find using nSig2b and nSig0b and btagEff
+/*
   
   TCanvas *canEll1 = new TCanvas("Correlation_BTagEff_vs_NTT_"+CUT,"Correlation_BTagEff_vs_NTT_"+CUT,900,600);
   RooPlot *frameEll1 = new RooPlot(*nFitSig,*btagEff,nFitSig->getVal()-1.5*nFitSig->getError(),nFitSig->getVal()+1.5*nFitSig->getError(),btagEff->getVal()-1.5*btagEff->getError(),btagEff->getVal()+1.5*btagEff->getError());
@@ -114,9 +151,11 @@ void SimultaneousFit(int REBIN =2)
   frameEll4->GetYaxis()->SetTitle("btag efficiency");
   frameEll4->Draw();
 
+  */
+  /*
   //cout<<"correlation = "<<res->correlation(*nFitSig,*btagEff)<<endl;
   //cout<<"correlation = "<<res->correlation(*nFitQCD2b,*btagEff)<<endl;
-  /*
+  
   RooAbsReal *nll = simPdf.createNLL(combData,NumCPU(2));
   RooMinuit(*nll).migrad();
   RooAbsReal *pll_Ntt = nll->createProfile(*nFitSig);
@@ -127,12 +166,13 @@ void SimultaneousFit(int REBIN =2)
   frameNtt->SetMaximum(2);
   frameNtt->Draw();
   */
-
+  //-------------------- 0 bTag fit results -------------------------------
+  
   RooPlot *frame0b = x->frame();
   combData.plotOn(frame0b,Cut("sample==sample::0btag")); 
   simPdf.plotOn(frame0b,Slice(sample,"0btag"),ProjWData(sample,combData));
   RooHist *pull0b = frame0b->pullHist();
-  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
+  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen),LineWidth(2),LineStyle(2));
   simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("ttbar_pdf_0btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
   simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("bkg_pdf_0btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
 
@@ -165,6 +205,8 @@ void SimultaneousFit(int REBIN =2)
   frame0bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
   frame0bPull->Draw();
   
+
+  //-------------------- 2 bTag fit results -------------------------------
   RooPlot *frame2b = x->frame();
   combData.plotOn(frame2b,Cut("sample==sample::2btag")); 
   simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData));
@@ -202,7 +244,9 @@ void SimultaneousFit(int REBIN =2)
   frame2bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
   frame2bPull->Draw();
   
+/*
 
+  //other processes
   can0b->Print(TString(can0b->GetName())+".pdf");
   can2b->Print(TString(can2b->GetName())+".pdf");
   canEll1->Print(TString(canEll1->GetName())+".pdf");
@@ -217,7 +261,7 @@ void SimultaneousFit(int REBIN =2)
   wOut->import(*btagEff);
   wOut->writeToFile("SimFitResults_"+CUT+".root");
 
-  /*
+  
     model->plotOn(frame);
     
     float chi2 = frame->chiSquare(2);

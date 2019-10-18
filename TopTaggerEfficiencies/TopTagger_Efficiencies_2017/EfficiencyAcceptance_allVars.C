@@ -124,8 +124,8 @@ void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
     std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
 	
     std::cout<<"Working in file: "<<listOfFiles[f]<<std::endl;
-    //TFile *file = TFile::Open(eosPath+listOfFiles[f]);
-    TFile *file = TFile::Open(listOfFiles[f]);
+    TFile *file = TFile::Open(eosPath+listOfFiles[f]);
+    //TFile *file = TFile::Open(listOfFiles[f]);
     TTree *trIN = (TTree*)file->Get("boosted/events");
     	
 	//------- input tree --------------

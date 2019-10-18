@@ -46,7 +46,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
+void EfficiencyAcceptance(float selMvaCut=0.2, bool saveTtagger= true)
 {
   initGlobals();
   const int NVAR =7;
@@ -124,8 +124,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
     std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
 	
     std::cout<<"Working in file: "<<listOfFiles[f]<<std::endl;
-    //TFile *file = TFile::Open(eosPath+listOfFiles[f]);
-    TFile *file = TFile::Open(listOfFiles[f]);
+    TFile *file = TFile::Open(eosPath+listOfFiles[f]);
     TTree *trIN = (TTree*)file->Get("boosted/events");
     	
 	//------- input tree --------------
@@ -343,7 +342,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
 	  bool recoCuts, partonCuts; 
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[5];
+	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[2];
 	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);

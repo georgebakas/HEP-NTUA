@@ -23,8 +23,8 @@ void initFileNames()
 {
   
   eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/";  
-  listOfFiles.push_back(eosPath+"TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root");
-  listOfFiles.push_back(eosPath+"TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
+  listOfFiles.push_back("TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root");
+  listOfFiles.push_back("TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root");
 }
 
 void initXsections()
@@ -124,8 +124,8 @@ void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
     std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
 	
     std::cout<<"Working in file: "<<listOfFiles[f]<<std::endl;
-    //TFile *file = TFile::Open(eosPath+listOfFiles[f]);
-    TFile *file = TFile::Open(listOfFiles[f]);
+    TFile *file = TFile::Open(eosPath+listOfFiles[f]);
+   //1TFile *file = TFile::Open(listOfFiles[f]);
     TTree *trIN = (TTree*)file->Get("boosted/events");
     	
 	//------- input tree --------------
