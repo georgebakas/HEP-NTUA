@@ -333,7 +333,7 @@ void FillHistograms(int sel = 0)
   
   if (nJets >1)
   { 
-    //matching only if we have Signal/
+    //matching only if we have Signal ttbar MC
     if(selection == 1)
     {
     //----------------------MATCHING------------------------------------------------------
@@ -407,8 +407,8 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
     
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[2];
-    partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
-      massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
+    partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
+    massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
     //2 btag category with deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
@@ -418,7 +418,7 @@ void FillHistograms(int sel = 0)
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
    
    //0 btag category with deepCSV
-      revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+    revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
     
     if(isMatched > 1)
     {

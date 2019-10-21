@@ -79,15 +79,15 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b","nFitBkg_1b",h1b_Bkg->Integral(),0.9*h1b_Bkg->Integral() ,1.1*h1b_Bkg->Integral());
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",h2b_Bkg->Integral(),0.9*h2b_Bkg->Integral() ,1.1*h2b_Bkg->Integral());
 
-  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",80000,0,1e+5);
-  RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b","nFitQCD_1b",80000,0,1e+5);
-  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+4);  
+  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",90000,0,1.2e+5);
+  RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b","nFitQCD_1b",35000,0,1e+5);
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",3000,0,1e+4);  
 
   RooRealVar *nFitSig   = new RooRealVar("nFitSig","nFitSig",Ntt_expected,0.5*Ntt_expected,1.5*Ntt_expected);
-  RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",500,100,1e+5);
-  RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b","nFitSig1b",500,100,1e+5);
-  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",500,100,1e+5);
-  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.69,0.2,1);
+  RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",h0b_TT->Integral(),0.6* h0b_TT->Integral(),1.4*h0b_TT->Integral());
+  RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b","nFitSig1b",h1b_TT->Integral(),0.6* h1b_TT->Integral(),1.4*h1b_TT->Integral());
+  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",h2b_TT->Integral(),0.6* h2b_TT->Integral(),1.4*h2b_TT->Integral());
+  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.50,0.45,0.60);
   //btagEff->setConstant(true);
 
   RooFormulaVar nSig0b("nSig_0b","(1-@0)*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
@@ -112,7 +112,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   res->Print();
 
 
-  cout<<"N0 = "<<nSig0b.getVal()<<", N2 = "<<nSig2b.getVal()<<", N1 = "<<nSig1b.getVal()<<endl;
+  cout<<"N0_observed = "<<nSig0b.getVal()<<", N2_observed = "<<nSig2b.getVal()<<", N1_observed = "<<nSig1b.getVal()<<endl;
   float Ntt_observed = nSig0b.getVal()+ nSig1b.getVal() + nSig2b.getVal();
   //cout<<"N0 = "<<nFitSig0b->getVal()<<", N2 = "<<nFitSig2b->getVal()<<endl;
 
@@ -209,6 +209,44 @@ void SimultaneousFit_3regions(int REBIN =2)
   frame0bPull->Draw();
   
 
+  //-------1 Btag Fit Results-----------------------------
+  RooPlot *frame1b = x->frame();
+  combData.plotOn(frame1b,Cut("sample==sample::1btag")); 
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),ProjWData(sample,combData));
+  RooHist *pull1b = frame1b->pullHist();
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("ttbar_pdf_1btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("bkg_pdf_1btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
+
+  RooPlot *frame1bPull = x->frame();
+  frame1bPull->addPlotable(pull1b,"p");
+
+  TCanvas *can1b = new TCanvas("SimFit_1btag_"+CUT,"SimFit_1btag_"+CUT,900,600);
+  can1b->cd(1)->SetBottomMargin(0.3);
+  frame1b->GetXaxis()->SetTitle("");
+  frame1b->GetXaxis()->SetLabelSize(0.0);
+  frame1b->Draw();
+  
+  TPad *pad1b = new TPad("pad1b","pad1b",0.,0.,1.,1.);
+  pad1b->SetTopMargin(0.7);
+  pad1b->SetFillColor(0);
+  pad1b->SetFillStyle(0);
+  pad1b->Draw();
+  pad1b->cd(0);
+  pad1b->SetGridy();
+  frame1bPull->SetMinimum(-5);
+  frame1bPull->SetMaximum(5);
+  frame1bPull->GetYaxis()->SetNdivisions(505);
+  frame1bPull->GetXaxis()->SetTitleOffset(0.9);
+  frame1bPull->GetYaxis()->SetTitleOffset(0.8);
+  frame1bPull->GetYaxis()->SetTickLength(0.06);
+  frame1bPull->GetYaxis()->SetTitleSize(0.05);
+  frame1bPull->GetYaxis()->SetTitleSize(0.03);
+  frame1bPull->GetYaxis()->SetLabelSize(0.03);
+  frame1bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
+  frame1bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
+  frame1bPull->Draw();
+
   //-------------------- 2 bTag fit results -------------------------------
   RooPlot *frame2b = x->frame();
   combData.plotOn(frame2b,Cut("sample==sample::2btag")); 
@@ -248,43 +286,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   frame2bPull->Draw();
   
 
-  //-------1 Btag Fit Results-----------------------------
-  RooPlot *frame1b = x->frame();
-  combData.plotOn(frame1b,Cut("sample==sample::1btag")); 
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),ProjWData(sample,combData));
-  RooHist *pull1b = frame1b->pullHist();
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("ttbar_pdf_1btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("bkg_pdf_1btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
-
-  RooPlot *frame1bPull = x->frame();
-  frame1bPull->addPlotable(pull1b,"p");
-
-  TCanvas *can1b = new TCanvas("SimFit_1btag_"+CUT,"SimFit_1btag_"+CUT,900,600);
-  can1b->cd(1)->SetBottomMargin(0.3);
-  frame1b->GetXaxis()->SetTitle("");
-  frame1b->GetXaxis()->SetLabelSize(0.0);
-  frame1b->Draw();
   
-  TPad *pad1b = new TPad("pad1b","pad1b",0.,0.,1.,1.);
-  pad1b->SetTopMargin(0.7);
-  pad1b->SetFillColor(0);
-  pad1b->SetFillStyle(0);
-  pad1b->Draw();
-  pad1b->cd(0);
-  pad1b->SetGridy();
-  frame1bPull->SetMinimum(-5);
-  frame1bPull->SetMaximum(5);
-  frame1bPull->GetYaxis()->SetNdivisions(505);
-  frame1bPull->GetXaxis()->SetTitleOffset(0.9);
-  frame1bPull->GetYaxis()->SetTitleOffset(0.8);
-  frame1bPull->GetYaxis()->SetTickLength(0.06);
-  frame1bPull->GetYaxis()->SetTitleSize(0.05);
-  frame1bPull->GetYaxis()->SetTitleSize(0.03);
-  frame1bPull->GetYaxis()->SetLabelSize(0.03);
-  frame1bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
-  frame1bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
-  frame1bPull->Draw();
 /*
 
   //other processes
