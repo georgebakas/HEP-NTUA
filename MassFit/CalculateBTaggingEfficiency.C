@@ -67,9 +67,11 @@ void CalculateBTaggingEfficiency()
   
   gStyle->SetOptStat(0);
   init();
-  TH2F *hBTagParton[listOfFiles.size()][4]; 
+  TH2F *hBTagParton[listOfFiles.size()][4], *hBTagRecoParton[listOfFiles.size()][4]; 
   TH2F *hBTagReco[listOfFiles.size()];
  vector<float> weights(0);
+
+ std::vector<int> events(0);
  for (int f =0; f<listOfFiles.size(); f++)
  {
 
@@ -80,6 +82,8 @@ void CalculateBTaggingEfficiency()
 	{
 		hBTagParton[f][ihist] = new TH2F(TString::Format("hTagParton_%s_%s", fileHistoNames[f].Data(),histoNames[ihist].Data()), 
 			TString::Format("hTagParton_%s_%s", fileHistoNames[f].Data(),histoNames[ihist].Data()), N_PT,0,1500,N_ETA,0,2.4 );
+    hBTagRecoParton[f][ihist] = new TH2F(TString::Format("hTagRecoParton_%s_%s", fileHistoNames[f].Data(),histoNames[ihist].Data()), 
+      TString::Format("hTagRecoParton_%s_%s", fileHistoNames[f].Data(),histoNames[ihist].Data()), N_PT,0,1500,N_ETA,0,2.4 );
 	}
 
   hBTagReco[f] = new TH2F(TString::Format("hBTagReco_%s", fileHistoNames[f].Data()), 
@@ -96,7 +100,7 @@ void CalculateBTaggingEfficiency()
   vector<float> *jetPt(0),*tau3(0),*tau2(0),*tau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
-
+  
   float mva(0);
   vector<float> *jetTtag(0);
   vector<bool> *bit = new vector<bool>;
@@ -116,6 +120,8 @@ void CalculateBTaggingEfficiency()
   std::vector<float> *jetPtSub0(0), *jetPtSub1(0);
   std::vector<float> *jetEtaSub0(0), *jetEtaSub1(0);
   //------- input tree --------------
+  int evtNo;
+  trIN->SetBranchAddress("evtNo"          ,&evtNo);
   trIN->SetBranchAddress("nJets"          ,&nJets);
   trIN->SetBranchAddress("nLeptons"       ,&nLeptons);
   trIN->SetBranchAddress("jetPt"          ,&jetPt);
@@ -192,6 +198,8 @@ void CalculateBTaggingEfficiency()
   std::vector<float> *jetBtagSub0DCSVbbb_ = new std::vector<float>(0);
   std::vector<float> *jetBtagSub1DCSVbbb_ = new std::vector<float>(0);
 
+
+
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=0;iev<NN;iev++) 
   {
@@ -201,7 +209,8 @@ void CalculateBTaggingEfficiency()
       cout<<10*k<<" %"<<endl;
     decade = k;
     trIN->GetEntry(iev);
-  
+    //trIN->GetEntry(277816);
+
     int isMatched =0;
     eta_->clear();
     y_->clear();
@@ -231,10 +240,8 @@ void CalculateBTaggingEfficiency()
     jetBtagSub1DCSVbbb_->clear();
 
 
-    if (nJets >1)
-  { 
-
-    
+  if (nJets >1)
+   {  
     	//----------------------MATCHING------------------------------------------------------
 	    for(int ijet =0; ijet<nJets; ijet++)
 	    {
@@ -286,19 +293,20 @@ void CalculateBTaggingEfficiency()
 
 	        jetEtaSub0_->push_back((*jetEtaSub0)[(*partonMatchIdx)[indexMin]]);
 	        jetEtaSub1_->push_back((*jetEtaSub1)[(*partonMatchIdx)[indexMin]]);
-	        
+	  		  jetFlavorSub0_->push_back((*jetFlavorSub0)[(*partonMatchIdx)[indexMin]]);
+	        jetFlavorSub1_->push_back((*jetFlavorSub1)[(*partonMatchIdx)[indexMin]]);
+
 	        jetBtagSub0DCSVbb_->push_back((*jetBtagSub0DCSVbb)[(*partonMatchIdx)[indexMin]]);
 	        jetBtagSub1DCSVbb_->push_back((*jetBtagSub1DCSVbb)[(*partonMatchIdx)[indexMin]]);
 	        jetBtagSub0DCSVbbb_->push_back((*jetBtagSub0DCSVbbb)[(*partonMatchIdx)[indexMin]]);
 	        jetBtagSub1DCSVbbb_->push_back((*jetBtagSub1DCSVbbb)[(*partonMatchIdx)[indexMin]]);
 	  
 	        //PARTON MATCHED
-	        partonPt_->push_back( (*partonPt)[indexMin]);
-	        partonMass_->push_back( (*partonMass)[indexMin]);
-	        partonPhi_->push_back( (*partonPhi)[indexMin]);
-	        partonEta_->push_back( (*partonEta)[indexMin]);
-	        jetFlavorSub0_->push_back((*jetFlavorSub0)[indexMin]);
-	        jetFlavorSub1_->push_back((*jetFlavorSub1)[indexMin]);
+	        partonPt_->push_back((*partonPt)[indexMin]);
+	        partonMass_->push_back((*partonMass)[indexMin]);
+	        partonPhi_->push_back((*partonPhi)[indexMin]);
+	        partonEta_->push_back((*partonEta)[indexMin]);
+	        
 	        //here misssing partonY
 	      }     
 	     }//----end of if jetMatchedIndexes > 0
@@ -313,7 +321,7 @@ void CalculateBTaggingEfficiency()
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
     
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[2];
-    partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
+    partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
     tightMassCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -326,70 +334,105 @@ void CalculateBTaggingEfficiency()
    
     //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+/*
+    cout<<"---------------------"<<endl;
+    cout<<"dCSVScoreSub0 jet0: "<<dCSVScoreSub0[0]<<endl;
+    cout<<"dCSVScoreSub0 jet1: "<<dCSVScoreSub0[1]<<endl;
+    cout<<"dCSVScoreSub1 jet0: "<<dCSVScoreSub1[0]<<endl;
+    cout<<"dCSVScoreSub1 jet1: "<<dCSVScoreSub1[1]<<endl;
 
+    cout<<"abs flavour Sub0 parton0: "<<fabs((*jetFlavorSub0_)[0])<<endl;
+    cout<<"abs flavour Sub0 parton1: "<<fabs((*jetFlavorSub0_)[1])<<endl;
+    cout<<"abs flavour Sub1 parton0: "<<fabs((*jetFlavorSub1_)[0])<<endl;
+    cout<<"abs flavour Sub1 parton1: "<<fabs((*jetFlavorSub1_)[1])<<endl;
+
+    cout<<"topTagger: "<<tTaggerCut<<endl;
+    cout<<"massCut: "<<massCut<<endl;
+    cout<<"partonCuts: "<<partonCuts<<endl;;
+    cout<<"recoCuts: "<<recoCuts<<endl;
+
+    cout<<"partonEta0: "<<fabs((*partonEta_)[0])<<endl;
+    cout<<"partonEta1: "<<fabs((*partonEta_)[1])<<endl;
+    cout<<"partonPt0: "<<(*partonPt_)[0]<<endl;
+    cout<<"partonPt1: "<<(*partonPt_)[1]<<endl;
+    cout<<"mTTbarParton: "<<mTTbarParton<<endl;
+  */
     if(isMatched > 1)
     {
-      int leadingPt = 0;
-      int subleadingPt = 1;
-      if ((*pt_)[0] < (*pt_)[1]) 
+      if(recoCuts && tTaggerCut &&  tightMassCut && partonCuts)
       {
-        leadingPt = 1;
-        subleadingPt = 0;
-      }
+        //3 categories
+        //1: pass reco cuts (meaning only the btagging deepCSV requirement)
+        //2: pass reco and parton cuts (meaning that they pass the deepCSV and then categorize them in 4 regions depending on the parton flavour)
+        //3: pass only parton cuts (meaning that we categorize 4 regions depending on the parton flavour)
 
-      if(recoCuts && tTaggerCut && partonCuts && tightMassCut)
-      {
-      	//we need to check all the subjets for b tagging and flavor id
-      	//first check the 2 leading subjets from the 2 leading jets
-      	for(int isub = 0; isub < jetFlavorSub0_->size(); isub++)
-      	{
-      		//check for parton flavour
-      		if((*jetFlavorSub0_)[isub]  == 5) //b quark
-      		{
-      			hBTagParton[f][0]->Fill((*jetPtSub0_)[isub], fabs((*jetEtaSub0_)[isub]));
-      			//check for DeepCSV scores
-      			if((*jetBtagSub0DCSVbb_)[isub] + (*jetBtagSub0DCSVbbb_)[isub] > deepCSVFloat) //b quark
-      				hBTagReco[f]->Fill((*jetPtSub0_)[isub], fabs((*jetEtaSub0_)[isub]));
-      		}
+        //you have to do this on the 2 leading jets on their 0 and 1 subjets
+        //we do it per subjets:
+        for(int ijet =0; ijet<2; ijet++)
+        {         
+          if(dCSVScoreSub0[ijet] > deepCSVFloat) //this means that the first subjet is btagged
+          {
+            //fill the region 1
+            hBTagReco[f]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]));
 
-      		else if((*jetFlavorSub0_)[isub]  == 4) //c quark
-      			hBTagParton[f][1]->Fill((*jetPtSub0_)[isub], fabs((*jetEtaSub0_)[isub]));
-      		
-      		else if((*jetFlavorSub0_)[isub] ==1 || (*jetFlavorSub0_)[isub] ==2 || (*jetFlavorSub0_)[isub] ==3) //uds
-      		 	hBTagParton[f][2]->Fill((*jetPtSub0_)[isub], fabs((*jetEtaSub0_)[isub]));
-      		
-      		else if((*jetFlavorSub0_)[isub]  == 21) //gluon
-      			hBTagParton[f][3]->Fill((*jetPtSub0_)[isub], fabs((*jetEtaSub0_)[isub]));   		
-      	}
-      	for(int isub = 0; isub < jetFlavorSub1_->size(); isub++)
-      	{
-      		//check for parton flavour
-      		if((*jetFlavorSub1_)[isub]  == 5) //b quark
-      		{
-      			hBTagParton[f][0]->Fill((*jetPtSub1_)[isub], fabs((*jetEtaSub1_)[isub]));
-      			//check for DeepCSV scores
-      			if((*jetBtagSub1DCSVbb_)[isub] + (*jetBtagSub1DCSVbbb_)[isub] > deepCSVFloat) //b quark
-      				hBTagReco[f]->Fill((*jetPtSub1_)[isub], fabs((*jetEtaSub1_)[isub]));
-      		}
-      		
-      		else if((*jetFlavorSub1_)[isub]  == 4) //c quark
-      			hBTagParton[f][1]->Fill((*jetPtSub1_)[isub], fabs((*jetEtaSub1_)[isub]));
-      		
-      		else if((*jetFlavorSub1_)[isub] ==1 || (*jetFlavorSub1_)[isub] ==2 || (*jetFlavorSub1_)[isub] ==3) //uds
-      		 	hBTagParton[f][2]->Fill((*jetPtSub1_)[isub], fabs((*jetEtaSub1_)[isub]));
-      		
-      		else if((*jetFlavorSub1_)[isub]  == 21) //gluon
-      			hBTagParton[f][3]->Fill((*jetPtSub1_)[isub], fabs((*jetEtaSub1_)[isub]));		
-      	}
-      	//cout<<"------------"<<endl;
-      	//cout<<jetFlavorSub0_->size()<<endl;
-      	//cout<<jetFlavorSub1_->size()<<endl;
-      }
-    }
+            //now for category 2 for the first subjet
+            if(fabs((*jetFlavorSub0_)[ijet])  ==5)
+              hBTagRecoParton[f][0]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+            else if(fabs((*jetFlavorSub0_)[ijet]) == 4)
+              hBTagRecoParton[f][1]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+            else if(fabs((*jetFlavorSub0_)[ijet]) == 1 || fabs((*jetFlavorSub0_)[ijet]) == 2 || fabs((*jetFlavorSub0_)[ijet]) == 3)
+              hBTagRecoParton[f][2]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+            else if(fabs((*jetFlavorSub0_)[ijet]) == 21)
+              hBTagRecoParton[f][3]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+
+          }
+          if(dCSVScoreSub1[ijet] > deepCSVFloat) //this means that the second subjet is btagged
+          {
+            //fill the region 1
+            hBTagReco[f]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]));
+
+            //now for category 2 for the second subjet
+            if(fabs((*jetFlavorSub1_)[ijet]) ==5)
+              hBTagRecoParton[f][0]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+            else if(fabs((*jetFlavorSub1_)[ijet]) == 4)
+              hBTagRecoParton[f][1]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+            else if(fabs((*jetFlavorSub1_)[ijet]) == 1 || fabs((*jetFlavorSub1_)[ijet]) == 2 || fabs((*jetFlavorSub1_)[ijet]) == 3)
+              hBTagRecoParton[f][2]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+            else if(fabs((*jetFlavorSub1_)[ijet]) == 21)
+              hBTagRecoParton[f][3]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+          }
+
+          //category 3 only flavours for 1st subjet
+          if(fabs((*jetFlavorSub0_)[ijet]) ==5)
+            hBTagParton[f][0]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+          else if(fabs((*jetFlavorSub0_)[ijet]) == 4)
+            hBTagParton[f][1]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+          else if(fabs((*jetFlavorSub0_)[ijet]) == 1 || fabs((*jetFlavorSub0_)[ijet] == 2) || fabs((*jetFlavorSub0_)[ijet]) == 3)
+            hBTagParton[f][2]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+          else if(fabs((*jetFlavorSub0_)[ijet]) == 21)
+            hBTagParton[f][3]->Fill((*jetPtSub0_)[ijet], fabs((*jetEtaSub0_)[ijet]), genEvtWeight);
+
+          //category 3 only flavours for 2nd subjet
+          if(fabs((*jetFlavorSub1_)[ijet]) ==5)
+            hBTagParton[f][0]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);      
+          else if(fabs((*jetFlavorSub1_)[ijet]) == 4)
+            hBTagParton[f][1]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+          else if(fabs((*jetFlavorSub1_)[ijet]) == 1 || fabs((*jetFlavorSub1_)[ijet]) == 2 || fabs((*jetFlavorSub1_)[ijet]) == 3)
+            hBTagParton[f][2]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+          else if(fabs((*jetFlavorSub1_)[ijet]) == 21)
+            hBTagParton[f][3]->Fill((*jetPtSub1_)[ijet], fabs((*jetEtaSub1_)[ijet]), genEvtWeight);
+        
+
+        }//end of jet loop
+
+      	
+
+      } //end of selection
+    }//is matched
 
 
 	}//----if nJets>1
-  }//----if is matched > 1
+  }//----end of NN loop
 
  }//for listoffiles.size()
 
@@ -397,29 +440,32 @@ void CalculateBTaggingEfficiency()
  //scale them with XSEC * LUMI / GENEVENTS
  for(int f = 0; f<listOfFiles.size(); f++)
  {
- 	hBTagReco[f]->GetXaxis()->SetTitle("Jet P_{T} (GeV)");
- 	hBTagReco[f]->GetYaxis()->SetTitle("|Jet #eta |");
+ 	hBTagReco[f]->GetXaxis()->SetTitle("subJet P_{T} (GeV)");
+ 	hBTagReco[f]->GetYaxis()->SetTitle("subJet |#eta |");
  	hBTagReco[f]->Scale(weights[f]);
-
  	for(int i=0; i<histoNames.size(); i++)
  	{
- 		hBTagParton[f][i]->GetXaxis()->SetTitle("Parton P_{T} (GeV)");
- 		hBTagParton[f][i]->GetYaxis()->SetTitle("|Parton #eta|");
+ 		hBTagParton[f][i]->GetXaxis()->SetTitle("subJet P_{T} (GeV)");
+ 		hBTagParton[f][i]->GetYaxis()->SetTitle("subJet |#eta|");
  		hBTagParton[f][i]->Scale(weights[f]);
+
+    hBTagRecoParton[f][i]->GetXaxis()->SetTitle("subJet P_{T} (GeV)");
+    hBTagRecoParton[f][i]->GetYaxis()->SetTitle("subJet |#eta|");
+    hBTagRecoParton[f][i]->Scale(weights[f]);
  	}
  }
 
  for(int f = 1; f<listOfFiles.size(); f++)
  {
  	hBTagReco[0]->Add(hBTagReco[f]);
-
  	for(int i=0; i<histoNames.size(); i++)
  	{
  		hBTagParton[0][i]->Add(hBTagParton[f][i]);
+    hBTagRecoParton[0][i]->Add(hBTagRecoParton[f][i]);
  	}
  }
 
-
+/*
  //now plot them
  TCanvas *can[5];
  for(int i =0; i<histoNames.size(); i++)
@@ -428,23 +474,23 @@ void CalculateBTaggingEfficiency()
  	can[i]->cd();
  	hBTagParton[0][i]->Draw("text colz");
  }
+ 
  can[4] = new TCanvas(TString::Format("can_%d",4),TString::Format("can_%d",4), 800, 600 );
  can[4]->cd();
  hBTagReco[0]->Draw("text colz");
+ */
 
- TFile *outf = new TFile("BTaggingEfficiency_massCutTight.root", "RECREATE");
+ TFile *outf = new TFile("BTaggingEfficiency_massCutLoose_tightMassCut.root", "RECREATE");
  outf->cd();
  //this is to save the histograms
  hBTagReco[0]->Write();
  for(int i =0; i<histoNames.size(); i++)
  {
  	hBTagParton[0][i]->Write();
+  hBTagRecoParton[0][i]->Write();
  }
 
- cout<<"eb = "<<hBTagReco[0]->Integral() / hBTagParton[0][0]->Integral()<<endl;
-
-
-
-
+ cout<<"btagging efficiency eb = "<<hBTagRecoParton[0][0]->Integral() / hBTagParton[0][0]->Integral()<<endl;
+ cout<<"btagging acceptance = "<<hBTagRecoParton[0][0]->Integral() / (hBTagRecoParton[0][0]->Integral() + hBTagRecoParton[0][1]->Integral()+ hBTagRecoParton[0][2]->Integral()+ hBTagRecoParton[0][3]->Integral())<<endl;
 
 }

@@ -27,6 +27,12 @@ void SimultaneousFit_3regions(int REBIN =2)
   TH1F *h2b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_2btag_expYield");
   TH1F *h1b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_1btag_expYield");
   TH1F *h0b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_0btag_expYield");
+
+  TFile *infQCDBkg = TFile::Open("Histo_QCD_HT300toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_100.root");
+  TH1F *h2b_QCDBkg = (TH1F*)infQCDBkg->Get("hWt_mTop_2btag_expYield");
+  TH1F *h1b_QCDBkg = (TH1F*)infQCDBkg->Get("hWt_mTop_1btag_expYield");
+  TH1F *h0b_QCDBkg = (TH1F*)infQCDBkg->Get("hWt_mTop_0btag_expYield");
+
   
   TFile *fTemplatesBkg = TFile::Open("templates_Bkg_100.root");
   TFile *fTemplatesSig = TFile::Open("templates_Sig_100.root");
@@ -82,13 +88,23 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",90000,0,1.2e+5);
   RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b","nFitQCD_1b",35000,0,1e+5);
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",3000,0,1e+4);  
+/*
+  cout<<"h0b_QCDBkg: "<<h0b_QCDBkg->Integral()<<endl;
+  cout<<"h1b_QCDBkg: "<<h1b_QCDBkg->Integral()<<endl;
+  cout<<"h2b_QCDBkg: "<<h2b_QCDBkg->Integral()<<endl;
+
+
+  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",h0b_QCDBkg->Integral(),0.5*h0b_QCDBkg->Integral(),1.5*h0b_QCDBkg->Integral());
+  RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b","nFitQCD_1b",h1b_QCDBkg->Integral(),0.5*h1b_QCDBkg->Integral(),1.5*h1b_QCDBkg->Integral());
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",h2b_QCDBkg->Integral(),0.5*h2b_QCDBkg->Integral(),1.5*h2b_QCDBkg->Integral()); 
+*/
 
   RooRealVar *nFitSig   = new RooRealVar("nFitSig","nFitSig",Ntt_expected,0.5*Ntt_expected,1.5*Ntt_expected);
   RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",h0b_TT->Integral(),0.6* h0b_TT->Integral(),1.4*h0b_TT->Integral());
   RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b","nFitSig1b",h1b_TT->Integral(),0.6* h1b_TT->Integral(),1.4*h1b_TT->Integral());
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",h2b_TT->Integral(),0.6* h2b_TT->Integral(),1.4*h2b_TT->Integral());
-  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.50,0.45,0.60);
-  //btagEff->setConstant(true);
+  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.629909,0.5,0.8);
+  btagEff->setConstant(true);
 
   RooFormulaVar nSig0b("nSig_0b","(1-@0)*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
   RooFormulaVar nSig2b("nSig_2b","@0*@0*@1",RooArgList(*btagEff,*nFitSig));
