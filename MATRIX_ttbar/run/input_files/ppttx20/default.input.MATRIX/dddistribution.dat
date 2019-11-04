@@ -1,0 +1,50 @@
+#######################################################
+# MATRIX double differential distributions definition #
+#######################################################
+#
+# In this file you can customize the distributions created during the run (examples below)
+#
+# They are simply defined as a combination of two single differential distributions that
+# must be defined in the file 'distribution.dat'
+#
+#-----------------------\
+# how to read the output|
+#-----------------------/
+#
+# Unlike the single differential distributions, the output for the double differential
+# distribution does not present, as first entry of each line, a description of the bin.
+# The bin are simply labeled with a growing number, defined as:
+#  __________
+# | m*1000+n |
+#  ‾‾‾‾‾‾‾‾‾‾
+# which means that the bin is the one identified by the mth bin of distributionname_1
+# and by the nth bin of distributionname_2 (counting starts from 0)
+#
+#----------------------\
+# define distributions |
+#----------------------/
+
+#pT_t distribution in rapidity bins. Binning defined in 'distribution.dat'
+dddistributionname      =       absy_t-pT_t
+distributionname_1      =       absy_t_dd1
+distributionname_2      =       pT_t_dd1
+
+#pT_tx distribution in rapidity bins. Binning defined in 'distribution.dat'
+dddistributionname      =       absy_tx-pT_tx
+distributionname_1      =       absy_tx_dd1
+distributionname_2      =       pT_tx_dd1
+
+#Rapidity distribution in invariant mass bins. Binning defined in 'distribution.dat'
+dddistributionname      =       m_ttx-absy_ttx
+distributionname_1      =       m_ttx_dd2
+distributionname_2      =       absy_ttx_dd2
+
+#Invariant mass distribution in pT_t bins. Binning defined in 'distribution.dat'
+dddistributionname      =       pT_t-m_ttx
+distributionname_1      =       pT_t_dd3
+distributionname_2      =       m_ttx_dd3
+
+#Invariant mass distribution in pT_tx bins. Binning defined in 'distribution.dat'
+dddistributionname      =       pT_tx-m_ttx
+distributionname_1      =       pT_tx_dd3
+distributionname_2      =       m_ttx_dd3

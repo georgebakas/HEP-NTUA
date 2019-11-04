@@ -1,0 +1,38 @@
+M_W                     =       80.385                  %
+M_Z                     =       91.1876                 %
+M_H                     =       125.                    %
+M_t                     =       173.3                   %
+M_b                     =       0.                      %
+M_c                     =       0.                      %
+M_s                     =       0.                      %
+M_u                     =       0.                      %
+M_d                     =       0.                      %
+M_e                     =       0.                      %
+M_mu                    =       0.                      %
+M_tau                   =       0.                      %
+M_ve                    =       0.                      %
+M_vm                    =       0.                      %
+M_vt                    =       0.                      %
+
+G_F                     =       1.16639E-05             %
+
+CKM_matrix              =       trivial                 %
+theta_c                 =       0.227                   % 
+
+contribution            =       LO                      %
+Gamma_W                 =       0.0                     %
+Gamma_Z                 =       0.0                     %
+Gamma_t                 =       0.0                     %
+Gamma_H                 =       0.00407                 %
+
+contribution            =       NLO                     %
+Gamma_W                 =       0.0                     %
+Gamma_Z                 =       0.0                     %
+Gamma_t                 =       0.0                     %
+Gamma_H                 =       0.00407                 %
+
+contribution            =       NNLO                    %
+Gamma_W                 =       0.0                     %
+Gamma_Z                 =       0.0                     %
+Gamma_t                 =       0.0                     %
+Gamma_H                 =       0.00407                 %

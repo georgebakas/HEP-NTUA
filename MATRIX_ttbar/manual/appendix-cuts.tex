@@ -1,0 +1,145 @@
+\newcommand{\firstuserswitch}[2]{\ttt{#1} & \multicolumn{2}{p{11.25cm}}{#2}}
+\newcommand{\userswitch}[2]{\phantomsection\label{#1}\\\midrule\ttt{#1} & \multicolumn{2}{p{11.25cm}}{#2}}
+\newcommand{\usercut}[2]{\quad\ttt{#1} & \multicolumn{2}{p{11.25cm}}{#2}}
+%\phantomsection\label{#1}
+%\renewcommand{\baselinestretch}{1.0}
+%\renewcommand\arraystretch{1.5}
+%\begin{table}
+%\scriptsize 
+
+\setlength\LTleft{-0.2cm}
+%\setlength\LTright{-0.2cm}
+{
+\footnotesize 
+
+%\fontsize{9pt}{9pt}
+
+%\small
+\begin{center}
+%\resizebox{\columnwidth}{!}{%
+\begin{longtable}{llll}
+\toprule
+\ttt{user_switch}  & \multicolumn{2}{p{11.25cm}}{ {\multirow{ 2}{*}{\bf description}}}     \\
+\quad\ttt{user_cut} & \phantomsection\label{lepton_identification}\\
+\midrule
+\endfirsthead
+\toprule
+\ttt{user_switch}  & \multicolumn{2}{p{11.25cm}}{ {\multirow{ 2}{*}{\bf description}}}     \\
+\quad\ttt{user_cut} & \\
+\midrule
+\endhead % all the lines above this will be repeated on every page
+\multicolumn{3}{r@{}}{continued on next page \ldots}\\
+\bottomrule
+\endfoot
+%\bottomrule
+\endlastfoot
+\firstuserswitch{lepton_identification}{Switch to change between different identification procedures of $Z$ and $W$ bosons in the same-flavour channels of $ZZ$ and $WZ$ production. See \sct{sec:ZZSF} and \sct{sec:WZSF} for details.}
+\userswitch{M_leplep}{Switch for cuts on invariant mass $m_{\ell\ell}$ of all possible lepton pairs.}\\*
+\usercut{min_M_leplep}{Minimal requirement $m_{\ell\ell}> $ \ttt{min_M_leplep} for all lepton pairs.}\\*
+\usercut{max_M_leplep}{Maximal requirement $m_{\ell\ell}< $ \ttt{max_M_leplep} for all lepton pairs.}
+\userswitch{M_leplep_OSSF}{Switch for cuts on invariant mass $m_{\ell^-\ell^+}$ of opposite-sign, same-flavour (OSSF) lepton pairs.}\\*
+\usercut{min_M_leplep_OSSF}{Minimal requirement $m_{\ell^-\ell^+}> $ \ttt{min_M_leplep_OSSF} for OSSF pairs.}\\*
+\usercut{max_M_leplep_OSSF}{Maximal requirement $m_{\ell^-\ell^+}< $ \ttt{max_M_leplep_OSSF} for OSSF pairs.}\\*
+\usercut{min_M_Z1_OSSF}{Minimal requirement $m_{\ell^-\ell^+}> $ \ttt{min_M_Z1_OSSF} for OSSF pair closer to $m_Z$.}\\*
+\usercut{max_M_Z1_OSSF}{Maximal requirement $m_{\ell^-\ell^+}< $ \ttt{max_M_Z1_OSSF} for OSSF pair closer to $m_Z$.}
+\userswitch{M_Zrec}{Switch for cuts on invariant mass $m_{\ell^-\ell^+}$ of lepton pairs associated with $Z$ bosons.}\\*
+\usercut{min_M_Zrec}{Minimal requirement $m_{\ell^-\ell^+}> $ \ttt{min_M_Zrec} for (reconstructed) $Z$ bosons.}\\*
+\usercut{max_M_Zrec}{Maximal requirement $m_{\ell^-\ell^+}< $ \ttt{max_M_Zrec} for (reconstructed) $Z$ bosons.}
+\userswitch{delta_M_Zrec_MZ}{Switch for cuts on absolute difference between invariant mass $m_{\ell^-\ell^+}$ of lepton pairs associated with $Z$ bosons and the $Z$-boson mass.}\\*
+\usercut{max_delta_M_Zrec_MZ}{Maximal requirement $|m_{\ell^-\ell^+}-m_Z|< $ \ttt{max_delta_M_Zrec_MZ} for (reconstructed) $Z$ bosons.}
+\userswitch{delta_M_lepleplep_MZ}{Switch for cuts on absolute difference between invariant mass $m_{\ell\ell\ell}$ of 3-lepton system and the $Z$-boson mass.}\\*
+\usercut{min_delta_M_lepleplep_MZ}{Minimal requirement $|m_{\ell\ell\ell}-m_Z|> $ \ttt{min_delta_M_lepleplep_MZ}.}
+\userswitch{M_4lep}{Switch for cuts on invariant mass $m_{\ell\ell\ell\ell}$ of 4-lepton system.}\\*
+\usercut{min_M_4lep}{Minimal requirement $m_{\ell\ell\ell\ell}> $ \ttt{min_M_4lep} for 4-lepton system.}\\*
+\usercut{max_M_4lep}{Maximal requirement $m_{\ell\ell\ell\ell}< $ \ttt{max_M_4lep} for 4-lepton system.}\\*
+\usercut{min_delta_M_4lep}{Minimal requirement $|m_{\ell\ell\ell\ell}-m_Z|> $ \ttt{min_delta_M_4lep} for 4-lepton system.}\\*
+\usercut{max_delta_M_4lep}{Maximal requirement $|m_{\ell\ell\ell\ell}-m_Z|< $ \ttt{max_delta_M_4lep} for 4-lepton system.}
+\userswitch{M_leplepnunu}{Switch for cuts on invariant mass $m_{\ell\ell\nu\nu}$ of 2-lepton--2-neutrino system.}\\*
+\usercut{min_M_leplepnunu}{Minimal requirement $m_{\ell\ell\nu\nu}> $ \ttt{min_delta_M_leplepnunu} for 2$\ell$2$\nu$ system.}\\*
+\usercut{max_M_leplepnunu}{Maximal requirement $m_{\ell\ell\nu\nu}< $ \ttt{max_delta_M_leplepnunu} for 2$\ell$2$\nu$ system.}\\*
+\usercut{min_delta_M_leplepnunu}{Min. requirement $|m_{\ell\ell\nu\nu}-m_Z|> $ \ttt{min_delta_M_leplepnunu} for 2$\ell$2$\nu$ system.}\\*
+\usercut{max_delta_M_leplepnunu}{Max. requirement $|m_{\ell\ell\nu\nu}-m_Z|< $ \ttt{max_delta_M_leplepnunu} for 2$\ell$2$\nu$ system.}
+\userswitch{pT_leplep}{Switch for cuts on transverse momentum of lepton pair $p_{T,\ell\ell}$.}\\*
+\usercut{min_pT_leplep}{Minimal requirement $p_{T,\ell\ell} >$ \ttt{min_pT_leplep} for lepton pair.}
+\userswitch{pT_lep_1st}{Switch for cuts on transverse momentum of hardest lepton $p_{T,\ell_1}$.}\\*
+\usercut{min_pT_lep_1st}{Minimal requirement $p_{T,\ell_1} >$ \ttt{min_pT_lep_1st} for hardest lepton.}
+\userswitch{pT_lep_2nd}{Switch for cuts on transverse momentum of second-hardest lepton $p_{T,\ell_2}$.}\\*
+\usercut{min_pT_lep_2nd}{Minimal requirement $p_{T,\ell_2} >$ \ttt{min_pT_lep_2nd} for second-hardest lepton.}
+\userswitch{lepton_cuts}{Switch for cuts on transverse momentum of (second-)hardest lepton $p_{T,\ell_1}$($p_{T,\ell_2}$).}\\*
+\usercut{min_pT_lep_1st}{Minimal requirement $p_{T,\ell_1} >$ \ttt{min_pT_lep_1st} for hardest lepton.}\\*
+\usercut{min_pT_lep_2nd}{Minimal requirement $p_{T,\ell_2} >$ \ttt{min_pT_lep_2nd} for second-hardest lepton.}
+\userswitch{leading_lepton_cuts}{Switch for flavour-dependent cuts on hardest-lepton transverse momentum $p_{T,\ell_1}$.}\\*
+\usercut{min_pT_1st_if_e}{Minimal requirement $p_{T,\ell_1} >$ \ttt{min_pT_1st_if_e} if hardest lepton is electron.}\\*
+\usercut{min_pT_1st_if_mu}{Minimal requirement $p_{T,\ell_1} >$ \ttt{min_pT_1st_if_mu} if hardest lepton is muon.}
+\userswitch{lepZ_cuts}{Switch for cuts on transverse momentum of (second-)hardest lepton associated with $Z$-boson decay $p_{T,\ell_{Z,1}}\, (p_{T,\ell_{Z,2}})$.}\\*
+\usercut{min_pT_lepZ_1st}{Minimal requirement $p_{T,\ell_{Z,1}} >$ \ttt{min_pT_lepZ_1st} for hardest lepton of $Z$.}\\*
+\usercut{min_pT_lepZ_2nd}{Minimal requirement $p_{T,\ell_{Z,2}} >$ \ttt{min_pT_lepZ_2nd} for second-hardest lepton of $Z$.}
+\userswitch{lepW_cuts}{Switch for cuts on lepton associated with $W$-boson decay.}\\*
+\usercut{min_pT_lepW}{Minimal requirement $p_{T,\ell_W} >$ \ttt{min_pT_lepW} for lepton from $W$-boson decay.}\\*
+\usercut{max_eta_lepW}{Minimal requirement $\eta_{\ell_W} <$ \ttt{max_eta_lepW} for lepton from $W$-boson decay.}
+\userswitch{R_leplep}{Switch for cuts on lepton separation in $\dRleplep=\sqrt{\Delta y_{\ell\ell}^2 + \Delta\phi_{\ell\ell}^2}$.}\\*
+\usercut{min_R_leplep}{Minimal requirement $\dRleplep> $ \ttt{min_R_leplep} for all lepton pairs.}
+\userswitch{R_lepZlepZ}{Switch for cuts on separation between leptons associated with $Z$-boson decay in $\Delta R_{\ell_Z\ell_Z}=\sqrt{\Delta y_{\ell_Z\ell_Z}^2 + \Delta\phi_{\ell_Z\ell_Z}^2}$.}\\*
+\usercut{min_R_lepZlepZ}{Minimal requirement $\Delta R_{\ell_Z\ell_Z}> $ \ttt{min_R_lepZlepZ} for leptons of $Z$ decay.}
+\userswitch{R_lepZlepW}{Switch for cuts on separation between leptons associated with $Z$-boson decay and lepton associated with $W$-boson decay in $\Delta R_{\ell_Z\ell_W}=\sqrt{\Delta y_{\ell_Z\ell_W}^2 + \Delta\phi_{\ell_Z\ell_W}^2}$.}\\*
+\usercut{min_R_lepZlepW}{Minimal requirement $\Delta R_{\ell_Z\ell_W}> $ \ttt{min_R_lepZlepW} for leptons of $Z$ and $W$ decay.}
+\userswitch{phi_leplep}{Switch for cuts on azimuthal separation $\Delta \phi_{\ell\ell}$ between all lepton pairs.}\\*
+\usercut{min_phi_leplep}{Minimal requirement $\Delta \phi_{\ell\ell}> $ \ttt{min_phi_leplep} for all lepton pairs.}
+\userswitch{phi_leplep_nunu}{Switch for cuts on azimuthal separation $\Delta \phi_{\ell\ell,\nu\nu}$ between the transverse-momentum vectors of the 2-lepton system 
+$\boldsymbol p_{\rm \boldsymbol T,\ell\ell}$ and the missing energy $\mathbf\ptmiss$.}\\*
+\usercut{min_phi_leplep_nunu}{Minimal requirement $\Delta \phi_{\ell\ell,\nu\nu}> $ \ttt{min_phi_leplep_nunu}.}
+\userswitch{electron_cuts}{Switch for cuts on transverse momentum of (second-)hardest electron $p_{T,e_1}$($p_{T,e_2}$).}\\*
+\usercut{min_pT_e_1st}{Minimal requirement $p_{T,e_1} >$ \ttt{min_pT_e_1st} for hardest electron.}\\*
+\usercut{min_pT_e_2nd}{Minimal requirement $p_{T,e_2} >$ \ttt{min_pT_e_2nd} for second-hardest electron.}
+\userswitch{muon_cuts}{Switch for cuts on transverse momentum of (second-)hardest muon $p_{T,\mu_1}$($p_{T,\mu_2}$).}\\*
+\usercut{min_pT_mu_1st}{Minimal requirement $p_{T,\mu_1} >$ \ttt{min_pT_mu_1st} for hardest muon.}\\*
+\usercut{min_pT_mu_2nd}{Minimal requirement $p_{T,\mu_2} >$ \ttt{min_pT_mu_2nd} for second-hardest muon.}
+\userswitch{gap_eta_e}{Switch for detector gap in absolute pseudo-rapidity $|\eta_e|$ of electrons.}\\*
+\usercut{gap_min_eta_e}{Start of the gap, keeping only events with $|\eta_e|<$ \ttt{gap_min_eta_e}.}\\*
+\usercut{gap_max_eta_e}{End of the gap, keeping only events with $|\eta_e|>$ \ttt{gap_max_eta_e}.}
+\userswitch{M_gamgam}{Switch for cuts on invariant mass $m_{\gamma\gamma}$ of photon pairs.}\\*
+\usercut{min_M_gamgam}{Minimal requirement $m_{\gamma\gamma}> $ \ttt{min_M_gamgam} for photon pairs.}\\*
+\usercut{max_M_gamgam}{Maximal requirement $m_{\gamma\gamma}< $ \ttt{min_M_gamgam} for photon pairs.}
+\userswitch{pT_gam_1st}{Switch for cuts on transverse momentum of hardest photon $p_{T,\gamma_1}$.}\\*
+\usercut{min_pT_gam_1st}{Minimal requirement $p_{T,\gamma_1} >$ \ttt{min_pT_gam_1st} for hardest photon.}
+\userswitch{R_gamgam}{Switch for cuts on photon separation in $\Delta R_{\gamma\gamma}=\sqrt{\Delta y_{\gamma\gamma}^2 + \Delta\phi_{\gamma\gamma}^2}$.}\\*
+\usercut{min_R_gamgam}{Minimal requirement $\Delta R_{\gamma\gamma}> $ \ttt{min_R_gamgam} for photon pairs.}
+\userswitch{gap_eta_gam}{Switch for detector gap in absolute pseudo-rapidity $|\eta_\gamma|$ of photons.}\\*
+\usercut{gap_min_eta_gam}{Start of the gap, keeping only events with $|\eta_\gamma|<$ \ttt{gap_min_eta_gam}.}\\*
+\usercut{gap_max_eta_gam}{End of the gap, keeping only events with $|\eta_\gamma|>$ \ttt{gap_max_eta_gam}.}
+\userswitch{M_lepgam}{Switch for cuts on invariant mass $m_{\ell\gamma}$ of lepton--photon pairs.}\\*
+\usercut{min_M_lepgam}{Minimal requirement $m_{\ell\gamma}> $ \ttt{min_M_lepgam} for lepton--photon pairs.}
+\userswitch{R_lepgam}{Switch for cuts on lepton--photon separation in $\dRlepgamma=\sqrt{\Delta y_{\ell\gamma}^2 + \Delta\phi_{\ell\gamma}^2}$.}\\*
+\usercut{min_R_lepgam}{Minimal requirement $\dRlepgamma> $ \ttt{min_R_lepgam} for lepton--photon pairs.}
+\userswitch{R_lepjet}{Switch for cuts on lepton--jet separation in $\dRlepjet=\sqrt{\Delta y_{\ell j}^2 + \Delta\phi_{\ell j}^2}$.}\\*
+\usercut{min_R_lepjet}{Minimal requirement $\Delta R_{\ell j}> $ \ttt{min_R_lepjet} for lepton--jet pairs.}
+\userswitch{lep_iso}{Switch for special isolation of lepton--lepton and lepton--parton pairs, as used for example in the $ZZ$ Higgs background, see \citere{deFlorian:2016spz}. For each lepton $i$ we compute the sum of the transverse momenta over all leptons and partons in a certain $R$ cone around $i$ and take the ratio to its transverse momentum. 
+All events are discarded where this ratio is below a certain threshold: \[\left.\sum_{\substack{j\in\{\ell,\text{partons}\}\\* \text{ with } \Delta R_{ij}< \delta_0}}p_{T,j} \middle/ p_{T,i}\right. < \epsilon\]}\vspace{-0.3cm}\\*
+\usercut{lep_iso_delta_0}{$\delta_0$ in the formula above.}\\*
+\usercut{lep_iso_epsilon}{$\epsilon$ in the formula above.}
+\userswitch{R_ejet}{Switch for cuts on electron--jet separation in $\Delta R_{e j}=\sqrt{\Delta y_{e j}^2 + \Delta\phi_{e j}^2}$.}\\*
+\usercut{min_R_ejet}{Minimal requirement $\Delta R_{ej}> $ \ttt{min_R_ejet} for electron--jet pairs.}
+\userswitch{R_gamjet}{Switch for cuts on photon--jet separation in $\dRgammajet=\sqrt{\Delta y_{\ell j}^2 + \Delta\phi_{\ell j}^2}$.}\\*
+\usercut{min_R_gamjet}{Minimal requirement $\dRgammajet> $ \ttt{min_R_gamjet} for photon--jet pairs.}
+\userswitch{mT_CMS}{Switch for cuts on transverse mass $m_{T,W}$ of $W$ boson as defined by CMS \cite{Chatrchyan:2013fya}.}\\*
+\usercut{min_mT_CMS}{Minimal requirement $m_{T,W}> $ \ttt{min_mT_CMS} for the $W$ boson.}
+\userswitch{pT_W}{Switch for cuts on transverse momentum $p_{T,\ell\nu_\ell}$ of (identified) $W$ bosons.}\\*
+\usercut{min_pT_W}{Minimal requirement $p_{T,\ell\nu_\ell}>$ \ttt{min_pT_W} for (identified) $W$ bosons.}\\*
+\usercut{max_pT_W}{Maximal requirement $p_{T,\ell\nu_\ell}<$ \ttt{max_pT_W} for (identified) $W$ bosons.}
+\userswitch{MT_Wrec}{Switch for cuts on transverse mass $m_{T,\ell\nu_\ell}$ of (identified) $W$ bosons, defined by
+\[m_{T,\ell\nu_\ell} =\sqrt{ \left(E_{T,\ell}+E_{T,\nu_{\ell}}\right)^2 - \left(p_{T,\ell\nu_{\ell}}\right)^2}\quad \mathrm{with} \quad (E_{T,x})^2=m_x^2+(p_{T,x})^2 \]\vspace{-0.4cm}}\\*
+\usercut{min_MT_Wrec}{Minimal requirement $m_{T}^{\ell\nu_\ell}>$ \ttt{min_mT_Wrec} for (identified) $W$ bosons.}
+\userswitch{rel_pT_miss}{Switch for cuts on the relative missing transverse momentum $\ptmissrel$, which is defined as $\ptmiss\times \sin|\Delta\phi|$, 
+where $\Delta\phi$ is the azimuthal separation between $\mathbf\ptmiss$ and the momentum of the closest lepton, see \citere{Aad:2016wpd}.}\\*
+\usercut{min_rel_pT_miss}{Minimal requirement $\ptmissrel >$ \ttt{min_rel_pT_miss}.}\\
+\bottomrule\\
+
+\caption{Explanations of the pre-defined cuts available in the various \Matrix{} processes. See \sct{sec:processes} for which cuts belong to which process.}
+\label{tab:predefinedcuts}
+\end{longtable}
+%}
+\end{center}
+\renewcommand{\baselinestretch}{1.0}}
+%\end{table}
+%\renewcommand\arraystretch{1.1}
+\normalsize

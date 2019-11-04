@@ -1,0 +1,60 @@
+#MUNICH_CONFIG = MUNICH-config
+HOMEPATH = $(shell pwd)
+SRCDIR = $(HOMEPATH)/src
+PRCDIR = $(HOMEPATH)/prc
+PSGDIR = $(HOMEPATH)/psg
+OBJDIR = $(HOMEPATH)/obj
+LIBDIR = $(HOMEPATH)/lib
+BINDIR = $(HOMEPATH)/bin
+AMPDIR = $(HOMEPATH)/amp
+EXTDIR = $(HOMEPATH)/external
+
+GSL_CONFIG = gsl-config
+LHAPDF_CONFIG =
+OpenLoops_CONFIG =
+
+GINAC_DIR =  
+CLN_DIR =  
+CHAPLIN_DIR =
+#CLN = -L$(CLN_DIR)/lib -Wl,-rpath,$(CLN_DIR)/lib -lcln
+
+MOREDIR = 
+MORE = -L$(MOREDIR) -Wl,-rpath,$(MOREDIR) -lmore
+
+#GCCVERS = 4.6.2
+#STATIC = -shared
+STATIC = -static
+
+CXX = g++
+CXX_CONDOR = $(CXX)
+#CXXFLAGS = -O0 $(STATIC) 
+#CXXFLAGS = -O2 -fPIC
+CXXFLAGS = -O2 $(STATIC) -Wall -Wno-comment -Wno-sign-compare -std=c++11
+#FFLAGS = 
+#FFLAGS = -O2 -fPIC
+FFLAGS = -O2 $(STATIC)
+LINKFLAGS = $(STATIC) 
+#CXXFLAGS = -g -O2 $(STATIC) 
+#-I$(shell $(LHAPDF_CONFIG) --incdir) $(shell $(GSL_CONFIG) --cflags)
+
+FORTRAN_LIB_PATH = 
+STDLIBS = -Wl,-rpath,$(FORTRAN_LIB_PATH) -lgfortran -lquadmath
+
+PPATH = ./
+
+#LIBlooptools = 
+
+LDFLAGS = -L$(GINAC_DIR)/lib  -L$(GINAC_DIR)/lib -Wl,-rpath,$(GINAC_DIR)/lib -L$(GINAC_DIR)/lib64  -L$(GINAC_DIR)/lib64 -Wl,-rpath,$(GINAC_DIR)/lib64 -lginac -L$(CLN_DIR)/lib -L$(CLN_DIR)/lib -Wl,-rpath,$(CLN_DIR)/lib -L$(CLN_DIR)/lib64 -L$(CLN_DIR)/lib64 -Wl,-rpath,$(CLN_DIR)/lib64 -lcln -Wl,-rpath,$(FORTRAN_LIB_PATH) -lgfortran
+
+FC = gfortran
+
+F90 = gfortran -ffree-line-length-0
+
+# determines wether LHAPDF 5 or 6 are used. This is needed to know in the C++ code (via the set preprocessor) whether to set the correct nq_nondecoupled values in LHAPDF 5.
+LHAPDF_VERSION = $(shell $(LHAPDF_CONFIG) --version | head -c 1)
+ifeq ($(LHAPDF_VERSION), 5)
+  $(info IMPORTANT NOTE: Using $$LHAPDF_VERSION = $(LHAPDF_VERSION) and adding preprocessor variable -DLHAPDF5 to compiler Flags to correctly choose nq_nondecoupled in certain PDF sets.)
+  CXXFLAGS += -DLHAPDF5
+endif
+
+-include $(SRCDIR)/Makefile

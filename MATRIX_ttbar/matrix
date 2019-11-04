@@ -1,0 +1,245 @@
+#!/usr/bin/env python
+
+#{{{ imports
+import sys
+import os
+import copy
+import argparse
+import signal
+from os.path import join as pjoin
+import multiprocessing
+#}}}
+
+sys.path.append(pjoin(os.path.dirname(os.path.realpath(__file__)),"bin/modules"))
+from initialize_classes_matrix import *
+
+# get path of matrix directory
+
+matrix_dir = os.path.dirname(os.path.realpath(__file__))
+# get number of cores
+
+#{{{ def: exit_handler(signal,frame)
+def exit_handler(signal,frame):
+    out.print_error_no_stop('Exiting...')
+    sys.exit(0)
+#}}}
+#{{{ def control_c_handler(signal,frame)
+def control_c_handler(signal,frame):
+    # this is to kill cluster jobs which are still running 
+    # when stopping the main code with ctrl-c
+    print('You pressed ctrl-c!')
+    exit_handler(signal,frame)
+    sys.exit(0)
+#}}}
+signal.signal(signal.SIGINT,control_c_handler)
+#{{{ which(program)
+def which(program):
+
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+                
+
+    return None
+#}}}
+
+# hard-coded; 2do: put somewhere general
+#{{{
+#process_name.available_processes = ["pph21","ppz01","ppeexa03","ppeex02","ppnenexa03","ppeeexex04","ppemexmx04","ppemxnmnex04","ppexnea03","ppenexa03","ppzz02"]
+process_name.process_description["ppttx20"] = "on-shell top-pair production"
+# change order of processes printed on screen
+
+process_name.process_order = ["ppttx20"]
+
+#process_name.process_order = ["pph21","pphh22","ppz01","ppw01","ppwx01","ppw01nockm","ppwx01nockm","ppeex02","ppnenex02","ppenex02","ppexne02","ppenex02nockm","ppexne02nockm","ppaa02","ppeexa03","ppnenexa03","ppenexa03","ppexnea03","ppzz02","ppwxw02","ppemexmx04","ppeeexex04","ppeexnmnmx04","ppemxnmnex04","ppeexnenex04","ppemexnmx04","ppeeexnex04","ppeexmxnm04","ppeexexne04"]
+
+# define amplitudes to be downloaded+compiled from OpenLoops
+openloops_amplitudes_dict = {}
+openloops_amplitudes_dict["ppttx20"] = []
+
+qqVVamp_processes = ["ppemexmx04","ppemexmx04NLOgg","ppeeexex04","ppeexnmnmx04","ppemxnmnex04","ppemxnmnex04NLOgg","ppeexnenex04","ppemexnmx04","ppeeexnex04","ppeexmxnm04","ppeexexne04", "ppeexnenex04NLOgg", "ppeexnmnmx04NLOgg"]
+ggVVamp_processes = ["ppemexmx04","ppemexmx04NLOgg","ppeeexex04","ppeexnmnmx04","ppeexnmnmx04NLOgg", "ppemxnmnex04","ppemxnmnex04NLOgg","ppeexnenex04", "ppeexnenex04NLOgg"]
+process_name.available_processes=copy.copy(process_name.process_order)
+#}}}
+#{{{ get information from script arguments
+parser = argparse.ArgumentParser(description='MATRIX.')
+parser.add_argument('process', metavar='<process>', nargs='?', default="", help='process name, choose from list %s' % process_name.available_processes)
+parser.add_argument('--clean_process',dest='clean_process', action='store_true', help='Clean the selected process completely before compiling it.')
+parser.add_argument('--install_openloops',dest='install_openloops', action='store_true', help='Force installation of OpenLoops, even though openloops exectuable is found under environmental $PATH variable or path_to_openloops is given in MATRIX_configuration.')
+parser.add_argument('--agree_to_all', dest='agreed', action='store_true', help='Agree to cite properly all external Codes and automatically skip the licence-agreement dialog.')
+#parser.add_argument('--no_resum',dest='no_resum', action='store_true', help='Do not include resummation in compilation process. Note: resummation switches in parameter.dat file will be available, but the code will crash if you turn them when compiling with this option.') # not working !!!
+parser.add_argument('--standalone',dest='standalone', action='store_true', help=argparse.SUPPRESS) # hidden argument, since it is not fully working yet
+parser.add_argument('--folder_name_extension', dest='folder_name_extension', action='store', default="_MATRIX", help='Specify an extension for the name of the process folder (ie, <process>+\"folder_name_extension\", default: <process>+\"_MATRIX)\"')
+parser.add_argument('--no_compile', dest='no_compile', action='store_true', help='Do the process setup (including download/compilation of all external tools), but do not (re-)compile the C++ Code.')
+args = parser.parse_args()
+args.no_resum = True # hard-coded for the moment, until we implement resummation in the public version
+#}}}
+args.install_openloops = True # hard-coded: must use the OL version we provide.
+
+print ""
+banner = banner("|","|",67,11)
+banner.print_matrix()
+print ""
+out.print_make("This is the MATRIX process compilation.")
+
+#{{{ read settings from MATRIX_configuration file
+config_list={}
+inp.input_read_parameter_dat(pjoin("config","MATRIX_configuration"),config_list)
+
+# set values or use default by "get" function: get(key,default)
+# if LHAPDF path has not been set it is taken from executables by "which"
+nr_cores = int(config_list.get("nr_cores",multiprocessing.cpu_count()))
+path_to_lhapdf = config_list.get("path_to_lhapdf",which("lhapdf-config"))
+path_to_gsl = config_list.get("path_to_gsl",which("gsl-config"))
+ginac_dir = config_list.get("path_to_ginac","")
+cln_dir = config_list.get("path_to_cln","")
+chaplin_dir = config_list.get("path_to_chaplin","")
+qqvvamp_dir = config_list.get("path_to_qqvvamp","")
+ggvvamp_dir = config_list.get("path_to_ggvvamp","")
+ampzz_dir = config_list.get("path_to_ampzz","")
+ampww_dir = config_list.get("path_to_ampww","")
+libgfortran_dir = config_list.get("path_to_libgfortran","")
+if path_to_lhapdf and not os.path.isfile(path_to_lhapdf):
+    out.print_error("LHAPDF executable (lhapdf-config) not found: path_to_lhapdf=%s is no file." % path_to_lhapdf)
+if path_to_gsl and not os.path.isfile(path_to_gsl):
+    out.print_error("GSL executable (gsl-config) not found: path_to_gsl=%s is no file." % path_to_gsl)
+if ginac_dir and not glob.glob(pjoin(ginac_dir,"lib","libginac.*")):
+    out.print_error("libginac does not exist in \"lib\"-folder under path_to_ginac=%s" % ginac_dir)
+if cln_dir and not glob.glob(pjoin(cln_dir,"lib","libcln.*")):
+    out.print_error("libcln does not exist in \"lib\"-folder under path_to_cln=%s" % cln_dir)
+if chaplin_dir and not glob.glob(pjoin(chaplin_dir,"lib","libchaplin.*")):
+    out.print_error("libchaplin does not exist in \"lib\"-folder under path_to_chaplin=%s" % chaplin_dir)
+if libgfortran_dir and not glob.glob(pjoin(libgfortran_dir,"libgfortran.*")):
+    out.print_error("libgfortran does not exist under path_to_libgfortran=%s" % libgfortran_dir)
+#}}}
+
+#{{{ determine process to be compiled and created
+extension = args.folder_name_extension
+if args.process:
+    out.print_read("Setting process_id="+args.process+"...")
+    process = args.process
+    if not process in process_name.available_processes:
+        out.print_error("process_id \"%s\" is not in the list of available processes: %s. Please choose a process_id from this list and restart..." % (process,process_name.available_processes))
+else:
+    out.print_read("Type process_id to be compiled and created. Type \"list\" to show available processes. Try pressing TAB for auto-completion. Type \"exit\" or \"quit\" to stop.")
+    while True:
+        process = process_name.readin_process()
+        if process == "quit" or process == "exit":
+            exit(0)
+        elif process == "list":
+            process_name.list_processes()
+        elif process_name.check_process(process): 
+            break
+        else:
+            out.print_read("No suitable process_id or command has been entered. Try again...")
+            out.print_read("You have to choose a process_id from the following list:")
+            process_name.list_processes()
+#}}}
+
+#{{{ licence agreement
+
+out.print_make("MATRIX usage agreements:")
+licence_order = ["standard","OpenLoops"]
+licence_dict  = {}
+licence_dict["OpenLoops"] = ["http://openloops.hepforge.org","F. Buccioni, J.-N. Lang, J. Lindert, P. Maierhoefer, S. Pozzorini, H. Zhang, M. Zoller","arXiv:1907.13071"]
+if process in qqVVamp_processes or process == "ppzz02" or process == "ppwxw02":
+    licence_order.append("VVamp")
+    licence_dict["VVamp"] = ["http://vvamp.hepforge.org","T. Gehrmann, A. von Manteuffel, L. Tancredi","arXiv:1503.04812"]
+lic = licence_agreement(licence_order,licence_dict,args.agreed)
+
+#}}}
+
+#{{{ compile process folder
+out.print_make("Starting compilation...")
+# determine required OpenLoops amplitudes for this process
+if process in openloops_amplitudes_dict:
+    openloops_amplitudes = openloops_amplitudes_dict[process]
+else:
+    out.print_error("OpenLoops amplitudes to be downloaded not specified for process %s. Must be added to openloops_amplitudes_dict at the beginning of the matrix script. Exiting..." % process)
+if args.no_resum:
+    do_resum = False
+else:
+    do_resum = True
+# can be initiated only know because it needs to know the "process"
+comp = compile_process(process,matrix_dir,nr_cores,openloops_amplitudes,do_resum) # class to compile process, including all dependencies except for LHAPDF
+if args.clean_process:
+    comp.clean_process = True
+more_tar  = pjoin(matrix_dir,"external","MoRe-v1.0.0.tar")
+ginac_tar = pjoin(matrix_dir,"external","ginac-1.6.2.tar")
+cln_tar   = pjoin(matrix_dir,"external","cln-1.3.4.tar")
+chaplin_tar = pjoin(matrix_dir,"external","chaplin-1.2.tar")
+openloops_tar = pjoin(matrix_dir,"external","OpenLoops.tar")
+qqvvamp_tar = pjoin(matrix_dir,"external","qqvvamp-1.1.tar")
+ggvvamp_tar = pjoin(matrix_dir,"external","ggvvamp-1.0.tar")
+ampzz_tar = pjoin(matrix_dir,"external","ampzz.tar")
+ampww_tar = pjoin(matrix_dir,"external","ampww.tar")
+if path_to_lhapdf:
+    out.print_make("Using compiled LHAPDF installation under (config/MATRIX_configuration) path_to_lhapdf=%s" % path_to_lhapdf)
+    comp.path_to_lhapdf = path_to_lhapdf
+else:
+    out.print_error("No installation of LHAPDF found. Install LHAPDF such that lhapdf-config executable is found under your environmental $PATH variable or specify path to lhapdf-config under \"path_to_lhapdf\" in MATRIX_configuration file.")
+comp.path_to_gsl = path_to_gsl
+
+path_to_openloops={}
+
+if path_to_openloops and not args.install_openloops:
+    out.print_make("Using compiled OpenLoops installation under (config/MATRIX_configuration) path_to_openloops=%s" % path_to_openloops)
+    comp.path_to_openloops = path_to_openloops
+else:
+    ext_dir = pjoin(matrix_dir,"external")
+    comp.download_and_compile_openloops(ext_dir,openloops_tar)
+if do_resum:
+    comp.compile_MoRe(more_tar)
+if cln_dir:
+    out.print_make("Using compiled Cln installation under (config/MATRIX_configuration) path_to_cln=%s" % cln_dir)
+    comp.cln_dir = cln_dir
+else:
+    comp.compile_cln(cln_tar)
+if ginac_dir:
+    out.print_make("Using compiled Ginac installation under (config/MATRIX_configuration) path_to_ginac=%s" % ginac_dir)
+    comp.ginac_dir = ginac_dir
+else:
+    comp.compile_ginac(ginac_tar)
+if chaplin_dir:
+    out.print_make("Using compiled Chaplin installation under (config/MATRIX_configuration) path_to_chaplin=%s" % chaplin_dir)
+    comp.chaplin_dir = chaplin_dir
+else:
+    comp.compile_chaplin(chaplin_tar)
+if process in qqVVamp_processes:
+    comp.compile_qqvvamp(qqvvamp_tar)
+if process in ggVVamp_processes:
+    comp.compile_ggvvamp(ggvvamp_tar)
+comp.libgfortran_dir = libgfortran_dir 
+comp.create_makefile()
+if args.no_compile:
+    out.print_make("Skipping C++ (re-)compilation of MATRIX process...")    
+else:
+    comp.compile_matrix_process()
+#}}}
+
+#{{{ download relevant OpenLoops amplitudes
+comp.download_openloops_amplitudes()
+#}}}
+
+#{{{ create a movable process folder
+# can be initiated only now because it needs to know the "process"
+fold = process_folder(process,matrix_dir,args.standalone,extension) # class to create folder in run directory and handles all paths
+
+out.print_make("Creating process folder in \"run\"-directory: \"%s\"..." % fold.process_folder_path)
+fold.create_process_folder()
+#}}}
+
+out.print_info("Process generation finished, to go to the run directory type:")
+print("                cd %s" % fold.process_folder_path)
+out.print_info("and start run by typing:")
+print("                ./bin/run_process")

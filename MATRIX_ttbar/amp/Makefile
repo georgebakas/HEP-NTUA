@@ -1,0 +1,23 @@
+# amplitude code
+-include $(AMPDIR)/ppll22/Makefile
+-include $(AMPDIR)/ppll42/Makefile
+-include $(AMPDIR)/ppv21/Makefile
+-include $(AMPDIR)/pph41/Makefile
+-include $(AMPDIR)/pphh42/Makefile
+-include $(AMPDIR)/pplla23/Makefile
+-include $(AMPDIR)/ppllh23/Makefile
+-include $(AMPDIR)/ppaa22/Makefile
+-include $(AMPDIR)/ppww22/Makefile
+-include $(AMPDIR)/ppzz22/Makefile
+-include $(AMPDIR)/ppllll24/Makefile
+-include $(AMPDIR)/ggllll34/Makefile
+-include $(AMPDIR)/ggll32/Makefile
+-include $(AMPDIR)/pptt40/Makefile
+-include $(AMPDIR)/pptth41/Makefile
+-include $(AMPDIR)/ppaaa23/Makefile
+-include $(AMPDIR)/ppzzz23/Makefile
+-include $(AMPDIR)/ppllj32/Makefile
+-include $(AMPDIR)/ppaj31/Makefile
+-include $(AMPDIR)/ppvj31/Makefile
+-include $(AMPDIR)/pphj51/Makefile
+-include $(AMPDIR)/ppllaa24/Makefile

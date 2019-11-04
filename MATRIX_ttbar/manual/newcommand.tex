@@ -1,0 +1,248 @@
+\newcommand{\Matrixversion}{\matrixparam{MATRIX\_v1.0.0}}
+
+
+\def\bal#1\eal{\begin{align}#1\end{align}}
+\newcommand{\gridrun}{{\it grid-run}}
+\newcommand{\premainrun}{{\it pre-run}}
+\newcommand{\mainrun}{{\it main-run}}
+\newcommand{\resultrun}{{\it result-collection}}
+\newcommand{\term}{{$}}
+\newcommand{\bare}{{\rm B}}
+\newcommand{\alphas}{\alpha_s}
+\newcommand{\epscalar}{$\epsilon$-scalar}
+\newcommand{\code}{\tt}
+\newcommand{\ddim}{\hat}
+\newcommand{\edim}{\bar}
+\newcommand{\abbrev}{\scalefont{1}}
+\newcommand{\lnx}[1]{\ln^{#1} x}
+\newcommand{\lnxm}[1]{L^{#1}(x)}
+\newcommand{\xht}{x_{Ht}}
+\newcommand{\lht}{l_{Ht}}
+\newcommand{\mhiggs}{m_{\phi}}
+\newcommand{\mh}{m_{h}}
+\newcommand{\mA}{m_{A}}
+\newcommand{\mH}{m_{H}}
+\newcommand{\mtop}{m_t}
+\newcommand{\mbottom}{m_b}
+\newcommand{\ddoverdd}[1]{\frac{\dd}{\dd #1}}
+\newcommand{\doverd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\moresushi}{{\tt MoRe-SusHi}}
+\newcommand{\amcsushi}{{\tt aMCSusHi}}
+\newcommand{\powhegsushi}{{\tt POWHEG-SusHi}}
+\newcommand{\powhegbox}{{\tt POWHEG-BOX}}
+\newcommand{\lhc}{{\abbrev LHC}}
+\newcommand{\slha}{{\abbrev SLHA}}
+\newcommand{\susy}{{\abbrev SUSY}}
+\newcommand{\sushi}{{\tt SusHi}}
+\newcommand{\bsm}{{\abbrev BSM}}        
+\newcommand{\ho}{{\abbrev HO}}
+\newcommand{\dred}{{\abbrev DRED}}
+\newcommand{\dreg}{{\abbrev DREG}}
+\newcommand{\powheg}{{\abbrev POWHEG}}
+\newcommand{\bnl}{{\abbrev BNL}}
+\newcommand{\atl}{{\abbrev ATLAS}}
+\newcommand{\cms}{{\abbrev CMS}}
+\newcommand{\drbar}{\overline{\mbox{\abbrev DR}}}
+\newcommand{\reference}[1]{Ref.\,\cite{#1}}
+\newcommand{\pysix}{{\tt Pythia6}}
+\newcommand{\hwsix}{{\tt Herwig6}}
+\newcommand{\pythia}{{\tt Pythia8}}
+\newcommand{\hwpp}{{\tt Herwig++}}
+\renewcommand{\Re}{{\rm Re}}
+\renewcommand{\Im}{{\rm Im}}
+\renewcommand{\em}{}
+\newcommand{\block}[1]{{\tt Block #1}}
+\newcommand{\blockentry}[2]{{\tt Block #1[#2]}}
+
+\newcommand{\llog}{{\abbrev LL}}
+\newcommand{\nll}{{\abbrev NLL}}
+\newcommand{\nnll}{{\abbrev NNLL}}
+\newcommand{\lo}{{\abbrev LO}}
+\newcommand{\nlo}{{\abbrev NLO}}
+\newcommand{\nnlo}{{\abbrev NNLO}}
+\newcommand{\nnnlo}{{\abbrev N3LO}}
+\newcommand{\sm}{{\abbrev SM}}
+\newcommand{\qcd}{{\abbrev QCD}}
+\newcommand{\thdm}{{\abbrev 2HDM}}
+\newcommand{\nmssm}{{\abbrev NMSSM}}
+\newcommand{\mssm}{{\abbrev MSSM}}
+\newcommand{\ps}{{\abbrev PS}}
+\newcommand{\fs}[1]{#1{\abbrev FS}}
+\newcommand{\mb}{m_{\rm b}}
+\newcommand{\mgen}{M}
+\newcommand{\bbh}{b\bar bH}
+\newcommand{\ggh}{gg\phi}
+\newcommand{\order}[1]{{\cal O}(#1)}
+\newcommand{\plus}{{\abbrev +}}
+\newcommand{\citere}[1]{Ref.\cite{#1}}
+\newcommand{\citeres}[1]{Refs.\cite{#1}}
+
+\renewcommand{\arraystretch}{1.2}
+\newcommand\Matrix{{\sc Matrix}}
+\newcommand\Munich{{\sc Munich}}
+\newcommand\OpenLoops{{\sc OpenLoops}}
+\newcommand\Collier{{\sc Collier}}
+\newcommand{\CutTools}{{\sc CutTools}}
+\newcommand{\OneLOop}{{\sc OneLOop}}
+\newcommand{\LHAPDF}{{\sc LHAPDF}}
+\newcommand\FEWZ{{\sc FEWZ}}
+\newcommand\NNLOjet{{\sc NNLOjet}}
+
+\newcommand{\reffi}[1]{Fig.~\ref{#1}}
+\newcommand{\reffis}[1]{Figs.~\ref{#1}}
+\newcommand{\refta}[1]{Table~\ref{#1}}
+\newcommand{\refse}[1]{Section~\ref{#1}}
+
+\def\Tstrut{\rule{0pt}{3.0ex}}         % = `top' strut
+\def\Bstrut{\rule[-1.5ex]{0pt}{0pt}}   % = `bottom' strut
+
+\newcommand{\ppppbar}{pp/p\bar{p}}
+
+\def\qT{q_T}
+\def\pT{p_T}
+\def\mT{m_T}
+
+%\newcommand{\matrixparam}[1]{\texttt{{#1}}}
+\newcommand{\matrixparam}[1]{\lstinline[basicstyle=\ttfamily]|#1|}
+\newcommand{\ttt}{\matrixparam}
+
+
+\newcommand{\listvariable}[2]{\hyperref[#1]{\ttt{#1:  #2}}}
+\newcommand{\listswitch}[2]{\hyperref[#1]{\ttt{#1}}}
+\newcommand{\eqn}[1]{Eq.\,(\ref{#1})}
+\newcommand{\eqns}[1]{Eqs.\,(\ref{#1})}
+\newcommand{\neqn}[1]{Eqs.\,(\ref{#1})}
+\newcommand{\fig}[1]{{\reffi{#1}}}
+\newcommand{\figs}[1]{{\reffis{#1}}}
+\newcommand{\tab}[1]{{\refta{#1}}}
+\newcommand{\sct}[1]{{\refse{#1}}}
+\newcommand{\app}[1]{{\refapp{#1}}}
+\newcommand{\scts}[1]{Sections~\ref{#1}}
+\newcommand{\dd}{{\rm d}}
+\newcommand{\dy}{{\abbrev DY}}
+\newcommand{\ccbar}{c\bar c}
+\newcommand{\bbbar}{b\bar b}
+\newcommand{\als}{\ensuremath{\alpha_s}}
+\newcommand{\bob}{\ensuremath{b_0/b}}
+\newcommand{\bobsq}{\ensuremath{b^2_0/b^2}}
+\newcommand{\bbo}{\ensuremath{b/b_0}}
+\newcommand{\bbosq}{\ensuremath{b^2/b^2_0}}
+\newcommand{\hardcoef}[2]{H_{#1}^{#2}}
+\newcommand{\chardcoef}[2]{{\cal H}_{#1}^{#2}}
+\newcommand{\hardh}[1]{\hardcoef{b}{H#1}}
+\newcommand{\chardh}[2]{\chardcoef{\bbbar\leftarrow ij}{\bbh#1}}
+\newcommand{\api}{\frac{\alpha_s}{\pi}}
+\newcommand{\muF}{\mu_{\rm F}}
+\newcommand{\muR}{\mu_{\rm R}}
+\newcommand{\Qres}{\ensuremath{Q_{\text{res}}}}
+\newcommand{\Qsh}{\ensuremath{Q_{\text{sh}}}}
+\newcommand{\cw}{\ensuremath{\mathcal W}}
+\newcommand{\ch}{\ensuremath{\mathcal H}}
+\newcommand{\msbar}{\overline{\text{MS}}}
+\newcommand{\ep}{\epsilon}
+\newcommand{\pdf}{{\abbrev PDF}}
+\newcommand{\mstw}{{\abbrev MSTW2008} $68${\abbrev \%CL}}
+\newcommand{\nnpdf}{{\abbrev NNPDF2.3}}
+\newcommand{\cteq}{{\abbrev CT10}}
+\newcommand{\Li}{\ensuremath{\text{Li}}}
+\newcommand{\bld}[1]{\boldmath{$#1$}}
+\newcommand{\lnR}{\ln(\mgen^2/\muR^2)}
+\newcommand{\lnthreeQ}{\ln^3(\mgen^2/\Qres^2)}
+\newcommand{\lntwoQ}{\ln^2(\mgen^2/\Qres^2)}
+\newcommand{\lnQ}{\ln(\mgen^2/\Qres^2)}
+\newcommand{\lntwoF}{\ln^2(\mgen^2/\muF^2)}
+\newcommand{\lnF}{\ln(\mgen^2/\muF^2)}
+\newcommand{\lnQF}{\ln(\Qres^2/\muF^2)}
+\newcommand{\lntwoR}{\ln^2(M^2/\muR^2)}
+\newcommand{\scenario}{\ensuremath{\mathcal S}}
+\newcommand{\madmc}{{\tt MadGraph5\_aMC@NLO}}
+\newcommand{\mcatnlo}{{\abbrev MC@NLO}}
+\newcommand{\fh}{{\tt FeynHiggs}}
+\newcommand{\htl}{heavy top limit}
+\newcommand{\mhmodp}{$m_h^{\text{mod}+}$}
+\newcommand{\mhmodm}{$m_h^{\text{mod}-}$}
+\newcommand{\mhmax}{$m_h^{\text{max}}$}
+\newcommand{\MC}{{\tiny\mbox{MC}}}
+\newcommand{\mc}{\mathcal}
+\newcommand{\npo}{{n+1}}
+\newcommand{\pnpo}{\Phi_\npo}
+\newcommand{\pn}{\Phi_n}
+\newcommand{\ppon}{\Phi_{1}}
+
+\newcommand{\alphasmur}{\ensuremath{\alpha_s(\mu_R^2)}}
+\newcommand{\alphasbob}{\ensuremath{\alpha_s(b_0^2/b^2)}}
+\newcommand{\alphasq}{\ensuremath{\alpha_s(Q^2)}}
+\newcommand{\alphasM}{\ensuremath{\alpha_s(M^2)}}
+\newcommand{\overpi}[1]{\ensuremath{\frac{#1}{\pi} }}
+
+
+\newcounter{notecount}
+\setcounter{notecount}{1}
+\newcommand{\note}[3]{\marginpar{\color{#2}$(\leftarrow\arabic{notecount})$}
+    {\color{#2}\footnotesize 
+    [#1$_{\arabic{notecount}}$: #3]}%
+  \addtocounter{notecount}{1}}%
+\newcommand{\mwnote}[1]{\note{mw}{blue}{#1}}
+%\newcommand{\hmnote}[1]{\note{at}{green}{#1}}
+%\newcommand{\slnote}[1]{\note{sl}{red}{#1}}
+%\newcommand{\mwcom}[1]{{\color{blue}{mw: #1}}}
+
+\tikzstyle{boxblue} = [draw=blue, fill=blue!10, very thick,
+    rectangle, rounded corners, inner sep=5pt, inner ysep=5pt]
+
+
+% new commands for cross referencing
+
+\def\refeq#1{\mbox{Eq.~\eqref{#1}}}
+\def\refeqs#1{\mbox{Eqs.~\eqref{#1}}}
+\def\reffi#1{\mbox{Figure~\ref{#1}}}
+\def\reffitwo#1#2{\mbox{Figures~\ref{#1} and \ref{#2}}}
+\def\reffis#1#2{\mbox{Figures~\ref{#1}--\ref{#2}}}
+\def\refta#1{\mbox{Table~\ref{#1}}}
+\def\reftatwo#1#2{\mbox{Tables~\ref{#1} and \ref{#2}}}
+\def\reftas#1{\mbox{Tables~\ref{#1}}}
+\def\refse#1{\mbox{Section~\ref{#1}}}
+\def\refses#1{\mbox{Sections~\ref{#1}}}
+\def\refapp#1{\mbox{\ref{#1}}}
+\def\citere#1{\mbox{Ref.~\cite{#1}}}
+\def\citeres#1{\mbox{Refs.~\cite{#1}}}
+
+\newcommand{\rcut}{\ensuremath{r_{\mathrm{cut}}}}
+\newcommand{\rcutmin}{\ensuremath{r_{\mathrm{cut}}^\mathrm{min}}}
+\newcommand{\zz}{\ensuremath{ZZ}}
+\newcommand{\ww}{\ensuremath{W^+W^-}}
+\newcommand{\wgamma}{\ensuremath{W^\pm \gamma}}
+\newcommand{\wz}{\ensuremath{W^\pm Z}}
+\newcommand{\vv}{\ensuremath{VV}}
+\newcommand{\vvp}{\ensuremath{VV^\prime}}
+\newcommand{\system}{\ensuremath{\mathcal{F}}}
+\newcommand{\angles}{\ensuremath{\mathbf{\Omega}}}
+\newcommand{\rap}{\ensuremath{y}}
+\newcommand{\invm}{\ensuremath{M}}
+\newcommand{\crr}{\ensuremath{\mathcal R}}
+\newcommand{\cs}{\ensuremath{\mathcal S}}
+\newcommand{\scheme}{\ensuremath{\crr\cs}}
+\newcommand{\pt}{\ensuremath{p_T}}
+\newcommand{\qt}{\ensuremath{q_T}}
+\newcommand{\ptjetone}{\ensuremath{p_{T,1}^{\text{jet}}}}
+\newcommand{\yjet}{\ensuremath{y^{\text{jet}}}}
+\newcommand{\yjetone}{\ensuremath{y_{1}^{\text{jet}}}}
+\newcommand{\ptveto}{\ensuremath{p_{T,\text{veto}}^{\text{jet}}}}
+\newcommand{\ptbveto}{\ensuremath{p_{T,\text{veto}}^{b-\text{jet}}}}
+\newcommand{\ptmin}{\ensuremath{p_{T,\text{min}}^{\text{jet}}}}
+\newcommand{\ptmax}{\ensuremath{p_{T,\text{max}}^{\text{jet}}}}
+\newcommand\f[2]{\frac{#1}{#2}} 
+
+\newcommand{\D}{\mathrm{d}}
+\newcommand\as{\alpha_{\mathrm{S}}} 
+
+%\def\elle{l}
+%\def\muenn{\mu^+e^-\nu_\mu {\bar \nu}_e}
+%\def\sfww{l^+l^{\prime -}\nu_l{\bar \nu}_{l^\prime}}
+\newcommand{\elle}{\ensuremath{l}}
+\newcommand{\muenn}{\ensuremath{\mu^+e^-\nu_\mu {\bar \nu}_e}}
+\newcommand{\emunn}{\ensuremath{e^+\mu^-\nu_e {\bar \nu}_\mu}}
+\newcommand{\sfww}{\elle^+\elle^{\prime -}\nu_\elle{\bar \nu}_{\elle^\prime}}
+
+\newcommand{\mmuenn}{\ensuremath{m_{\muenn}}}
+\newcommand{\ptmuenn}{\ensuremath{p_{T,\muenn}}}

@@ -1,0 +1,92 @@
+This is the release changelog of MATRIX
+
+version 1.0.0.beta1 (June 2016):
+--------------------------------
+First stable and released beta version, to be tested and used by a 
+closed (dedicated) group of people.
+
+version 1.0.0.beta2 (July 2016):
+--------------------------------
+- separate python class for adding further cluster support added
+- LSF cluster (eg, lxplus) support added
+- condor cluster (eg, ingrid CP3 Louvain) support added
+- small bug fixes
+- changelog.txt added
+
+version 1.0.0.beta3 (October 2016):
+-----------------------------------
+- qsub Torque cluster (OpenPBS) support added
+- C++ executable removed when cleaning process
+- small bug fixes
+
+version 1.0.0.beta4 (Februrary 2017):
+-------------------------------------
+- new submission system
+- cluster support improved
+- small bug fixes
+
+version 1.0.0.release_candidate (April 2017):
+---------------------------------------------
+- renewed C++ code completely
+- easier access to particles in C++ code => easier definition 
+  of cuts/distributions/scales, possibility to define own particles
+- Sun Grid Engine (SGE) cluster support added
+- added CKM W-production processes 
+- full list of processes now working properly with correct results
+- added extrapolation for qT-subtraction error
+- switch for photon processes to increase accuracy
+- logfile of output written for all runs now into log/run_XX.log
+- automatic citation, all citations up to date now in CITATION.bib
+- manual renewed, work in progress
+- many small process-dependent and independent refinements
+
+version 1.0.0.release_candidate2 (May 2017):
+--------------------------------------------
+- added lxplus version of HTCondor (initialdir not allowed)
+- fixed bug to use equal signs within quotes in inputs
+- added on-shell W production with CKM
+- unified all inputs
+- adjusted email adresses
+
+version 1.0.0.release_candidate3 (Aug 2017):
+--------------------------------------------
+- updated input files to all processes
+- added new cuts
+- included Zrec user particles
+
+version 1.0.0.release_candidate4 (Aug 2017):
+--------------------------------------------
+- made code compatible with LHAPDF 6.2.0
+- added CXXFLAGS option -std=c++11
+- changed isnan/isinf to std::isnan/std::isinf
+  (compatible with c++11)
+
+version 1.0.0 (Nov 2017):
+-------------------------
+- refined all input files
+- added check wether name of distribution is used twice
+- added new scales and cuts for some processes
+- updated pre-defined particles for WZ and ZZ (DF and SF)
+- added extrapolation procedure for rcut of total rate
+- refined on-screen output of results to includee extrapolation
+- added WW on-shell amplitudes
+- cleaning through matrix script includes 2-loop MATRIX file now
+- many unused parts of the code removed (EW files, etc...)
+- reading N_decoupled now from LHAPDF routine (default setting 
+  for some PDFs in LHAPDF5 which are not properly configured)
+- several changes to avoid compiler warnings
+- W production with CKM (ppw01,ppwx01,ppexne02,ppenex02) now default
+- renamed src-MUNICH to src and src-external to external
+- removed (not yet working) pT resummation options from compilation
+- added MATRIX usage agreement to compilation to make the user 
+  aware of external codes and computations used by MATRIX
+- reduced log output of jobs
+- certain general stability improvements and bug fixes
+
+version 1.0.1 (Dez 2017):
+-------------------------
+- fixed bug on mac for openloops.cfg
+- fixed bug when doing only NNLO run and loop-induced that not 
+  NLO+gg distributions are generated
+- fixed outdated particle used in arXiv distribution.dat of SF WZ
+- updated inputs for ZZ/WW->2l2nu processes
