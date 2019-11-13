@@ -15,7 +15,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   h2b->Rebin(REBIN);
   h1b->Rebin(REBIN);
   // -----------------------------------------
-  const float LUMI = 35922;
+  const float LUMI = 41530;
 
   TFile *infTT = TFile::Open("Histo_TT_Mtt-700toInf_TuneCP5_13TeV-powheg-pythia8_New_100.root");
   TH1F *h2b_TT = (TH1F*)infTT->Get("hWt_mTop_2btag_expYield");
@@ -28,13 +28,13 @@ void SimultaneousFit_3regions(int REBIN =2)
   TH1F *h1b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_1btag_expYield");
   TH1F *h0b_Bkg = (TH1F*)infSubBkg->Get("hWt_mTop_0btag_expYield");
 
-  TFile *infQCDBkg = TFile::Open("Histo_QCD_HT300toInf_TuneCP5_13TeV-madgraphMLM-pythia8_New_100.root");
+  TFile *infQCDBkg = TFile::Open("Histo_QCD_HT300toInf_TuneCP5_13TeV-madgraph-pythia8_New_100.root");
   TH1F *h2b_QCDBkg = (TH1F*)infQCDBkg->Get("hWt_mTop_2btag_expYield");
   TH1F *h1b_QCDBkg = (TH1F*)infQCDBkg->Get("hWt_mTop_1btag_expYield");
   TH1F *h0b_QCDBkg = (TH1F*)infQCDBkg->Get("hWt_mTop_0btag_expYield");
 
   
-  TFile *fTemplatesBkg = TFile::Open("templates_Bkg_100.root");
+  TFile *fTemplatesBkg = TFile::Open("templates_Bkg_100_New.root");
   TFile *fTemplatesSig = TFile::Open("templates_Sig_100.root");
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
@@ -49,10 +49,6 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooDataHist *roohist_data_0b = new RooDataHist("roohist_data_0b","roohist_data_0b",*x,h0b);
   RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b","roohist_data_2b",*x,h2b);
   RooDataHist *roohist_data_1b = new RooDataHist("roohist_data_1b","roohist_data_1b",*x,h1b);
-
-  RooPlot *fram1 = x->frame();
-  roohist_data_1b->plotOn(fram1);
-  fram1->Draw();
 
   RooCategory sample("sample","sample");
   sample.defineType("0btag");
@@ -81,7 +77,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooEffProd pdf_qcdCor_1b("qcdCor_pdf_1b","qcdCor_pdf_1b",*pdf_qcd_1b,qcdCor_1b);
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
   
-  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",h0b_Bkg->Integral(),0.9*h0b_Bkg->Integral() ,1.1*h0b_Bkg->Integral()); //oti dinei to MC ± 10%
+  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",h0b_Bkg->Integral(),0.9*h0b_Bkg->Integral() ,1.1*h0b_Bkg->Integral()); //oti dinei to MC ± 30%
   RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b","nFitBkg_1b",h1b_Bkg->Integral(),0.9*h1b_Bkg->Integral() ,1.1*h1b_Bkg->Integral());
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",h2b_Bkg->Integral(),0.9*h2b_Bkg->Integral() ,1.1*h2b_Bkg->Integral());
 
@@ -103,9 +99,9 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",h0b_TT->Integral(),0.6* h0b_TT->Integral(),1.4*h0b_TT->Integral());
   RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b","nFitSig1b",h1b_TT->Integral(),0.6* h1b_TT->Integral(),1.4*h1b_TT->Integral());
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",h2b_TT->Integral(),0.6* h2b_TT->Integral(),1.4*h2b_TT->Integral());
-  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.605622,0.2,0.8);
-  //RooRealVar *btagEff = new RooRealVar("btagEff", "btagEff", 0.8);
-  btagEff->setConstant(true);
+  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.605622,0.4,0.8);
+  //RooRealVar *btagEff = new RooRealVar("btagEff", "btagEff", 0.605622);
+  //btagEff->setConstant(true);
 
   RooFormulaVar nSig0b("nSig_0b","(1-@0)*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
   RooFormulaVar nSig2b("nSig_2b","@0*@0*@1",RooArgList(*btagEff,*nFitSig));
@@ -116,7 +112,6 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
 
   RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b,*pdf_bkg_0b),RooArgList(nSig0b,*nFitQCD0b,*nFitBkg0b)); 
-  //RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b),RooArgList(nSig0b,*nFitQCD0b)); 
   RooAddPdf *model_1b = new RooAddPdf("model_1b","model_1b",RooArgList(*pdf_signal_1b,pdf_qcdCor_1b,*pdf_bkg_1b),RooArgList(nSig1b,*nFitQCD1b,*nFitBkg1b));
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(nSig2b,*nFitQCD2b,*nFitBkg2b));
 
@@ -140,8 +135,124 @@ void SimultaneousFit_3regions(int REBIN =2)
   cout<<"Ntt expected = "<<Ntt_expected<<endl;
   cout<<"Ntt observed = "<<Ntt_observed<<endl;
   cout<<"r = "<< Ntt_observed/Ntt_expected<<endl;
+    //-------------------- 0 bTag fit results -------------------------------
+  
+  RooPlot *frame0b = x->frame();
+  combData.plotOn(frame0b,Cut("sample==sample::0btag")); 
+  simPdf.plotOn(frame0b,Slice(sample,"0btag"),ProjWData(sample,combData));
+  RooHist *pull0b = frame0b->pullHist();
+  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen),LineWidth(2),LineStyle(2));
+  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("ttbar_pdf_0btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
+  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("bkg_pdf_0btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
+
+  RooPlot *frame0bPull = x->frame();
+  frame0bPull->addPlotable(pull0b,"p");
+
+  TCanvas *can0b = new TCanvas("SimFit_0btag_"+CUT,"SimFit_0btag_"+CUT,900,600);
+  can0b->cd(1)->SetBottomMargin(0.3);
+  frame0b->GetXaxis()->SetTitle("");
+  frame0b->GetXaxis()->SetLabelSize(0.0);
+  frame0b->Draw();
+  
+  TPad *pad0b = new TPad("pad0b","pad0b",0.,0.,1.,1.);
+  pad0b->SetTopMargin(0.7);
+  pad0b->SetFillColor(0);
+  pad0b->SetFillStyle(0);
+  pad0b->Draw();
+  pad0b->cd(0);
+  pad0b->SetGridy();
+  frame0bPull->SetMinimum(-5);
+  frame0bPull->SetMaximum(5);
+  frame0bPull->GetYaxis()->SetNdivisions(505);
+  frame0bPull->GetXaxis()->SetTitleOffset(0.9);
+  frame0bPull->GetYaxis()->SetTitleOffset(0.8);
+  frame0bPull->GetYaxis()->SetTickLength(0.06);
+  frame0bPull->GetYaxis()->SetTitleSize(0.05);
+  frame0bPull->GetYaxis()->SetTitleSize(0.03);
+  frame0bPull->GetYaxis()->SetLabelSize(0.03);
+  frame0bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
+  frame0bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
+  frame0bPull->Draw();
   
 
+  //-------1 Btag Fit Results-----------------------------
+  RooPlot *frame1b = x->frame();
+  combData.plotOn(frame1b,Cut("sample==sample::1btag")); 
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),ProjWData(sample,combData));
+  RooHist *pull1b = frame1b->pullHist();
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("ttbar_pdf_1btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
+  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("bkg_pdf_1btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
+
+  RooPlot *frame1bPull = x->frame();
+  frame1bPull->addPlotable(pull1b,"p");
+
+  TCanvas *can1b = new TCanvas("SimFit_1btag_"+CUT,"SimFit_1btag_"+CUT,900,600);
+  can1b->cd(1)->SetBottomMargin(0.3);
+  frame1b->GetXaxis()->SetTitle("");
+  frame1b->GetXaxis()->SetLabelSize(0.0);
+  frame1b->Draw();
+  
+  TPad *pad1b = new TPad("pad1b","pad1b",0.,0.,1.,1.);
+  pad1b->SetTopMargin(0.7);
+  pad1b->SetFillColor(0);
+  pad1b->SetFillStyle(0);
+  pad1b->Draw();
+  pad1b->cd(0);
+  pad1b->SetGridy();
+  frame1bPull->SetMinimum(-5);
+  frame1bPull->SetMaximum(5);
+  frame1bPull->GetYaxis()->SetNdivisions(505);
+  frame1bPull->GetXaxis()->SetTitleOffset(0.9);
+  frame1bPull->GetYaxis()->SetTitleOffset(0.8);
+  frame1bPull->GetYaxis()->SetTickLength(0.06);
+  frame1bPull->GetYaxis()->SetTitleSize(0.05);
+  frame1bPull->GetYaxis()->SetTitleSize(0.03);
+  frame1bPull->GetYaxis()->SetLabelSize(0.03);
+  frame1bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
+  frame1bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
+  frame1bPull->Draw();
+
+  //-------------------- 2 bTag fit results -------------------------------
+  RooPlot *frame2b = x->frame();
+  combData.plotOn(frame2b,Cut("sample==sample::2btag")); 
+  simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData));
+  RooHist *pull2b = frame2b->pullHist();
+  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
+  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
+  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
+
+  RooPlot *frame2bPull = x->frame();
+  frame2bPull->addPlotable(pull2b,"p");
+
+  TCanvas *can2b = new TCanvas("SimFit_2btag_"+CUT,"SimFit_2btag_"+CUT,900,600);
+  can2b->cd(1)->SetBottomMargin(0.3);
+  frame2b->GetXaxis()->SetTitle("");
+  frame2b->GetXaxis()->SetLabelSize(0.0);
+  frame2b->Draw();
+  
+  TPad *pad2b = new TPad("pad2b","pad2b",0.,0.,1.,1.);
+  pad2b->SetTopMargin(0.7);
+  pad2b->SetFillColor(0);
+  pad2b->SetFillStyle(0);
+  pad2b->Draw();
+  pad2b->cd(0);
+  pad2b->SetGridy();
+  frame2bPull->SetMinimum(-5);
+  frame2bPull->SetMaximum(5);
+  frame2bPull->GetYaxis()->SetNdivisions(505);
+  frame2bPull->GetXaxis()->SetTitleOffset(0.9);
+  frame2bPull->GetYaxis()->SetTitleOffset(0.8);
+  frame2bPull->GetYaxis()->SetTickLength(0.06);
+  frame2bPull->GetYaxis()->SetTitleSize(0.05);
+  frame2bPull->GetYaxis()->SetTitleSize(0.03);
+  frame2bPull->GetYaxis()->SetLabelSize(0.03);
+  frame2bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
+  frame2bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
+  frame2bPull->Draw();
+  
+  
+  return;
   
   TCanvas *canEll1 = new TCanvas("Correlation_BTagEff_vs_NTT_"+CUT,"Correlation_BTagEff_vs_NTT_"+CUT,900,600);
   RooPlot *frameEll1 = new RooPlot(*nFitSig,*btagEff,nFitSig->getVal()-1.5*nFitSig->getError(),nFitSig->getVal()+1.5*nFitSig->getError(),btagEff->getVal()-1.5*btagEff->getError(),btagEff->getVal()+1.5*btagEff->getError());
@@ -273,122 +384,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   frameNtt->SetMaximum(2);
   frameNtt->Draw();
   */
-  //-------------------- 0 bTag fit results -------------------------------
-  
-  RooPlot *frame0b = x->frame();
-  combData.plotOn(frame0b,Cut("sample==sample::0btag")); 
-  simPdf.plotOn(frame0b,Slice(sample,"0btag"),ProjWData(sample,combData));
-  RooHist *pull0b = frame0b->pullHist();
-  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen),LineWidth(2),LineStyle(2));
-  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("ttbar_pdf_0btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
-  simPdf.plotOn(frame0b,Slice(sample,"0btag"),Components("bkg_pdf_0btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
 
-  RooPlot *frame0bPull = x->frame();
-  frame0bPull->addPlotable(pull0b,"p");
-
-  TCanvas *can0b = new TCanvas("SimFit_0btag_"+CUT,"SimFit_0btag_"+CUT,900,600);
-  can0b->cd(1)->SetBottomMargin(0.3);
-  frame0b->GetXaxis()->SetTitle("");
-  frame0b->GetXaxis()->SetLabelSize(0.0);
-  frame0b->Draw();
-  
-  TPad *pad0b = new TPad("pad0b","pad0b",0.,0.,1.,1.);
-  pad0b->SetTopMargin(0.7);
-  pad0b->SetFillColor(0);
-  pad0b->SetFillStyle(0);
-  pad0b->Draw();
-  pad0b->cd(0);
-  pad0b->SetGridy();
-  frame0bPull->SetMinimum(-5);
-  frame0bPull->SetMaximum(5);
-  frame0bPull->GetYaxis()->SetNdivisions(505);
-  frame0bPull->GetXaxis()->SetTitleOffset(0.9);
-  frame0bPull->GetYaxis()->SetTitleOffset(0.8);
-  frame0bPull->GetYaxis()->SetTickLength(0.06);
-  frame0bPull->GetYaxis()->SetTitleSize(0.05);
-  frame0bPull->GetYaxis()->SetTitleSize(0.03);
-  frame0bPull->GetYaxis()->SetLabelSize(0.03);
-  frame0bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
-  frame0bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
-  frame0bPull->Draw();
-  
-
-  //-------1 Btag Fit Results-----------------------------
-  RooPlot *frame1b = x->frame();
-  combData.plotOn(frame1b,Cut("sample==sample::1btag")); 
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),ProjWData(sample,combData));
-  RooHist *pull1b = frame1b->pullHist();
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("ttbar_pdf_1btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
-  simPdf.plotOn(frame1b,Slice(sample,"1btag"),Components("bkg_pdf_1btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
-
-  RooPlot *frame1bPull = x->frame();
-  frame1bPull->addPlotable(pull1b,"p");
-
-  TCanvas *can1b = new TCanvas("SimFit_1btag_"+CUT,"SimFit_1btag_"+CUT,900,600);
-  can1b->cd(1)->SetBottomMargin(0.3);
-  frame1b->GetXaxis()->SetTitle("");
-  frame1b->GetXaxis()->SetLabelSize(0.0);
-  frame1b->Draw();
-  
-  TPad *pad1b = new TPad("pad1b","pad1b",0.,0.,1.,1.);
-  pad1b->SetTopMargin(0.7);
-  pad1b->SetFillColor(0);
-  pad1b->SetFillStyle(0);
-  pad1b->Draw();
-  pad1b->cd(0);
-  pad1b->SetGridy();
-  frame1bPull->SetMinimum(-5);
-  frame1bPull->SetMaximum(5);
-  frame1bPull->GetYaxis()->SetNdivisions(505);
-  frame1bPull->GetXaxis()->SetTitleOffset(0.9);
-  frame1bPull->GetYaxis()->SetTitleOffset(0.8);
-  frame1bPull->GetYaxis()->SetTickLength(0.06);
-  frame1bPull->GetYaxis()->SetTitleSize(0.05);
-  frame1bPull->GetYaxis()->SetTitleSize(0.03);
-  frame1bPull->GetYaxis()->SetLabelSize(0.03);
-  frame1bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
-  frame1bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
-  frame1bPull->Draw();
-
-  //-------------------- 2 bTag fit results -------------------------------
-  RooPlot *frame2b = x->frame();
-  combData.plotOn(frame2b,Cut("sample==sample::2btag")); 
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData));
-  RooHist *pull2b = frame2b->pullHist();
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+1),LineWidth(2),LineStyle(2));
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),LineColor(kRed),LineWidth(2),LineStyle(1));
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kOrange+3),LineWidth(2),LineStyle(5)); 
-
-  RooPlot *frame2bPull = x->frame();
-  frame2bPull->addPlotable(pull2b,"p");
-
-  TCanvas *can2b = new TCanvas("SimFit_2btag_"+CUT,"SimFit_2btag_"+CUT,900,600);
-  can2b->cd(1)->SetBottomMargin(0.3);
-  frame2b->GetXaxis()->SetTitle("");
-  frame2b->GetXaxis()->SetLabelSize(0.0);
-  frame2b->Draw();
-  
-  TPad *pad2b = new TPad("pad2b","pad2b",0.,0.,1.,1.);
-  pad2b->SetTopMargin(0.7);
-  pad2b->SetFillColor(0);
-  pad2b->SetFillStyle(0);
-  pad2b->Draw();
-  pad2b->cd(0);
-  pad2b->SetGridy();
-  frame2bPull->SetMinimum(-5);
-  frame2bPull->SetMaximum(5);
-  frame2bPull->GetYaxis()->SetNdivisions(505);
-  frame2bPull->GetXaxis()->SetTitleOffset(0.9);
-  frame2bPull->GetYaxis()->SetTitleOffset(0.8);
-  frame2bPull->GetYaxis()->SetTickLength(0.06);
-  frame2bPull->GetYaxis()->SetTitleSize(0.05);
-  frame2bPull->GetYaxis()->SetTitleSize(0.03);
-  frame2bPull->GetYaxis()->SetLabelSize(0.03);
-  frame2bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
-  frame2bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
-  frame2bPull->Draw();
-  
 
   
 /*

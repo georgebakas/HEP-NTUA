@@ -9,7 +9,7 @@ void CreateSignalTemplates(TString CUT = "")
   TFile *infMC = TFile::Open("Histo_TT_Mtt-700toInf_TuneCP5_13TeV-powheg-pythia8_New_100.root");  
   float normMC;
   float XSEC(832.);
-  float LUMI(41530.);
+  float LUMI(59740.);
 
   std::vector<float> XSECMTT;
   XSECMTT.push_back(69.64);

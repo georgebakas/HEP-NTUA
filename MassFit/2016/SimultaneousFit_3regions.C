@@ -81,9 +81,9 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooEffProd pdf_qcdCor_1b("qcdCor_pdf_1b","qcdCor_pdf_1b",*pdf_qcd_1b,qcdCor_1b);
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
   
-  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",h0b_Bkg->Integral(),0.9*h0b_Bkg->Integral() ,1.1*h0b_Bkg->Integral()); //oti dinei to MC ± 10%
-  RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b","nFitBkg_1b",h1b_Bkg->Integral(),0.9*h1b_Bkg->Integral() ,1.1*h1b_Bkg->Integral());
-  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",h2b_Bkg->Integral(),0.9*h2b_Bkg->Integral() ,1.1*h2b_Bkg->Integral());
+  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",h0b_Bkg->Integral(),0.7*h0b_Bkg->Integral() ,1.3*h0b_Bkg->Integral()); //oti dinei to MC ± 30%
+  RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b","nFitBkg_1b",h1b_Bkg->Integral(),0.7*h1b_Bkg->Integral() ,1.3*h1b_Bkg->Integral());
+  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",h2b_Bkg->Integral(),0.7*h2b_Bkg->Integral() ,1.3*h2b_Bkg->Integral());
 
   RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",90000,0,1.2e+5);
   RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b","nFitQCD_1b",35000,0,1e+5);
@@ -104,8 +104,8 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b","nFitSig1b",h1b_TT->Integral(),0.6* h1b_TT->Integral(),1.4*h1b_TT->Integral());
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",h2b_TT->Integral(),0.6* h2b_TT->Integral(),1.4*h2b_TT->Integral());
   RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.629909,0.5,0.8);
-  //RooRealVar *btagEff = new RooRealVar("btagEff", "btagEff", 0.8);
-  //btagEff->setConstant(true);
+  //RooRealVar *btagEff = new RooRealVar("btagEff", "btagEff", 0.7);
+  btagEff->setConstant(true);
 
   RooFormulaVar nSig0b("nSig_0b","(1-@0)*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
   RooFormulaVar nSig2b("nSig_2b","@0*@0*@1",RooArgList(*btagEff,*nFitSig));
@@ -311,7 +311,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   frame0bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
   frame0bPull->GetXaxis()->SetTitle("m_{t} (GeV)");
   frame0bPull->Draw();
-  
+
 
   //-------1 Btag Fit Results-----------------------------
   RooPlot *frame1b = x->frame();

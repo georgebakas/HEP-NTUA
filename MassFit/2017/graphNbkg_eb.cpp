@@ -16,22 +16,24 @@ using std::endl;
 void graphNbkg_eb()
 {
 
-	const int n = 7;
-	float eb[n] = {0.4, 0.48641, 0.5, 0.6, 0.605622, 0.7, 0.8};
-	float error_x[n] = {0, 1.10e-02,0, 0,0, 0, 0};
+	const int n = 6;
+	float eb[n] = {0.4, 0.5,0.54097, 0.6, 0.605622, 0.7};
+	float error_x[n] = {0, 1.08e-02,0, 0,0, 0};
 
 	//Signal Region (2btag)
-	float NQCD_2[n]   = {3.0167e+03, 2.503e+03, 2.4147e+03, 2.21e+03, 2.2031e+03 , 1.8895e+03, 0.708e+03};
-	float error_y2[n] = {1.30e+02,   1.41e+02, 1.32e+02, 1.34e+02, 1.36e+02 , 0.80e+02, 0.72e+02};
+	float NQCD_2[n]   = {2.9028e+03, 2.5498e+03, 2.4652e+03, 2.3919e+03, 2.3906e+03 , 1.59e+03};
+	float error_y2[n] = {83,127,132,136,145,768};
 	
 	//1btag region
-	float NQCD_1[n] = {3.511e+04, 3.6754e+04, 3.7109e+04, 3.9728e+04, 3.9865e+04, 4.177e+04, 4.2947e+04};
-	float error_y1[n] = {406, 456, 331, 208, 287, 222, 221};
+	float NQCD_1[n] = {3.3287e+04, 3.6013e+04, 3.7067e+04, 3.8502e+04, 3.8634e+04, 3.9360e+04};
+	float error_y1[n] = {247,325,457,526,226,247};
 
 	//Control Region (0btag)
-	float NQCD_0[n] = {1.574e+05, 1.612e+05, 1.617e+05, 1.6429e+05, 1.6439e+05, 1.656e+05, 1.6621e+05};
-	float error_y0[n] = {487, 588, 433, 418, 418, 413, 413};
+	float NQCD_0[n] = {1.4992e+05, 1.5369e+05, 1.5483e+05, 1.5603e+05, 1.5612e+05, 1.5704e+05};
+	float error_y0[n] = {500, 439,541, 419,378,413};
 	
+
+
 	//for each region 1 graph
 	TGraphErrors *gr2 = new TGraphErrors(n,eb,NQCD_2,error_x,error_y2);
 	gr2->SetTitle("N_{QCD}^{(2)} vs e_{b}");

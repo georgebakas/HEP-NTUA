@@ -19,9 +19,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    
    //check what year you want to compare 
    //if compare2016 is true then you compare just 2016
-   std::vector<Color_t> colors = {kBlue,kRed, kBlack, kMagenta};
-   if(isDeepCSV)
-   {
+   std::vector<Color_t> colors = {kBlue,kRed, kGreen,kBlack, kMagenta};
     cout<<"It's deepCSV"<<endl;
 	   //for closure tests [0] is 16, [1] is 17 and [2] is 18
 	   signal[0] = TFile::Open("./QCD_Closure/SignalOutput_AllRegions_0.2_deepCSV_1File.root"); 
@@ -36,29 +34,19 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
      eff[0] = TFile::Open("./TopTagger_Efficiencies/Efficiencies_allVars_tTagger_0.20_deepCSV.root"); 
 	   eff[1] = TFile::Open("./TopTagger_Efficiencies_2017/Efficiencies_allVars_tTagger_0.00_deepCSV.root");
 	   eff[2] = TFile::Open("./TopTagger_Efficiencies_2018/Efficiencies_allVars_tTagger_0.10_deepCSV.root");
-   }
-   else
-   {
-		cout<<"Its CSVv2"<<endl;
-	   //for closure tests [0] is 16  and [1] is 17 because for 18 we have no CSVv2
-	   signal[0] = TFile::Open("./QCD_Closure/SignalOutput_AllRegions_0.2.root");
-	   signal[1] = TFile::Open("./QCD_Closure_2017/SignalOutput_AllRegions_0.2.root");
-  	   signal[2] = TFile::Open("./QCD_Closure_2018/SignalOutput_AllRegions_0.2_deepCSV.root");
-	   
-	   bkg[0] = TFile::Open("./QCD_Closure/BkgOutput_AllRegions_0.2.root");
-	   bkg[1] = TFile::Open("./QCD_Closure_2017/BkgOutput_AllRegions_0.2.root");
-	   bkg[2] = TFile::Open("./QCD_Closure_2018/BkgOutput_AllRegions_0.2_deepCSV.root");
-	   
- 	   //for efficiencies
-	   eff[0] = TFile::Open("./TopTagger_Efficiencies/deepAK8_efficiencies_allVars_tTagger_0.2.root");
-   	   eff[1] = TFile::Open("./TopTagger_Efficiencies_2017/deepAK8_efficiencies_allVars_tTagger_0.2.root");
-   	   eff[2] = TFile::Open("./TopTagger_Efficiencies_2018/deepAK8_efficiencies_allVars_tTagger_0.2_deepCSV.root");
-   }
+
+     TFile *oldInf = TFile::Open("PartonEfficiencyAll_July19.root");
+   
+   
    
    //things we need:
    TEfficiency *eff16[2], *acc16[2];   
    TEfficiency *eff17[2], *acc17[2];
    TEfficiency *eff18[2], *acc18[2];
+
+   TEfficiency *effOld16, *accOld16;
+   effOld16 = (TEfficiency*)oldInf->Get("Eff_jetPt0_Parton_Nominal");
+   accOld16 = (TEfficiency*)oldInf->Get("Eff_jetPt0_Parton_Nominal_common");
    
    //1. Efficiency for 2016 and acceptance for same year
    eff16[0] = (TEfficiency*)eff[0]->Get(TString::Format("Sig_Parton_tTagger_0.20_%s", partonVar.Data()));
@@ -85,34 +73,41 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    eff16[0]->SetMarkerStyle(21);
    eff17[0]->SetMarkerStyle(22);
    eff18[0]->SetMarkerStyle(23);
+   effOld16->SetMarkerStyle(20);
    eff16[0]->SetMarkerColor(colors[0]);
    eff17[0]->SetMarkerColor(colors[1]);
    eff18[0]->SetMarkerColor(colors[2]);
+   effOld16->SetMarkerColor(colors[3]);
    eff16[0]->SetLineColor(colors[0]);
    eff17[0]->SetLineColor(colors[1]);
    eff18[0]->SetLineColor(colors[2]);
-
+   effOld16->SetLineColor(colors[3]);
    
    acc16[0]->SetMarkerStyle(21);
    acc17[0]->SetMarkerStyle(22);
    acc18[0]->SetMarkerStyle(23);
+   accOld16->SetMarkerStyle(20);
    acc16[0]->SetLineColor(colors[0]);
    acc17[0]->SetLineColor(colors[1]);
    acc18[0]->SetLineColor(colors[2]);
    acc16[0]->SetMarkerColor(colors[0]);
    acc17[0]->SetMarkerColor(colors[1]);
    acc18[0]->SetMarkerColor(colors[2]);
+   accOld16->SetMarkerColor(colors[3]);
+   accOld16->SetLineColor(colors[3]);
    
    TLegend *effLeg = new TLegend(0.5,0.6,0.7,0.8);
    effLeg->AddEntry(eff16[0], "tTagger '16", "lp");
    effLeg->AddEntry(eff17[0], "tTagger '17", "lp");
    effLeg->AddEntry(eff18[0], "tTagger '18", "lp");
+   effLeg->AddEntry(effOld16, "2016 analysis", "lp");
 
    TCanvas *can_eff = new TCanvas("Efficiency can", "Efficiency can", 700, 600);
    eff18[0]->SetTitle(TString::Format("Efficiency '16,'17,'18;%s (GeV);Efficiency",recoVar.Data())); 
    eff18[0]->Draw();
    eff17[0]->Draw("same");
    eff16[0]->Draw("same");
+   effOld16->Draw("same");
    effLeg->Draw();
    
    
@@ -121,6 +116,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    acc18[0]->Draw();
    acc17[0]->Draw("same");
    acc16[0]->Draw("same");
+   accOld16->Draw("same");
    effLeg->Draw();
    
 

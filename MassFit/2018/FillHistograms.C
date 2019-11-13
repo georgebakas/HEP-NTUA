@@ -27,7 +27,7 @@ void initFileNames()
   if(selection ==0) //data
   {
   eosPath = "/eos/cms/store/user/gbakas/ttbar/JetHT/2018/";  
-  listOfFiles.push_back("JetHT_Run2017-31Mar2018.root");
+  listOfFiles.push_back("JetHT_Run2018-17Sep2018-v1.root");
   }
   else if(selection ==1) //signal ttbar mc
   {
@@ -47,16 +47,16 @@ void initFileNames()
   }
   else if(selection ==3) //subdominant bkgs
   {
-  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/";
-  //listOfFiles.push_back("DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8.root");
+  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Bkg/";
+  listOfFiles.push_back("DYJetsToQQ_HT180_13TeV_TuneCP5-madgraphMLM-pythia8.root"); //from 2017
   listOfFiles.push_back("WJetsToQQ_HT400to600_qc19_3j_TuneCP5_13TeV-madgraphMLM-pythia8.root"); //ok
   listOfFiles.push_back("WJetsToQQ_HT600to800_qc19_3j_TuneCP5_13TeV-madgraphMLM-pythia8.root"); //ok
   listOfFiles.push_back("ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8.root"); //ok
   listOfFiles.push_back("ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8.root"); //ok 
-  listOfFiles.push_back("ST_t-channel_top_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8.root"); //missing files
-  listOfFiles.push_back("ST_t-channel_antitop_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8.root"); //missing files
-  listOfFiles.push_back("ST_t-channel_antitop_5f_TuneCP5_13TeV-powheg-pythia8.root"); //missing xsec
-  listOfFiles.push_back("ST_t-channel_top_5f_TuneCP5_13TeV-powheg-pythia8.root"); //mising xsec
+  listOfFiles.push_back("ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8.root"); //ok
+  listOfFiles.push_back("ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8.root"); //ok
+  listOfFiles.push_back("ST_t-channel_antitop_5f_TuneCP5_13TeV-powheg-pythia8.root"); //ok
+  listOfFiles.push_back("ST_t-channel_top_5f_TuneCP5_13TeV-powheg-pythia8.root"); //ok
   }
 }
 
@@ -78,7 +78,7 @@ void initXsections()
   }
   else if(selection ==3)
   {
-  //XSEC.push_back(1728.0); //DYJetsToQQ_HT180
+  XSEC.push_back(1728.0); //DYJetsToQQ_HT180
   XSEC.push_back(1447.0); //WJetsToQQ_HT400to600
   XSEC.push_back(318.8); //WJetsToQQ_HT600to800
   XSEC.push_back(34.91); //ST_tW_top_5f_inclusiveDecays
@@ -93,7 +93,7 @@ void initXsections()
 void initHistoNames()
 {
   
-  if(selection ==0) histoNames.push_back("Data_2017");
+  if(selection ==0) histoNames.push_back("Data_2018");
   else if(selection ==1)
   {
     histoNames.push_back("Signal_histo_Mtt_700_1000"); 
@@ -110,7 +110,7 @@ void initHistoNames()
   }
   else
   {
-    //histoNames.push_back("DYJetsToQQ_HT180");
+    histoNames.push_back("DYJetsToQQ_HT180");
     histoNames.push_back("WJetsToQQ_HT400-600");
     histoNames.push_back("WJetsToQQ_HT600-800");
     histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
@@ -156,7 +156,7 @@ void FillHistograms(int sel = 0)
                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
   
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1",
-               "mva", "topTagger1", "mTop", "jetMassSoftDrop"};  
+               				 "mva", "topTagger1", "mTop", "jetMassSoftDrop"};  
   
   int fileSize = listOfFiles.size();
   TFile *inf;
@@ -415,7 +415,7 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
     
-    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;// && (*bit)[5];
+    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -466,7 +466,7 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
     
-    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[2] && nLeptons==0;
+    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[5] && nLeptons==0;
     massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
@@ -485,16 +485,8 @@ void FillHistograms(int sel = 0)
    xRecoAll.push_back(yJJ);
    xRecoAll.push_back((*jetPt)[0]);
    xRecoAll.push_back((*jetPt)[1]);
-   if(selection ==0)
-   {
-    xRecoAll.push_back(1);
-    xRecoAll.push_back(1);
-   }
-   else
-   {
     xRecoAll.push_back(fabs((*jetY)[0]));
     xRecoAll.push_back(fabs((*jetY)[1]));
-   }
    xRecoAll.push_back((*jetTtag)[0]);
    xRecoAll.push_back((*jetTtag)[1]);
    xRecoAll.push_back((*jetMassSoftDrop)[0]);

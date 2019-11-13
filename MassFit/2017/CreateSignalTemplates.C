@@ -93,14 +93,13 @@ void CreateSignalTemplates(TString CUT = "")
 
     RooGaussian sigTop("ttbar_pdfTop_"+CAT,"ttbar_pdfTop_"+CAT,*x,mTopShift,sTopShift);
     
-    RooRealVar mW("ttbar_meanW_"+CAT,"ttbar_meanW_"+CAT,80,70,90);
-    RooRealVar sW("ttbar_sigmaW_"+CAT,"ttbar_sigmaW_"+CAT,5,5,20);
+    RooRealVar mW("ttbar_meanW_"+CAT,"ttbar_meanW_"+CAT,90,70,100);
+    RooRealVar sW("ttbar_sigmaW_"+CAT,"ttbar_sigmaW_"+CAT,5,5,10);
 
     RooFormulaVar mWShift("ttbar_meanWShifted_"+CAT,"@0*@1",RooArgList(mW,*(kMassScale)));
     RooFormulaVar sWShift("ttbar_sigmaWShifted_"+CAT,"@0*@1",RooArgList(sW,*(kMassResol)));
 
     RooGaussian sigW("ttbar_pdfW_"+CAT,"ttbar_pdfW_"+CAT,*x,mWShift,sWShift);
-    
 
     RooRealVar bSig0("ttbar_b0_"+CAT,"ttbar_b0_"+CAT,0.5,0,1);
     RooRealVar bSig1("ttbar_b1_"+CAT,"ttbar_b1_"+CAT,0.5,0,1);
@@ -112,14 +111,33 @@ void CreateSignalTemplates(TString CUT = "")
     RooRealVar bSig7("ttbar_b7_"+CAT,"ttbar_b7_"+CAT,0.5,0,1);
     RooRealVar bSig8("ttbar_b8_"+CAT,"ttbar_b8_"+CAT,0.5,0,1);
 
-    RooBernstein sigComb("ttbar_bkg_"+CAT,"ttbar_bkg_"+CAT,*x,RooArgList(bSig0,bSig1,bSig2,bSig3,bSig4,bSig5,bSig6,bSig7,bSig8)); 
+    RooBernstein sigComb("ttbar_bkg_"+CAT,"ttbar_bkg_"+CAT,*x,RooArgList(bSig0,bSig1,bSig2,bSig3));
 
-    RooRealVar fsig1("ttbar_f1_"+CAT,"ttbar_f1_"+CAT,0.5,0,1);
+    //Chebychev does look exactly like Bernstein on 6th degree coefficient, so no use
+    /*
+    RooRealVar coef0("c0","coefficient #0",1.0,-1.,1);
+	RooRealVar coef1("c1","coefficient #1",0.1,-1.,1);
+	RooRealVar coef2("c2","coefficient #2",0.1,-1.,1);
+	RooRealVar coef3("c3","coefficient #3",0.1,-1.,1);
+	RooRealVar coef4("c4","coefficient #4",0.1,-1.,1);
+	RooRealVar coef5("c5","coefficient #5",0.1,-1.,1);
+	RooRealVar coef6("c6","coefficient #6",0.1,-1.,1);
+	RooRealVar coef7("c7","coefficient #7",0.1,-1.,1);
+	RooRealVar coef8("c8","coefficient #8",0.1,-1.,1);
+
+    RooChebychev sigComb1("Chebychev_", "Chebychev_", *x, RooArgList(coef0,coef1,coef2, coef3, coef4,coef5,coef6));
+    */
+    RooRealVar m1("m1", "m1", 130,120,200);
+    RooRealVar s1("s1", "s1", 50, 10, 100);
+    RooGaussian g1("g1"+CAT, "g1"+CAT, *x, m1,s1);
+
+    RooRealVar fsig1("ttbar_f1_"+CAT,"ttbar_f1_"+CAT,0,0,1);
     RooRealVar fsig2("ttbar_f2_"+CAT,"ttbar_f2_"+CAT,0.1,0.01,1);
-
-    RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb),RooArgList(fsig1,fsig2));
+    RooRealVar fsig3("ttbar_f3_"+CAT,"ttbar_f3_"+CAT,0.1,0.01,1);
+	
+    RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb,g1),RooArgList(fsig1,fsig2,fsig3));
     cout<<"ttbar_pdf_"+CAT<<endl;
-       
+
     canS = new TCanvas("Template_TT_"+CAT+"_"+CUT,"Template_TT_"+CAT+"_"+CUT,900,600);
 
     RooFitResult *res = signal->fitTo(*roohMC,RooFit::Save());
@@ -131,6 +149,7 @@ void CreateSignalTemplates(TString CUT = "")
     signal->plotOn(frameS,RooFit::Components("ttbar_pdfTop_"+CAT),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
     signal->plotOn(frameS,RooFit::Components("ttbar_pdfW_"+CAT),RooFit::LineColor(kOrange),RooFit::LineWidth(2),RooFit::LineStyle(2));
     signal->plotOn(frameS,RooFit::Components("ttbar_bkg_"+CAT),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
+    signal->plotOn(frameS,RooFit::Components("g1"+CAT),RooFit::LineColor(kMagenta+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
     frameS->GetXaxis()->SetTitle("m_{t} (GeV)");
     frameS->Draw();
     gPad->Update();

@@ -8,6 +8,7 @@
 #include "TLorentzVector.h"
 #include "TLatex.h"
 #include "TRatioPlot.h"
+#include "TLegend.h"
 
 using std::cin;
 using std::cout;
@@ -18,10 +19,11 @@ std::vector<float> XSEC;
 std::vector<TString> histoNames;
 std::vector<float> LUMI; 
 TString eosPath;
-
+std::vector<float> normalization;
+  
 void initFileNames()
 {
-  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");	//2016
+  listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"); //2016
   listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"); //2017
   listOfFiles.push_back("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"); //2018
   
@@ -36,6 +38,11 @@ void initXsections()
   LUMI.push_back(35900); //Lumi 2016
   LUMI.push_back(41530); //Lumi 2017
   LUMI.push_back(59740); //Lumi 2018
+
+  normalization.push_back(2.45776e+07); //norm 2016
+  normalization.push_back(1.34953e+10); //norm 2017
+  normalization.push_back(1.55497e+10); //norm 2018
+
 }
 
 
@@ -50,12 +57,8 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   initGlobals();
   std::vector<float> weights(0);
   for(int f=0; f<listOfFiles.size(); f++)
-  //[0] is the mtt and from [1] up to [6] its the Bkg
-  //the histograms from QCD are already scaled with LUMI
   {
-	TFile *file =TFile::Open(listOfFiles[f]);
-	float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    float weight = XSEC[f]/norm;
+    float weight = XSEC[f]/normalization[f];
     weights.push_back(weight);  
   }
   
@@ -64,40 +67,40 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
    
    //check what year you want to compare 
    //if compare2016 is true then you compare just 2016
-   std::vector<Color_t> colors = {kBlue,kRed, kBlack, kMagenta};
+   std::vector<Color_t> colors = {kBlue,kRed, kGreen, kMagenta};
    if(isDeepCSV)
    {
        cout<<"It's deepCSV"<<endl;
-	   //for closure tests [0] is 16, [1] is 17 and [2] is 18
-	   signal[0] = TFile::Open("./Code/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root"); 
-	   signal[1] = TFile::Open("./Code_2017/Output_TT_QCD_Reco_Chi_0.0_deepCSV.root");
-	   signal[2] = TFile::Open("./Code_2018/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root");
+     //for closure tests [0] is 16, [1] is 17 and [2] is 18
+     signal[0] = TFile::Open("./Code/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root"); 
+     signal[1] = TFile::Open("./Code_2017/Output_TT_QCD_Reco_Chi_0.0_deepCSV.root");
+     signal[2] = TFile::Open("./Code_2018/Output_TT_QCD_Reco_Chi_0.1_deepCSV.root");
 
-	   bkg[0] = TFile::Open("./Code/Closure_QCDBkg_Chi_0.1_deepCSV.root");
-	   bkg[1] = TFile::Open("./Code_2017/Closure_QCDBkg_Chi_0.0_deepCSV.root");
-	   bkg[2] = TFile::Open("./Code_2018/Closure_QCDBkg_Chi_0.1_deepCSV.root");
-	   
- 	   //for efficiencies
+     bkg[0] = TFile::Open("./Code/Closure_QCDBkg_Chi_0.1_deepCSV.root");
+     bkg[1] = TFile::Open("./Code_2017/Closure_QCDBkg_Chi_0.0_deepCSV.root");
+     bkg[2] = TFile::Open("./Code_2018/Closure_QCDBkg_Chi_0.1_deepCSV.root");
+     
+     //for efficiencies
        eff[0] = TFile::Open("./Code/ResponseMatricesChiCos_0.1_deepCSV.root"); 
-	   eff[1] = TFile::Open("./Code_2017/ResponseMatricesChiCos_0.0_deepCSV.root");
-	   eff[2] = TFile::Open("./Code_2018/ResponseMatricesChiCos_0.1_deepCSV.root");
+     eff[1] = TFile::Open("./Code_2017/ResponseMatricesChiCos_0.0_deepCSV.root");
+     eff[2] = TFile::Open("./Code_2018/ResponseMatricesChiCos_0.1_deepCSV.root");
    }
    else
    {
-		cout<<"It's CSVv2"<<endl;
-	   //for closure tests [0] is 16, [1] is 17 and [2] is 18
-	   signal[0] = TFile::Open("./Code/Output_TT_QCD_Reco_Chi_0.1.root"); 
-	   signal[1] = TFile::Open("./Code_2017/Output_TT_QCD_Reco_Chi_0.1.root");
-	   signal[2] = TFile::Open("./Code_2018/Output_TT_QCD_Reco_Chi_0.1.root");
+    cout<<"It's CSVv2"<<endl;
+     //for closure tests [0] is 16, [1] is 17 and [2] is 18
+     signal[0] = TFile::Open("./Code/Output_TT_QCD_Reco_Chi_0.1.root"); 
+     signal[1] = TFile::Open("./Code_2017/Output_TT_QCD_Reco_Chi_0.1.root");
+     signal[2] = TFile::Open("./Code_2018/Output_TT_QCD_Reco_Chi_0.1.root");
 
-	   bkg[0] = TFile::Open("./Code/Closure_QCDBkg_Chi_0.1.root");
-	   bkg[1] = TFile::Open("./Code_2017/Closure_QCDBkg_Chi_0.1.root");
-	   bkg[2] = TFile::Open("./Code_2018/Closure_QCDBkg_Chi_0.1.root");
-	   
- 	   //for efficiencies
+     bkg[0] = TFile::Open("./Code/Closure_QCDBkg_Chi_0.1.root");
+     bkg[1] = TFile::Open("./Code_2017/Closure_QCDBkg_Chi_0.1.root");
+     bkg[2] = TFile::Open("./Code_2018/Closure_QCDBkg_Chi_0.1.root");
+     
+     //for efficiencies
        eff[0] = TFile::Open("./Code/ResponseMatricesChiCos_0.1.root"); 
-	   eff[1] = TFile::Open("./Code_2017/ResponseMatricesChiCos_0.1.root");
-	   eff[2] = TFile::Open("./Code_2018/ResponseMatricesChiCos_0.1.root");
+     eff[1] = TFile::Open("./Code_2017/ResponseMatricesChiCos_0.1.root");
+     eff[2] = TFile::Open("./Code_2018/ResponseMatricesChiCos_0.1.root");
    }
    
    //things we need:
@@ -144,9 +147,19 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
    effLeg->AddEntry(eff18[0], "tTagger '18", "lp");
 
    TCanvas *can_eff = new TCanvas("Efficiency can", "Efficiency can", 700, 600);
-   eff18[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
-   eff17[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
-   eff16[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
+
+   if(partonVar.EqualTo("chi"))
+   {
+     eff18[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
+     eff17[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
+     eff16[0]->SetTitle(TString::Format("#%s Efficiency '16,'17,'18;#%s;Efficiency",partonVar.Data(),partonVar.Data()));
+   }
+   else
+   {
+     eff18[0]->SetTitle(TString::Format("%s Efficiency '16,'17,'18;%s;Efficiency","|cos(#theta^{*})|","|cos(#theta^{*})|"));
+     eff17[0]->SetTitle(TString::Format("%s Efficiency '16,'17,'18;%s;Efficiency","|cos(#theta^{*})|","|cos(#theta^{*})|"));
+     eff16[0]->SetTitle(TString::Format("%s Efficiency '16,'17,'18;%s;Efficiency","|cos(#theta^{*})|","|cos(#theta^{*})|"));
+   }
    eff18[0]->Draw();
    eff17[0]->Draw("same");
    eff16[0]->Draw("same");
@@ -155,7 +168,8 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
    
    TCanvas *can_acc = new TCanvas("Acceptance can", "Acceptance can", 700, 600);
    //acc18[0]->SetTitle(TString::Format("Acceptance '16,'17,'18;%s (GeV);Acceptance",recoVar.Data()));  
-   acc18[0]->SetTitle(TString::Format("#%s Acceptance '16,'17,'18;#%s;Acceptance",partonVar.Data(),partonVar.Data()));
+   //acc18[0]->SetTitle(TString::Format("#%s Acceptance '16,'17,'18;#%s;Acceptance",partonVar.Data(),partonVar.Data()));
+   acc18[0]->SetTitle(TString::Format("%s Acceptance '16,'17,'18;%s;Acceptance","|cos(#theta^{*})|","|cos(#theta^{*})|"));
    acc18[0]->Draw();
    acc17[0]->Draw("same");
    acc16[0]->Draw("same");
@@ -233,7 +247,7 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   closure_pad182->SetBottomMargin(0.2);
   closure_pad182->SetGrid();
 
-  auto *closure_pad181 = new TPad("closure_pad182","closure_pad	182",0.,0.3,1.,1.);  
+  auto *closure_pad181 = new TPad("closure_pad182","closure_pad 182",0.,0.3,1.,1.);  
   closure_pad181->Draw();
   closure_pad181->SetBottomMargin(0.001);
   closure_pad181->cd();
@@ -261,7 +275,7 @@ void compare16_17(TString recoVar = "Chi",TString partonVar = "chi", bool isDeep
   hClosure18[1] = (TH1F*)hBkg_1Btag[2]->Clone("hClosure18_1"); 
   hClosure18[0]->Divide(hBkg_CR[2]);
   hClosure18[1]->Divide(hBkg_CR[2]);
-  hClosure18[0]->Draw();
+  hClosure18[0]->Draw();  
   hClosure18[0]->SetLineColor(kRed);
   hClosure18[1]->SetLineColor(kBlack);
   hClosure18[1]->Draw("same");  

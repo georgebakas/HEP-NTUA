@@ -7,7 +7,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
   
-  TFile *inf = TFile::Open("Histo_JetHT_Run2017-31Mar2018_New_100.root");
+  TFile *inf = TFile::Open("Histo_JetHT_Run2018-17Sep2018_New_100.root");
   TH1F *h0b  = (TH1F*)inf->Get("hWt_mTop_0btag");
   TH1F *h1b  = (TH1F*)inf->Get("hWt_mTop_1btag");
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
@@ -15,7 +15,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   h2b->Rebin(REBIN);
   h1b->Rebin(REBIN);
   // -----------------------------------------
-  const float LUMI = 41530;
+  const float LUMI = 59740;
 
   TFile *infTT = TFile::Open("Histo_TT_Mtt-700toInf_TuneCP5_13TeV-powheg-pythia8_New_100.root");
   TH1F *h2b_TT = (TH1F*)infTT->Get("hWt_mTop_2btag_expYield");
@@ -81,11 +81,11 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooEffProd pdf_qcdCor_1b("qcdCor_pdf_1b","qcdCor_pdf_1b",*pdf_qcd_1b,qcdCor_1b);
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
   
-  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",h0b_Bkg->Integral(),0.9*h0b_Bkg->Integral() ,1.1*h0b_Bkg->Integral()); //oti dinei to MC ± 10%
-  RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b","nFitBkg_1b",h1b_Bkg->Integral(),0.9*h1b_Bkg->Integral() ,1.1*h1b_Bkg->Integral());
-  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",h2b_Bkg->Integral(),0.9*h2b_Bkg->Integral() ,1.1*h2b_Bkg->Integral());
+  RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b","nFitBkg_0b",h0b_Bkg->Integral(),0.7*h0b_Bkg->Integral() ,1.3*h0b_Bkg->Integral()); //oti dinei to MC ± 10%
+  RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b","nFitBkg_1b",h1b_Bkg->Integral(),0.7*h1b_Bkg->Integral() ,1.3*h1b_Bkg->Integral());
+  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",h2b_Bkg->Integral(),0.7*h2b_Bkg->Integral() ,1.3*h2b_Bkg->Integral());
 
-  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",90000,0,1.2e+5);
+  RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b","nFitQCD_0b",90000,0,1.2e+6);
   RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b","nFitQCD_1b",35000,0,1e+5);
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",3000,0,1e+4);  
 /*
@@ -103,9 +103,9 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b","nFitSig0b",h0b_TT->Integral(),0.6* h0b_TT->Integral(),1.4*h0b_TT->Integral());
   RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b","nFitSig1b",h1b_TT->Integral(),0.6* h1b_TT->Integral(),1.4*h1b_TT->Integral());
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",h2b_TT->Integral(),0.6* h2b_TT->Integral(),1.4*h2b_TT->Integral());
-  //RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.4912,0.45,0.60);
-  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.6788,0.45,0.80);
-  //btagEff->setConstant(true);
+  RooRealVar *btagEff   = new RooRealVar("btagEff","btagEff",0.633934,0.4,0.8);
+  //RooRealVar *btagEff = new RooRealVar("btagEff", "btagEff", 0.4);
+  btagEff->setConstant(true);
 
   RooFormulaVar nSig0b("nSig_0b","(1-@0)*(1-@0)*@1",RooArgList(*btagEff,*nFitSig)); 
   RooFormulaVar nSig2b("nSig_2b","@0*@0*@1",RooArgList(*btagEff,*nFitSig));
@@ -115,8 +115,7 @@ void SimultaneousFit_3regions(int REBIN =2)
   RooAbsPdf *pdf_signal_1b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_1btag");
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
 
-  //RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b,*pdf_bkg_0b),RooArgList(nSig0b,*nFitQCD0b,*nFitBkg0b)); 
-  RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b),RooArgList(nSig0b,*nFitQCD0b)); 
+  RooAddPdf *model_0b = new RooAddPdf("model_0b","model_0b",RooArgList(*pdf_signal_0b,*pdf_qcd_0b,*pdf_bkg_0b),RooArgList(nSig0b,*nFitQCD0b,*nFitBkg0b)); 
   RooAddPdf *model_1b = new RooAddPdf("model_1b","model_1b",RooArgList(*pdf_signal_1b,pdf_qcdCor_1b,*pdf_bkg_1b),RooArgList(nSig1b,*nFitQCD1b,*nFitBkg1b));
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(nSig2b,*nFitQCD2b,*nFitBkg2b));
 
@@ -150,13 +149,6 @@ void SimultaneousFit_3regions(int REBIN =2)
   frameEll1->GetYaxis()->SetTitle("btag efficiency");
   frameEll1->Draw();
 
-  TCanvas *canEll2 = new TCanvas("Correlation_BTagEff_vs_NQCD2b_"+CUT,"Correlation_BTagEff_vs_NQCD2b_"+CUT,900,600);
-  RooPlot *frameEll2 = new RooPlot(*nFitQCD2b,*btagEff,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),btagEff->getVal()-1.5*btagEff->getError(),btagEff->getVal()+1.5*btagEff->getError());
-  res->plotOn(frameEll2,*nFitQCD2b,*btagEff,"ME12ABHV");
-  frameEll2->GetXaxis()->SetTitle("QCD events (2b category)");
-  frameEll2->GetYaxis()->SetTitle("btag efficiency");
-  frameEll2->Draw();
-
   TCanvas *canEll3 = new TCanvas("Correlation_BTagEff_vs_kMassResol_"+CUT,"Correlation_BTagEff_vs_kMassResol_"+CUT,900,600);
   RooPlot *frameEll3 = new RooPlot(*kMassResol,*btagEff,kMassResol->getVal()-1.5*kMassResol->getError(),kMassResol->getVal()+1.5*kMassResol->getError(),btagEff->getVal()-1.5*btagEff->getError(),btagEff->getVal()+1.5*btagEff->getError());
   res->plotOn(frameEll3,*kMassResol,*btagEff,"ME12ABHV");
@@ -172,6 +164,100 @@ void SimultaneousFit_3regions(int REBIN =2)
   frameEll4->GetYaxis()->SetTitle("btag efficiency");
   frameEll4->Draw();
 
+  /*
+      Floating Parameter
+  --------------------  
+               btagEff  if this runs as a free parameter in the fit 
+            kMassResol    
+            kMassScale    
+               kQCD_1b    
+               kQCD_2b    
+            nFitBkg_0b    
+            nFitBkg_1b    
+            nFitBkg_2b    
+            nFitQCD_0b    
+            nFitQCD_1b    
+            nFitQCD_2b    
+               nFitSig    
+  */
+
+  //correlation plots for NQCD2b vs all the fit parameters mentioned above in the array
+  TCanvas *canEll2 = new TCanvas("Correlation_NQCD2b_vs_BTagEff"+CUT,"Correlation_BTagEff_vs_NQCD2b_"+CUT,800,600);
+  RooPlot *frameEll2 = new RooPlot(*nFitQCD2b,*btagEff,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),btagEff->getVal()-1.5*btagEff->getError(),btagEff->getVal()+1.5*btagEff->getError());
+  res->plotOn(frameEll2,*nFitQCD2b,*btagEff,"ME12ABHV");
+  frameEll2->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll2->GetYaxis()->SetTitle("btag efficiency");
+  frameEll2->Draw();
+
+  TCanvas *canEll5 = new TCanvas("Correlation_NQCD2b_vs_kMassResol", "Correlation_NQCD2b_vs_kMassResol", 800,600);
+  RooPlot *frameEll5 = new RooPlot(*nFitQCD2b,*kMassResol,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),kMassResol->getVal()-1.5*kMassResol->getError(),kMassResol->getVal()+1.5*kMassResol->getError());
+  res->plotOn(frameEll5,*nFitQCD2b,*kMassResol,"ME12ABHV");
+  frameEll5->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll5->GetYaxis()->SetTitle("kMassResol");
+  frameEll5->Draw();
+
+  TCanvas *canEll6 = new TCanvas("Correlation_NQCD2b_vs_kMassScale", "Correlation_NQCD2b_vs_kMassScale", 800,600);
+  RooPlot *frameEll6 = new RooPlot(*nFitQCD2b,*kMassScale,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),kMassScale->getVal()-1.5*kMassScale->getError(),kMassScale->getVal()+1.5*kMassScale->getError());
+  res->plotOn(frameEll6,*nFitQCD2b,*kMassScale,"ME12ABHV");
+  frameEll6->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll6->GetYaxis()->SetTitle("kMassScale");
+  frameEll6->Draw();
+
+  TCanvas *canEll7 = new TCanvas("Correlation_NQCD2b_vs_kQCD_1b", "Correlation_NQCD2b_vs_kQCD_1b", 800,600);
+  RooPlot *frameEll7 = new RooPlot(*nFitQCD2b,kQCD1b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),kQCD1b.getVal()-1.5*kQCD1b.getError(),kQCD1b.getVal()+1.5*kQCD1b.getError());
+  res->plotOn(frameEll7,*nFitQCD2b,kQCD1b,"ME12ABHV");
+  frameEll7->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll7->GetYaxis()->SetTitle("QCD_1b correction factor");
+  frameEll7->Draw();
+
+  TCanvas *canEll8 = new TCanvas("Correlation_NQCD2b_vs_kQCD_2b", "Correlation_NQCD2b_vs_kQCD_2b", 800,600);
+  RooPlot *frameEll8 = new RooPlot(*nFitQCD2b,kQCD2b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),kQCD2b.getVal()-1.5*kQCD2b.getError(),kQCD2b.getVal()+1.5*kQCD2b.getError());
+  res->plotOn(frameEll8,*nFitQCD2b,kQCD2b,"ME12ABHV");
+  frameEll8->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll8->GetYaxis()->SetTitle("QCD_2b correction factor");
+  frameEll8->Draw();
+
+  TCanvas *canEll9 = new TCanvas("Correlation_NQCD2b_vs_nFitBkg_0b", "Correlation_NQCD2b_vs_nFitBkg_0b", 800,600);
+  RooPlot *frameEll9 = new RooPlot(*nFitQCD2b,*nFitBkg0b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),nFitBkg0b->getVal()-1.5*nFitBkg0b->getError(),nFitBkg0b->getVal()+1.5*nFitBkg0b->getError());
+  res->plotOn(frameEll9,*nFitQCD2b,*nFitBkg0b,"ME12ABHV");
+  frameEll9->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll9->GetYaxis()->SetTitle("subdominant bkg events (0b category)");
+  frameEll9->Draw();
+
+  TCanvas *canEll10 = new TCanvas("Correlation_NQCD2b_vs_nFitBkg_1b", "Correlation_NQCD2b_vs_nFitBkg_1b", 800,600);
+  RooPlot *frameEll10 = new RooPlot(*nFitQCD2b,*nFitBkg1b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),nFitBkg1b->getVal()-1.5*nFitBkg1b->getError(),nFitBkg1b->getVal()+1.5*nFitBkg1b->getError());
+  res->plotOn(frameEll10,*nFitQCD2b,*nFitBkg1b,"ME12ABHV");
+  frameEll10->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll10->GetYaxis()->SetTitle("subdominant bkg events (1b category)");
+  frameEll10->Draw();
+
+  TCanvas *canEll11 = new TCanvas("Correlation_NQCD2b_vs_nFitBkg_2b", "Correlation_NQCD2b_vs_nFitBkg_2b", 800,600);
+  RooPlot *frameEll11 = new RooPlot(*nFitQCD2b,*nFitBkg2b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),nFitBkg2b->getVal()-1.5*nFitBkg2b->getError(),nFitBkg2b->getVal()+1.5*nFitBkg2b->getError());
+  res->plotOn(frameEll11,*nFitQCD2b,*nFitBkg2b,"ME12ABHV");
+  frameEll11->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll11->GetYaxis()->SetTitle("subdominant bkg events (2b category)");
+  frameEll11->Draw();
+
+  TCanvas *canEll12 = new TCanvas("Correlation_NQCD2b_vs_nFitQCD0b", "Correlation_NQCD2b_vs_nFitQCD0b", 800,600);
+  RooPlot *frameEll12 = new RooPlot(*nFitQCD2b,*nFitQCD0b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),nFitQCD0b->getVal()-1.5*nFitQCD0b->getError(),nFitQCD0b->getVal()+1.5*nFitQCD0b->getError());
+  res->plotOn(frameEll12,*nFitQCD2b,*nFitQCD0b,"ME12ABHV");
+  frameEll12->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll12->GetYaxis()->SetTitle("QCD events (0b category)");
+  frameEll12->Draw();
+
+  TCanvas *canEll13 = new TCanvas("Correlation_NQCD2b_vs_nFitQCD1b", "Correlation_NQCD2b_vs_nFitQCD1b", 800,600);
+  RooPlot *frameEll13 = new RooPlot(*nFitQCD2b,*nFitQCD1b,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),nFitQCD1b->getVal()-1.5*nFitQCD1b->getError(),nFitQCD1b->getVal()+1.5*nFitQCD1b->getError());
+  res->plotOn(frameEll13,*nFitQCD2b,*nFitQCD1b,"ME12ABHV");
+  frameEll13->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll13->GetYaxis()->SetTitle("QCD events (1b category)");
+  frameEll13->Draw();
+
+  TCanvas *canEll14 = new TCanvas("Correlation_NQCD2b_vs_nFitSig", "Correlation_NQCD2b_vs_nFitSig", 800,600);
+  RooPlot *frameEll14 = new RooPlot(*nFitQCD2b,*nFitSig,nFitQCD2b->getVal()-1.5*nFitQCD2b->getError(),nFitQCD2b->getVal()+1.5*nFitQCD2b->getError(),nFitSig->getVal()-1.5*nFitSig->getError(),nFitSig->getVal()+1.5*nFitSig->getError());
+  res->plotOn(frameEll14,*nFitQCD2b,*nFitSig,"ME12ABHV");
+  frameEll14->GetXaxis()->SetTitle("QCD events (2b category)");
+  frameEll14->GetYaxis()->SetTitle("ttbar events (all categories)");
+  frameEll14->Draw();
   /*
   //cout<<"correlation = "<<res->correlation(*nFitSig,*btagEff)<<endl;
   //cout<<"correlation = "<<res->correlation(*nFitQCD2b,*btagEff)<<endl;

@@ -6,15 +6,9 @@ void CreateBkgTemplates(TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TFile *infData = TFile::Open("Histo_JetHT_Run2017-31Mar2018_New_100.root"); 
-
-  /*TFile *infW  = TFile::Open("../Histo_WJetsToQQ_HT180_13TeV-madgraphMLM-pythia8.root");
-  TFile *infDY = TFile::Open("../Histo_DYJetsToQQ_HT180_13TeV-madgraphMLM-pythia8.root");
-  TFile *infST_tW_top = TFile::Open("../Histo_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root");
-  TFile *infST_tW_antitop = TFile::Open("../Histo_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.root");
-  TFile *infST_t_top = TFile::Open("../Histo_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
-  TFile *infST_t_antitop = TFile::Open("../Histo_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
-  */
+  TFile *infData = TFile::Open("Histo_Data_2017.root"); 
+  //TFile *infData = TFile::Open("Histo_QCD_HT300toInf_TuneCP5_13TeV-madgraph-pythia8_New_100.root"); 
+  
   TFile *infBkg = TFile::Open("Histo_SubdominantBkgs_New_100.root");
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
@@ -25,7 +19,7 @@ void CreateBkgTemplates(TString CUT = "")
   float XMIN,XMAX;
 
   VAR = "mTop";
-  XMIN = 50.;
+  XMIN = 0.;
   XMAX = 300.; 
 
   RooWorkspace *w = new RooWorkspace("w","workspace");
@@ -35,7 +29,7 @@ void CreateBkgTemplates(TString CUT = "")
   w->import(*x);
   //---- first do the data template ---------------
   
-  TH1F *hData = (TH1F*)infData->Get("hWt_mTop_0btag");
+  TH1F *hData = (TH1F*)infData->Get("hWt_mTop_0btag_expYield");
   hData->Rebin(2);
   RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);  
   TH1F *hDataJet = (TH1F*)infData->Get("hWt_jetMassSoftDrop_0btag");
@@ -43,24 +37,36 @@ void CreateBkgTemplates(TString CUT = "")
   RooRealVar *fBkgJet = new RooRealVar("fBkgJet","fBkgJet",hDataJet->Integral()/hData->Integral());
   RooRealVar *fBkgEvt = new RooRealVar("fBkgEvt","fBkgEvt",hDataEvt->Integral()/hData->Integral());
   //---- QCD -----------------------------------
-  RooRealVar bQCD0("qcd_b0","qcd_b0",0.8,0,1.6);
-  RooRealVar bQCD1("qcd_b1","qcd_b1",0.8,0,1.6);
-  RooRealVar bQCD2("qcd_b2","qcd_b2",0.8,0,1.6);
-  RooRealVar bQCD3("qcd_b3","qcd_b3",0.8,0,1.6);
-  RooBernstein qcd1("qcd_brn","qcd_brn",*x,RooArgList(bQCD0,bQCD1,bQCD2, bQCD3));
+  /*
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+                qcd_b0    1.4651e+00 +/-  8.75e-01
+                qcd_b1    1.5536e+00 +/-  9.67e-01
+                qcd_b2    1.0821e-01 +/-  1.36e+00
+                qcd_b3    1.5263e+00 +/-  1.42e+00
+                qcd_b4    9.6536e-02 +/-  8.47e-01
+                qcd_b5    1.9456e-02 +/-  1.36e+00
+                qcd_b6    2.1904e-01 +/-  9.01e-01
+                qcd_b7    6.3882e-02 +/-  9.54e-01
+                qcd_f1    3.6725e-01 +/-  6.77e-01
+              qcd_mean    1.3926e+02 +/-  1.53e+02
+             qcd_sigma    4.5319e+01 +/-  1.08e+02
+	*/
+  RooRealVar bQCD0("qcd_b0","qcd_b0",0.74,0,2.);
+  RooRealVar bQCD1("qcd_b1","qcd_b1",1.5,0,2.);
+  RooRealVar bQCD2("qcd_b2","qcd_b2",1.5,0,2.);
+  RooRealVar bQCD3("qcd_b3","qcd_b3",0.08,0,2.);
+  RooRealVar bQCD4("qcd_b4","qcd_b4",0.04,0,2.);
+  RooBernstein qcd1("qcd_brn","qcd_brn",*x,RooArgList(bQCD0,bQCD1,bQCD2,bQCD3, bQCD4));
+  
 
   RooRealVar mQCD("qcd_mean" ,"qcd_mean",140,130,300);
   RooRealVar sQCD("qcd_sigma","qcd_sigma",50,10,200);
   RooGaussian qcd2("qcd_gaus" ,"qcd_gaus",*x,mQCD,sQCD);
 
-  RooRealVar fqcd("qcd_f","qcd_f",0.5,0,1);
+  RooRealVar fqcd1("qcd_f1","qcd_f1",0.5,0,1);
 
-  RooRealVar mW("meanW", "meanW", 80, 70, 90);
-  RooRealVar sW("sigmaW", "sigmaW", 5, 0, 15);
-  RooFormulaVar mWShift("meanWShifted", "@0*@1", RooArgList(mW, *(kMassScale)));
-  RooFormulaVar sWShift("sigmaWShifted","@0*@1",RooArgList(sW,*(kMassResol)));
-
-  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd));
+  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
   
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);
@@ -77,13 +83,13 @@ void CreateBkgTemplates(TString CUT = "")
   gPad->Update();
   canQCD->Print("plots/"+TString(canQCD->GetName())+".pdf");
 
-  RooArgSet *parsQCD = (RooArgSet*)qcd->getParameters(roohData);
-  parsQCD->setAttribAll("Constant",true);
+  //RooArgSet *parsQCD = (RooArgSet*)qcd->getParameters(roohData);
+  //parsQCD->setAttribAll("Constant",true);
 
   w->import(*qcd);
   w->import(*fBkgJet);
   w->import(*fBkgEvt);
-
+  
   //TH1F *hMeanTop[2],*hSigmaTop[2],*hMeanW[2],*hSigmaW[2];
 
   float LUMI(41530);
@@ -94,51 +100,7 @@ void CreateBkgTemplates(TString CUT = "")
     
     //---- do the bkg templates -------------
     TH1F *hBkg = (TH1F*)infBkg->Get("hWt_"+VAR+TAG+"_expYield");
-    /*
-    TH1F *hW = (TH1F*)infW->Get("boosted/hWt_"+VAR+"_"+TAG);
-    TH1F *hDY = (TH1F*)infDY->Get("boosted/hWt_"+VAR+"_"+TAG);
-    TH1F *hST_tW_top = (TH1F*)infST_tW_top->Get("boosted/hWt_"+VAR+"_"+TAG);
-    TH1F *hST_tW_antitop = (TH1F*)infST_tW_antitop->Get("boosted/hWt_"+VAR+"_"+TAG);
-    TH1F *hST_t_top = (TH1F*)infST_t_top->Get("boosted/hWt_"+VAR+"_"+TAG);
-    TH1F *hST_t_antitop = (TH1F*)infST_t_antitop->Get("boosted/hWt_"+VAR+"_"+TAG);
-    float normW = ((TH1F*)infW->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    float normDY = ((TH1F*)infDY->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    float normST_tW_top = ((TH1F*)infST_tW_top->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    float normST_tW_antitop = ((TH1F*)infST_tW_antitop->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    float normST_t_top = ((TH1F*)infST_t_top->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    float normST_t_antitop = ((TH1F*)infST_t_antitop->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-    hW->Sumw2();
-    hDY->Sumw2();
-    hST_tW_top->Sumw2();
-    hST_tW_antitop->Sumw2();
-    hST_t_top->Sumw2();
-    hST_t_antitop->Sumw2();
-    
-
-    hW->Scale(3539.*LUMI/normW);
-    hDY->Scale(1460.*LUMI/normDY);
-    hST_tW_top->Scale(35.6*LUMI/normST_tW_top);
-    hST_tW_antitop->Scale(35.6*LUMI/normST_tW_antitop);
-    hST_t_top->Scale(136.02*LUMI/normST_t_top);
-    hST_t_antitop->Scale(80.95*LUMI/normST_t_antitop);
-    
-    
-    //hBkg->Add(hW);
-    //hBkg->Add(hDY);
-    //hBkg->Add(hST_tW_top);
-    //hBkg->Add(hST_tW_antitop);
-    //hBkg->Add(hST_t_top);
-    //hBkg->Add(hST_t_antitop);
-    
-    cout<<"Expected number of events: "<<endl;
-    cout<<"WJets:         "<<hW->Integral()<<endl; 
-    cout<<"DYJets:        "<<hDY->Integral()<<endl;
-    cout<<"ST_tW_top:     "<<hST_tW_top->Integral()<<endl;
-    cout<<"ST_tW_antitop: "<<hST_tW_antitop->Integral()<<endl;
-    cout<<"ST_t_top:      "<<hST_t_top->Integral()<<endl;
-    cout<<"ST_t_antitop:  "<<hST_t_antitop->Integral()<<endl;
-    */
-    //hBkg->Rebin(5);
+  
     RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg); 
 
     RooRealVar mW("bkg_meanW_"+CAT,"meanW_"+CAT,80,70,90);
@@ -194,6 +156,6 @@ void CreateBkgTemplates(TString CUT = "")
     w->import(*bkg);
   }  
 
-  w->writeToFile("templates_Bkg_"+CUT+"100.root");
+  w->writeToFile("templates_Bkg_"+CUT+"100_New.root");
 }                            
 

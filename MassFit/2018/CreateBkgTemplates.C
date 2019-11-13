@@ -6,7 +6,7 @@ void CreateBkgTemplates(TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TFile *infData = TFile::Open("Histo_JetHT_Run2018-31Mar2018_New_100.root"); 
+  TFile *infData = TFile::Open("Histo_JetHT_Run2018-17Sep2018_New_100.root"); 
 
   /*TFile *infW  = TFile::Open("../Histo_WJetsToQQ_HT180_13TeV-madgraphMLM-pythia8.root");
   TFile *infDY = TFile::Open("../Histo_DYJetsToQQ_HT180_13TeV-madgraphMLM-pythia8.root");
@@ -86,7 +86,7 @@ void CreateBkgTemplates(TString CUT = "")
 
   //TH1F *hMeanTop[2],*hSigmaTop[2],*hMeanW[2],*hSigmaW[2];
 
-  float LUMI(41530);
+  float LUMI(59740);
 
   for(int icat=0;icat<3;icat++) {
     TString CAT = TString::Format("%dbtag",icat);
