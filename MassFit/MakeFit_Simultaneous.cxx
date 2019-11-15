@@ -106,7 +106,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	TH1F* h2b_Bkg = (TH1F*)fileSub->Get("hWt_mTop_2btag_expYield");
 	
 	TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));
-	TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_100.root", year.Data()));
+	TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_mWShift_mTopShift_100.root", year.Data()));
 	RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
 	RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
 	
@@ -117,6 +117,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	kMassScale->setConstant(false);
   	kMassResol->setConstant(false);
 
+  	
   	RooRealVar *kMassScaleW = (RooRealVar*)wTemplatesSig->var("kMassScaleW");
 	RooRealVar *kMassResolW = (RooRealVar*)wTemplatesSig->var("kMassResolW");
 	kMassScaleW->setConstant(false);
@@ -129,9 +130,9 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooCategory sample("sample","sample");
 	sample.defineType("0btag");
 	sample.defineType("1btag");
-  sample.defineType("2btag");
+  	sample.defineType("2btag");
   
-  RooDataHist combData("combData","combData",*x, Index(sample),Import("0btag",*h0b),Import("1btag",*h1b),Import("2btag",*h2b));
+  	RooDataHist combData("combData","combData",*x, Index(sample),Import("0btag",*h0b),Import("1btag",*h1b),Import("2btag",*h2b));
 	
 	//Subdominant bkgs
 	RooAbsPdf *pdf_bkg_0b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_0btag");
@@ -203,12 +204,12 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	draw("2btag", year, x, combData, simPdf, sample);
 	draw("1btag", year, x, combData, simPdf, sample);
 	draw("0btag", year, x, combData, simPdf, sample);
-	/*
+	
 	for(int i=0; i< canvases.size(); i++)
 	{
-		canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions_freeEb/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
+		canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions_freeEb_mWScaleResolution/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
 	}
-	
+	/*
 	correlation(nFitSig, btagEff, res, "t#bar{t} events", "btag efficiency");
 	correlation(kMassResol, btagEff, res, "kMassResol", "btag efficiency");
 	correlation(kMassScale, btagEff, res, "kMassScale", "btag efficiency");

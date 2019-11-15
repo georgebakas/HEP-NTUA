@@ -18,7 +18,7 @@ void graphNbkg_eb()
 
 	const int n = 6;
 	float eb[n] = {0.4, 0.5, 0.6, 0.60786, 0.629909, 0.7};
-	float error_x[n] = {0,0, 1.17e-02, 0,0, 0};
+	float error_x[n] = {0,0, 0,1.17e-02,0, 0};
 
 	//Signal Region (2btag)
 	float NQCD_2[n] = {3.9683e+03,3.2907e+03, 3.0841e+03,3.0802e+03,3.0552e+03 ,3.0336e+03};
@@ -33,6 +33,12 @@ void graphNbkg_eb()
 	float error_y0[n] = {309,372,323,448,370,308};
 	
 	//for each region 1 graph
+	TArrow *ar2 = new TArrow(0.55, 3400, 0.6, 3100, 0.02,"|>");
+	TArrow *ar2_fixed = new TArrow(0.67, 3300, 0.63, 3100, 0.02,"|>");
+	ar2->SetLineWidth(2);
+	ar2_fixed->SetLineWidth(2);
+	TLatex l2, l2_fixed;
+
 	TGraphErrors *gr2 = new TGraphErrors(n,eb,NQCD_2,error_x,error_y2);
 	gr2->SetTitle("N_{QCD}^{(2)} vs e_{b}");
 	gr2->SetMarkerColor(4);
@@ -42,7 +48,12 @@ void graphNbkg_eb()
 	gr2->GetYaxis()->SetTitleOffset(1.4);
 	TCanvas *c2 = new TCanvas("2btag", "2btag", 800, 600);
 	gr2->Draw("AP");
-
+	ar2->Draw();
+	l2.SetTextSize(0.03);
+	l2.DrawLatexNDC(0.45,0.46,"e_{b} from fit");
+	ar2_fixed->Draw();
+	l2_fixed.SetTextSize(0.03);
+	l2_fixed.DrawLatexNDC(0.7,0.41,"e_{b} calculated");
 
 	TGraphErrors *gr1 = new TGraphErrors(n, eb, NQCD_1, error_x, error_y1);
 	gr1->SetTitle("N_{QCD}^{(1)} vs e_{b}");
@@ -53,6 +64,7 @@ void graphNbkg_eb()
 	gr1->GetYaxis()->SetTitleOffset(1.5);
 	TCanvas *c1 = new TCanvas("1btag", "1btag", 800,600);
 	gr1->Draw("AP");
+	
 
 
 	TGraphErrors *gr0 = new TGraphErrors(n, eb, NQCD_0, error_x, error_y0);
@@ -64,4 +76,13 @@ void graphNbkg_eb()
 	gr0->GetYaxis()->SetTitleOffset(1.3);
 	TCanvas *c0 = new TCanvas("0btag", "0btag", 800,600);
 	gr0->Draw("AP");
+
+
+	TFile *outf = new TFile("NQCD2_vs_eb.root", "RECREATE");
+	outf->cd();
+	gr2->Write("NQCD2_eb");
+	gr1->Write("NQCD1_eb");
+	gr0->Write("NQCD0_eb");
+
+
 }

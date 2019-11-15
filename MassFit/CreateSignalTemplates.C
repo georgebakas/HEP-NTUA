@@ -24,6 +24,11 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   kMassScale->setConstant(kTRUE);
   kMassResol->setConstant(kTRUE);
 
+  RooRealVar *kMassScaleW = new RooRealVar("kMassScaleW","kMassScaleW",1.0,0.5,1.5);
+  RooRealVar *kMassResolW = new RooRealVar("kMassResolW","kMassResolW",1.0,0.5,1.5);
+  kMassScaleW->setConstant(kTRUE);
+  kMassResolW->setConstant(kTRUE);
+
   RooRealVar *YieldTT;
   RooRealVar *AccTT;
   TH1F *hMC;
@@ -100,8 +105,8 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     RooRealVar mW("ttbar_meanW_"+CAT,"ttbar_meanW_"+CAT,90,70,100);
     RooRealVar sW("ttbar_sigmaW_"+CAT,"ttbar_sigmaW_"+CAT,5,5,10);
 
-    RooFormulaVar mWShift("ttbar_meanWShifted_"+CAT,"@0*@1",RooArgList(mW,*(kMassScale)));
-    RooFormulaVar sWShift("ttbar_sigmaWShifted_"+CAT,"@0*@1",RooArgList(sW,*(kMassResol)));
+    RooFormulaVar mWShift("ttbar_meanWShifted_"+CAT,"@0*@1",RooArgList(mW,*(kMassScaleW)));
+    RooFormulaVar sWShift("ttbar_sigmaWShifted_"+CAT,"@0*@1",RooArgList(sW,*(kMassResolW)));
 
     RooGaussian sigW("ttbar_pdfW_"+CAT,"ttbar_pdfW_"+CAT,*x,mWShift,sWShift);
 
@@ -155,6 +160,6 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     w->import(*fSigEvt);
   }
 
-  w->writeToFile(TString::Format("%s/templates_Sig_"+CUT+"100.root",year.Data()));
+  w->writeToFile(TString::Format("%s/templates_Sig_mWShift_mTopShift"+CUT+"100.root",year.Data()));
 }                            
 

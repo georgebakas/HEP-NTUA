@@ -18,7 +18,7 @@ void graphNbkg_eb()
 
 	const int n = 6;
 	float eb[n] = {0.4, 0.5,0.54097, 0.6, 0.605622, 0.7};
-	float error_x[n] = {0, 1.08e-02,0, 0,0, 0};
+	float error_x[n] = {0, 0,1.08e-02, 0,0, 0};
 
 	//Signal Region (2btag)
 	float NQCD_2[n]   = {2.9028e+03, 2.5498e+03, 2.4652e+03, 2.3919e+03, 2.3906e+03 , 1.59e+03};
