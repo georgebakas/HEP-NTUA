@@ -32,6 +32,6 @@ void graphTransferFactors()
 		htf[i]->SetMarkerColor(col[i]);
 		htf[i]->SetLineColor(col[i]);
 		can[i] = new TCanvas(TString::Format("can_%d", year),TString::Format("can_%d", year),800,600);
-		htf[i]->Draw("hist");
+		htf[i]->Draw("hist e");
 	}
 }
