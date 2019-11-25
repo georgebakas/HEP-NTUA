@@ -33,7 +33,7 @@ using std::endl;
 #include "TemplateConstants.h"
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
-void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0");
+void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", bool free_eb = true);
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
 {
@@ -65,14 +65,14 @@ void SignalExtraction(TString year)
 	TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
 	for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
 	{
-		SignalExtractionSpecific(year, vars[i]);
+		SignalExtractionSpecific(year, vars[i], true);
 	}
 }
 
 
-void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0")
+void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", bool free_eb = true)
 {
-	initFilesMapping();
+	initFilesMapping(free_eb);
 	gStyle->SetOptStat(0);
 	//open the signal file: get D(x) and Q(x) for every variable
 	TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
@@ -113,6 +113,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 	cout<<selVar<<endl;
 	cout<<NQCD<<endl;
 	
+
 	//use this template for the initialization of the BND source given as input for the rebinned histos
 	float tempBND[nBins[selVar]+1];
 	std::copy(BND[selVar].begin(), BND[selVar].end(), tempBND);	
@@ -128,13 +129,41 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 	//work on the elements for the QCD so that we have the right Q(x)
 	//Ryield * Nbkg  * Q(x)
 	cout<<"Ryield: "<<Ryield<<endl;
-	cout<<"-------"<<endl;
+	cout<<variable<<endl;
+	
+	float SF[hQ_rebinned->GetNbinsX()];
+	//QCD correction factor for shape
+	if(year.EqualTo("2017") || year.EqualTo("2018"))
+	{
+		if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || (year.EqualTo("2017") && variable.EqualTo("ptJJ"))) 		
+		{
+			TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/QCD_Closure_%s/FitOutput.root",year.Data()));
+	 	 	TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
+	  		//scale now all over the bins
+	  		//cout<<"beta [0]: "<<fitResult->GetParameter("beta")<<" ± "<<fitResult->GetParError(0)<<endl;
+	  		//cout<<"delta [1]: "<<fitResult->GetParameter("delta")<<" ± "<<fitResult->GetParError(1)<<endl;
+	  		//cout<<"alpha [2]: "<<fitResult->GetParameter("alpha")<<" ± "<<fitResult->GetParError(2)<<endl;
+	  		for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
+	  		{
+	  			float chi = hQ_rebinned->GetBinCenter(i+1);
+	    		SF[i] = fitResult->Eval(chi);
+	    	}
+    	}
+    	else for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+  	}
+  	else
+  	{
+  		for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+	}
+
+
 	hQ_rebinned->Scale(1./hQ_rebinned->Integral());
 	for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
-	{
+	{	
+		//cout<<SF[i]<<endl;
 		float oldContent = hQ_rebinned->GetBinContent(i+1);
 		float oldError = hQ_rebinned->GetBinError(i+1);
-		float newContent = Ryield * NQCD * oldContent;
+		float newContent = Ryield * NQCD * oldContent * SF[i];
 		float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
 										TMath::Power(NQCD_error*oldContent*Ryield,2));
 		hQ_rebinned->SetBinContent(i+1, newContent);
@@ -149,10 +178,11 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
  	TFile *infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root", year.Data()));
  	TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
 
+ 	//cout<<"Entries: "<<hSMC->GetEntries()<<endl;
+ 	//cout<<"Integral: "<<hSMC->Integral()<<endl;
+ 	cout<<"-------"<<endl;
  	hSignal->SetLineColor(kBlack);
  	hSMC->SetLineColor(kBlue);
- 	//hSMC->SetMarkerStyle(22);
- 	//hSMC->SetMarkerColor(kBlue);
  	hSignal->SetMarkerStyle(20);
  	hSignal->SetMarkerColor(kBlack);
 
@@ -165,12 +195,16 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
  	hSMC->Scale(1, "width");
  	hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
  	hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
- 	if (!variable.EqualTo("yJJ") || !variable.EqualTo("mJJ")) gPad->SetLogy();
+ 	//if(!variable.EqualTo("yJJ")) gPad->SetLogy();
 
  	hSMC->Draw("e");
  	hSignal->Draw("same e0");
  	leg->Draw();
 
-	//can->Print(TString::Format("%s/FiducialMeasurement/fiducial_%s.pdf",year.Data(),variable.Data()),"pdf");
+ 	TString path;
+ 	if(free_eb) path = TString::Format("%s/FiducialMeasurement/free_eb/fiducial_%s.pdf",year.Data(),variable.Data());
+ 	else path = TString::Format("%s/FiducialMeasurement/fixed_eb/fiducial_%s.pdf",year.Data(),variable.Data());
+
+	//can->Print(path,"pdf");
 
 }

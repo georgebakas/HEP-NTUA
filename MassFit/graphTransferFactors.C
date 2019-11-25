@@ -31,7 +31,10 @@ void graphTransferFactors()
 		htf[i]->SetMarkerStyle(marker[i]);
 		htf[i]->SetMarkerColor(col[i]);
 		htf[i]->SetLineColor(col[i]);
+		htf[i]->GetYaxis()->SetTitleOffset(1.25);
+		htf[i]->GetYaxis()->SetRangeUser(0.1,0.4);
 		can[i] = new TCanvas(TString::Format("can_%d", year),TString::Format("can_%d", year),800,600);
 		htf[i]->Draw("hist e");
+		can[i]->Print(TString::Format("%d/Ryield/TransferFactor.pdf",year),"pdf");
 	}
 }

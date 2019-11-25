@@ -11,7 +11,7 @@ TColor color;
 //std::vector< std::vector <Float_t> > BND;
 
 
-void initFilesMapping()
+void initFilesMapping(bool free_eb = true)
 {
 	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
 	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
@@ -35,14 +35,26 @@ void initFilesMapping()
 
 
 	//these are fit results taken from the simultaneous fit when btagging efficiency eb is let free in the fit
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0802e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.4652e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.4306e+03));
+	if(free_eb)
+	{
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0802e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.4652e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.4306e+03));
 
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.32e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.77e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.32e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.77e+02));
+	}
+	else
+	{
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0552e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.3906e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.3472e+03));
 
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.42e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.45e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.78e+02));
+	}
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
 	variableConstant.insert(pair<TString, int>("yJJ",  2));

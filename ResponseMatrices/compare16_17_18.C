@@ -22,9 +22,9 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
  	
    TFile *eff[3];
    //for efficiencies and acceptance
-   eff[0] = TFile::Open("./2016/ResponsesEfficiency_2016.root"); 
-   eff[1] = TFile::Open("./2017/ResponsesEfficiency_2017.root");
-   eff[2] = TFile::Open("./2018/ResponsesEfficiency_2018.root");
+   eff[0] = TFile::Open("./2016/UnequalBins/ResponsesEfficiency_2016.root"); 
+   eff[1] = TFile::Open("./2017/UnequalBins/ResponsesEfficiency_2017.root");
+   eff[2] = TFile::Open("./2018/UnequalBins/ResponsesEfficiency_2018.root");
 
    TFile *oldInf[2];
    oldInf[0] = TFile::Open("PartonEfficiencyAll_July19.root");
@@ -165,7 +165,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
-   		canResponse[iy][i]->Print(TString::Format("%s/%s/%sResponseMatrix_%s.pdf",years[iy].Data(),recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+   		canResponse[iy][i]->Print(TString::Format("%s/UnequalBins/%s/%sResponseMatrix_%s.pdf",years[iy].Data(),recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    	}
    }
 
