@@ -66,4 +66,30 @@ void graphNbkg_eb()
 	gr0->GetYaxis()->SetTitleOffset(1.3);
 	TCanvas *c0 = new TCanvas("0btag", "0btag", 800,600);
 	gr0->Draw("AP");
+
+	float SRoverCR[n], SRoverCRError[n];
+
+	for(int i =0;i<n;i++)
+	{
+		SRoverCR[i] = NQCD_2[i]/NQCD_0[i];
+		SRoverCRError[i] = TMath::Sqrt((TMath::Power(error_y2[i],2)/TMath::Power(NQCD_0[i],2)) + (TMath::Power(error_y0[i],2) *TMath::Power(NQCD_2[i],2)/TMath::Power(NQCD_0[i],4)));
+	}
+
+	TGraphErrors *grAll = new TGraphErrors(n, eb, SRoverCR, error_x, SRoverCRError);
+	grAll->SetTitle("N_{QCD}^{(2)}/N_{QCD}^{(0)} vs e_{b}");
+	grAll->SetMarkerColor(2);
+	grAll->SetMarkerStyle(20);
+	grAll->GetXaxis()->SetTitle("e_{b}");
+	grAll->GetYaxis()->SetTitle("N_{QCD}^{(0)}");
+	grAll->GetYaxis()->SetTitleOffset(1.3);
+	TCanvas *call = new TCanvas("SR over CR", "SR over CR", 800,600);
+	grAll->Draw("AP");
+	call->Print("Nqcd_vs_eb/SRoverCR.pdf","pdf");
+
+	TFile *outf = new TFile("NQCD2_vs_eb.root", "RECREATE");
+	outf->cd();
+	gr2->Write("NQCD2_eb");
+	gr1->Write("NQCD1_eb");
+	gr0->Write("NQCD0_eb");
+	grAll->Write("SRoverCR");
 }

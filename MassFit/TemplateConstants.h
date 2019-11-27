@@ -5,7 +5,9 @@ map<TString, map<TString, TString>> files;
 map<TString, float> floatConstants;
 
 map<TString, float> Nbkg2Constants;
+map<TString, float> Nbkg0Constants;
 map<TString, float> Nbkg2ConstantsErrors;
+map<TString, float> Nbkg0ConstantsErrors;
 map<TString, int> variableConstant;  
 TColor color;
 //std::vector< std::vector <Float_t> > BND;
@@ -44,6 +46,14 @@ void initFilesMapping(bool free_eb = true)
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.32e+02));
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.77e+02));
+
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8132e+04));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5483e+05));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.6842e+05));
+
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 4.48e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 5.24e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 5.64e+02));
 	}
 	else
 	{
@@ -54,6 +64,14 @@ void initFilesMapping(bool free_eb = true)
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.42e+02));
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.45e+02));
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.78e+02));
+
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8492e+04));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5612e+05));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.7002e+05));
+
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 3.70e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 3.78e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 4.37e+02));
 	}
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
