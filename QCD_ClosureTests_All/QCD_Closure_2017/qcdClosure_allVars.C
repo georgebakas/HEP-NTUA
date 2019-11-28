@@ -385,8 +385,8 @@ void initGlobals()
 	  dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
 	  dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
 	  
-	  recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 600 && (*pt_)[1] > 600 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5];
-	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 600 && (*partonPt_)[1] > 600 && mTTbarParton > 1000;
+	  recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5];
+	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
       massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  oldMva 	 =  mva >0.8;
 	  tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -443,7 +443,7 @@ void initGlobals()
 	  dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
 	  dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
 	  
-	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 600 && (*jetPt)[1] > 600 &&  mJJ > 1000 && (*bit)[5] && nLeptons==0;
+	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[5] && nLeptons==0;
       massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
 	  tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
 	  oldMva 	 =  mva >0.8;
@@ -684,14 +684,14 @@ void initGlobals()
   */
   
   TFile *outFile;
-  if(isSignal) 
+  if(isSignal)  
   {
-	  if(isDeepCSV) outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV_pT600.root", selMvaCut), "UPDATE");
+	  if(isDeepCSV) outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
 	  else outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_CSVv2.root", selMvaCut), "UPDATE");
   }
   else 
   {
-	  if(isDeepCSV) outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV_pT600.root",selMvaCut), "UPDATE");
+	  if(isDeepCSV) outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV.root",selMvaCut), "UPDATE");
 	  else outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_CSVv2.root",selMvaCut), "UPDATE");
   }
   
