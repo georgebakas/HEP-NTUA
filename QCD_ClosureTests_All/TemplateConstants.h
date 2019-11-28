@@ -9,6 +9,8 @@ map<TString, float> luminosity;
 map<TString, float> deepCSVWP;
 map<TString, float> tTaggerSel;
 
+map<TString, TString> filesSignal;
+map<TString, TString> filesBkg;
 
 void initFilesMapping()
 {
@@ -53,6 +55,14 @@ void initFilesMapping()
 	filesQCD.insert(pair<TString, map<TString, TString>>("2017", filesQCD2017));
 	filesQCD.insert(pair<TString, map<TString, TString>>("2018", filesQCD2018));
 
+
+	filesSignal.insert(pair<TString,TString>("2016","SignalOutput_AllRegions_0.20_deepCSV_2016.root"));
+	filesSignal.insert(pair<TString,TString>("2017","SignalOutput_AllRegions_0.00_deepCSV_2017.root"));
+	filesSignal.insert(pair<TString,TString>("2018","SignalOutput_AllRegions_0.10_deepCSV_2018.root"));
+
+	filesBkg.insert(pair<TString,TString>("2016","BkgOutput_AllRegions_0.20_deepCSV_2016.root"));
+	filesBkg.insert(pair<TString,TString>("2017","BkgOutput_AllRegions_0.00_deepCSV_2017.root"));
+	filesBkg.insert(pair<TString,TString>("2018","BkgOutput_AllRegions_0.10_deepCSV_2018.root"));
 
 	triggerConstant.insert(pair<TString,int>("2016", 2));
 	triggerConstant.insert(pair<TString,int>("2017", 5));
