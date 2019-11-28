@@ -600,13 +600,13 @@ void FillHistograms_Reduced(int sel = 0)
   }
   TFile *outFile;
   if(selection ==0)
-    outFile = new TFile("Histo_Data_2018_100_reduced.root", "UPDATE");
+    outFile = new TFile("Histo_Data_2018_100_reduced.root", "RECREATE");
   if(selection ==1)
-    outFile = new TFile("Histo_TT_Mtt-700toInf_100_reduced.root", "UPDATE");
+    outFile = new TFile("Histo_TT_Mtt-700toInf_100_reduced.root", "RECREATE");
   if(selection ==2)
-    outFile = new TFile("Histo_QCD_HT300toInf_TuneCP5_13TeV-madgraphMLM-pythia8_New_100_reduced.root", "UPDATE");
+    outFile = new TFile("Histo_QCD_HT300toInf_TuneCP5_13TeV-madgraphMLM-pythia8_New_100_reduced.root", "RECREATE");
   if(selection ==3)
-    outFile = new TFile("Histo_SubdominantBkgs_New_100_reduced.root", "UPDATE");
+    outFile = new TFile("Histo_SubdominantBkgs_100_reduced.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {

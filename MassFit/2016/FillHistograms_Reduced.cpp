@@ -120,7 +120,7 @@ void initGlobals()
   initHistoNames();
 }
  
-void FillHistograms(int sel = 0)
+void FillHistograms_Reduced(int sel = 0)
 {
   selection = sel;
   initGlobals();  
@@ -257,9 +257,9 @@ void FillHistograms(int sel = 0)
     }
     else if (ivar == 9 || ivar == 10)
     {
-      hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
-      hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
-    h1Btag[f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 50,300);
+      hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 120,220);
+      hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 120,220);
+    h1Btag[f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 120,220);
     }
     else if (ivar == 7 || ivar == 8)
     {
@@ -408,7 +408,7 @@ void FillHistograms(int sel = 0)
     
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[2];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
-    massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
+    massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
     //2 btag category with deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
@@ -458,7 +458,7 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
     
     recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[2] && nLeptons==0;
-    massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
+    massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) && 
@@ -599,13 +599,13 @@ void FillHistograms(int sel = 0)
   }
   TFile *outFile;
   if(selection ==0)
-    outFile = new TFile("Histo_Data_2016_100.root", "RECREATE");
+    outFile = new TFile("Histo_Data_2016_100_reduced.root", "RECREATE");
   if(selection ==1)
-    outFile = new TFile("Histo_TT_Mtt-700toInf_100.root", "RECREATE");
+    outFile = new TFile("Histo_TT_Mtt-700toInf_100_reduced.root", "RECREATE");
   if(selection ==2)
-    outFile = new TFile("Histo_QCD_HT300toInf_100.root", "RECREATE");
+    outFile = new TFile("Histo_QCD_HT300toInf_100_reduced.root", "RECREATE");
   if(selection ==3)
-    outFile = new TFile("Histo_SubdominantBkgs_New_100.root", "RECREATE");
+    outFile = new TFile("Histo_SubdominantBkgs_100_reduced.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
