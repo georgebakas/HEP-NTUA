@@ -47,14 +47,14 @@ void plot_QCDClosure_afterFit(TString year = "2016", TString recoVar = "jetPt0")
   if((recoVar.EqualTo("mJJ") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("jetPt0")) && !year.EqualTo("2016"))
   {
     useSF = true; 
-    fitFile =  TFile::Open(TString::Format("%s/FitOutput.root",year.Data()));
+    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
     fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
 
   }
   if(year.EqualTo("2017") && recoVar.EqualTo("ptJJ"))
   {
     useSF = true; 
-    fitFile =  TFile::Open(TString::Format("%s/FitOutput.root",year.Data()));
+    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
     fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
   } 
 
