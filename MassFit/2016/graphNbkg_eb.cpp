@@ -78,12 +78,6 @@ void graphNbkg_eb()
 	gr0->Draw("AP");
 
 
-	TFile *outf = new TFile("NQCD2_vs_eb.root", "RECREATE");
-	outf->cd();
-	gr2->Write("NQCD2_eb");
-	gr1->Write("NQCD1_eb");
-	gr0->Write("NQCD0_eb");
-
 	float SRoverCR[n], SRoverCRError[n];
 
 	for(int i =0;i<n;i++)
