@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<MethodSetup Method="Category::FisherCat">
+  <GeneralInfo>
+    <Info name="TMVA Release" value="4.2.1 [262657]"/>
+    <Info name="ROOT Release" value="6.16/00 [397312]"/>
+    <Info name="Creator" value="gbakas"/>
+    <Info name="Date" value="Wed May  8 13:27:12 2019"/>
+    <Info name="Host" value="Linux buildvm-19.phx2.fedoraproject.org 4.20.13-200.fc29.x86_64 #1 SMP Wed Feb 27 19:42:55 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux"/>
+    <Info name="Dir" value="/afs/cern.ch/user/g/gbakas/public/ForGiannis/Training"/>
+    <Info name="Training events" value="5201961"/>
+    <Info name="TrainingTime" value="8.83241820e+01"/>
+    <Info name="AnalysisType" value="Classification"/>
+  </GeneralInfo>
+  <Options>
+    <Option name="V" modified="No">False</Option>
+    <Option name="VerbosityLevel" modified="No">Default</Option>
+    <Option name="VarTransform" modified="No">None</Option>
+    <Option name="H" modified="No">False</Option>
+    <Option name="CreateMVAPdfs" modified="No">False</Option>
+    <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+  </Options>
+  <Variables NVar="10">
+    <Variable VarIndex="0" Expression="jetTau3" Label="jetTau3" Title="jetTau3" Unit="" Internal="jetTau3" Type="F" Min="9.99762095e-04" Max="3.31936181e-01"/>
+    <Variable VarIndex="1" Expression="jetTau2" Label="jetTau2" Title="jetTau2" Unit="" Internal="jetTau2" Type="F" Min="2.15064688e-03" Max="4.94217724e-01"/>
+    <Variable VarIndex="2" Expression="jetTau1" Label="jetTau1" Title="jetTau1" Unit="" Internal="jetTau1" Type="F" Min="1.93097815e-02" Max="6.75838113e-01"/>
+    <Variable VarIndex="3" Expression="jetMassSub0" Label="jetMassSub0" Title="jetMassSub0" Unit="" Internal="jetMassSub0" Type="F" Min="-3.05175781e-05" Max="7.27839417e+02"/>
+    <Variable VarIndex="4" Expression="jetMassSub1" Label="jetMassSub1" Title="jetMassSub1" Unit="" Internal="jetMassSub1" Type="F" Min="-2.50146422e-05" Max="3.09859650e+02"/>
+    <Variable VarIndex="5" Expression="ecfB1N2" Label="ecfB1N2" Title="ecfB1N2" Unit="" Internal="ecfB1N2" Type="F" Min="1.38492482e-02" Max="4.52274114e-01"/>
+    <Variable VarIndex="6" Expression="ecfB1N3" Label="ecfB1N3" Title="ecfB1N3" Unit="" Internal="ecfB1N3" Type="F" Min="-1.00000000e+00" Max="4.89466238e+00"/>
+    <Variable VarIndex="7" Expression="ecfB2N2" Label="ecfB2N2" Title="ecfB2N2" Unit="" Internal="ecfB2N2" Type="F" Min="1.39904779e-03" Max="3.46474975e-01"/>
+    <Variable VarIndex="8" Expression="ecfB2N3" Label="ecfB2N3" Title="ecfB2N3" Unit="" Internal="ecfB2N3" Type="F" Min="-1.00000000e+00" Max="4.43201494e+00"/>
+    <Variable VarIndex="9" Expression="JetPtOverSumPt" Label="JetPtOverSumPt" Title="JetPtOverSumPt" Unit="" Internal="JetPtOverSumPt" Type="F" Min="8.42677876e-02" Max="8.64884377e-01"/>
+  </Variables>
+  <Spectators NSpec="1">
+    <Spectator SpecIndex="0" Expression="jetPt" Label="jetPt" Title="F" Unit="" Internal="jetPt" Type="F" Min="4.00000031e+02" Max="4.39945312e+03"/>
+  </Spectators>
+  <Classes NClass="2">
+    <Class Name="Signal" Index="0"/>
+    <Class Name="Background" Index="1"/>
+  </Classes>
+  <Transformations NTransformations="0"/>
+  <MVAPdfs/>
+  <Weights NSubMethods="4">
+    <SubMethod Index="0" Method="Fisher::Fisher_400_600" Cut="jetPt&gt;=400 &amp;&amp; jetPt&lt;600" Variables="jetTau3:jetTau2:jetTau1:jetMassSub0:jetMassSub1:ecfB1N2:ecfB1N3:ecfB2N2:ecfB2N3:JetPtOverSumPt">
+      <GeneralInfo>
+        <Info name="TMVA Release" value="4.2.1 [262657]"/>
+        <Info name="ROOT Release" value="6.16/00 [397312]"/>
+        <Info name="Creator" value="gbakas"/>
+        <Info name="Date" value="Wed May  8 13:27:12 2019"/>
+        <Info name="Host" value="Linux buildvm-19.phx2.fedoraproject.org 4.20.13-200.fc29.x86_64 #1 SMP Wed Feb 27 19:42:55 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux"/>
+        <Info name="Dir" value="/afs/cern.ch/user/g/gbakas/public/ForGiannis/Training"/>
+        <Info name="Training events" value="2685885"/>
+        <Info name="TrainingTime" value="5.79343605e+00"/>
+        <Info name="AnalysisType" value="Classification"/>
+      </GeneralInfo>
+      <Options>
+        <Option name="V" modified="No">False</Option>
+        <Option name="VerbosityLevel" modified="No">Default</Option>
+        <Option name="VarTransform" modified="No">None</Option>
+        <Option name="H" modified="No">False</Option>
+        <Option name="CreateMVAPdfs" modified="No">False</Option>
+        <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+        <Option name="Method" modified="No">Fisher</Option>
+      </Options>
+      <Variables NVar="10">
+        <Variable VarIndex="0" Expression="jetTau3" Label="jetTau3" Title="jetTau3" Unit="" Internal="jetTau3" Type="F" Min="1.49156759e-03" Max="3.31936181e-01"/>
+        <Variable VarIndex="1" Expression="jetTau2" Label="jetTau2" Title="jetTau2" Unit="" Internal="jetTau2" Type="F" Min="2.65297107e-03" Max="4.65960175e-01"/>
+        <Variable VarIndex="2" Expression="jetTau1" Label="jetTau1" Title="jetTau1" Unit="" Internal="jetTau1" Type="F" Min="4.85089198e-02" Max="6.75073743e-01"/>
+        <Variable VarIndex="3" Expression="jetMassSub0" Label="jetMassSub0" Title="jetMassSub0" Unit="" Internal="jetMassSub0" Type="F" Min="-2.64289974e-05" Max="2.73831909e+02"/>
+        <Variable VarIndex="4" Expression="jetMassSub1" Label="jetMassSub1" Title="jetMassSub1" Unit="" Internal="jetMassSub1" Type="F" Min="-1.52587891e-05" Max="1.30178116e+02"/>
+        <Variable VarIndex="5" Expression="ecfB1N2" Label="ecfB1N2" Title="ecfB1N2" Unit="" Internal="ecfB1N2" Type="F" Min="1.24126822e-02" Max="4.52274114e-01"/>
+        <Variable VarIndex="6" Expression="ecfB1N3" Label="ecfB1N3" Title="ecfB1N3" Unit="" Internal="ecfB1N3" Type="F" Min="4.44766372e-01" Max="4.79809427e+00"/>
+        <Variable VarIndex="7" Expression="ecfB2N2" Label="ecfB2N2" Title="ecfB2N2" Unit="" Internal="ecfB2N2" Type="F" Min="1.39904779e-03" Max="3.46474975e-01"/>
+        <Variable VarIndex="8" Expression="ecfB2N3" Label="ecfB2N3" Title="ecfB2N3" Unit="" Internal="ecfB2N3" Type="F" Min="9.49942917e-02" Max="4.55633640e+00"/>
+        <Variable VarIndex="9" Expression="JetPtOverSumPt" Label="JetPtOverSumPt" Title="JetPtOverSumPt" Unit="" Internal="JetPtOverSumPt" Type="F" Min="8.75003785e-02" Max="5.99767148e-01"/>
+      </Variables>
+      <Classes NClass="2">
+        <Class Name="Signal" Index="0"/>
+        <Class Name="Background" Index="1"/>
+      </Classes>
+      <Transformations NTransformations="0"/>
+      <MVAPdfs/>
+      <Weights NCoeff="11">
+        <Coefficient Index="0" Value="2.5140734623579211e+00"/>
+        <Coefficient Index="1" Value="-6.4878438737898341e+00"/>
+        <Coefficient Index="2" Value="5.9298418304787592e+00"/>
+        <Coefficient Index="3" Value="-5.7840446024480652e-01"/>
+        <Coefficient Index="4" Value="3.8080083578260391e-03"/>
+        <Coefficient Index="5" Value="2.0284913481354388e-03"/>
+        <Coefficient Index="6" Value="-8.5018629907285899e+00"/>
+        <Coefficient Index="7" Value="-2.2573679456464280e-01"/>
+        <Coefficient Index="8" Value="4.0913724921116259e+00"/>
+        <Coefficient Index="9" Value="-4.6158759702383277e-02"/>
+        <Coefficient Index="10" Value="-8.2097461197931221e-01"/>
+      </Weights>
+    </SubMethod>
+    <SubMethod Index="1" Method="Fisher::Fisher_600_800" Cut="jetPt&gt;=600 &amp;&amp; jetPt&lt;800" Variables="jetTau3:jetTau2:jetTau1:jetMassSub0:jetMassSub1:ecfB1N2:ecfB1N3:ecfB2N2:ecfB2N3:JetPtOverSumPt">
+      <GeneralInfo>
+        <Info name="TMVA Release" value="4.2.1 [262657]"/>
+        <Info name="ROOT Release" value="6.16/00 [397312]"/>
+        <Info name="Creator" value="gbakas"/>
+        <Info name="Date" value="Wed May  8 13:27:12 2019"/>
+        <Info name="Host" value="Linux buildvm-19.phx2.fedoraproject.org 4.20.13-200.fc29.x86_64 #1 SMP Wed Feb 27 19:42:55 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux"/>
+        <Info name="Dir" value="/afs/cern.ch/user/g/gbakas/public/ForGiannis/Training"/>
+        <Info name="Training events" value="1308091"/>
+        <Info name="TrainingTime" value="2.39124298e+00"/>
+        <Info name="AnalysisType" value="Classification"/>
+      </GeneralInfo>
+      <Options>
+        <Option name="V" modified="No">False</Option>
+        <Option name="VerbosityLevel" modified="No">Default</Option>
+        <Option name="VarTransform" modified="No">None</Option>
+        <Option name="H" modified="No">False</Option>
+        <Option name="CreateMVAPdfs" modified="No">False</Option>
+        <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+        <Option name="Method" modified="No">Fisher</Option>
+      </Options>
+      <Variables NVar="10">
+        <Variable VarIndex="0" Expression="jetTau3" Label="jetTau3" Title="jetTau3" Unit="" Internal="jetTau3" Type="F" Min="2.21703295e-03" Max="3.06528568e-01"/>
+        <Variable VarIndex="1" Expression="jetTau2" Label="jetTau2" Title="jetTau2" Unit="" Internal="jetTau2" Type="F" Min="3.31185013e-03" Max="4.53723162e-01"/>
+        <Variable VarIndex="2" Expression="jetTau1" Label="jetTau1" Title="jetTau1" Unit="" Internal="jetTau1" Type="F" Min="3.71051319e-02" Max="6.68693483e-01"/>
+        <Variable VarIndex="3" Expression="jetMassSub0" Label="jetMassSub0" Title="jetMassSub0" Unit="" Internal="jetMassSub0" Type="F" Min="-3.05175781e-05" Max="3.51957703e+02"/>
+        <Variable VarIndex="4" Expression="jetMassSub1" Label="jetMassSub1" Title="jetMassSub1" Unit="" Internal="jetMassSub1" Type="F" Min="-1.07895930e-05" Max="1.74431519e+02"/>
+        <Variable VarIndex="5" Expression="ecfB1N2" Label="ecfB1N2" Title="ecfB1N2" Unit="" Internal="ecfB1N2" Type="F" Min="1.54414177e-02" Max="4.49779510e-01"/>
+        <Variable VarIndex="6" Expression="ecfB1N3" Label="ecfB1N3" Title="ecfB1N3" Unit="" Internal="ecfB1N3" Type="F" Min="3.02455813e-01" Max="4.89466238e+00"/>
+        <Variable VarIndex="7" Expression="ecfB2N2" Label="ecfB2N2" Title="ecfB2N2" Unit="" Internal="ecfB2N2" Type="F" Min="3.02646589e-03" Max="3.42326909e-01"/>
+        <Variable VarIndex="8" Expression="ecfB2N3" Label="ecfB2N3" Title="ecfB2N3" Unit="" Internal="ecfB2N3" Type="F" Min="1.28564462e-01" Max="4.38268328e+00"/>
+        <Variable VarIndex="9" Expression="JetPtOverSumPt" Label="JetPtOverSumPt" Title="JetPtOverSumPt" Unit="" Internal="JetPtOverSumPt" Type="F" Min="1.26271069e-01" Max="6.66404068e-01"/>
+      </Variables>
+      <Classes NClass="2">
+        <Class Name="Signal" Index="0"/>
+        <Class Name="Background" Index="1"/>
+      </Classes>
+      <Transformations NTransformations="0"/>
+      <MVAPdfs/>
+      <Weights NCoeff="11">
+        <Coefficient Index="0" Value="2.0756258719017113e+00"/>
+        <Coefficient Index="1" Value="-9.4206683822846582e+00"/>
+        <Coefficient Index="2" Value="1.0638209162142056e+01"/>
+        <Coefficient Index="3" Value="-2.1232279515200423e+00"/>
+        <Coefficient Index="4" Value="1.8619969685458484e-03"/>
+        <Coefficient Index="5" Value="5.8640368711758363e-04"/>
+        <Coefficient Index="6" Value="-7.8009008699934723e+00"/>
+        <Coefficient Index="7" Value="-2.8736578738148943e-01"/>
+        <Coefficient Index="8" Value="4.3276284854022675e+00"/>
+        <Coefficient Index="9" Value="-7.4830560400210716e-02"/>
+        <Coefficient Index="10" Value="7.7051538585493434e-02"/>
+      </Weights>
+    </SubMethod>
+    <SubMethod Index="2" Method="Fisher::Fisher_800_1200" Cut="jetPt&gt;=800 &amp;&amp; jetPt&lt;1200" Variables="jetTau3:jetTau2:jetTau1:jetMassSub0:jetMassSub1:ecfB1N2:ecfB1N3:ecfB2N2:ecfB2N3:JetPtOverSumPt">
+      <GeneralInfo>
+        <Info name="TMVA Release" value="4.2.1 [262657]"/>
+        <Info name="ROOT Release" value="6.16/00 [397312]"/>
+        <Info name="Creator" value="gbakas"/>
+        <Info name="Date" value="Wed May  8 13:27:12 2019"/>
+        <Info name="Host" value="Linux buildvm-19.phx2.fedoraproject.org 4.20.13-200.fc29.x86_64 #1 SMP Wed Feb 27 19:42:55 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux"/>
+        <Info name="Dir" value="/afs/cern.ch/user/g/gbakas/public/ForGiannis/Training"/>
+        <Info name="Training events" value="1044102"/>
+        <Info name="TrainingTime" value="1.93531084e+00"/>
+        <Info name="AnalysisType" value="Classification"/>
+      </GeneralInfo>
+      <Options>
+        <Option name="V" modified="No">False</Option>
+        <Option name="VerbosityLevel" modified="No">Default</Option>
+        <Option name="VarTransform" modified="No">None</Option>
+        <Option name="H" modified="No">False</Option>
+        <Option name="CreateMVAPdfs" modified="No">False</Option>
+        <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+        <Option name="Method" modified="No">Fisher</Option>
+      </Options>
+      <Variables NVar="10">
+        <Variable VarIndex="0" Expression="jetTau3" Label="jetTau3" Title="jetTau3" Unit="" Internal="jetTau3" Type="F" Min="2.62593734e-03" Max="3.17167282e-01"/>
+        <Variable VarIndex="1" Expression="jetTau2" Label="jetTau2" Title="jetTau2" Unit="" Internal="jetTau2" Type="F" Min="4.15963260e-03" Max="4.43021953e-01"/>
+        <Variable VarIndex="2" Expression="jetTau1" Label="jetTau1" Title="jetTau1" Unit="" Internal="jetTau1" Type="F" Min="2.68758256e-02" Max="6.54834151e-01"/>
+        <Variable VarIndex="3" Expression="jetMassSub0" Label="jetMassSub0" Title="jetMassSub0" Unit="" Internal="jetMassSub0" Type="F" Min="-1.20631321e-05" Max="4.53835052e+02"/>
+        <Variable VarIndex="4" Expression="jetMassSub1" Label="jetMassSub1" Title="jetMassSub1" Unit="" Internal="jetMassSub1" Type="F" Min="-2.15791861e-05" Max="2.36010468e+02"/>
+        <Variable VarIndex="5" Expression="ecfB1N2" Label="ecfB1N2" Title="ecfB1N2" Unit="" Internal="ecfB1N2" Type="F" Min="2.27384921e-02" Max="4.47621018e-01"/>
+        <Variable VarIndex="6" Expression="ecfB1N3" Label="ecfB1N3" Title="ecfB1N3" Unit="" Internal="ecfB1N3" Type="F" Min="2.32546896e-01" Max="4.64408016e+00"/>
+        <Variable VarIndex="7" Expression="ecfB2N2" Label="ecfB2N2" Title="ecfB2N2" Unit="" Internal="ecfB2N2" Type="F" Min="3.28641152e-03" Max="3.41263056e-01"/>
+        <Variable VarIndex="8" Expression="ecfB2N3" Label="ecfB2N3" Title="ecfB2N3" Unit="" Internal="ecfB2N3" Type="F" Min="1.52328275e-02" Max="4.36683989e+00"/>
+        <Variable VarIndex="9" Expression="JetPtOverSumPt" Label="JetPtOverSumPt" Title="JetPtOverSumPt" Unit="" Internal="JetPtOverSumPt" Type="F" Min="1.49644449e-01" Max="7.49368966e-01"/>
+      </Variables>
+      <Classes NClass="2">
+        <Class Name="Signal" Index="0"/>
+        <Class Name="Background" Index="1"/>
+      </Classes>
+      <Transformations NTransformations="0"/>
+      <MVAPdfs/>
+      <Weights NCoeff="11">
+        <Coefficient Index="0" Value="1.8657103801577415e+00"/>
+        <Coefficient Index="1" Value="-1.0499863581019948e+01"/>
+        <Coefficient Index="2" Value="1.2958595543322902e+01"/>
+        <Coefficient Index="3" Value="-2.9127686106665038e+00"/>
+        <Coefficient Index="4" Value="-3.8645764338326016e-05"/>
+        <Coefficient Index="5" Value="-8.0682220856792704e-04"/>
+        <Coefficient Index="6" Value="-7.1545834400155695e+00"/>
+        <Coefficient Index="7" Value="-3.6168090824077975e-01"/>
+        <Coefficient Index="8" Value="5.0854236528452850e+00"/>
+        <Coefficient Index="9" Value="-4.2628868425034119e-02"/>
+        <Coefficient Index="10" Value="2.1902891111453107e-01"/>
+      </Weights>
+    </SubMethod>
+    <SubMethod Index="3" Method="Fisher::Fisher_1200_Inf" Cut="jetPt&gt;=1200" Variables="jetTau3:jetTau2:jetTau1:jetMassSub0:jetMassSub1:ecfB1N2:ecfB1N3:ecfB2N2:ecfB2N3:JetPtOverSumPt">
+      <GeneralInfo>
+        <Info name="TMVA Release" value="4.2.1 [262657]"/>
+        <Info name="ROOT Release" value="6.16/00 [397312]"/>
+        <Info name="Creator" value="gbakas"/>
+        <Info name="Date" value="Wed May  8 13:27:12 2019"/>
+        <Info name="Host" value="Linux buildvm-19.phx2.fedoraproject.org 4.20.13-200.fc29.x86_64 #1 SMP Wed Feb 27 19:42:55 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux"/>
+        <Info name="Dir" value="/afs/cern.ch/user/g/gbakas/public/ForGiannis/Training"/>
+        <Info name="Training events" value="163882"/>
+        <Info name="TrainingTime" value="3.05666924e-01"/>
+        <Info name="AnalysisType" value="Classification"/>
+      </GeneralInfo>
+      <Options>
+        <Option name="V" modified="No">False</Option>
+        <Option name="VerbosityLevel" modified="No">Default</Option>
+        <Option name="VarTransform" modified="No">None</Option>
+        <Option name="H" modified="No">False</Option>
+        <Option name="CreateMVAPdfs" modified="No">False</Option>
+        <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+        <Option name="Method" modified="No">Fisher</Option>
+      </Options>
+      <Variables NVar="10">
+        <Variable VarIndex="0" Expression="jetTau3" Label="jetTau3" Title="jetTau3" Unit="" Internal="jetTau3" Type="F" Min="2.38710316e-03" Max="2.68436253e-01"/>
+        <Variable VarIndex="1" Expression="jetTau2" Label="jetTau2" Title="jetTau2" Unit="" Internal="jetTau2" Type="F" Min="3.10947211e-03" Max="3.96977544e-01"/>
+        <Variable VarIndex="2" Expression="jetTau1" Label="jetTau1" Title="jetTau1" Unit="" Internal="jetTau1" Type="F" Min="1.81472059e-02" Max="6.10940218e-01"/>
+        <Variable VarIndex="3" Expression="jetMassSub0" Label="jetMassSub0" Title="jetMassSub0" Unit="" Internal="jetMassSub0" Type="F" Min="-5.28579949e-05" Max="6.68575317e+02"/>
+        <Variable VarIndex="4" Expression="jetMassSub1" Label="jetMassSub1" Title="jetMassSub1" Unit="" Internal="jetMassSub1" Type="F" Min="-2.50146422e-05" Max="3.10855347e+02"/>
+        <Variable VarIndex="5" Expression="ecfB1N2" Label="ecfB1N2" Title="ecfB1N2" Unit="" Internal="ecfB1N2" Type="F" Min="1.38492482e-02" Max="4.41130221e-01"/>
+        <Variable VarIndex="6" Expression="ecfB1N3" Label="ecfB1N3" Title="ecfB1N3" Unit="" Internal="ecfB1N3" Type="F" Min="2.88017541e-01" Max="4.70036983e+00"/>
+        <Variable VarIndex="7" Expression="ecfB2N2" Label="ecfB2N2" Title="ecfB2N2" Unit="" Internal="ecfB2N2" Type="F" Min="1.69264385e-03" Max="3.33965540e-01"/>
+        <Variable VarIndex="8" Expression="ecfB2N3" Label="ecfB2N3" Title="ecfB2N3" Unit="" Internal="ecfB2N3" Type="F" Min="1.76652238e-01" Max="4.47553778e+00"/>
+        <Variable VarIndex="9" Expression="JetPtOverSumPt" Label="JetPtOverSumPt" Title="JetPtOverSumPt" Unit="" Internal="JetPtOverSumPt" Type="F" Min="2.29070842e-01" Max="8.65282536e-01"/>
+      </Variables>
+      <Classes NClass="2">
+        <Class Name="Signal" Index="0"/>
+        <Class Name="Background" Index="1"/>
+      </Classes>
+      <Transformations NTransformations="0"/>
+      <MVAPdfs/>
+      <Weights NCoeff="11">
+        <Coefficient Index="0" Value="1.2600560718099956e+00"/>
+        <Coefficient Index="1" Value="-8.2545698033762953e+00"/>
+        <Coefficient Index="2" Value="1.2400079101755932e+01"/>
+        <Coefficient Index="3" Value="-2.9517389356322909e+00"/>
+        <Coefficient Index="4" Value="-8.4995356197917064e-04"/>
+        <Coefficient Index="5" Value="-5.3502921406908648e-04"/>
+        <Coefficient Index="6" Value="-5.1975509272371490e+00"/>
+        <Coefficient Index="7" Value="-3.6952300571955743e-01"/>
+        <Coefficient Index="8" Value="4.3124228338914330e+00"/>
+        <Coefficient Index="9" Value="-4.9861498803084263e-02"/>
+        <Coefficient Index="10" Value="5.1770628168203248e-01"/>
+      </Weights>
+    </SubMethod>
+  </Weights>
+</MethodSetup>
