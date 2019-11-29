@@ -63,7 +63,4 @@ void RyieldAnalysis(TString year = "2016", bool free_eb = true)
 	cout<<"NQCD in Reduced (SR): "<<NQCD_reduced_SR<<endl;
 
 
-
-
-
 }

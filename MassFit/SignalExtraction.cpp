@@ -3,11 +3,15 @@
 	For every variable x_reco we need to extract the signal using the formula:
 
 	S(x) = D(x) - Ryield * Nbkg * QCDShapeCorrection * Q(x) - B(x)
-
+	or
+	S(x) = D(x) - (Ryield * Nbkg) * QCDShapeCorrection * Q(x) - B(x)
 	where:
 	1.S(x) is the extracted signal
 	2.Ryield is the NSR / NSRA taken from the file--> year/TransferFactor.root
 	3.Nbkg is the number of QCD events in the SR taken from the simultaneous fit leaving the eb free
+
+	or 2*3 = N_q(reduced) = (Nqcd_2_extended from fit / Nqcd_0_extended from fit ) * Nqcd_reduced_0,
+			 where Nqcd_red_0 = Data_reduced_0 - TTMC_red_0
 	4.QCDShapeCorrection is taken from the corrected shape (only for 2017 and 2018 for specific variables) from files: FitOutput.root
 	5.Q(x) is taken from the CR from data
 	6.B(x) is the signal region of the Subdominant bkg (exp yield) taken from MC
@@ -82,9 +86,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
 	//open the file to get the Ryield
 	TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor.root",year.Data()));
-	TH1F *hRyield = (TH1F*)infRyield->Get("TransferFactor_hist");
-	float Ryield = hRyield->GetBinContent(3);
-	float Ryield_error = hRyield->GetBinError(3);
+	TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
+	float Ryield = hRyield->GetBinContent();
+	float Ryield_error = hRyield->GetBinError();
+
+	cout<<hRyield->GetBinContent(1)<<endl;
+	cout<<hRyield->GetBinContent(2)<<endl;
+	cout<<hRyield->GetBinContent(3)<<endl;
 
 	//open the file to get the Nbkg
 	float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
@@ -164,13 +172,15 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 		float oldContent = hQ_rebinned->GetBinContent(i+1);
 		float oldError = hQ_rebinned->GetBinError(i+1);
 		float newContent = Ryield * NQCD * oldContent * SF[i];
+		//cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
+		//cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
+		//float newContent = NQCD2_reduced[year.Data()] * oldContent *SF[i];
 		float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
 										TMath::Power(NQCD_error*oldContent*Ryield,2));
 		hQ_rebinned->SetBinContent(i+1, newContent);
 		hQ_rebinned->SetBinError(i+1, newError);
 		//now setThe content for the hSignal
 	}
-
  	hSignal->Add(hQ_rebinned,-1);
  	hSignal->Add(hSub_rebinned,-1);
 
@@ -195,7 +205,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
  	hSMC->Scale(1, "width");
  	hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
  	hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
- 	//if(!variable.EqualTo("yJJ")) gPad->SetLogy();
+ 		if(!variable.EqualTo("yJJ")) gPad->SetLogy();
 
  	hSMC->Draw("e");
  	hSignal->Draw("same e0");

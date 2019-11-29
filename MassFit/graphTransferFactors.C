@@ -18,6 +18,7 @@ void graphTransferFactors(TString year = "2016")
   gStyle->SetOptStat(0);
   TH1F *hfData[3]; 
   TH1F *hfQCD[3]; 
+  TFile *outF[3], *outFQCD[3];
   for(int y = 2016; y<2019; y++)
   {		
 	TFile *infData, *infDataReduced, *infQCD, *infQCDReduced;
@@ -67,15 +68,17 @@ void graphTransferFactors(TString year = "2016")
 		
    //GetXaxis()->SetBinLabel(i+1,histoNames[i].Data());
     
-	}
+	} //end of all years
     std::vector<int> col ={4,2,8};
 	std::vector<int> marker = {21,20,23};
 	TCanvas *can[3], *canQCD[3];
-  	  
+  	
+
   	for(int i =0; i<3; i++)
   	{
   	  int year = 2016+i;
   	  //now plot them Data
+  	  outF[i] = new TFile(TString::Format("%d/TransferFactor.root",year), "RECREATE");	  
   	  hfData[i]->SetTitle(TString::Format("R_{yield} transfer factor %d", year));
 	  hfData[i]->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
       hfData[i]->SetMarkerStyle(marker[i]);
@@ -87,6 +90,7 @@ void graphTransferFactors(TString year = "2016")
 	  hfData[i]->Draw("hist e");
 	  can[i]->Print(TString::Format("%d/Ryield/TransferFactor.pdf",year),"pdf");
 
+	  hfData[i]->Write("dataTransferFactor");
 	  //now plot them QCD
   	  hfQCD[i]->SetTitle(TString::Format("R_{yield} transfer factor %d (Closure Test)", year));
 	  hfQCD[i]->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
@@ -98,6 +102,8 @@ void graphTransferFactors(TString year = "2016")
 	  canQCD[i] = new TCanvas(TString::Format("canQCD_%d", year),TString::Format("canQCD_%d", year),800,600);
 	  hfQCD[i]->Draw("hist e");
 	  canQCD[i]->Print(TString::Format("%d/Ryield/TransferFactor_ClosureIntegral.pdf",year),"pdf");
+
+	  hfQCD[i]->Write("ClosureTest_TransferFactor");
     }
 
 	
@@ -108,32 +114,5 @@ void graphTransferFactors(TString year = "2016")
 
 
 
-}
+}//eof
 
-/*
-void graphTransferFactors()
-{
-	TFile *inf[3];
-	TH1F *htf[3];
-	std::vector<int> col ={4,2,8};
-	std::vector<int> marker = {21,20,23};
-	TCanvas *can[3];
-	for(int i =0; i<3; i++)
-	{
-		int year = 2016+i;
-		inf[i] = TFile::Open(TString::Format("%d/TransferFactor_ClosureIntegral.root", year));
-		htf[i] = (TH1F*)inf[i]->Get("TransferFactor_hist");
-		//htf->SetName("R_{yield} transfer factor");
-		htf[i]->SetTitle(TString::Format("R_{yield} transfer factor %d", year));
-		htf[i]->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
-		htf[i]->SetMarkerStyle(marker[i]);
-		htf[i]->SetMarkerColor(col[i]);
-		htf[i]->SetLineColor(col[i]);
-		htf[i]->GetYaxis()->SetTitleOffset(1.25);
-		htf[i]->GetYaxis()->SetRangeUser(0.1,0.8);
-		can[i] = new TCanvas(TString::Format("can_%d", year),TString::Format("can_%d", year),800,600);
-		htf[i]->Draw("hist e");
-		can[i]->Print(TString::Format("%d/Ryield/TransferFactor_ClosureIntegral.pdf",year),"pdf");
-	}
-}
-*/

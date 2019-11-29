@@ -9,6 +9,7 @@ map<TString, float> Nbkg0Constants;
 map<TString, float> Nbkg2ConstantsErrors;
 map<TString, float> Nbkg0ConstantsErrors;
 map<TString, int> variableConstant;  
+map<TString, float> NQCD2_reduced;
 TColor color;
 //std::vector< std::vector <Float_t> > BND;
 
@@ -73,6 +74,13 @@ void initFilesMapping(bool free_eb = true)
 		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 3.78e+02));
 		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 4.37e+02));
 	}
+
+	//from ABCD method
+	NQCD2_reduced.insert(pair<TString, float>("2016",846.365));
+	NQCD2_reduced.insert(pair<TString, float>("2017",677.041));
+	NQCD2_reduced.insert(pair<TString, float>("2017",1201.35));
+	
+
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
 	variableConstant.insert(pair<TString, int>("yJJ",  2));
