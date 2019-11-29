@@ -76,22 +76,15 @@ void initXsections()
   }
   else if(selection ==3)
   {
-  XSEC.push_back(1208);
-  XSEC.push_back(1447.0);
-  XSEC.push_back(318.8);
-  XSEC.push_back(38.09);
-  XSEC.push_back(38.06);
-  XSEC.push_back(35.6);
-  XSEC.push_back(35.6);
-  /*
-  	XSEC.push_back(1728.0); //DYJetsToQQ_HT180
-    XSEC.push_back(1447.0); //WJetsToQQ_HT400to600
-    XSEC.push_back(318.8); //WJetsToQQ_HT600to800
-    XSEC.push_back(34.91); //ST_tW_top_5f_inclusiveDecays
-    XSEC.push_back(34.97); //ST_tW_antitop_5f_inclusiveDecays
-    XSEC.push_back(113.3); //ST_t-channel_top_4f_inclusiveDecays
-    XSEC.push_back(67.91); //ST_t-channel_antitop_4f_inclusiveDecays
-  */
+  
+  XSEC.push_back(1728.0); //DYJetsToQQ_HT180
+  XSEC.push_back(1447.0); //WJetsToQQ_HT400to600
+  XSEC.push_back(318.8); //WJetsToQQ_HT600to800
+  XSEC.push_back(34.91); //ST_tW_top_5f_inclusiveDecays
+  XSEC.push_back(34.97); //ST_tW_antitop_5f_inclusiveDecays
+  XSEC.push_back(113.3); //ST_t-channel_top_4f_inclusiveDecays
+  XSEC.push_back(67.91); //ST_t-channel_antitop_4f_inclusiveDecays
+  
   }
 }
 
@@ -117,7 +110,7 @@ void initHistoNames()
   {
     histoNames.push_back("DYJetsToQQ_HT180");
     histoNames.push_back("WJetsToQQ_HT400-600");
-      histoNames.push_back("WJetsToQQ_HT600-800");
+    histoNames.push_back("WJetsToQQ_HT600-800");
     histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
     histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
@@ -418,7 +411,7 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
     
-    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;// && (*bit)[5];
+    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[5];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -429,7 +422,7 @@ void FillHistograms(int sel = 0)
     btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
    
-   //0 btag category with deepCSV
+     //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
     
     if(isMatched > 1)
@@ -469,7 +462,7 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
     
-    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[2] && nLeptons==0;
+    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[5] && nLeptons==0;
     massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
@@ -478,7 +471,8 @@ void FillHistograms(int sel = 0)
     //1 btag category with  deepCSV   
     btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
-   
+    
+      
     //0 btag category with deepCSV
       revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
   
@@ -613,7 +607,7 @@ void FillHistograms(int sel = 0)
   if(selection ==0)
     outFile = new TFile("Histo_Data_2017_100.root", "RECREATE");
   if(selection ==1)
-    outFile = new TFile("Histo_TT_Mtt-700toInf_100.root", "RECREATE");
+    outFile = new TFile("Histo_TT_Mtt-700toInf.root", "RECREATE");
   if(selection ==2)
     outFile = new TFile("Histo_QCD_HT300toInf_100.root", "RECREATE");
   if(selection ==3)

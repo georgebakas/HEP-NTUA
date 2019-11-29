@@ -15,6 +15,7 @@ using std::endl;
 
 void graphTransferFactors(TString year = "2016")
 {
+  gStyle->SetOptStat(0);
   TH1F *hfData[3]; 
   TH1F *hfQCD[3]; 
   for(int y = 2016; y<2019; y++)
