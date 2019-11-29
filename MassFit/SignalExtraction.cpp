@@ -37,7 +37,7 @@ using std::endl;
 #include "TemplateConstants.h"
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
-void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", bool free_eb = true);
+void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", bool free_eb = true, bool ABCDMethod = true);
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
 {
@@ -69,12 +69,12 @@ void SignalExtraction(TString year)
 	TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
 	for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
 	{
-		SignalExtractionSpecific(year, vars[i], true);
+		SignalExtractionSpecific(year, vars[i], true,false);
 	}
 }
 
 
-void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", bool free_eb = true)
+void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", bool free_eb = true, bool ABCDMethod = false)
 {
 	initFilesMapping(free_eb);
 	gStyle->SetOptStat(0);
@@ -86,13 +86,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
 	//open the file to get the Ryield
 	TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor.root",year.Data()));
-	TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
-	float Ryield = hRyield->GetBinContent();
-	float Ryield_error = hRyield->GetBinError();
+	TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
+	float Ryield = hRyield->GetBinContent(1);
+	float Ryield_error = hRyield->GetBinError(1);
 
-	cout<<hRyield->GetBinContent(1)<<endl;
-	cout<<hRyield->GetBinContent(2)<<endl;
-	cout<<hRyield->GetBinContent(3)<<endl;
 
 	//open the file to get the Nbkg
 	float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
@@ -171,10 +168,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 		//cout<<SF[i]<<endl;
 		float oldContent = hQ_rebinned->GetBinContent(i+1);
 		float oldError = hQ_rebinned->GetBinError(i+1);
-		float newContent = Ryield * NQCD * oldContent * SF[i];
+		float newContent;
+		if(!ABCDMethod)
+			newContent = Ryield * NQCD * oldContent * SF[i];
+		else
+			NQCD2_reduced[year.Data()] * oldContent *SF[i];
 		//cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
 		//cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
-		//float newContent = NQCD2_reduced[year.Data()] * oldContent *SF[i];
 		float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
 										TMath::Power(NQCD_error*oldContent*Ryield,2));
 		hQ_rebinned->SetBinContent(i+1, newContent);
@@ -191,30 +191,68 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
  	//cout<<"Entries: "<<hSMC->GetEntries()<<endl;
  	//cout<<"Integral: "<<hSMC->Integral()<<endl;
  	cout<<"-------"<<endl;
- 	hSignal->SetLineColor(kBlack);
- 	hSMC->SetLineColor(kBlue);
+ 	hSignal->SetLineColor(kBlue);
+ 	hSMC->SetLineColor(kRed);
  	hSignal->SetMarkerStyle(20);
- 	hSignal->SetMarkerColor(kBlack);
+ 	hSignal->SetMarkerColor(kBlue);
 
  	TLegend *leg = new TLegend(0.65,0.7,0.9,0.9);
  	leg->AddEntry(hSignal, "Data", "lpe");
  	leg->AddEntry(hSMC, "MC", "lp");
 
  	TCanvas *can = new TCanvas(TString::Format("can_%s",variable.Data()),TString::Format("can_%s",variable.Data()) , 800,600);
+ 	auto *closure_padRatio = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3); 
+  	closure_padRatio->Draw();
+  	closure_padRatio->SetTopMargin(0.05);
+ 	closure_padRatio->SetBottomMargin(0.3);
+  	closure_padRatio->SetGrid();
+
+  	auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.3,1.,1.);  
+  	closure_pad1->Draw();
+  	closure_pad1->SetBottomMargin(0.005);
+    closure_pad1->cd();
+
  	hSignal->Scale(1,"width");
  	hSMC->Scale(1, "width");
  	hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
  	hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
- 		if(!variable.EqualTo("yJJ")) gPad->SetLogy();
+ 	if(!variable.EqualTo("yJJ")) gPad->SetLogy();
 
+ 	closure_pad1->cd();
  	hSMC->Draw("e");
  	hSignal->Draw("same e0");
  	leg->Draw();
 
- 	TString path;
- 	if(free_eb) path = TString::Format("%s/FiducialMeasurement/free_eb/fiducial_%s.pdf",year.Data(),variable.Data());
- 	else path = TString::Format("%s/FiducialMeasurement/fixed_eb/fiducial_%s.pdf",year.Data(),variable.Data());
+ 	//theory - data)/data.
+ 	closure_padRatio->cd();
+ 	TH1F *hMCClone[2];
 
-	//can->Print(path,"pdf");
+ 	hMCClone[0] = (TH1F*)hSMC->Clone("hMCClone0");
+ 	//hMCClone[1] = (TH1F*)hSMC->Clone("hMCClone1");
+
+ 	hMCClone[0]->SetTitle("");
+  	hMCClone[0]->GetYaxis()->SetTitle("#frac{MC-data}{data}");
+ 	hMCClone[0]->GetYaxis()->SetTitleSize(14);
+  	hMCClone[0]->GetYaxis()->SetTitleFont(43);
+  	hMCClone[0]->GetYaxis()->SetTitleOffset(1.55);
+  	hMCClone[0]->GetYaxis()->SetLabelFont(43);
+  	hMCClone[0]->GetYaxis()->SetLabelSize(15);
+  	hMCClone[0]->GetXaxis()->SetTitleSize(0.09);
+
+ 	hMCClone[0]->Add(hSignal, -1);
+ 	hMCClone[0]->Divide(hSignal);
+ 	hMCClone[0]->SetLineColor(kRed);
+ 	hMCClone[0]->SetMarkerStyle(20);
+ 	hMCClone[0]->SetMarkerColor(kRed);
+ 	hMCClone[0]->Draw();
+ 	
+
+ 	TString path;
+ 	TString method = "oldMethod";
+ 	if (ABCDMethod) method = "ABCDMethod";
+ 	if(free_eb) path = TString::Format("%s/FiducialMeasurement/%s/free_eb/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
+ 	else path = TString::Format("%s/FiducialMeasurement/%s/fixed_eb/fiducial_%s.pdf",year.Data(),method.Data()	,variable.Data());
+
+	can->Print(path,"pdf");
 
 }
