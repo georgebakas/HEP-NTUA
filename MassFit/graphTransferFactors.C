@@ -52,8 +52,8 @@ void graphTransferFactors(TString year = "2016")
 		float integral = hQCD[i]->IntegralAndError(1, hQCD[i]->GetNbinsX(), intError);
 		float integralReduced = hQCDReduced[i]->IntegralAndError(1, hQCDReduced[i]->GetNbinsX(), intErrorReduced);
 
-		tFactorQCDError[i] = TMath::Sqrt(TMath::Power(intErrorReduced,2)/TMath::Power(integral,2) + TMath::Power(integralReduced,2)
-				*TMath::Power(intError,2)/TMath::Power(integral,4)  );
+		tFactorQCDError[i] = TMath::Sqrt(TMath::Power(intErrorReduced,2)/TMath::Power(hQCD[i]->Integral(),2) + TMath::Power(hQCDReduced[i]->Integral(),2)
+				*TMath::Power(intError,2)/TMath::Power(hQCD[i]->Integral(),4)  );
 		
 		hfData[y-2016]->SetBinContent(i+1, tFactorData[i]);
      	hfData[y-2016]->SetBinError(i+1, tFactorDataError[i]);
@@ -93,7 +93,7 @@ void graphTransferFactors(TString year = "2016")
 	  hfQCD[i]->SetMarkerColor(col[i]);
 	  hfQCD[i]->SetLineColor(col[i]);
 	  hfQCD[i]->GetYaxis()->SetTitleOffset(1.25);
-      hfQCD[i]->GetYaxis()->SetRangeUser(0.1,0.8);
+      hfQCD[i]->GetYaxis()->SetRangeUser(0.1,0.5);
 	  canQCD[i] = new TCanvas(TString::Format("canQCD_%d", year),TString::Format("canQCD_%d", year),800,600);
 	  hfQCD[i]->Draw("hist e");
 	  canQCD[i]->Print(TString::Format("%d/Ryield/TransferFactor_ClosureIntegral.pdf",year),"pdf");

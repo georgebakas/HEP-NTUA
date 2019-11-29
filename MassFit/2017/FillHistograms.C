@@ -27,7 +27,7 @@ void initFileNames()
   if(selection ==0) //data
   {
   eosPath = "/eos/cms/store/user/gbakas/ttbar/JetHT/2017/";  
-  listOfFiles.push_back("JetHT_Run2017-31Mar2018.root");
+  listOfFiles.push_back("JetHT_Run2017-31Mar2018-v1.root");
   }
   else if(selection ==1) //signal ttbar mc
   {
@@ -615,7 +615,7 @@ void FillHistograms(int sel = 0)
   if(selection ==1)
     outFile = new TFile("Histo_TT_Mtt-700toInf_100.root", "RECREATE");
   if(selection ==2)
-    outFile = new TFile("Histo_QCD_HT300toInf_TuneCP5_13TeV-madgraphMLM-pythia8_New_100.root", "RECREATE");
+    outFile = new TFile("Histo_QCD_HT300toInf_100.root", "RECREATE");
   if(selection ==3)
     outFile = new TFile("Histo_SubdominantBkgs_100.root", "RECREATE");
 
