@@ -1,6 +1,7 @@
 #include "TString.h"
 
 map<TString, map<TString, TString>> files;
+map<TString, map<TString, TString>> filesReduced;
 
 map<TString, float> floatConstants;
 
@@ -11,6 +12,8 @@ map<TString, float> Nbkg0ConstantsErrors;
 map<TString, int> variableConstant;  
 map<TString, float> NQCD2_reduced;
 TColor color;
+
+map<TString, float> luminosity;
 //std::vector< std::vector <Float_t> > BND;
 
 
@@ -97,6 +100,9 @@ void initFilesMapping(bool free_eb = true)
 	NQCD2_reduced.insert(pair<TString, float>("2017",677.041));
 	NQCD2_reduced.insert(pair<TString, float>("2017",1201.35));
 	
+	luminosity.insert(pair<TString, float>("2016",35920));
+	luminosity.insert(pair<TString, float>("2017",41530));
+	luminosity.insert(pair<TString, float>("2018",59740));
 
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
