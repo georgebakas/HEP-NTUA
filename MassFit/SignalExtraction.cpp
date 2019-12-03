@@ -69,12 +69,12 @@ void SignalExtraction(TString year)
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], false,false);
+        SignalExtractionSpecific(year, vars[i], true,true);
 
         //true false ok
         //true true ok
-        //false true ok
-        //false false
+        //false true ok 
+        //false false ok
     }
 }
 
@@ -87,9 +87,11 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     gStyle->SetOptStat(0); 
     //open the signal file: get D(x) and Q(x) for every variable
     TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data()));
-
+    
+    //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infData->Get(TString::Format("hWt_%s_0btag", variable.Data()));
+    //cout<<"hQ first:"<<hQ->Integral()<<endl;
 
     //open the file to get the Ryield
     TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor.root",year.Data()));
@@ -121,9 +123,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     for (int i = 0; i<BND.size(); i++) nBins[i] = BND[i].size()-1;
 
     //get the respected integer from the mapping in the TemplateConstants.h
-    int selVar = variableConstant[variable.Data()];
-    cout<<selVar<<endl;
-    cout<<NQCD<<endl;
+    int selVar = variableConstant[variable];
     
 
     //use this template for the initialization of the BND source given as input for the rebinned histos
@@ -137,7 +137,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hSub_rebinned = getRebinned(hSub, tempBND, nBins[selVar]);
 
     TH1F *hSignal = (TH1F*)hD_rebinned->Clone(TString::Format("hSignal_%s",variable.Data()));
-
     //work on the elements for the QCD so that we have the right Q(x)
     //Ryield * Nbkg  * Q(x)
     cout<<"Ryield: "<<Ryield<<endl;
@@ -179,7 +178,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         if(!ABCDMethod)
             newContent = Ryield * NQCD * oldContent * SF[i];
         else
-            NQCD2_reduced[year.Data()] * oldContent *SF[i];
+            newContent = NQCD2_reduced[year] * oldContent *SF[i];
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
@@ -188,6 +187,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal
     }
+   
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
 
@@ -220,10 +220,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     closure_pad1->SetBottomMargin(0.005);
     closure_pad1->cd();
 
-    hSignal->Scale(1,"width");
-    hSMC->Scale(1, "width");
-    cout<<hSMC->GetBinContent(2)<<endl;
-    cout<<hSignal->GetBinContent(2)<<endl;
+    cout<<hSignal->Integral()<<endl;
+    hSignal->Scale(1/luminosity[year],"width");
+    cout<<hSignal->Integral()<<endl;
+    hSMC->Scale(1/luminosity[year], "width");
+
+    //cout<<hSMC->GetBinContent(2)<<endl;
+    //cout<<hSignal->GetBinContent(2)<<endl;
     hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
     if(!variable.EqualTo("yJJ")) gPad->SetLogy();
