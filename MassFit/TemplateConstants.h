@@ -31,6 +31,23 @@ void initFilesMapping(bool free_eb = true)
 	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
+
+
+	map<TString, TString> files2016Reduced = {{"data",  "2016/Histo_Data_2016_100_reduced.root"},
+	                                   		  {"mcSig", "2016/Histo_TT_Mtt-700toInf_100_reduced.root"},
+	                                   		  {"mcSub", "2016/Histo_SubdominantBkgs_100_reduced.root"}};
+																		 
+	map<TString, TString> files2017Reduced = {{"data",  "2017/Histo_Data_2017_100_reduced.root"},
+	                                   		  {"mcSig", "2017/Histo_TT_Mtt-700toInf_100_reduced.root"},
+	                                   		  {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced.root"}};
+	
+	map<TString, TString> files2018Reduced = {{"data",  "2018/Histo_Data_2018_100_reduced.root"},
+	                                   	      {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced.root"},
+	                                   		  {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced.root"}};
+																		 
+	filesReduced.insert(pair<TString, map<TString, TString>>("2016", files2016Reduced));
+	filesReduced.insert(pair<TString, map<TString, TString>>("2017", files2017Reduced));
+	filesReduced.insert(pair<TString, map<TString, TString>>("2018", files2018Reduced));
 	
 	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
 	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));

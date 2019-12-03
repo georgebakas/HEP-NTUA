@@ -69,7 +69,11 @@ void SignalExtraction(TString year)
 	TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
 	for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
 	{
-		SignalExtractionSpecific(year, vars[i], true,false);
+		SignalExtractionSpecific(year, vars[i], true,true);
+		//true false ok
+		//false false ok
+		//false true ok
+		//true true 
 	}
 }
 
@@ -79,7 +83,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 	initFilesMapping(free_eb);
 	gStyle->SetOptStat(0);
 	//open the signal file: get D(x) and Q(x) for every variable
-	TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
+	TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data()));
 
 	TH1F *hD = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag", variable.Data()));
 	TH1F *hQ = (TH1F*)infData->Get(TString::Format("hWt_%s_0btag", variable.Data()));
