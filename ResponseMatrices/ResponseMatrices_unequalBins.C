@@ -43,7 +43,7 @@ void ResponseMatrices_unequalBins(TString year = "2016")
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   
-  std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 													{0,60,150,300,450,600,750,950,1100,1300}, //ptjj
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
 		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
@@ -51,7 +51,7 @@ void ResponseMatrices_unequalBins(TString year = "2016")
 													{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
                                                     {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
   
-  std::vector< std::vector <Float_t> > const BND_m = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
 													{0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1025,1100,1200,1300}, //ptjj 19
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
 		   	                                        {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21   
@@ -62,10 +62,10 @@ void ResponseMatrices_unequalBins(TString year = "2016")
   
   int NBINS[BND.size()];
   const int NVAR = 7;
-  for (int i = 0; i<BND.size(); i++) NBINS[i] = BND[i].size()-1;
+  for (int i = 0; i<BND.size(); i++) NBINS[i] = BND_reco[i].size()-1;
 
   int NBINSParton[BND_m.size()];	
-  for(int i =0; i<BND_m.size(); i++) NBINSParton[i] = BND_m[i].size()-1;
+  for(int i =0; i<BND_m.size(); i++) NBINSParton[i] = BND_gen[i].size()-1;
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"}; 
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
   TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"}; 
@@ -81,32 +81,41 @@ for(int f=0; f<fileNames.size(); f++)
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR-2; ivar++)
   	{	
+
+  		//for the hists used for acceptance I need binning as reco m
+  		//for the hists used for efficiency I need binning as parton/particle n = 2m
   		 int sizeBins = NBINS[ivar];
          float tempBND[NBINS[ivar]+1];
-         std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
+         std::copy(BND_reco[ivar].begin(), BND_reco[ivar].end(), tempBND);
 
-         int sizeBinsPartonParticle = NBINS[ivar];
+         int sizeBinsPartonParticle = NBINSParton[ivar];
          float tempBNDPartonParticle[NBINSParton[ivar]+1];
-         std::copy(BND_m[ivar].begin(), BND_m[ivar].end(), tempBNDPartonParticle);
+         std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDPartonParticle);
   		 
   		 //denominators for parton efficiency (hParton vs parton), particle eff (hParticle vs particle) and acceptance (same for both hReco vs reco)
-  		 hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBins, tempBND);
+  		 //this is events pass parton cuts vs parton quantity --> BND_gen
+  		 hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
+         //this is events pass reco cuts used as denominator vs reco quantity --> BND_reco
          hReco[f][ivar] = new TH1F(TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-         hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBins, tempBND);
+         //this is events pass particle cuts only used as denominator for particle eff vs particle -->BND
+         hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
+         
          hParton[f][ivar]->Sumw2();
          hReco[f][ivar]->Sumw2();
          hParticle[f][ivar]->Sumw2();
 
          //numerator for parton efficiency (hPartonReco vs parton) and acceptance (hRecoParton vs reco)
+         //this is RecoParton vs reco --> BND_reco
          hRecoParton[f][ivar] = new TH1F(TString::Format("hRecoParton_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hRecoParton_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-         hPartonReco[f][ivar] = new TH1F(TString::Format("hPartonReco_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hPartonReco_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBins, tempBND);
+         hPartonReco[f][ivar] = new TH1F(TString::Format("hPartonReco_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hPartonReco_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
 
          //numerator for particle efficiency (hParticleReco vs particle) and acceptance (hRecoParticle vs reco)
          hRecoParticle[f][ivar] = new TH1F(TString::Format("hRecoParticle_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hRecoParticle_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-         hParticleReco[f][ivar] = new TH1F(TString::Format("hParticleReco_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticleReco_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBins, tempBND);
+         hParticleReco[f][ivar] = new TH1F(TString::Format("hParticleReco_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticleReco_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
 
          //response matrices
          //x-axis: parton or particle and y-axis: reco (detector level)
+         //x-axis will have fewer bins than y-axis
          hPartonResponse[f][ivar] = new TH2F(TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), 
          	sizeBinsPartonParticle, tempBNDPartonParticle, sizeBins, tempBND);
          hParticleResponse[f][ivar] = new TH2F(TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), 
@@ -586,75 +595,9 @@ for(int f=0; f<fileNames.size(); f++)
 
 
   }
-  
-  //for purity and stability
-  //purity: sum all over the columns and find binContent(i,j)/SumOfColumn(j) for all vars 
-  //stability: sum all over the lines and find binContent/SumOfLine(i) for all vars
-  TH1F *purityParton[NVAR], *stabilityParton[NVAR];
-  TH1F *purityParticle[NVAR], *stabilityParticle[NVAR];
-
-  for(int ivar = 0; ivar<NVAR-2; ivar++)
-  {
-	int sizeBins = NBINS[ivar];  	
-  	float tempBND[NBINS[ivar]+1];
-    std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
-
-    int sizeBinsPartonParticle = NBINS[ivar];
-    float tempBNDPartonParticle[NBINSParton[ivar]+1];
-    std::copy(BND_m[ivar].begin(), BND_m[ivar].end(), tempBNDPartonParticle);
-
-  	purityParton[ivar] 	  = new TH1F(TString::Format("PurityParton_%s", varReco[ivar].Data()),TString::Format("PurityParton_%s", varReco[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
-  	stabilityParton[ivar] = new TH1F(TString::Format("StabilityParton_%s", varReco[ivar].Data()),TString::Format("StabilityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
-
-  	purityParticle[ivar] 	  = new TH1F(TString::Format("PurityParticle_%s", varReco[ivar].Data()),TString::Format("PurityParticle_%s", varReco[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
-  	stabilityParticle[ivar] = new TH1F(TString::Format("StabilityParticle_%s", varReco[ivar].Data()),TString::Format("StabilityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
-  	//this is now for purity and stability for each variable
-	//first find sums
-	 
-	 //purity run all over columns --> x axis --> bins of parton reco 
-	float sumOfRowsParton[sizeBins], sumOfColsParton[sizeBins];
-	float sumOfRowsParticle[sizeBins], sumOfColsParticle[sizeBins];
-	for(int i=1; i<=sizeBinsPartonParticle; i++)
-	{
-	    sumOfColsParton[i] = ((TH1D*)hPartonResponse[0][ivar]->ProjectionX())->GetBinContent(i);
-		sumOfColsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionX())->GetBinContent(i);
-
-	    for(int j=1; j<=sizeBins; j++)
-	    {
-	    	if(i==j)
-	        {
-	            float initContentParton = hPartonResponse[0][ivar]->GetBinContent(i,j);
-	            purityParton[ivar]->SetBinContent(i,initContentParton/sumOfColsParton[i]);
-
-	            float initContentParticle = hParticleResponse[0][ivar]->GetBinContent(i,j);
-	            purityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfColsParticle[i]);
-	        }
-	    }
-	}
-
-	//stability run over sizeBins
-	for(int i=1; i<=sizeBins; i++)
-	{
-	    sumOfRowsParton[i] = ((TH1D*)hPartonResponse[0][ivar]->ProjectionY())->GetBinContent(i);
-	    sumOfRowsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionY())->GetBinContent(i);	    
-
-	    for(int j=1; j<=sizeBinsPartonParticle; j++)
-	    {
-	    	if(i==j)
-	        {
-	            float initContentParton = hPartonResponse[0][ivar]->GetBinContent(i,j);
-	            stabilityParton[ivar]->SetBinContent(i,initContentParton/sumOfRowsParton[i]);
-
-	            float initContentParticle = hParticleResponse[0][ivar]->GetBinContent(i,j);
-	            stabilityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfRowsParticle[i]);
-	        }
-	    }
-	}
-
-	  
-	  
-  }
-	
+  //WARNING !!!
+  //for purity and stability: when we have unequal binning we cannot find purity and stability but only when we have a
+  //square matrx 
 
 
 
@@ -672,13 +615,6 @@ for(int f=0; f<fileNames.size(); f++)
 
   	hPartonResponse[0][ivar]->Write(TString::Format("hPartonResponse_%s", varReco[ivar].Data()));
   	hParticleResponse[0][ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
-  	
-  	purityParton[ivar]->Write(TString::Format("PurityParton_%s", varReco[ivar].Data()));
-  	stabilityParton[ivar]->Write(TString::Format("StabilityParton_%s", varReco[ivar].Data()));
-
-  	purityParticle[ivar]->Write(TString::Format("PurityParticle_%s", varReco[ivar].Data()));
-  	stabilityParticle[ivar]->Write(TString::Format("StabilityParticle_%s", varReco[ivar].Data()));
-
 
   }//end of ivar
 
