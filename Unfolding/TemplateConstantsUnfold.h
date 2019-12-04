@@ -2,7 +2,9 @@
 
 /*
 	For Unfolding we need the files:
-	1. Signal Extracted Si(xReco) from SignalExtraction.cpp in MassFit folder 
+	1. Signal Extracted S_i(xReco) from SignalExtraction.cpp in MassFit folder 
+		MassFit/year/FiducialMeasurements/ABCDMethod/free_eb/SignalHistograms_ABCDMethod_freeEb.root
+		we need to rebin the histogram taken from the S_i because it has bins same as parton
 	2. Acceptance from files in ../ResponseMatrices/year/UnequalBins/ResponsesEfficiency_year.root more bins for acc
 	3. Response matrix from ../ResponseMatrices/year/UnequalBins/ResponsesEfficiency_year.root 
 	4. Efficiency from same files but with fewer bins
