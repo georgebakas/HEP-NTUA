@@ -60,12 +60,12 @@ void ResponseMatrices_unequalBins(TString year = "2016")
                                                     {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY0 25
 
   
-  int NBINS[BND.size()];
+  int NBINS[BND_reco.size()];
   const int NVAR = 7;
-  for (int i = 0; i<BND.size(); i++) NBINS[i] = BND_reco[i].size()-1;
+  for (int i = 0; i<BND_reco.size(); i++) NBINS[i] = BND_reco[i].size()-1;
 
-  int NBINSParton[BND_m.size()];	
-  for(int i =0; i<BND_m.size(); i++) NBINSParton[i] = BND_gen[i].size()-1;
+  int NBINSParton[BND_reco.size()];	
+  for(int i =0; i<BND_reco.size(); i++) NBINSParton[i] = BND_gen[i].size()-1;
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"}; 
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
   TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"}; 
