@@ -69,7 +69,7 @@ void Unfold(TString year = "2016")
                                                         //{0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY1 25
   
 
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/ABCDMethod/free_eb/SignalHistograms_ABCDMethod_freeEb.root", 
+  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/ABCDMethod/free_eb/SignalHistograms_ABCDMethod_freeEb.root", 
                                   year.Data()));    
   int NBINS[BND_reco.size()];
   const int NVAR = 7;
@@ -86,13 +86,11 @@ void Unfold(TString year = "2016")
     std::copy(BND_reco[ivar].begin(), BND_reco[ivar].end(), tempBND);
     
     //from signal file get the initial S_i and then rebin it
-    inSig[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));  
+    hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));  
     //now rebin it
-    hSig[ivar] = getRebinned(inSig[ivar], tempBND, sizeBins);
     can[ivar] = new TCanvas(TString::Format("can_%d",ivar), TString::Format("can_%d",ivar),800,600);
     //inSig[ivar]->Draw();
     hSig[ivar]->Draw();
-    cout<<hSig[ivar]->GetBinContent(2)<<endl;
   }
   
 
