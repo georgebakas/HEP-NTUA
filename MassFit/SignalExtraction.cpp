@@ -69,7 +69,7 @@ void SignalExtraction(TString year)
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], false,false);
+        SignalExtractionSpecific(year, vars[i], false,true);
 
         //true false  ok ok
         //true true  ok ok
@@ -171,6 +171,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
     {   
+    	cout<<"----bin: "<<i+1<<"-----"<<endl;
         float oldContent = hQ_rebinned->GetBinContent(i+1);
         float oldError = hQ_rebinned->GetBinError(i+1);
         float newContent;
@@ -178,7 +179,12 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
             newContent = Ryield * NQCD * oldContent * SF[i];
         else
             newContent = NQCD2_reduced[year] * oldContent *SF[i];
-        //cout<<"SF i: "<<SF[i]<<" for "<<i+1<<" bin"<<endl;
+        cout<<"SF: "<<SF[i];
+        cout<<" ,NQCD2_reduced: "<<NQCD2_reduced[year];
+        cout<<" ,oldContent: "<<oldContent;
+        cout<<" --> newContent: "<<newContent<<endl;
+        cout<<"hData SR: "<<hD_rebinned->GetBinContent(i+1)<<endl;
+    	cout<<"hSubdominant: "<<hSub_rebinned->GetBinContent(i+1)<<endl;
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
@@ -187,6 +193,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal
     }
+    
    
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
@@ -262,7 +269,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     if (ABCDMethod) method = "ABCDMethod";
     if(free_eb) path = TString::Format("%s/FiducialMeasurement/EqualBinning/%s/free_eb/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
     else path = TString::Format("%s/FiducialMeasurement/EqualBinning/%s/fixed_eb/fiducial_%s.pdf",year.Data(),method.Data()  ,variable.Data());
-    can->Print(path,"pdf");
+    //can->Print(path,"pdf");
     /*
     TFile *outf;
     if(free_eb)outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/%s/free_eb/SignalHistograms_%s_freeEb.root", year.Data(),method.Data(), method.Data()), "UPDATE");

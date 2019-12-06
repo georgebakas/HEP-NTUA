@@ -43,7 +43,11 @@ void RyieldAnalysis(TString year = "2016", bool free_eb = true)
 
 	hMCExt = (TH1F*)mcFiles[0]->Get("hWt_mTop_0btag_expYield");
 	hMCRed = (TH1F*)mcFiles[1]->Get("hWt_mTop_0btag_expYield");
+	cout<<"NQCD reduced CR from data: "<<hDRed->Integral()<<endl;
+	double err;
+	cout<<"NQCD reduced CR from data: "<<hDRed->IntegralAndError(1,hDRed->GetNbinsX(), err)<<endl;
 
+	cout<<"NQCD reduced CR from TT MC: "<<hMCRed->Integral()<<endl;
 	//Find R0 and R1 where R0 = DRed / DExt and R1 = (DRed - MCRed) /(DExt - MCExt)
 
 	float R[2];
@@ -60,6 +64,7 @@ void RyieldAnalysis(TString year = "2016", bool free_eb = true)
 
 	float NQCD_reduced_SR = (Nbkg2Constants[TString::Format("Nbkg%s", year.Data())]/Nbkg0Constants[TString::Format("Nbkg%s", year.Data())]) * NQCD_reduced_CR ;
 
+	cout<<"NQCD in Reduced (CR): "<<NQCD_reduced_CR<<endl;
 	cout<<"NQCD in Reduced (SR): "<<NQCD_reduced_SR<<endl;
 
 
