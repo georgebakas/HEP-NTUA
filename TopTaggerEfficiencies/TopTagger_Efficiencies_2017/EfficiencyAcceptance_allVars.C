@@ -46,8 +46,9 @@ void initGlobals()
   initHistoNames();
 }
 
-void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
+void EfficiencyAcceptance_allVars(float selMvaCut=0.0, bool saveTtagger= true)
 {
+  cout<<selMvaCut<<endl;
   initGlobals();
   const int NVAR =7;
   const int N_MJJ = 10;

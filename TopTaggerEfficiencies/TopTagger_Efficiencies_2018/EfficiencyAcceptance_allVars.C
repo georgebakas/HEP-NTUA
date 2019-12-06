@@ -46,9 +46,10 @@ void initGlobals()
   initHistoNames();
 }
 
-void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
+void EfficiencyAcceptance_allVars(float selMvaCut=0.1, bool saveTtagger= true)
 {
   initGlobals();
+  cout<<selMvaCut<<endl;
   const int NVAR =7;
   const int N_MJJ = 10;
   const int N_PTJJ = 9;
@@ -355,7 +356,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
 	  
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger
-		  if(recoCuts && btagCut && tTaggerCut)
+		  if(recoCuts && btagCut /*&& tTaggerCut*/)
 		  {
 		  	for(int ivar = 0; ivar < NVAR-2; ivar++)
 	  		{
@@ -363,7 +364,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=-0.1, bool saveTtagger= true)
 			}
 		  } 
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
-	      if(partonCuts && recoCuts && tTaggerCut && btagCut)
+	      if(partonCuts && recoCuts /*&& tTaggerCut*/ && btagCut)
 		  {
 			  	for(int ivar = 0; ivar < NVAR-2; ivar++)
 	  			{
@@ -534,11 +535,11 @@ myfile.close();
   c2->cd();
   efficiency_reco[0]->Draw();
   efficiency_reco[1]->Draw("SAME");
-  efficiency_reco[2]->Draw("SAME");
+  efficiency_reco[2]->Draw("SAME"); 
   */
   }
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("Efficiencies_allVars_tTagger_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
+  outFile = TFile::Open(TString::Format("Efficiencies_allVars_tTagger_%0.2f_deepCSV_noTTaggerCut.root", selMvaCut), "UPDATE");
   
   for(int ivar = 0; ivar<NVAR-2; ivar++)
   {
