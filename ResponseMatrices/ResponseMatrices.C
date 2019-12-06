@@ -386,7 +386,7 @@ for(int f=0; f<fileNames.size(); f++)
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
 
-				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar], xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
+				   hPartonResponse[f][ivar]->Fill(xRecoAll[ivar],xPartonAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
 	      }//----- end of selection cuts parton and reco 
@@ -399,7 +399,7 @@ for(int f=0; f<fileNames.size(); f++)
 	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);
 	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
 
-	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar], genEvtWeight*weights[f]*LUMI);
+	      		hParticleResponse[f][ivar]->Fill(xRecoAll[ivar],xParticleAll[ivar], genEvtWeight*weights[f]*LUMI);
 	      	}
 	      }
 	      if(particleCuts) 

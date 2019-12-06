@@ -22,13 +22,13 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    std::vector<Color_t> colors = {kBlue,kRed, kGreen,kBlack, kMagenta};
     cout<<"It's deepCSV"<<endl;
 	   //for closure tests [0] is 16, [1] is 17 and [2] is 18
-	   signal[0] = TFile::Open("./QCD_Closure/SignalOutput_AllRegions_0.2_deepCSV_1File.root"); 
-	   signal[1] = TFile::Open("./QCD_Closure_2017/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
-	   signal[2] = TFile::Open("./QCD_Closure_2018/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
+	   //signal[0] = TFile::Open("./QCD_Closure/SignalOutput_AllRegions_0.2_deepCSV_1File.root"); 
+	   //signal[1] = TFile::Open("./QCD_Closure_2017/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
+	   //signal[2] = TFile::Open("./QCD_Closure_2018/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
 
-	   bkg[0] = TFile::Open("./QCD_Closure/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
-	   bkg[1] = TFile::Open("./QCD_Closure_2017/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
-	   bkg[2] = TFile::Open("./QCD_Closure_2018/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
+	   //bkg[0] = TFile::Open("./QCD_Closure/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
+	   //bkg[1] = TFile::Open("./QCD_Closure_2017/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
+	   //bkg[2] = TFile::Open("./QCD_Closure_2018/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
 	   
  	   //for efficiencies
      eff[0] = TFile::Open("./TopTagger_Efficiencies/Efficiencies_allVars_tTagger_0.20_deepCSV.root"); 
@@ -119,7 +119,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    accOld16->Draw("same");
    effLeg->Draw();
    
-
+/*
    //now we compare the closure tests for the 2016 and 2017 MC 
   TH1F *hBkg_CR[3], *hBkg_SR[3], *hBkg_CRExpYield[3];  
   TH1F *hSig_CR[3];    
@@ -339,7 +339,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
   cTT18->Update();
   
   
-  
+  */
   
   
   

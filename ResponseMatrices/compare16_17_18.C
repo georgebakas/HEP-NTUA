@@ -153,16 +153,16 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    		hResponses[iy][i]->SetTitle(TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()));
    		if(isAngular) 
    		{	
-   			hResponses[iy][i]->GetYaxis()->SetTitle(recoVar.Data());
-   			if(i==0) hResponses[iy][i]->GetXaxis()->SetTitle(partonVar.Data());
-   			else hResponses[iy][i]->GetXaxis()->SetTitle(particleVar.Data());
+   			hResponses[iy][i]->GetXaxis()->SetTitle(recoVar.Data());
+   			if(i==0) hResponses[iy][i]->GetYaxis()->SetTitle(partonVar.Data());
+   			else hResponses[iy][i]->GetYaxis()->SetTitle(particleVar.Data());
    		}
    		else
    		{
 
-   			hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",recoVar.Data()));
-   			if(i==0) hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",partonVar.Data()));
-   			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
+   			hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",recoVar.Data()));
+   			if(i==0) hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",partonVar.Data()));
+   			else hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
    		canResponse[iy][i]->Print(TString::Format("%s/UnequalBins/%s/%sResponseMatrix_%s.pdf",years[iy].Data(),recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
