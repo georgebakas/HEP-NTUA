@@ -30,7 +30,7 @@ using std::endl;
 #include "TemplateConstantsUnfold.h"
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
-TH1F *unfold(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins);
+TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins);
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
 {
@@ -99,7 +99,8 @@ void Unfold(TString year = "2016", bool isParton = true)
 
   TH2F *hResponse[BND_reco.size()];
   TUnfold *unf[BND_reco.size()];
-  TH1F *hUnf[BND_reco.size()];
+  TH1 *hUnf[BND_reco.size()];
+  TH1F *hUnf_Clone[BND_reco.size()];
 
   TCanvas *can[BND_reco.size()];
   for(int ivar =0; ivar<BND_reco.size(); ivar++)
@@ -140,27 +141,51 @@ void Unfold(TString year = "2016", bool isParton = true)
     hResponse[ivar] = (TH2F*)effAccInf->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
    
     //this will be used to unfold result
+    cout<<"entering unfolding method!"<<endl;
     hUnf[ivar] = new TH1F(TString::Format("hUnf_%s", variable[ivar].Data()), TString::Format("hUnf_%s", variable[ivar].Data()), NBINS_GEN[ivar], tempBNDGen);
-    hUnf[ivar] = unfold(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar]);
-    
+    hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar]);
+    TString axisTitle = variable[ivar];
+    if(variable[ivar].EqualTo("yJJ")) 
+    	hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
+    else 
+    	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s [GeV]", variable[ivar].Data()));
+    hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
+    hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
+    hUnf_Clone[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_Clone %s",variable[ivar].Data()));
+    can[ivar] ->SetLogy();
+    cout<<"hUnf received!!"<<endl;
+    cout<<variable[ivar]<<endl;
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
     for(int i =1; i<=hUnf[ivar]->GetNbinsX(); i++)
     {
       float eff = efficiency->GetEfficiency(i);
+      cout<<"i= "<<i<<" eff="<<eff<<endl;
+      cout<<hUnf_Clone[ivar]->GetBinContent(i)<<endl;
       hUnf[ivar]->SetBinContent(i, hUnf[ivar]->GetBinContent(i)/eff);
+      cout<<hUnf[ivar]->GetBinContent(i)<<endl;
       //handle errors as well--> asymmetric error from acceptance
       float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
       hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
     }
     hUnf[ivar]->Scale(1/LUMI, "width");
-    hUnf[ivar]->Draw();
+    hUnf_Clone[ivar]->Scale(1/LUMI, "width");
+    hUnf_Clone[ivar]->SetLineColor(kRed);
+	
+    //check shape
+    //hUnf[ivar]->Scale(1./hUnf[ivar]->Integral());
+    //hUnf_Clone[ivar]->Scale(1./hUnf_Clone[ivar]->Integral());
+
+	hUnf[ivar]->Draw();
+	hUnf_Clone[ivar]->Draw("same");
   }
   
 }
 
-TH1F *unfold(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins)
-{
-
+TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins)
+{	
+	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
+	//hResponse_->Draw("BOX");
+	/*
     //binning control needed here!!
     TH1F *hUnf_ = new TH1F("hUnf_", "hUnf",sizeBins, BND);
     TUnfold *unf = new TUnfold(hResponse_,TUnfold::kHistMapOutputVert, TUnfold::kRegModeSize);
@@ -174,20 +199,102 @@ TH1F *unfold(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins)
     float biasScale = 0.0;
     int nScan=30; //this is number of scans Double t tauMin=1.0E−9;
     double tauMax=1.0;
-    double tauMin=1.0e-9;
+    double tauMin=10E-8;
     int iBest;
     TSpline *logTauX,*logTauY;
     TGraph *lCurve ;
 
-    iBest=unf->ScanLcurve(nScan ,tauMin ,tauMax, &lCurve,&logTauX,&logTauY);
+    iBest=unf->ScanLcurve(nScan ,tauMin ,tauMax, &lCurve);
     cout<<"Best tau at: "<<iBest;
     cout<<" with tau="<<unf->GetTau()<<endl;
 
     unf->DoUnfold(unf->GetTau(),hReco, biasScale);
+    //unf->DoUnfold(tauMin,hReco, biasScale);
     unf->GetOutput(hUnf_, binMap);
 
-    return hUnf_;
+    cout<<"returning hUnf_ ..."<<endl;
+    return hUnf_;/*/
 
+    TUnfoldDensity unfold(hResponse_,TUnfold::kHistMapOutputVert);
+    unfold.SetInput(hReco);
+      //========================================================================
+	  // the unfolding is done here
+	  //
+	  // scan L curve and find best point
+	  Int_t nScan=30;
+	  // use automatic L-curve scan: start with taumin=taumax=0.0
+	  //Double_t tauMin=0.0;
+	  //Double_t tauMax=0.0;
+	  Double_t tauMax=1.0;
+      Double_t tauMin=10E-8;
+	  Int_t iBest;
+	  TSpline *logTauX,*logTauY;
+	  TGraph *lCurve;
+	  // if required, report Info messages (for debugging the L-curve scan)
+	//#ifdef VERBOSE_LCURVE_SCAN
+	  //Int_t oldinfo=gErrorIgnoreLevel;
+	  //gErrorIgnoreLevel=kInfo;
+	//#endif
+	  // this method scans the parameter tau and finds the kink in the L curve
+	  // finally, the unfolding is done for the best choice of tau
+	  iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
+	  // if required, switch to previous log-level
+	//#ifdef VERBOSE_LCURVE_SCAN
+	 // gErrorIgnoreLevel=oldinfo;
+	//#endif
+	  //==========================================================================
+	  //==========================================================================
+	  // print some results
+	  //
+	  std::cout<<"tau="<<unfold.GetTau()<<"\n";
+	  std::cout<<"chi**2="<<unfold.GetChi2A()<<"+"<<unfold.GetChi2L()
+	           <<" / "<<unfold.GetNdf()<<"\n";
+	  std::cout<<"chi**2(sys)="<<unfold.GetChi2Sys()<<"\n";
+	  //==========================================================================
+	  // create graphs with one point to visualize the best choice of tau
+	  //
+	  Double_t t[1],x[1],y[1];
+	  logTauX->GetKnot(iBest,t[0],x[0]);
+	  logTauY->GetKnot(iBest,t[0],y[0]);
+	  TGraph *bestLcurve=new TGraph(1,x,y);
+	  TGraph *bestLogTauLogChi2=new TGraph(1,t,x);
+	  //==========================================================================  
+	  // retreive results into histograms
+	  // get unfolded distribution
+	  TH1 *histMunfold=unfold.GetOutput("Unfolded");
+
+	  // get error matrix (input distribution [stat] errors only)
+	  // TH2D *histEmatData=unfold.GetEmatrix("EmatData");
+	  // get total error matrix:
+	  //   migration matrix uncorrelated and correlated systematic errors
+	  //   added in quadrature to the data statistical errors
+	  TH2 *histEmatTotal=unfold.GetEmatrixTotal("EmatTotal");
+	  // create data histogram with the total errors
+	  /*TH1D *histTotalError=
+	     new TH1D("TotalError",";mass(gen)",nGen,xminGen,xmaxGen);
+	  for(Int_t bin=1;bin<=sizeBins;bin++) {
+	    histTotalError->SetBinContent(bin,histMunfold->GetBinContent(bin));
+	    histTotalError->SetBinError
+	       (bin,TMath::Sqrt(histEmatTotal->GetBinContent(bin,bin)));
+	  }*/
+
+	  // get global correlation coefficients
+	  // for this calculation one has to specify whether the
+	  // underflow/overflow bins are included or not
+	  // default: include all binsv
+	  // here: exclude underflow and overflow bins
+	  TH2 *gHistInvEMatrix;
+	  TH1 *histRhoi=unfold.GetRhoItotal("rho_I",
+	                                    0, // use default title
+	                                    0, // all distributions
+	                                    "*[UO]", // discard underflow and overflow bins on all axes
+	                                    kTRUE, // use original binning
+	                                    &gHistInvEMatrix // store inverse of error matrix
+	                                    );
+	  //TCanvas *can_test = new TCanvas("can_test", "can_test", 800,600);
+	  //histRhoi->Draw();
+
+	  return histMunfold;
 }
   
 
