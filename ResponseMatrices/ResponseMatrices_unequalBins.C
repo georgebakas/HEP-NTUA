@@ -117,9 +117,9 @@ for(int f=0; f<fileNames.size(); f++)
          //x-axis: parton or particle and y-axis: reco (detector level)
          //x-axis will have fewer bins than y-axis
          hPartonResponse[f][ivar] = new TH2F(TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), 
-         	sizeBins, tempBND, sizeBinsPartonParticle, tempBNDPartonParticle);
+         	sizeBinsPartonParticle, tempBNDPartonParticle,sizeBins, tempBND);
          hParticleResponse[f][ivar] = new TH2F(TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), 
-         	sizeBins, tempBND, sizeBinsPartonParticle, tempBNDPartonParticle);
+         	sizeBinsPartonParticle, tempBNDPartonParticle,sizeBins, tempBND);
 
     }
     int nJets,nLeptons, category(0);
@@ -409,7 +409,7 @@ for(int f=0; f<fileNames.size(); f++)
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
 
-				   hPartonResponse[f][ivar]->Fill(xRecoAll[ivar] ,xPartonAll[ivar], genEvtWeight *weights[f]*LUMI);
+				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
 	      }//----- end of selection cuts parton and reco 
@@ -422,7 +422,7 @@ for(int f=0; f<fileNames.size(); f++)
 	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);
 	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
 
-	      		hParticleResponse[f][ivar]->Fill(xRecoAll[ivar], xParticleAll[ivar], genEvtWeight*weights[f]*LUMI);
+	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar], genEvtWeight*weights[f]*LUMI);
 	      	}
 	      }
 	      if(particleCuts) 
