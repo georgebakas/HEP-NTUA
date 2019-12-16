@@ -69,7 +69,7 @@ void SignalExtraction_UnequalBins(TString year)
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], true,true);
+        SignalExtractionSpecific(year, vars[i], false,true);
 
         //true false ok
         //true true ok  ok 

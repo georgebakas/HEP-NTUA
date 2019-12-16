@@ -63,7 +63,7 @@ void CalculateTransferFactor()
   initGlobals();  
   gStyle->SetOptStat(0);
   const int N_PT = 10;
-  float selMvaCut=0.2;
+  float selMvaCut=0.0;
   float floatBTag = 0.8838;
   const float BND[N_PT+1] = {400,450,500,570,650,750,850,950,1100,1300,1500}; //jetPt0 
   int fileSize = listOfFiles.size();

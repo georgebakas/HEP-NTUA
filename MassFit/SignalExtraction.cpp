@@ -69,7 +69,7 @@ void SignalExtraction(TString year)
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], false,true);
+        SignalExtractionSpecific(year, vars[i], true,true);
 
         //true false  ok ok
         //true true  ok ok
@@ -276,6 +276,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     else outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/%s/fixed_eb/SignalHistograms_%s_fixedEb.root", year.Data(),method.Data(),method.Data()), "UPDATE");
     hSignal->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC->Write(TString::Format("hSMC_%s", variable.Data()));
-    outf->Close();
-    */
+    outf->Close();*/
+    
 }

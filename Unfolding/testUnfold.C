@@ -100,7 +100,7 @@ Double_t DetectorEvent(Double_t mTrue) {
     return rnd->Gaus(mTrue+wideBias,wideSigma);
   }
 }
-int testUnfold1()
+int testUnfold()
 {
   // switch on histogram errors
   TH1::SetDefaultSumw2();
