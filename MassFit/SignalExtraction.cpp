@@ -71,10 +71,10 @@ void SignalExtraction(TString year)
     {
         SignalExtractionSpecific(year, vars[i], true,true);
 
-        //true false  ok ok
-        //true true  ok ok
-        //false true  ok ok
-        //false false  ok ok
+        //true false ok
+        //true true ok 
+        //false true ok ok  
+        //false false ok ok
     }
 }
 
@@ -269,13 +269,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     if (ABCDMethod) method = "ABCDMethod";
     if(free_eb) path = TString::Format("%s/FiducialMeasurement/EqualBinning/%s/free_eb/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
     else path = TString::Format("%s/FiducialMeasurement/EqualBinning/%s/fixed_eb/fiducial_%s.pdf",year.Data(),method.Data()  ,variable.Data());
-    //can->Print(path,"pdf");
+    can->Print(path,"pdf");
     /*
     TFile *outf;
     if(free_eb)outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/%s/free_eb/SignalHistograms_%s_freeEb.root", year.Data(),method.Data(), method.Data()), "UPDATE");
     else outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/%s/fixed_eb/SignalHistograms_%s_fixedEb.root", year.Data(),method.Data(),method.Data()), "UPDATE");
     hSignal->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC->Write(TString::Format("hSMC_%s", variable.Data()));
-    outf->Close();*/
-    
+    outf->Close();
+    */
 }

@@ -42,7 +42,7 @@ void initFilesMapping(bool free_eb = true)
 																		 
 	map<TString, TString> files2017Reduced = {{"data",  "2017/Histo_Data_2017_100_reduced.root"},
 	                                   		  {"mcSig", "2017/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced.root"}};
+	                                   		  {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced.root"}};                                  		  
 	
 	map<TString, TString> files2018Reduced = {{"data",  "2018/Histo_Data_2018_100_reduced.root"},
 	                                   	      {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced.root"},
@@ -79,7 +79,9 @@ void initFilesMapping(bool free_eb = true)
 		//from ABCD method
 		NQCD2_reduced.insert(pair<TString, float>("2016",846.365));
 		NQCD2_reduced.insert(pair<TString, float>("2017",677.041));
-		NQCD2_reduced.insert(pair<TString, float>("2017",1201.35));
+		NQCD2_reduced.insert(pair<TString, float>("2017",455.439));
+		NQCD2_reduced.insert(pair<TString, float>("2018",1201.35));
+
 	}
 	else
 	{
@@ -102,7 +104,7 @@ void initFilesMapping(bool free_eb = true)
 		//from ABCD method
 		NQCD2_reduced.insert(pair<TString, float>("2016",836.08));
 		NQCD2_reduced.insert(pair<TString, float>("2017",651.127));
-		NQCD2_reduced.insert(pair<TString, float>("2017",1167.64));
+		NQCD2_reduced.insert(pair<TString, float>("2018",1167.64));
 	}
 
 	
