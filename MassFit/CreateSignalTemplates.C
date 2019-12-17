@@ -61,7 +61,6 @@ void CreateSignalTemplates(TString year, TString CUT = "")
       mW.setConstant(false);
       sW.setConstant(false);
     }
-  
     cout<<TAG<<endl;
     //---- then do the signal templates -------------
     hMC = (TH1F*)infMC->Get("hWt_"+VAR+TAG);

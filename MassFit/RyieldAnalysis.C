@@ -19,9 +19,17 @@ using namespace std;
 using std::cin;
 using std::cout;
 using std::endl;	
+void RyieldAnalysisYear(TString year = "2016", bool free_eb = true);
+
+void RyieldAnalysis()
+{
+	RyieldAnalysisYear("2016",false);
+	RyieldAnalysisYear("2017",false);
+	RyieldAnalysisYear("2018",false);
+}
 
 
-void RyieldAnalysis(TString year = "2016", bool free_eb = true)
+void RyieldAnalysisYear(TString year = "2016", bool free_eb = true)
 {
 	initFilesMapping(free_eb);
 	//we need both reduced and extended files for Data and ttbar MC
@@ -43,11 +51,11 @@ void RyieldAnalysis(TString year = "2016", bool free_eb = true)
 
 	hMCExt = (TH1F*)mcFiles[0]->Get("hWt_mTop_0btag_expYield");
 	hMCRed = (TH1F*)mcFiles[1]->Get("hWt_mTop_0btag_expYield");
-	cout<<"NQCD reduced CR from data: "<<hDRed->Integral()<<endl;
+	//cout<<"NQCD reduced CR from data: "<<hDRed->Integral()<<endl;
 	double err;
-	cout<<"NQCD reduced CR from data: "<<hDRed->IntegralAndError(1,hDRed->GetNbinsX(), err)<<endl;
+	//cout<<"NQCD reduced CR from data: "<<hDRed->IntegralAndError(1,hDRed->GetNbinsX(), err)<<endl;
 
-	cout<<"NQCD reduced CR from TT MC: "<<hMCRed->Integral()<<endl;
+	//cout<<"NQCD reduced CR from TT MC: "<<hMCRed->Integral()<<endl;
 	//Find R0 and R1 where R0 = DRed / DExt and R1 = (DRed - MCRed) /(DExt - MCExt)
 
 	float R[2];
@@ -55,10 +63,11 @@ void RyieldAnalysis(TString year = "2016", bool free_eb = true)
 	R[0] = hDRed->Integral() / hDExt->Integral();
 	R[1] = (hDRed->Integral() - hMCRed->Integral() )/ (hDExt->Integral() - hMCExt->Integral());
 
-	cout<<"(R[0]-R[1])/R[0] = "<< (R[0]-R[1])/R[0]<<endl;
+	
 	cout<<"----"<<year<<"----"<<endl;
 	cout<<"R0 (just data) = "<<R[0]<<endl;
 	cout<<"R1 (taking MC into account) = "<<R[1]<<endl;
+	cout<<"(R[0]-R[1])/R[0] = "<< (R[0]-R[1])/R[0]<<endl;
 	//now 2nd step is to find Nqcd, reduced in SR
 	float NQCD_reduced_CR = hDRed->Integral() - hMCRed->Integral();
 

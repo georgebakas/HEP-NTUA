@@ -60,51 +60,50 @@ void initFilesMapping(bool free_eb = true)
 	//these are fit results taken from the simultaneous fit when btagging efficiency eb is let free in the fit
 	if(free_eb)
 	{
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0802e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.4652e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.4306e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0901e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.4407e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.4094e+03));
 
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.32e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.42e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.31e+02));
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.77e+02));
 
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8132e+04));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5483e+05));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.6842e+05));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8087e+04));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5485e+05));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.6857e+05));
 
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 4.48e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 5.24e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 5.64e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 4.30e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 5.49e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 5.63e+02));
 
 		//from ABCD method
-		NQCD2_reduced.insert(pair<TString, float>("2016",846.365));
-		NQCD2_reduced.insert(pair<TString, float>("2017",677.041));
-		NQCD2_reduced.insert(pair<TString, float>("2017",455.439));
-		NQCD2_reduced.insert(pair<TString, float>("2018",1201.35));
+		NQCD2_reduced.insert(pair<TString, float>("2016",849.519));
+		NQCD2_reduced.insert(pair<TString, float>("2017",670.225));
+		NQCD2_reduced.insert(pair<TString, float>("2018",1194.54));
 
 	}
 	else
 	{
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0552e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.3906e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.3472e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0492e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.3582e+03));
+		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.2914e+03));
 
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.42e+02));
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.45e+02));
+		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.55e+02));
 		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.78e+02));
 
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8492e+04));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5612e+05));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.7002e+05));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8488e+04));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5611e+05));
+		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.7000e+05));
 
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 3.70e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 3.78e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 3.74e+02));
+		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 3.77e+02));
 		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 4.37e+02));
 
 		//from ABCD method
-		NQCD2_reduced.insert(pair<TString, float>("2016",836.08));
-		NQCD2_reduced.insert(pair<TString, float>("2017",651.127));
-		NQCD2_reduced.insert(pair<TString, float>("2018",1167.64));
+		NQCD2_reduced.insert(pair<TString, float>("2016",834.476));
+		NQCD2_reduced.insert(pair<TString, float>("2017",642.344));
+		NQCD2_reduced.insert(pair<TString, float>("2018",1152.79));
 	}
 
 	

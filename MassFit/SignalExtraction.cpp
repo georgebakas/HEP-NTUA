@@ -64,12 +64,12 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 }
 
-void SignalExtraction(TString year)
+void SignalExtraction(TString year, bool free_eb)
 {
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], true,true);
+        SignalExtractionSpecific(year, vars[i], free_eb,true);
 
         //true false ok
         //true true ok 

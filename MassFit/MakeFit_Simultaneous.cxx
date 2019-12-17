@@ -117,11 +117,10 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	kMassScale->setConstant(false);
   	kMassResol->setConstant(false);
 
-  	
   	RooRealVar *kMassScaleW = (RooRealVar*)wTemplatesSig->var("kMassScaleW");
 	RooRealVar *kMassResolW = (RooRealVar*)wTemplatesSig->var("kMassResolW");
-	kMassScaleW->setConstant(false);
-  	kMassResolW->setConstant(false);
+	kMassScaleW->setConstant(true);
+  	kMassResolW->setConstant(true);
 	
 	RooDataHist *roohist_data_0b = new RooDataHist("roohist_data_0b", "roohist_data_0b", *x, h0b);
 	RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b", "roohist_data_2b", *x, h2b);
@@ -207,7 +206,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	
 	for(int i=0; i< canvases.size(); i++)
 	{
-		canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions_freeEb_mWScaleResolution/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
+		canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
 	}
 	/*
 	correlation(nFitSig, btagEff, res, "t#bar{t} events", "btag efficiency");
