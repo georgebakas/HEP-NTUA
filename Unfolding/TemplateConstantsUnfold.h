@@ -1,5 +1,3 @@
-#include "TString.h"
-
 /*
 	For Unfolding we need the files:
 	1. Signal Extracted S_i(xReco) from SignalExtraction.cpp in MassFit folder 

@@ -30,7 +30,10 @@ using std::endl;
 #include "TemplateConstantsUnfold.h"
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
-TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TH1 **histRhoi);
+TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable);
+TString year;
+TString varParton;
+
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
 {
@@ -58,8 +61,9 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold(TString year = "2016", bool isParton = true)
+void Unfold(TString inYear = "2016", bool isParton = true)
 {
+  year = inYear;
   initFilesMapping();
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
                                                         {0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1025,1100,1200,1300}, //ptjj 19
@@ -83,7 +87,7 @@ void Unfold(TString year = "2016", bool isParton = true)
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
 
   //whether parton or particle
-  TString varParton = "Parton";
+  varParton = "Parton";
   if(!isParton) varParton = "Particle";
 
   int NBINS[BND_reco.size()];
@@ -101,10 +105,12 @@ void Unfold(TString year = "2016", bool isParton = true)
   TUnfold *unf[BND_reco.size()];
   TH1 *hUnf[BND_reco.size()];
   TH1F *hUnf_Clone[BND_reco.size()];
-  TH1 *histRhoi[BND_reco.size()];
+  //TH1 *histRhoi[BND_reco.size()];
 
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()];
-  for(int ivar =0; ivar<1; /*BND_reco.size();*/ ivar++)
+  TFile *outf = TFile::Open(TString::Format("%s/OutputFile_%s.root", year.Data(), varParton.Data()),"UPDATE");
+
+  for(int ivar =0; ivar<BND_reco.size(); ivar++)
   {
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
@@ -145,8 +151,8 @@ void Unfold(TString year = "2016", bool isParton = true)
     cout<<"entering unfolding method!"<<endl;
     
     hUnf[ivar] = new TH1F(TString::Format("hUnf_%s", variable[ivar].Data()), TString::Format("hUnf_%s", variable[ivar].Data()), NBINS_GEN[ivar], tempBNDGen);
-    hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], &histRhoi[ivar]);
-    break;
+    hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
+    //continue;
     TString axisTitle = variable[ivar];
     if(variable[ivar].EqualTo("yJJ")) 
     	hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
@@ -171,30 +177,33 @@ void Unfold(TString year = "2016", bool isParton = true)
       float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
       hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
     }
-    hUnf[ivar]->Scale(1/LUMI, "width");
-    hUnf_Clone[ivar]->Scale(1/LUMI, "width");
-    hUnf_Clone[ivar]->SetLineColor(kRed);
-	 
-    
+    //hUnf[ivar]->Scale(1/LUMI, "width");
+    //hUnf_Clone[ivar]->Scale(1/LUMI, "width");
+    //hUnf_Clone[ivar]->SetLineColor(kRed);
+	   
+    outf->cd();
+    hSig[ivar]->Write(TString::Format("RecoInputAcc_%s", variable[ivar].Data()));
+    hUnf[ivar]->Write(TString::Format("FinalOut_%s", variable[ivar].Data()));
+    hUnf_Clone[ivar]->Write(TString::Format("UnfOut_%s", variable[ivar].Data()));
+
     //check shape
     //hUnf[ivar]->Scale(1./hUnf[ivar]->Integral());
     //hUnf_Clone[ivar]->Scale(1./hUnf_Clone[ivar]->Integral());
 
 	hUnf[ivar]->Draw();
 	//hUnf_Clone[ivar]->Draw("same");
-  can_rho[ivar] = new TCanvas(TString::Format("can_rho_%d",ivar),TString::Format("can_rho_%d",ivar), 800,600);
-  histRhoi[ivar]->Draw();
   }
+  outf->Close();
   
 }
 
-TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TH1 **histRhoi)
+TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable)
 {	
 	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
 	//hResponse_->Draw("BOX");
 
-    TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize);
-    unfold.SetInput(hReco);
+  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize);
+  unfold.SetInput(hReco);
       //========================================================================
 	  // the unfolding is done here
 	
@@ -204,9 +213,6 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TH
  	float tau = tauMin;
  	float step = (tauMax - tauMin)/nScan;
 
-    //std::vector<float> t;
- 	//std::vector<float> r;
-
  	float t[nScan], r[nScan];
  	int i=0;
 	//run all over taus and find the one that shows the minimum average global correlation 
@@ -214,10 +220,6 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TH
 
 		unfold.DoUnfold(tau);
 		float rho = unfold.GetRhoAvg();
-		cout<<"------"<<endl;
-		cout<<"i: "<<i<<endl;
-		cout<<"rho: "<<rho<<endl;
-		cout<<"tau: "<<tau<<endl;
 		r[i] = rho;
 		t[i] = tau;
 
@@ -226,22 +228,55 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TH
 	}while (i <= nScan);
 
 	TGraph *globalCorrGraph = new TGraph(nScan,t,r);
-	TCanvas *canGr = new TCanvas ("globalCorrGraph", "globalCorrGraph", 800,600);
-	globalCorrGraph->Draw("CP");
+	TCanvas *canGr = new TCanvas (TString::Format("globalCorrGraph_%s",variable.Data()), TString::Format("globalCorrGraph_%s",variable.Data()),
+                                 800,600);
+	globalCorrGraph->Draw();
 	//==========================================================================  
 	// retreive results into histograms
 	// get unfolded distribution
- 	
- 	TH1 *histMunfold;// = unfold.GetOutput(histMunfold);
 
- 	TFile *outf = TFile::Open("OutputFile.root","RECREATE");
- 	globalCorrGraph->Write();
+ 	TFile *outf = TFile::Open(TString::Format("%s/OutputFileRhoGraphs_%s.root",year.Data(), varParton.Data()),"UPDATE");
+ 	globalCorrGraph->Write(TString::Format("globalCorrGraph_%s",variable.Data()));
  	outf->Close();
 
+  
+  //find the minimum
+  Double_t *gx, *gy;
+  gy = globalCorrGraph->GetY();
+  gx = globalCorrGraph->GetX(); 
+  float minTau;
+  float minRho = TMath::MinElement(nScan,gy);
+  cout<<"------"<<endl;
+  cout<<minRho<<endl;
+  bool found = true;
+  i=0;
+  do{
+    //cout<<r[i]<<endl;
+    if(minRho == gy[i]) 
+      {
+        minTau = gx[i];
+        found = false;
+      }
+    i++;
+
+  }while (found == true);
+  cout<<"minTau= "<<minTau<<endl;
 
 
+  unfold.DoUnfold(minTau);
+  
+  //set up a bin map, excluding underflow and overflow bins
+  // the binMap relates the the output of the unfolding to the final
+  // histogram bins
+  Int_t *binMap=new Int_t[sizeBins+2];
+  for(Int_t i=1;i<=sizeBins;i++) binMap[i]=i;
+  binMap[0]=-1;
+  binMap[sizeBins+1]=-1;
 
-	  return histMunfold;
+  TH1F *histMunfold = new TH1F (TString::Format("UnfoldedOutput_%s",variable.Data()),TString::Format("UnfoldedOutput_%s",variable.Data()),
+                               sizeBins, BND);
+  unfold.GetOutput(histMunfold, binMap);
+	return histMunfold;
 
 }
   

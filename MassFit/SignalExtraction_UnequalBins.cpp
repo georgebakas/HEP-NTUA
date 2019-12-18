@@ -71,10 +71,10 @@ void SignalExtraction_UnequalBins(TString year)
     {
         SignalExtractionSpecific(year, vars[i], false,true);
 
-        //true false ok
-        //true true ok  ok 
-        //false true ok ok 
-        //false false ok ok
+
+        //only ABCD method
+        //true true ok ok 
+        //false true ok ok
     }
 }
 
@@ -221,8 +221,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     closure_pad1->cd();
 
 
-    //hSignal->Scale(1/luminosity[year],"width");
-    //hSMC->Scale(1/luminosity[year], "width");
+    hSignal->Scale(1/luminosity[year],"width");
+    hSMC->Scale(1/luminosity[year], "width");
     
     hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
@@ -262,13 +262,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     if (ABCDMethod) method = "ABCDMethod";
     if(free_eb) path = TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/free_eb/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
     else path = TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/fixed_eb/fiducial_%s.pdf",year.Data(),method.Data()  ,variable.Data());
-    //can->Print(path,"pdf");
-    
+    can->Print(path,"pdf");
+    /*
     TFile *outf;
     if(free_eb)outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/free_eb/SignalHistograms_%s_freeEb.root", year.Data(),method.Data(), method.Data()), "UPDATE");
     else outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/fixed_eb/SignalHistograms_%s_fixedEb.root", year.Data(),method.Data(),method.Data()), "UPDATE");
     hSignal->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC->Write(TString::Format("hSMC_%s", variable.Data()));
-    outf->Close();
+    outf->Close(); */
     
 }
