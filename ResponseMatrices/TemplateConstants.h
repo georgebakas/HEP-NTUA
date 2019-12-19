@@ -32,10 +32,15 @@ void initFilesMapping()
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
 	
-	//these are btagging Working points for each year	
-	floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
-	floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
-	floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
+	//these are btagging Working points for each year Medium WP	
+	//floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
+	//floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
+	//floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
+	
+	//these are btagging Working points for each year Loose WP
+	floatConstants.insert(pair<TString, float>("btagWP2016", 0.2217));
+	floatConstants.insert(pair<TString, float>("btagWP2017", 0.1522));
+	floatConstants.insert(pair<TString, float>("btagWP2018", 0.1241));
 
 	topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.2));
 	topTaggerConstants.insert(pair<TString, float>("topTagger2017", 0.0));

@@ -19,7 +19,8 @@ std::vector<TString> histoNames;
 float LUMI = 35922;
 TString eosPath;
 int selection;
-float deepCSVFloat = 0.6321;
+//float deepCSVFloat = 0.6321; //medium WP
+float deepCSVFloat = 0.2217; //Loose WP
 
 void initFileNames()
 {
@@ -599,13 +600,13 @@ void FillHistograms(int sel = 0)
   }
   TFile *outFile;
   if(selection ==0)
-    outFile = new TFile("Histo_Data_2016_100.root", "RECREATE");
+    outFile = new TFile("Histo_Data_2016_100Loose.root", "RECREATE");
   if(selection ==1)
-    outFile = new TFile("Histo_TT_Mtt-700toInf_100.root", "RECREATE");
+    outFile = new TFile("Histo_TT_Mtt-700toInf_100Loose.root", "RECREATE");
   if(selection ==2)
-    outFile = new TFile("Histo_QCD_HT300toInf_100.root", "RECREATE");
+    outFile = new TFile("Histo_QCD_HT300toInf_100Loose.root", "RECREATE");
   if(selection ==3)
-    outFile = new TFile("Histo_SubdominantBkgs_New_100.root", "RECREATE");
+    outFile = new TFile("Histo_SubdominantBkgs_New_100Loose.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {

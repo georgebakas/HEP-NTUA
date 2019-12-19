@@ -17,7 +17,10 @@ std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI = 59740;
 TString eosPath; 
-float deepCSVFloat = 0.4184;
+//medium WP
+//float deepCSVFloat = 0.4184;
+//loose WP
+float deepCSVFloat = 0.1241;
 
 void initFileNames()
 {
@@ -644,7 +647,7 @@ void EfficiencyAcceptance(TString varName,TString varNameReco, int varNum , int 
   efficiency_reco[2]->Draw("SAME");
   
   TFile *outFile;
-  if(isDeepCSV) outFile = TFile::Open(TString::Format("deepAK8_efficiencies_allVars_tTagger_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
+  if(isDeepCSV) outFile = TFile::Open(TString::Format("deepAK8_efficiencies_allVars_tTagger_%0.2f_deepCSVLoose.root", selMvaCut), "UPDATE");
   else outFile = TFile::Open(TString::Format("deepAK8_efficiencies_allVars_tTagger_%0.2f.root", selMvaCut), "UPDATE");
   
   

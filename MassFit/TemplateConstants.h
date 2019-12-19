@@ -77,9 +77,9 @@ void initFilesMapping(bool free_eb = true)
 		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 5.63e+02));
 
 		//from ABCD method
-		NQCD2_reduced.insert(pair<TString, float>("2016",849.519));
-		NQCD2_reduced.insert(pair<TString, float>("2017",670.225));
-		NQCD2_reduced.insert(pair<TString, float>("2018",1194.54));
+		NQCD2_reduced.insert(pair<TString, float>("2016",819.074));
+		NQCD2_reduced.insert(pair<TString, float>("2017",659.932));
+		NQCD2_reduced.insert(pair<TString, float>("2018",1176.09));
 
 	}
 	else
@@ -101,9 +101,9 @@ void initFilesMapping(bool free_eb = true)
 		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 4.37e+02));
 
 		//from ABCD method
-		NQCD2_reduced.insert(pair<TString, float>("2016",834.476));
-		NQCD2_reduced.insert(pair<TString, float>("2017",642.344));
-		NQCD2_reduced.insert(pair<TString, float>("2018",1152.79));
+		NQCD2_reduced.insert(pair<TString, float>("2016",804.57));
+		NQCD2_reduced.insert(pair<TString, float>("2017",632.479));
+		NQCD2_reduced.insert(pair<TString, float>("2018",1134.99));
 	}
 
 	

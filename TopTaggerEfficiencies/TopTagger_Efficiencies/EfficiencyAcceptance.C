@@ -17,7 +17,10 @@ std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI = 35922;
 TString eosPath; 
-float deepCSVFloat = 0.6321;
+//medium WP
+//float deepCSVFloat = 0.6321;
+//loose WP
+float deepCSVFloat = 0.2217;
 
 void initFileNames()
 {
@@ -537,7 +540,7 @@ myfile.close();
   */
   }
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("Efficiencies_allVars_tTagger_%0.2f_deepCSV.root", selMvaCut), "UPDATE");
+  outFile = TFile::Open(TString::Format("Efficiencies_allVars_tTagger_%0.2f_deepCSVLoose.root", selMvaCut), "UPDATE");
   
   for(int ivar = 0; ivar<NVAR-2; ivar++)
   {
