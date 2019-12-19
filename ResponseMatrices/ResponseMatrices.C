@@ -630,7 +630,7 @@ for(int f=0; f<fileNames.size(); f++)
 
 
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("%s/ResponsesEfficiency_%s.root", year.Data(),year.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/ResponsesEfficiency_%sLoose.root", year.Data(),year.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR-2; ivar++)
