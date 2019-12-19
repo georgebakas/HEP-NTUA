@@ -119,8 +119,8 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 
   	RooRealVar *kMassScaleW = (RooRealVar*)wTemplatesSig->var("kMassScaleW");
 	RooRealVar *kMassResolW = (RooRealVar*)wTemplatesSig->var("kMassResolW");
-	kMassScaleW->setConstant(true);
-  	kMassResolW->setConstant(true);
+	kMassScaleW->setConstant(false);
+  	kMassResolW->setConstant(false);
 	
 	RooDataHist *roohist_data_0b = new RooDataHist("roohist_data_0b", "roohist_data_0b", *x, h0b);
 	RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b", "roohist_data_2b", *x, h2b);
@@ -161,13 +161,13 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	
 	RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b", "nFitQCD_0b", 90000, 0, 1.2e+6);
 	RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b", "nFitQCD_1b", 35000, 0, 1e+5);
-	RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b", "nFitQCD_2b", 3000, 0, 1e+4);
+	RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b", "nFitQCD_2b", 3000, 0, 1e+5);
 	
 	RooRealVar *nFitSig = new RooRealVar("nFitSig", "nFitSig", Ntt_expected, 0.5*Ntt_expected, 1.5*Ntt_expected);
 	RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b", "nFitSig0b", h0b_TT->Integral(), 0.6*h0b_TT->Integral(), 1.4*h0b_TT->Integral());
 	RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b", "nFitSig1b", h1b_TT->Integral(), 0.6*h1b_TT->Integral(), 1.4*h1b_TT->Integral());
 	RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b", "nFitSig2b", h2b_TT->Integral(), 0.6*h2b_TT->Integral(), 1.4*h2b_TT->Integral());
-	RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", floatConstants[TString::Format("bTagEff%s",year.Data())],0.4,0.8);
+	RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", floatConstants[TString::Format("bTagEff%s",year.Data())],0.1,1);
     //RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", efficiency_b,0.4,0.8);
     if(setConstant) btagEff->setConstant(true);
 

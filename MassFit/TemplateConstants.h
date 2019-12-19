@@ -22,6 +22,10 @@ void initFilesMapping(bool free_eb = true)
 	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
 	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
 	                                   {"mcSub", "2016/Histo_SubdominantBkgs_100.root"}};
+
+	map<TString, TString> files2016Loose = {{"data",  "2016_Loose/Histo_Data_2016_Loose_100.root"},
+	                                   		{"mcSig", "2016_Loose/Histo_TT_Mtt-700toInf_100.root"},
+	                                   		{"mcSub", "2016_Loose/Histo_SubdominantBkgs_100.root"}};	                                   
 																		 
 	map<TString, TString> files2017 = {{"data",  "2017/Histo_Data_2017_100.root"},
 	                                   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100.root"},
@@ -32,6 +36,7 @@ void initFilesMapping(bool free_eb = true)
 	                                   {"mcSub", "2018/Histo_SubdominantBkgs_100.root"}};
 																		 
 	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
+	files.insert(pair<TString, map<TString, TString>>("2016_Loose", files2016Loose));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
 
