@@ -169,7 +169,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b", "nFitSig2b", h2b_TT->Integral(), 0.6*h2b_TT->Integral(), 1.4*h2b_TT->Integral());
 	RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", floatConstants[TString::Format("bTagEff%s",year.Data())],0.1,1);
     //RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", efficiency_b,0.4,0.8);
-    if(setConstant) btagEff->setConstant(true);
+    //if(setConstant) btagEff->setConstant(true);
 
 	
 	RooFormulaVar nSig0b("nSig_0b", "(1-@0)*(1-@0)*@1", RooArgList(*btagEff, *nFitSig));
@@ -206,7 +206,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	
 	for(int i=0; i< canvases.size(); i++)
 	{
-		canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
+		//canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
 	}
 	/*
 	correlation(nFitSig, btagEff, res, "t#bar{t} events", "btag efficiency");
