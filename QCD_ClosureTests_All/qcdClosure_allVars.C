@@ -560,9 +560,9 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
   
   TFile *outFile;
   if(isSignal) 
-  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV_%s.root", selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSVLoose_%s.root", selMvaCut,year.Data()), "RECREATE");
   else 
-  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV_%s.root",selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSVLoose_%s.root",selMvaCut,year.Data()), "RECREATE");
 	 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {

@@ -17,8 +17,10 @@ std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI = 59740;
 TString eosPath; 
-float deepCSVFloat = 0.4184;
-
+//medium WP
+//float deepCSVFloat = 0.4184;
+//loose WP
+float deepCSVFloat = 0.1241
 void initFileNames()
 {
   
@@ -356,7 +358,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=0.1, bool saveTtagger= true)
 	  
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger
-		  if(recoCuts && btagCut /*&& tTaggerCut*/)
+		  if(recoCuts && btagCut  tTaggerCut)
 		  {
 		  	for(int ivar = 0; ivar < NVAR-2; ivar++)
 	  		{
@@ -364,7 +366,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=0.1, bool saveTtagger= true)
 			}
 		  } 
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
-	      if(partonCuts && recoCuts /*&& tTaggerCut*/ && btagCut)
+	      if(partonCuts && recoCuts tTaggerCut && btagCut)
 		  {
 			  	for(int ivar = 0; ivar < NVAR-2; ivar++)
 	  			{
@@ -539,7 +541,7 @@ myfile.close();
   */
   }
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("Efficiencies_allVars_tTagger_%0.2f_deepCSV_noTTaggerCut.root", selMvaCut), "UPDATE");
+  outFile = TFile::Open(TString::Format("Efficiencies_allVars_tTagger_%0.2f_deepCSVLoose.root", selMvaCut), "UPDATE");
   
   for(int ivar = 0; ivar<NVAR-2; ivar++)
   {

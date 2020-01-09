@@ -72,8 +72,14 @@ void initFilesMapping()
 	luminosity.insert(pair<TString, float>("2017", 41530));
 	luminosity.insert(pair<TString, float>("2018", 59740));
 
-	deepCSVWP.insert(pair<TString, float>("2016", 0.6321));
-	deepCSVWP.insert(pair<TString, float>("2017", 0.4941));
+	//these are Medium WP's
+	//deepCSVWP.insert(pair<TString, float>("2016", 0.6321));
+	//deepCSVWP.insert(pair<TString, float>("2017", 0.4941));
+	//deepCSVWP.insert(pair<TString, float>("2018", 0.4184));
+
+	//these are Loose WP's
+	deepCSVWP.insert(pair<TString, float>("2016", 0.2217));
+	deepCSVWP.insert(pair<TString, float>("2017", 0.1522));
 	deepCSVWP.insert(pair<TString, float>("2018", 0.4184));
 
 	tTaggerSel.insert(pair<TString, float>("2016", 0.2));
