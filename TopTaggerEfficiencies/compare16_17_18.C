@@ -22,18 +22,18 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    std::vector<Color_t> colors = {kBlue,kRed, kGreen,kBlack, kMagenta};
     cout<<"It's deepCSV"<<endl;
 	   //for closure tests [0] is 16, [1] is 17 and [2] is 18
-	   //signal[0] = TFile::Open("./QCD_Closure/SignalOutput_AllRegions_0.2_deepCSV_1File.root"); 
-	   //signal[1] = TFile::Open("./QCD_Closure_2017/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
-	   //signal[2] = TFile::Open("./QCD_Closure_2018/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
+	   signal[0] = TFile::Open("./QCD_Closure/SignalOutput_AllRegions_0.2_deepCSV_1File.root"); 
+	   signal[1] = TFile::Open("./QCD_Closure_2017/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
+	   signal[2] = TFile::Open("./QCD_Closure_2018/SignalOutput_AllRegions_0.2_deepCSV_1File.root");
 
-	   //bkg[0] = TFile::Open("./QCD_Closure/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
-	   //bkg[1] = TFile::Open("./QCD_Closure_2017/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
-	   //bkg[2] = TFile::Open("./QCD_Closure_2018/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
+	   bkg[0] = TFile::Open("./QCD_Closure/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
+	   bkg[1] = TFile::Open("./QCD_Closure_2017/BkgOutput_AllRegions_0.2_deepCSV_1File.root");
+	   bkg[2] = TFile::Open("./QCD_ClosureTests_All/SignalOutput_AllRegions_0.10_deepCSV_2018.root");
 	   
  	   //for efficiencies
-     eff[0] = TFile::Open("./TopTagger_Efficiencies/Efficiencies_allVars_tTagger_0.20_deepCSV.root"); 
-	   eff[1] = TFile::Open("./TopTagger_Efficiencies_2017/Efficiencies_allVars_tTagger_0.00_deepCSV.root");
-	   eff[2] = TFile::Open("./TopTagger_Efficiencies_2018/Efficiencies_allVars_tTagger_0.10_deepCSV.root");
+     eff[0] = TFile::Open("./TopTagger_Efficiencies/Efficiencies_allVars_tTagger_0.20_deepCSVLoose.root"); 
+	   eff[1] = TFile::Open("./TopTagger_Efficiencies_2017/Efficiencies_allVars_tTagger_0.00_deepCSVLoose.root");
+	   eff[2] = TFile::Open("./TopTagger_Efficiencies_2018/Efficiencies_allVars_tTagger_0.10_deepCSVLoose.root");
 
      TFile *oldInf = TFile::Open("PartonEfficiencyAll_July19.root");
    

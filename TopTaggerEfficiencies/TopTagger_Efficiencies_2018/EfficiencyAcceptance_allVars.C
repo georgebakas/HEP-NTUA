@@ -20,7 +20,7 @@ TString eosPath;
 //medium WP
 //float deepCSVFloat = 0.4184;
 //loose WP
-float deepCSVFloat = 0.1241
+float deepCSVFloat = 0.1241;
 void initFileNames()
 {
   
@@ -358,7 +358,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=0.1, bool saveTtagger= true)
 	  
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger
-		  if(recoCuts && btagCut  tTaggerCut)
+		  if(recoCuts && btagCut && tTaggerCut)
 		  {
 		  	for(int ivar = 0; ivar < NVAR-2; ivar++)
 	  		{
@@ -366,7 +366,7 @@ void EfficiencyAcceptance_allVars(float selMvaCut=0.1, bool saveTtagger= true)
 			}
 		  } 
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
-	      if(partonCuts && recoCuts tTaggerCut && btagCut)
+	      if(partonCuts && recoCuts && tTaggerCut && btagCut)
 		  {
 			  	for(int ivar = 0; ivar < NVAR-2; ivar++)
 	  			{
