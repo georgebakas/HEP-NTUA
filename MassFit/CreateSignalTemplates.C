@@ -6,7 +6,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TFile *infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data()));  
+  TFile *infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100Loose.root",year.Data()));  
   float normMC;
   float XSEC(832.);
   float LUMI(0);

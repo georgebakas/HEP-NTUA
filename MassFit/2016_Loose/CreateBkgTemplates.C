@@ -6,7 +6,7 @@ void CreateBkgTemplates(TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TFile *infData = TFile::Open("Histo_JetHT_Run2016-17Jul2018_100.root"); 
+  TFile *infData = TFile::Open("Histo_Data_2016_100Loose.root"); 
 
   /*TFile *infW  = TFile::Open("../Histo_WJetsToQQ_HT180_13TeV-madgraphMLM-pythia8.root");
   TFile *infDY = TFile::Open("../Histo_DYJetsToQQ_HT180_13TeV-madgraphMLM-pythia8.root");
@@ -15,7 +15,7 @@ void CreateBkgTemplates(TString CUT = "")
   TFile *infST_t_top = TFile::Open("../Histo_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
   TFile *infST_t_antitop = TFile::Open("../Histo_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
   */
-  TFile *infBkg = TFile::Open("Histo_SubdominantBkgs_100.root");
+  TFile *infBkg = TFile::Open("Histo_SubdominantBkgs_New_100Loose.root");
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);

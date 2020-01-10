@@ -6,9 +6,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(),year.Data())); 
-  
-  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
+  TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100Loose.root", year.Data(),year.Data())); 
+  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100Loose.root",year.Data()));
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);

@@ -91,6 +91,7 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 {
   initFilesMapping();
   LUMI = luminosity[year.Data()];
+  float LUMI_CR = 1670;
   deepCSVFloat = deepCSVWP[year.Data()]; 
   float selMvaCut=tTaggerSel[year.Data()];
 
@@ -508,8 +509,8 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 		{
 		  hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));	
 		  hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));	
-		  
-		  hCR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 0 btagged (CR)
+		  if(!year.EqualTo("2016")) LUMI_CR = LUMI;
+		  hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
 		  hSR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
 		
 		  hCR[j][ivar]->Scale(weights[j]); //this is CR
