@@ -28,7 +28,7 @@ void plotBTagEfficiencies()
 	gStyle->SetOptStat(0);
 	gStyle->SetPaintTextFormat("0.2f");
 	initHistoNames();
-	TFile *inf = TFile::Open("BTaggingEfficiency_massCutLoose_BND.root");
+	TFile *inf = TFile::Open("BTaggingEfficiency_massCutLoose.root");
 
 	TH2F *hRecoParton[histoNames.size()];
 	TH2F *hRecoParton_clones[histoNames.size()];
