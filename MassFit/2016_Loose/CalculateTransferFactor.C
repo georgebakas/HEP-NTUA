@@ -18,7 +18,8 @@ std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI = 35922;
 TString eosPath;
-float deepCSVFloat = 0.6321;
+//float deepCSVFloat = 0.6321;
+float deepCSVFloat = 0.2217; //Loose WP
 
 void initFileNames()
 {
@@ -281,13 +282,13 @@ void CalculateTransferFactor()
 
   float tFactor[3], tFactorError[3];
 
-  tFactor[0] = (hCR[0]->GetEntries() / hCRA[0]->GetEntries());
-  tFactor[1] = (h1Btag[0]->GetEntries() / h1BtagA[0]->GetEntries());
-  tFactor[2] = (hSR[0]->GetEntries() / hSRA[0]->GetEntries());
+  tFactor[0] = (hCR[0]->Integral() / hCRA[0]->Integral());
+  tFactor[1] = (h1Btag[0]->Integral() / h1BtagA[0]->Integral());
+  tFactor[2] = (hSR[0]->Integral() / hSRA[0]->Integral());
 
-  tFactorError[0] = TMath::Sqrt((hCR[0]->GetEntries()*(hCR[0]->GetEntries() + hCRA[0]->GetEntries()))/ TMath::Power(hCRA[0]->GetEntries(),3));
-  tFactorError[1] = TMath::Sqrt((h1Btag[0]->GetEntries()*(h1Btag[0]->GetEntries() + h1BtagA[0]->GetEntries()))/ TMath::Power(h1BtagA[0]->GetEntries(),3));
-  tFactorError[2] = TMath::Sqrt((hSR[0]->GetEntries()*(hSR[0]->GetEntries() + hSRA[0]->GetEntries()))/ TMath::Power(hSRA[0]->GetEntries(),3));
+  tFactorError[0] = TMath::Sqrt((hCR[0]->Integral()*(hCR[0]->Integral() + hCRA[0]->Integral()))/ TMath::Power(hCRA[0]->Integral(),3));
+  tFactorError[1] = TMath::Sqrt((h1Btag[0]->Integral()*(h1Btag[0]->Integral() + h1BtagA[0]->Integral()))/ TMath::Power(h1BtagA[0]->Integral(),3));
+  tFactorError[2] = TMath::Sqrt((hSR[0]->Integral()*(hSR[0]->Integral() + hSRA[0]->Integral()))/ TMath::Power(hSRA[0]->Integral(),3));
 
 
   float x[3] = {0,1,2};

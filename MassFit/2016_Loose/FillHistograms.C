@@ -328,7 +328,7 @@ void FillHistograms(int sel = 0)
     jetBtagSub1DCSVbbb_->clear();
 
   xRecoAll.clear();
-  bool partonCuts, recoCuts, massCut, tTaggerCut;
+  bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
   bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;  
   bool btagCut, revertBtag, btag1;
   
@@ -407,7 +407,9 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
     
-    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[2];
+    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
+    triggerSR  = (*bit)[2];
+    triggerCR  = (*bit)[4];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -458,7 +460,9 @@ void FillHistograms(int sel = 0)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
     
-    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[2] && nLeptons==0;
+    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
+    triggerSR  = (*bit)[2];
+    triggerCR  = (*bit)[4];
     massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
@@ -512,34 +516,34 @@ void FillHistograms(int sel = 0)
      //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
      if(ivar < 10)
      {
-       if(recoCuts && btagCut && massCut && tTaggerCut)
+       if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
        {
         counter++;
         hSR[f][ivar]->Fill(xReco,genEvtWeight);
        }
         //Control Region with tTagger
-       if(recoCuts && revertBtag && massCut && tTaggerCut)
+       if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
         hCR[f][ivar]->Fill(xReco,genEvtWeight);
        //1 btag region with tTagger
-       if(recoCuts && massCut && tTaggerCut && btag1)
+       if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
         h1Btag[f][ivar]->Fill(xReco,genEvtWeight);  
     }
     else
     {
       //Signal Region with tTagger
-      if(recoCuts && btagCut && massCut && tTaggerCut)
+      if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
       {
         hSR[f][10]->Fill(xReco,genEvtWeight);
       }
         
       //Control Region with tTagger
-      if(recoCuts && revertBtag && massCut && tTaggerCut)
+      if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
       {
         hCR[f][10]->Fill(xReco,genEvtWeight);  
       }
         
       //1 btag region with tTagger
-      if(recoCuts && massCut && tTaggerCut && btag1)
+      if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
       {
         h1Btag[f][10]->Fill(xReco,genEvtWeight);  
       } 
