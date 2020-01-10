@@ -21,7 +21,8 @@ std::vector<TString> fileHistoNames;
 float LUMI = 35922;
 TString eosPath;
 int selection;
-float deepCSVFloat = 0.6321;
+//float deepCSVFloat = 0.6321;
+float deepCSVFloat = 0.2217; //Loose WP
 float selMvaCut = 0.2;
 
 void initFiles()
@@ -359,7 +360,7 @@ void CalculateBTaggingEfficiency()
   */
     if(isMatched > 1)
     {
-      if(recoCuts && tTaggerCut &&  tightMassCut && partonCuts)
+      if(recoCuts && tTaggerCut && massCut && partonCuts)
       {
         //3 categories
         //1: pass reco cuts (meaning only the btagging deepCSV requirement)
@@ -480,7 +481,7 @@ void CalculateBTaggingEfficiency()
  hBTagReco[0]->Draw("text colz");
  */
 
- TFile *outf = new TFile("BTaggingEfficiency_massCutLoose_tightMassCut.root", "RECREATE");
+ TFile *outf = new TFile("BTaggingEfficiency_massCutLoose.root", "RECREATE");
  outf->cd();
  //this is to save the histograms
  hBTagReco[0]->Write();
