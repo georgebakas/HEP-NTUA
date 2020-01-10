@@ -295,7 +295,7 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 
 	xRecoAll.clear();
 	
-	bool partonCuts, recoCuts, massCut, tTaggerCut, deepAK8Cut, oldMva;
+	bool partonCuts, recoCuts, massCut, tTaggerCut, deepAK8Cut, oldMva, triggerSR, triggerCR;
     bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;	
 	bool CSVv2Cut, revertBtagCSVv2, btag1CSVv2; 
 	bool btagCut, revertBtag, btag1;
@@ -376,7 +376,17 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 	  dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
 	  dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
 	  
-	  recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1 && (*bit)[triggerConstant[year.Data()]];
+	  recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
+	  if(!year.EqualTo("2016"))
+	  {
+	  	triggerSR = (*bit)[triggerConstant[year.Data()]];
+	  	triggerCR = (*bit)[triggerConstant[year.Data()]];
+	  } 
+	  else
+	  {
+	  	triggerSR = (*bit)[triggerConstant[year.Data()]]; //2016 SR is bit[2]
+	  	triggerCR = (*bit)[triggerConstant[year.Data()]+2]; //2016 CR is bit[4]
+	  } 
 	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1] <2.4) && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
       massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
