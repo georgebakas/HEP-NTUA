@@ -17,6 +17,7 @@ std::vector<TString> listOfFiles;
 std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI = 35922;
+float LUMI_CR = 1670;
 TString eosPath;
 int selection;
 //float deepCSVFloat = 0.6321; //medium WP
@@ -578,7 +579,7 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
       
         if(selection !=0)
         {
-         hCR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 0 btagged (CR)
+         hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
          hSR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
          h1Btag_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 1 btagged 
     

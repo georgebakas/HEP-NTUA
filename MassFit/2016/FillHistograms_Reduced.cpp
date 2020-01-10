@@ -17,6 +17,7 @@ std::vector<TString> listOfFiles;
 std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI = 35922;
+float LUMI_CR = 1670;
 TString eosPath;
 int selection;
 float deepCSVFloat = 0.6321; //medium WP
@@ -576,7 +577,7 @@ void FillHistograms_Reduced(int sel = 0)
       
         if(selection !=0)
         {
-         hCR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 0 btagged (CR)
+         hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
          hSR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
          h1Btag_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 1 btagged 
     
@@ -604,13 +605,13 @@ void FillHistograms_Reduced(int sel = 0)
   }
   TFile *outFile;
   if(selection ==0)
-    outFile = new TFile("Histo_Data_2016_100_reducedLoose.root", "RECREATE");
+    outFile = new TFile("Histo_Data_2016_100_reduced.root", "RECREATE");
   if(selection ==1)
-    outFile = new TFile("Histo_TT_Mtt-700toInf_100_reducedLoose.root", "RECREATE");
+    outFile = new TFile("Histo_TT_Mtt-700toInf_100_reduced.root", "RECREATE");
   if(selection ==2)
-    outFile = new TFile("Histo_QCD_HT300toInf_100_reducedLoose.root", "RECREATE");
+    outFile = new TFile("Histo_QCD_HT300toInf_100_reduced.root", "RECREATE");
   if(selection ==3)
-    outFile = new TFile("Histo_SubdominantBkgs_100_reducedLoose.root", "RECREATE");
+    outFile = new TFile("Histo_SubdominantBkgs_100_reduced.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
