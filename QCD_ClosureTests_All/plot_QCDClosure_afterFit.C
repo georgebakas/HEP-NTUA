@@ -44,8 +44,11 @@ void plot_QCDClosure_afterFit(TString year = "2016", TString recoVar = "jetPt0")
   //cout<<"alpha [2]: "<<fitResult->GetParameter("alpha")<<" ± "<<fitResult->GetParError(2)<<endl;
 
   bool useSF=false;
-  if((recoVar.EqualTo("mJJ") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("jetPt0")) && !year.EqualTo("2016"))
+  /*
+  if((recoVar.EqualTo("mJJ") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("jetPt0"))
+      && !year.EqualTo("2016_Loose") && !year.EqualTo("2016"))
   {
+    cout<<"in"<<endl;
     useSF = true; 
     fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
     fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
@@ -57,8 +60,7 @@ void plot_QCDClosure_afterFit(TString year = "2016", TString recoVar = "jetPt0")
     fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
     fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
   } 
-
-
+  */ 
   TH1F *hBkg_CR_uncorrected = (TH1F*)hBkg_CR->Clone("hBkg_CR_uncorrected");
   int NBINS = hBkg_CR->GetNbinsX();
   float SF =1;
@@ -167,7 +169,7 @@ void plot_QCDClosure_afterFit(TString year = "2016", TString recoVar = "jetPt0")
   //hClosure[0]->GetXaxis()->SetTitleOffset(1);
   hClosure[0]->Draw();
   hClosure[1]->Draw("same");
-  c1->Print(TString::Format("QCD_Closure_%s/PNG/tTagger_%0.1fdeepCSV/%s/qcdClosure_tTagger_%s",year.Data(),tTaggerSel[year.Data()],recoVar.Data(),recoVar.Data()),"pdf");
+  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsLooseBtag/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 
 
   auto c3 = new TCanvas("TT contamination tTagger", "TT contamination tTagger", 700,600);
@@ -177,5 +179,6 @@ void plot_QCDClosure_afterFit(TString year = "2016", TString recoVar = "jetPt0")
   rp_tTagger->GetUpperRefYaxis()->SetTitle("Exp. Yield");
   rp_tTagger->GetLowerRefYaxis()->SetTitle("ratio");
   c3->Update();
-  c1->Print(TString::Format("QCD_Closure_%s/PNG/tTagger_%0.1fdeepCSV/%s/ttContamination_tTagger_%s",year.Data(),tTaggerSel[year.Data()],recoVar.Data(),recoVar.Data()),"pdf");
+  //c1->Print(TString::Format("QCD_Closure_%s/PNG/tTagger_%0.1fdeepCSV/%s/ttContamination_tTagger_%s",year.Data(),tTaggerSel[year.Data()],recoVar.Data(),recoVar.Data()),"pdf");
+  c3->Print(TString::Format("../TopTaggerEfficiencies/plotsLooseBtag/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
