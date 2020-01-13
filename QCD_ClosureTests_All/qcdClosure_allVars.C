@@ -439,6 +439,16 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 	  dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
 	  
 	  recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && (*bit)[triggerConstant[year.Data()]] && nLeptons==0;
+      if(!year.EqualTo("2016"))
+	  {
+	  	triggerSR = (*bit)[triggerConstant[year.Data()]];
+	  	triggerCR = (*bit)[triggerConstant[year.Data()]];
+	  } 
+	  else
+	  {
+	  	triggerSR = (*bit)[triggerConstant[year.Data()]]; //2016 SR is bit[2]
+	  	triggerCR = (*bit)[triggerConstant[year.Data()]+2]; //2016 CR is bit[4]
+	  } 
       massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
 	  tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
 	  //2 btag category with csvv2 and deepCSV
@@ -480,14 +490,14 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 		 if(ivar == 7 || ivar ==8) 
 		 	massCut=(*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
 
-		 if(recoCuts && btagCut && massCut && tTaggerCut)
+		 if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
 			hSR[f][ivar]->Fill(xReco,genEvtWeight);
 		  //Control Region with tTagger
-		 if(recoCuts && revertBtag && massCut && tTaggerCut)
+		 if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
 			hCR[f][ivar]->Fill(xReco,genEvtWeight);
 			 
 		 //1 btag region with tTagger
-		 if(recoCuts && massCut && tTaggerCut && btag1)
+		 if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
 			h1Btag[f][ivar]->Fill(xReco,genEvtWeight);
 	 }
 	 
