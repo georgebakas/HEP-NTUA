@@ -95,7 +95,7 @@ void SignalExtractionSpecific(TString year = "2016_Loose", TString variable = "j
 
     //open the file to get the Ryield
     TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor.root",year.Data()));
-    TH1F *hRyield = (TH1F*)infRyield->Get("dataqTransferFactor");
+    TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
     float Ryield = hRyield->GetBinContent(3);
     float Ryield_error = hRyield->GetBinError(3);
 
@@ -190,7 +190,7 @@ void SignalExtractionSpecific(TString year = "2016_Loose", TString variable = "j
 
     //for reviewing get the MC signal
     //!!!NEEDS TO CHANGE TO NOMINAL
-    TFile *infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data()));
+    TFile *infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
 
 
