@@ -229,7 +229,7 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
   trIN->SetBranchAddress("yJJ"        ,&yJJ);
   trIN->SetBranchAddress("ptJJ"         ,&ptJJ);
   trIN->SetBranchAddress("jetBtagSub0"    ,&jetBtagSub0);
-  trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
+  //trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
   trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   trIN->SetBranchAddress("mva"          ,&mva);
   trIN->SetBranchAddress("category"       ,&category);
@@ -295,7 +295,7 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
   std::vector<float> *deepAK8_ = new std::vector<float>(0);
   std::vector<float> *jetTtag_ = new std::vector<float>(0);
   std::vector<float> *jetBtagSub0_ = new std::vector<float>(0);
-  std::vector<float> *jetBtagSub1_ = new std::vector<float>(0);
+  //std::vector<float> *jetBtagSub1_ = new std::vector<float>(0);
 
   std::vector<float> *partonPt_ = new std::vector<float>(0);
   std::vector<float> *partonEta_ = new std::vector<float>(0);
@@ -326,7 +326,7 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
     pt_->clear();
     phi_->clear();
     jetBtagSub0_->clear();
-    jetBtagSub1_->clear();
+   // jetBtagSub1_->clear();
     jetTtag_->clear();
     deepAK8_->clear();
 
@@ -395,7 +395,7 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
         y_->push_back((*jetY)[(*partonMatchIdx)[indexMin]]);
         phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
         jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
-        jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
+     //   jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
         jetTtag_->push_back((*jetTtag)[(*partonMatchIdx)[indexMin]]);
         deepAK8_->push_back((*deepAK8)[(*partonMatchIdx)[indexMin]]);
         
