@@ -57,6 +57,11 @@ void initFileNames()
   listOfFiles.push_back("ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
   listOfFiles.push_back("ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1.root");
   }
+  else if(selection ==4)
+  {
+  	eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/";
+  	listOfFiles.push_back("TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+  }
 }
 
 void initXsections()
@@ -84,6 +89,10 @@ void initXsections()
   XSEC.push_back(35.6);
   XSEC.push_back(35.6);
   }
+  else if(selection ==4)
+  {
+  XSEC.push_back(832);	
+  }
 }
 
 void initHistoNames()
@@ -104,7 +113,7 @@ void initHistoNames()
   histoNames.push_back("QCD_histo_Mtt_1500_2000");
   histoNames.push_back("QCD_histo_Mtt_2000_Inf");
   }
-  else
+  else if(selection ==3)
   {
     histoNames.push_back("DYJetsToQQ_HT180");
     histoNames.push_back("WJetsToQQ_HT180");
@@ -112,6 +121,10 @@ void initHistoNames()
     histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+  }
+  else if(selection ==4)
+  {
+  	histoNames.push_back("Signal_histo_NominalMC");
   }
 }
 
@@ -229,7 +242,7 @@ void FillHistograms(int sel = 0)
   trIN->SetBranchAddress("jetBtagSub0DCSVbbb",&jetBtagSub0DCSVbbb);
   trIN->SetBranchAddress("jetBtagSub1DCSVbbb",&jetBtagSub1DCSVbbb);
   
-  if(selection == 1)
+  if(selection == 1 || selection ==4)
   {
   trIN->SetBranchAddress("mTTbarParton" ,&mTTbarParton);
   trIN->SetBranchAddress("yTTbarParton" ,&yTTbarParton);
@@ -336,7 +349,7 @@ void FillHistograms(int sel = 0)
   if (nJets >1)
   { 
     //matching only if we have Signal ttbar MC
-    if(selection == 1)
+    if(selection == 1 || selection == 4)
     {
     //----------------------MATCHING------------------------------------------------------
     
@@ -451,7 +464,7 @@ void FillHistograms(int sel = 0)
 
 
    
-    }//----end of selection ==1 so that we do this only when we deal with signal MC 
+    }//----end of selection ==1 || 4 so that we do this only when we deal with signal MC 
   
   else //we are in QCD samples or Subdominant BKG or Data sample
   {
@@ -605,13 +618,15 @@ void FillHistograms(int sel = 0)
   }
   TFile *outFile;
   if(selection ==0)
-    outFile = new TFile("Histo_Data_2016_100Loose.root", "RECREATE");
-  if(selection ==1)
-    outFile = new TFile("Histo_TT_Mtt-700toInf_100Loose.root", "RECREATE");
-  if(selection ==2)
-    outFile = new TFile("Histo_QCD_HT300toInf_100Loose.root", "RECREATE");
-  if(selection ==3)
-    outFile = new TFile("Histo_SubdominantBkgs_New_100Loose.root", "RECREATE");
+    outFile = new TFile("Histo_Data_2016_Loose_100.root", "RECREATE");
+  else if(selection ==1)
+    outFile = new TFile("Histo_TT_Mtt-700toInf_100.root", "RECREATE");
+  else if(selection ==2)
+    outFile = new TFile("Histo_QCD_HT300toInf_100.root", "RECREATE");
+  else if(selection ==3)
+    outFile = new TFile("Histo_SubdominantBkgs_New_100.root", "RECREATE");
+  else if(selection ==4)
+  	outFile = new TFile("Histo_TT_NominalMC_100.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
