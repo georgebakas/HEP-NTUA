@@ -230,7 +230,7 @@ void FillHistograms_Reduced(int sel = 0)
   trIN->SetBranchAddress("yJJ"        ,&yJJ);
   trIN->SetBranchAddress("ptJJ"         ,&ptJJ);
   trIN->SetBranchAddress("jetBtagSub0"    ,&jetBtagSub0);
-  trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
+ // trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
   trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   trIN->SetBranchAddress("mva"          ,&mva);
   trIN->SetBranchAddress("category"       ,&category);
@@ -396,7 +396,7 @@ void FillHistograms_Reduced(int sel = 0)
         y_->push_back((*jetY)[(*partonMatchIdx)[indexMin]]);
         phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
         jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
-        jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
+   //     jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
         jetTtag_->push_back((*jetTtag)[(*partonMatchIdx)[indexMin]]);
         deepAK8_->push_back((*deepAK8)[(*partonMatchIdx)[indexMin]]);
         
