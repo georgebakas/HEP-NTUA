@@ -65,6 +65,7 @@ void Unfold_Loose(TString inYear = "2016_Loose", bool isParton = true)
 {
   year = inYear;
   initFilesMapping();
+  gStyle->SetOptStat(0);
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
                                                         {0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1025,1100,1200,1300}, //ptjj 19
                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
@@ -106,12 +107,18 @@ void Unfold_Loose(TString inYear = "2016_Loose", bool isParton = true)
   TH1 *hUnf[BND_reco.size()];
   TH1F *hUnf_Clone[BND_reco.size()];
   //TH1 *histRhoi[BND_reco.size()];
+  TFile *theoryInf = TFile::Open("TheoryTemplates.root");
+  TH1F *hTheory[BND_reco.size()];
 
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()];
-  TFile *outf = TFile::Open(TString::Format("%s/OutputFile_%s.root", year.Data(), varParton.Data()),"UPDATE");
+  TFile *outf = TFile::Open(TString::Format("%s/OutputFile_%s.root", year.Data(), varParton.Data()),"RECREATE");
+cout<<LUMI<<endl;
+
+  TLegend *leg[BND_reco.size()];
 
   for(int ivar =0; ivar<BND_reco.size(); ivar++)
   {
+  	leg[ivar] = new TLegend(0.6,0.7,0.8,0.9);
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
     std::copy(BND_reco[ivar].begin(), BND_reco[ivar].end(), tempBND);
@@ -124,9 +131,9 @@ void Unfold_Loose(TString inYear = "2016_Loose", bool isParton = true)
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));  
     can[ivar] = new TCanvas(TString::Format("can_%d",ivar), TString::Format("can_%d",ivar),800,600);
-    //inSig[ivar]->Draw();
-    //hSig[ivar]->Draw();
-    
+        
+    hTheory[ivar] = (TH1F*)theoryInf->Get(TString::Format("h%s_%s",varParton.Data(), variable[ivar].Data()));
+    cout<<"entries:" <<hTheory[ivar]->GetEntries()<<endl;
     //set the new content and get acceptance
     TEfficiency *acceptance =  (TEfficiency*)effAccInf->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
     for(int j =1; j<=hSig[ivar]->GetNbinsX(); j++)
@@ -177,10 +184,7 @@ void Unfold_Loose(TString inYear = "2016_Loose", bool isParton = true)
       float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
       hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
     }
-    //hUnf[ivar]->Scale(1/LUMI, "width");
-    //hUnf_Clone[ivar]->Scale(1/LUMI, "width");
-    //hUnf_Clone[ivar]->SetLineColor(kRed);
-	   
+    hUnf[ivar]->Scale(1/LUMI, "width");
     outf->cd();
     hSig[ivar]->Write(TString::Format("RecoInputAcc_%s", variable[ivar].Data()));
     hUnf[ivar]->Write(TString::Format("FinalOut_%s", variable[ivar].Data()));
@@ -189,8 +193,16 @@ void Unfold_Loose(TString inYear = "2016_Loose", bool isParton = true)
     //check shape
     //hUnf[ivar]->Scale(1./hUnf[ivar]->Integral());
     //hUnf_Clone[ivar]->Scale(1./hUnf_Clone[ivar]->Integral());
-
+    leg[ivar]->AddEntry(hUnf[ivar], "Data", "lep");
+    leg[ivar]->AddEntry(hTheory[ivar], "MC", "lep");
+    hTheory[ivar]->SetLineColor(kRed);
+    hTheory[ivar]->SetMarkerStyle(21);
+    hUnf[ivar]->SetMarkerStyle(22);
+    hTheory[ivar]->SetMarkerColor(kRed);
+    hUnf[ivar]->SetMarkerColor(kBlue);
 	hUnf[ivar]->Draw();
+	hTheory[ivar]->Draw("same");
+	leg[ivar]->Draw();
 	//hUnf_Clone[ivar]->Draw("same");
   }
   outf->Close();

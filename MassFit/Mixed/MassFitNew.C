@@ -1,7 +1,7 @@
-#include "../../CMS_lumi.C"
+//#include "../../CMS_lumi.C"
 
 using namespace RooFit;
-void MassFit(TString ALIAS,TString CUT = "", TString DIR, TString WEIGHT, int REBIN)
+void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBIN= 5)
 {
   gROOT->ForceStyle();
   
@@ -9,14 +9,15 @@ void MassFit(TString ALIAS,TString CUT = "", TString DIR, TString WEIGHT, int RE
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
   
-  TFile *inf = TFile::Open("Histo_JetHT_Run2016-17Jul2018_New.root"); 
+  //Take SR data from Medium WP
+  TFile *inf = TFile::Open(TString::Format("%s/Histo_Data_2016_100.root", year.Data()));
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop"+CUT+"_2btag");
-  h2b->Rebin(REBIN);
+  //h2b->Rebin(REBIN);
   // -----------------------------------------
   const float LUMI = 35922;
   
-  TFile *fTemplatesBkg = TFile::Open("templates_Bkg_"+CUT+".root");
-  TFile *fTemplatesSig = TFile::Open("templates_Sig_"+ALIAS+"_"+CUT+".root");
+  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));
+  TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_"+CUT+"100.root",year.Data()));
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
   
@@ -51,10 +52,9 @@ void MassFit(TString ALIAS,TString CUT = "", TString DIR, TString WEIGHT, int RE
   
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
   
-  
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,1e+4);
  
-  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+4);  
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+5);  
 
   
   
@@ -72,7 +72,7 @@ void MassFit(TString ALIAS,TString CUT = "", TString DIR, TString WEIGHT, int RE
 
   cout<<"Signal strength: r = "<<nFitSig2b->getVal()/yieldTT->getVal()<<endl;
 
-  //res->Print();
+  res->Print();
 
   //cout<<"correlation = "<<res->correlation(*nFitSig,*btagEff)<<endl;
   //cout<<"correlation = "<<res->correlation(*nFitQCD2b,*btagEff)<<endl;
@@ -139,16 +139,16 @@ void MassFit(TString ALIAS,TString CUT = "", TString DIR, TString WEIGHT, int RE
   
   gPad->RedrawAxis();
 
-  CMS_lumi(can2b,4,0);
+  //CMS_lumi(can2b,4,0);
 
-  can2b->Print("plots/"+TString(can2b->GetName())+".pdf");
+  can2b->Print(TString::Format("%s/plots/SimpleMassFit/", year.Data())+TString(can2b->GetName())+".pdf");
   
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
   wOut->import(*nFitQCD2b);
   wOut->import(*nFitSig2b);
   wOut->import(*yieldTT);
-  wOut->writeToFile("MassFitResults_"+ALIAS+"_"+CUT+".root");
+  wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+".root");
 
 }
 

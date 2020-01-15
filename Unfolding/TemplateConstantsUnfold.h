@@ -55,8 +55,11 @@ void initFilesMapping(bool free_eb = true)
 
 	
 	luminosity.insert(pair<TString, float>("2016",35920));
+	luminosity.insert(pair<TString, float>("2016_Loose",35920));
 	luminosity.insert(pair<TString, float>("2017",41530));
+	luminosity.insert(pair<TString, float>("2017_Loose",41530));
 	luminosity.insert(pair<TString, float>("2018",59740));
+	luminosity.insert(pair<TString, float>("2018_Loose",59740));
 
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
