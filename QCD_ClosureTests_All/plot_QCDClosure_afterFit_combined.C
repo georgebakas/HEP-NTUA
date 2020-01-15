@@ -1,0 +1,185 @@
+#include <iostream>
+#include "TTree.h"
+#include "TFile.h"
+#include "TMath.h"
+#include "TEfficiency.h"
+#include "TH1F.h"
+#include "TCanvas.h"
+#include "TLorentzVector.h"
+#include "TLatex.h"
+#include "TRatioPlot.h"
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+#include "TemplateConstants.h"
+
+void plot_QCDClosure_afterFit_combined(TString year = "2016", TString recoVar = "jetPt0")
+{
+  initFilesMapping();
+  //TT file 
+  //I need 2 files for each:
+  //1. Signal Region files which contain everything with medium WP's
+  //2. Control Region files which contain everything with loose WP's
+  TString yearSignalRegion = year;
+  TString yearControlRegion = year + "_Loose";
+  TFile *infTT = TFile::Open(filesSignal[yearSignalRegion.Data()]);  
+  TFile *infTTLoose = TFile::Open(filesSignal[yearControlRegion.Data()]);  
+  //QCD file
+  
+  TFile *infBkg = TFile::Open(filesBkg[yearSignalRegion.Data()]);
+  TFile *infBkgLoose = TFile::Open(filesBkg[yearControlRegion.Data()]);
+  TH1F *hBkg_CR, *hBkg_SR, *hBkg_CRExpYield;  
+  TH1F *hSig_CR;    
+  TH1F *hSig_1Btag, *hBkg_1Btag;
+  
+  //TH1F used for the TRatioPlot
+  hBkg_CR = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s",recoVar.Data())); //from file with loose WP's
+  hBkg_SR = (TH1F*)infBkg->Get(TString::Format("SR_tTagger_%s",recoVar.Data())); //from file with medium WP's
+  
+  hBkg_1Btag = (TH1F*)infBkg->Get(TString::Format("h1Btag_tTagger_%s",recoVar.Data())); //from file with medium WP's
+    //get the fit result
+  TFile *fitFile; 
+  TF1 *fitResult; 
+  //scale now all over the bins
+
+
+  bool useSF=false;
+  /*
+  if((recoVar.EqualTo("mJJ") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("jetPt0"))
+      && !year.EqualTo("2016_Loose") && !year.EqualTo("2016"))
+  {
+    cout<<"in"<<endl;
+    useSF = true; 
+    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
+    fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
+
+  }
+  if(year.EqualTo("2017") && recoVar.EqualTo("ptJJ"))
+  {
+    useSF = true; 
+    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
+    fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
+  } 
+  */ 
+  TH1F *hBkg_CR_uncorrected = (TH1F*)hBkg_CR->Clone("hBkg_CR_uncorrected");
+  int NBINS = hBkg_CR->GetNbinsX();
+  float SF =1;
+  for(int ibin=1; ibin<= NBINS; ibin++)
+  {
+    float binContent = hBkg_CR->GetBinContent(ibin);
+    float chi = hBkg_CR->GetBinCenter(ibin);
+    if(useSF)  SF = fitResult->Eval(chi);
+
+    hBkg_CR->SetBinContent(ibin, binContent * SF);
+  }
+  
+  //These are bkg Signal region and bkg region
+  hBkg_CR->SetTitle("QCD Closure tTagger");
+  hBkg_SR->SetTitle("QCD Closure tTagger");
+  
+  
+  hBkg_CRExpYield = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
+  hBkg_CRExpYield->SetLineColor(kRed);
+  
+  hBkg_CRExpYield->SetTitle("TT Contamination tTagger");
+  
+  hSig_CR = (TH1F*)infTTLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
+  hSig_CR -> SetLineColor(kBlue);
+  hSig_CR -> SetTitle("TT Contamination tTagger");
+/*
+  if(recoVar.EqualTo("jetMassSoftDrop"))
+  {
+    hBkg_CR[0]->Rebin(4);
+    hBkg_CR[1]->Rebin(4);
+
+    hBkg_SR[0]->Rebin(4);
+    hBkg_SR[1]->Rebin(4);
+
+    hBkg_1Btag[0]->Rebin(4);
+    //hBkg_1Btag[1]->Rebin(4);
+
+    hBkg_CRExpYield[0]->Rebin(4);
+    hBkg_CRExpYield[1]->Rebin(4);
+
+    hSig_CR[0]->Rebin(4);
+    hSig_CR[1]->Rebin(4);
+
+  }
+  */
+  TLegend *closureLegend = new TLegend(0.5,0.6,0.7,0.8);
+  closureLegend->AddEntry(hBkg_SR,"Signal Region (2btag)", "l");
+  closureLegend->AddEntry(hBkg_CR,"Control Region (0btag)", "f");
+  closureLegend->AddEntry(hBkg_1Btag,"1btag Region", "l");
+  
+  auto c1 = new TCanvas("QCD closure Test tTagger", "QCD closure Test tTagger", 700,600);
+  auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3); 
+  closure_pad2->Draw();
+  closure_pad2->SetTopMargin(0.05);
+  closure_pad2->SetBottomMargin(0.3);
+  closure_pad2->SetGrid();
+
+  auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.3,1.,1.);  
+  closure_pad1->Draw();
+  closure_pad1->SetBottomMargin(0.005);
+  closure_pad1->cd();
+  //closure_pad1->SetGrid();
+  hBkg_SR->GetYaxis()->SetTitleSize(20);
+  hBkg_SR->GetYaxis()->SetTitleFont(43);
+  hBkg_SR->GetYaxis()->SetTitleOffset(1.4);  
+  //hBkg_SR[0]->GetXaxis()->SetTitleOffset(1.5);
+  hBkg_SR->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  // h2 settings
+  
+  //hBkg_CR[0]->ResetAttFill();
+  hBkg_CR->ResetAttLine();
+  hBkg_CR->ResetAttMarker();
+  hBkg_CR->SetLineColor(33); 
+  hBkg_CR->SetFillStyle(3001);
+  hBkg_CR->SetFillColor(33);
+  
+  hBkg_1Btag->SetLineColor(kBlue);
+  hBkg_SR->Draw();
+  hBkg_CR->Draw("Hist same");
+  hBkg_1Btag->Draw("same");
+  closureLegend->Draw();
+  closure_pad1->SetLogy();
+  
+  
+  TH1F *hClosure[2];
+  closure_pad2->cd();
+  hClosure[0] = (TH1F*)hBkg_SR->Clone("hClosure_0"); 
+  hClosure[0]->SetTitle("");
+  hClosure[0]->GetYaxis()->SetTitle("ratio SR/CR");
+  hClosure[0]->GetYaxis()->SetTitleSize(14);
+  hClosure[0]->GetYaxis()->SetTitleFont(43);
+  hClosure[0]->GetYaxis()->SetTitleOffset(1.55);
+  hClosure[0]->GetYaxis()->SetLabelFont(43);
+  hClosure[0]->GetYaxis()->SetLabelSize(15);
+  hClosure[0]->GetXaxis()->SetTitleSize(0.09);
+  //hClosure[0]->GetXaxis()->SetTitleFont(43);
+  //hClosure[0]->GetXaxis()->SetTitleOffset(4.);
+  //hClosure[0]->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+  hClosure[0]->GetXaxis()->SetLabelSize(0.09);
+  hClosure[1] = (TH1F*)hBkg_1Btag->Clone("hClosure_1"); 
+  hClosure[0]->Divide(hBkg_CR);
+  hClosure[1]->Divide(hBkg_CR_uncorrected);
+  hClosure[0]->SetLineColor(kRed);
+  hClosure[1]->SetLineColor(kBlue);
+  hClosure[0]->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  //hClosure[0]->GetXaxis()->SetTitleOffset(1);
+  hClosure[0]->Draw();
+  hClosure[1]->Draw("same");
+  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+
+
+  auto c3 = new TCanvas("TT contamination tTagger", "TT contamination tTagger", 700,600);
+  auto rp_tTagger = new TRatioPlot(hSig_CR,hBkg_CRExpYield);
+  c3->SetTicks(0,1);
+  rp_tTagger->Draw();
+  rp_tTagger->GetUpperRefYaxis()->SetTitle("Exp. Yield");
+  rp_tTagger->GetLowerRefYaxis()->SetTitle("ratio");
+  c3->Update();
+  c3->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+}
