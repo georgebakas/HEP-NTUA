@@ -21,8 +21,6 @@
 #include "TCanvas.h"
 #include "TLorentzVector.h"
 #include "TLatex.h"
-#include "TGraphErrors.h"
-#include "TUnfold.h"
 #include "TemplateConstantsUnfold.h"
 using namespace std;
 
@@ -63,6 +61,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true)
          hParton[ivar]->Sumw2();
          hParticle[ivar]->Sumw2();
   }
+ cout<<"ok with histograms!"<<endl;
   TFile *inf = TFile::Open("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
 
 
@@ -72,6 +71,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true)
   float yTTbarParton(0), ptTTbarParton(0), mTTbarParton(0);
   vector<int> *partonMatchIdx(0);
   float genEvtWeight(0);
+  int nJets;
 
   trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
   trIN->SetBranchAddress("mTTbarParton" ,&mTTbarParton);
@@ -83,6 +83,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true)
   trIN->SetBranchAddress("partonMass"    ,&partonMass);
   trIN->SetBranchAddress("partonMatchDR" ,&partonMatchDR);
   trIN->SetBranchAddress("partonMatchIdx",&partonMatchIdx);
+  trIN->SetBranchAddress("nJets"          ,&nJets);
   
   //particle
   std::vector<float> *genjetPt(0), *genjetY(0), *genjetEta(0), *genjetMassSoftDrop(0);
@@ -99,58 +100,60 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true)
   trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);  
 
   bool partonCuts, particleCuts;
-  partonCuts = fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) <2.4 && (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && mTTbarParton > 1000;
-  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
-	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
-
-  int decade(0);
-  int NN = trIN->GetEntries();
+  
+  long NN = trIN->GetEntries();
     //NN = 100000;
   std::cout<<"Entries: "<<NN<<std::endl;
   std::vector<float> xPartonAll(0);
   std::vector<float> xParticleAll(0);
-
-  for(int iev=0;iev<NN;iev++) 
+  int decade(0);
+  
+  for(int iev=1;iev<NN;iev++) 
   {
-	double progress = 10.0*iev/(1.0*NN);
+    double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress); 
     if (k > decade) 
       cout<<10*k<<" %"<<endl;
     decade = k;
+   trIN->GetEntry(iev);
+   xPartonAll.clear();
+   xParticleAll.clear();
 
-    xPartonAll.clear();
-	xParticleAll.clear();
+	 int leadingPt =0;
+   int genLeadingPt = 0;
+   int subleadingPt = 1;
+   int genSubleadingPt = 1;
 
-	int leadingPt =0;
-    int genLeadingPt = 0;
-    int subleadingPt = 1;
-    int genSubleadingPt = 1;
+  if((*partonPt)[0] < (*partonPt)[1])
+    {
+        subleadingPt =0;
+        leadingPt = 1;
+    }
+    xPartonAll.push_back(mTTbarParton);
+    xPartonAll.push_back(ptTTbarParton);
+    xPartonAll.push_back(yTTbarParton);
+    xPartonAll.push_back((*partonPt)[leadingPt]);
+    xPartonAll.push_back((*partonPt)[subleadingPt]);
+  partonCuts = fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) <2.4 && (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && mTTbarParton > 1000;
+	
+  if(nJetsGen>1)
+	{
 
-
-  	if((*partonPt)[0] < (*partonPt)[1])
-  	{
-  	    subleadingPt =0;
-   	    leadingPt = 1;
-   	}
-   	if((*genjetPt)[0] < (*genjetPt)[1])
-  	{
-  	    genSubleadingPt =0;
-   	    genLeadingPt = 1;
-   	}
-
-	xPartonAll.push_back(mTTbarParton);
-	xPartonAll.push_back(ptTTbarParton);
-	xPartonAll.push_back(yTTbarParton);
-	xPartonAll.push_back((*partonPt)[leadingPt]);
-	xPartonAll.push_back((*partonPt)[subleadingPt]);
-	//xPartonAll.push_back(fabs((*partonY)[0]));
-	//xPartonAll.push_back(fabs((*partonY)[1])); 
-
-	xParticleAll.push_back(mJJGen);
-	xParticleAll.push_back(ptJJGen);
-	xParticleAll.push_back(yJJGen);
-	xParticleAll.push_back((*genjetPt)[genLeadingPt]);
-	xParticleAll.push_back((*genjetPt)[genSubleadingPt]);
+    if((*genjetPt)[0] < (*genjetPt)[1])
+    {
+        genSubleadingPt =0;
+        genLeadingPt = 1;
+    }
+	  xParticleAll.push_back(mJJGen);
+	  xParticleAll.push_back(ptJJGen);
+	  xParticleAll.push_back(yJJGen);
+	  xParticleAll.push_back((*genjetPt)[genLeadingPt]);
+	  xParticleAll.push_back((*genjetPt)[genSubleadingPt]);
+  
+    particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
+      (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
+    
+  }
 
 	for(int ivar = 0; ivar < xParticleAll.size(); ivar++)
 	{
