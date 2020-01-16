@@ -78,6 +78,9 @@ void initFilesMapping()
 	//luminosity.insert(pair<TString, float>("2017_Loose",41530));
 	//luminosity.insert(pair<TString, float>("2018_Loose",59740));
 
+	
+	floatConstants.insert(pair<TString, float>("btagWP2018", 0.1241));
+
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
 	variableConstant.insert(pair<TString, int>("yJJ",  2));
