@@ -609,7 +609,7 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
   }
   TFile *outFile;
   if(selection ==0)
-    outFile = new TFile("Histo_Data_2017_100_reduced_UnequalBinning.root", "RECREATE");
+    outFile = new TFile("Histo_Data_2017_Loose_100_reduced_UnequalBinning.root", "RECREATE");
   if(selection ==1)
     outFile = new TFile("Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root", "RECREATE");
   if(selection ==2)

@@ -3,42 +3,46 @@
 map<TString, map<TString, TString>> files;
 map<TString, map<TString, TString>> filesReduced;
 
-map<TString, float> floatConstants;
-
 map<TString, float> Nbkg2Constants;
-map<TString, float> Nbkg0Constants;
 map<TString, float> Nbkg2ConstantsErrors;
-map<TString, float> Nbkg0ConstantsErrors;
 map<TString, int> variableConstant;  
-map<TString, float> NQCD2_reduced;
 TColor color;
 
 map<TString, float> luminosity;
-//std::vector< std::vector <Float_t> > BND;
 
 
-void initFilesMapping(bool free_eb = true)
+void initFilesMapping()
 {
 	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
 	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
 	                                   {"mcSub", "2016/Histo_SubdominantBkgs_100.root"}};
 
-	map<TString, TString> files2016Loose = {{"data",  "2016_Loose/Histo_Data_2016_Loose_100.root"},
-	                                   		{"mcSig", "2016_Loose/Histo_TT_Mtt-700toInf_100.root"},
-	                                   		{"mcSub", "2016_Loose/Histo_SubdominantBkgs_100.root"}};	                                   
+	map<TString, TString> files2016Loose = {{"data",  "2016/Histo_Data_2016_100_Loose.root"},
+	                                   		{"mcSig", "2016/Histo_TT_Mtt-700toInf_100_Loose.root"},
+	                                   		{"mcSub", "2016/Histo_SubdominantBkgs_100_Loose.root"}};	                                   
 																		 
 	map<TString, TString> files2017 = {{"data",  "2017/Histo_Data_2017_100.root"},
 	                                   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100.root"},
 	                                   {"mcSub", "2017/Histo_SubdominantBkgs_100.root"}};
+    
+    map<TString, TString> files2017Loose = {{"data",  "2017/Histo_Data_2017_100_Loose.root"},
+	                                   		{"mcSig", "2017/Histo_TT_Mtt-700toInf_100_Loose.root"},
+	                                   		{"mcSub", "2017/Histo_SubdominantBkgs_100_Loose.root"}};		                              
 	
 	map<TString, TString> files2018 = {{"data",  "2018/Histo_Data_2018_100.root"},
 	                                   {"mcSig", "2018/Histo_TT_Mtt-700toInf_100.root"},
 	                                   {"mcSub", "2018/Histo_SubdominantBkgs_100.root"}};
 																		 
+	map<TString, TString> files2018Loose = {{"data",  "2018/Histo_Data_2018_100_Loose.root"},
+	                                   		{"mcSig", "2018/Histo_TT_Mtt-700toInf_100_Loose.root"},
+	                                   		{"mcSub", "2018/Histo_SubdominantBkgs_100_Loose.root"}};	
+	                                   																			 
 	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
-	files.insert(pair<TString, map<TString, TString>>("2016_Loose", files2016Loose));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
+	files.insert(pair<TString, map<TString, TString>>("2016_Loose", files2016Loose));
+	files.insert(pair<TString, map<TString, TString>>("2017_Loose", files2017Loose));
+	files.insert(pair<TString, map<TString, TString>>("2018_Loose", files2018Loose));
 
 
 	map<TString, TString> files2016Reduced = {{"data",  "2016/Histo_Data_2016_100_reduced.root"},
@@ -52,65 +56,25 @@ void initFilesMapping(bool free_eb = true)
 	map<TString, TString> files2018Reduced = {{"data",  "2018/Histo_Data_2018_100_reduced.root"},
 	                                   	      {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced.root"},
 	                                   		  {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced.root"}};
+
+	map<TString, TString> files2016ReducedLoose = {{"data",  "2016/Histo_Data_2016_100_reduced_Loose.root"},
+	                                   		       {"mcSig", "2016/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
+	                                   		       {"mcSub", "2016/Histo_SubdominantBkgs_100_reduced_Loose.root"}};
+																		 
+	map<TString, TString> files2017ReducedLoose = {{"data",  "2017/Histo_Data_2017_100_reduced_Loose.root"},
+	                                   		  	   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
+	                                   		  	   {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced_Loose.root"}};                                  		  
+	
+	map<TString, TString> files2018ReducedLoose = {{"data",  "2018/Histo_Data_2018_100_reduced_Loose.root"},
+	                                   	           {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
+	                                   		       {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced_Loose.root"}};	                                   		  
 																		 
 	filesReduced.insert(pair<TString, map<TString, TString>>("2016", files2016Reduced));
 	filesReduced.insert(pair<TString, map<TString, TString>>("2017", files2017Reduced));
 	filesReduced.insert(pair<TString, map<TString, TString>>("2018", files2018Reduced));
-	
-	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
-	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
-	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
-
-
-	//these are fit results taken from the simultaneous fit when btagging efficiency eb is let free in the fit
-	if(free_eb)
-	{
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0901e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.4407e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.4094e+03));
-
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.42e+02));
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.31e+02));
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.77e+02));
-
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8087e+04));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5485e+05));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.6857e+05));
-
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 4.30e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 5.49e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 5.63e+02));
-
-		//from ABCD method
-		NQCD2_reduced.insert(pair<TString, float>("2016",819.074));
-		NQCD2_reduced.insert(pair<TString, float>("2017",659.932));
-		NQCD2_reduced.insert(pair<TString, float>("2018",1176.09));
-
-	}
-	else
-	{
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.0492e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.3582e+03));
-		Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.2914e+03));
-
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.42e+02));
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.55e+02));
-		Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.78e+02));
-
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2016", 8.8488e+04));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2017", 1.5611e+05));
-		Nbkg0Constants.insert(pair<TString, float>("Nbkg2018", 1.7000e+05));
-
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 3.74e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 3.77e+02));
-		Nbkg0ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 4.37e+02));
-
-		//from ABCD method
-		NQCD2_reduced.insert(pair<TString, float>("2016",804.57));
-		NQCD2_reduced.insert(pair<TString, float>("2017",632.479));
-		NQCD2_reduced.insert(pair<TString, float>("2018",1134.99));
-	}
-
+	filesReduced.insert(pair<TString, map<TString, TString>>("2016_Loose", files2016ReducedLoose));
+	filesReduced.insert(pair<TString, map<TString, TString>>("2017_Loose", files2017ReducedLoose));
+	filesReduced.insert(pair<TString, map<TString, TString>>("2018_Loose", files2018ReducedLoose));
 	
 	
 	luminosity.insert(pair<TString, float>("2016",35920));
@@ -124,6 +88,15 @@ void initFilesMapping(bool free_eb = true)
 	variableConstant.insert(pair<TString, int>("jetPt1", 4));
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
+
+	//these are fit results from mixed medium wp and loose wp
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.2755e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 3.3491e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.5360e+03));
+
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 2.09e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 6.98e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.52e+02));
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj
 	BND[variableConstant["ptJJ"]].push_back({0,60,150,300,450,600,750,950,1100,1300}); //ptjj

@@ -16,32 +16,29 @@ using std::endl;
 void graphTransferFactors(TString year = "2016")
 {
   gStyle->SetOptStat(0);
-  TH1F *hfData[3]; 
-  TH1F *hfQCD[3]; 
-  TFile *outF[3], *outFQCD[3];
-  for(int y = 2016; y<2017; y++)
-  {		
+  TH1F *hfData; 
+  TH1F *hfQCD; 
+  TFile *outF, *outFQCD;
+	
 	TFile *infData, *infDataReduced, *infQCD, *infQCDReduced;
-	TString str;
-	if(y ==2016) str = "2016";
-	else if(y ==2017) str = "2017";
-	else if(y ==2018) str = "2018";
-	str = "2016_Loose";
+	TString str=year;
 	infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", str.Data(),str.Data()));
 	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root", str.Data(),str.Data()));
+
 	infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100.root", str.Data()));
 	infQCDReduced = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced.root",str.Data()));
 
 	TH1F *hData[3], *hDataReduced[3];
 	TH1F *hQCD[3], *hQCDReduced[3];
-	hfData[y-2016] = new TH1F(TString::Format("hTransf_%d",y), TString::Format("hTransf_%d",y),3,0,3);	
-    hfQCD[y-2016]  = new TH1F(TString::Format("hTransfClosure_%d",y), TString::Format("hTransfClosure_%d",y),3,0,3);
+	hfData = new TH1F(TString::Format("hTransf_%s",year.Data()), TString::Format("hTransf_%s",year.Data()),3,0,3);	
+    hfQCD  = new TH1F(TString::Format("hTransfClosure_%s",year.Data()), TString::Format("hTransfClosure_%s",year.Data()),3,0,3);
      	
 	//TString histoNames[3] = {"SR", "1Btag", "CR"};
 	float tFactorData[3], tFactorQCD[3], tFactorQCDError[3], tFactorDataError[3];
 	std::vector<TString> names = {"0btag", "1btag", "2btag"};
     
     float x[3] = {0,1,2};
+
 	for(int i =0; i<3; i++)
 	{
 		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_mTop_%dbtag_expYield",i));
@@ -60,56 +57,59 @@ void graphTransferFactors(TString year = "2016")
 
 		tFactorQCDError[i] = TMath::Sqrt(TMath::Power(intErrorReduced,2)/TMath::Power(hQCD[i]->Integral(),2) + TMath::Power(hQCDReduced[i]->Integral(),2)
 				*TMath::Power(intError,2)/TMath::Power(hQCD[i]->Integral(),4)  );
-		
-		hfData[y-2016]->SetBinContent(i+1, tFactorData[i]);
-     	hfData[y-2016]->SetBinError(i+1, tFactorDataError[i]);
-  	  	hfData[y-2016]->GetXaxis()->SetBinLabel(i+1,names[i].Data());
-  	  	cout<<hfData[y-2016]->GetBinError(i+1)<<endl;
-  	  	hfQCD[y-2016]->SetBinContent(i+1, tFactorQCD[i]);
-     	hfQCD[y-2016]->SetBinError(i+1, tFactorQCDError[i]);
-  	  	hfQCD[y-2016]->GetXaxis()->SetBinLabel(i+1,names[i].Data());
+	}
+	for(int i =0; i<3; i++)
+	{
+		hfData->SetBinContent(i+1, tFactorData[i]);
+     	hfData->SetBinError(i+1, tFactorDataError[i]);
+  	  	hfData->GetXaxis()->SetBinLabel(i+1,names[i].Data());
+  	  	
+  	  	hfQCD->SetBinContent(i+1, tFactorQCD[i]);
+     	hfQCD->SetBinError(i+1, tFactorQCDError[i]);
+  	  	hfQCD->GetXaxis()->SetBinLabel(i+1,names[i].Data());
 	}
 		
    //GetXaxis()->SetBinLabel(i+1,histoNames[i].Data());
-    
-	} //end of all years
+
     std::vector<int> col ={4,2,8};
 	std::vector<int> marker = {21,20,23};
-	TCanvas *can[3], *canQCD[3];
+	TCanvas *can, *canQCD;
   	
 
-  	for(int i =0; i<1; i++)
-  	{
+  	int i(0);
+  	if(year.EqualTo("2017") || year.EqualTo("2017_Loose")) i = 1;
+  	else if(year.EqualTo("2018") || year.EqualTo("2018_Loose")) i = 2;
+  	
   	  //int year = 2016+i;
-  	  TString year = "2016_Loose";
+  	  //TString year = "2016";
   	  //now plot them Data
-  	  outF[i] = new TFile(TString::Format("%s/TransferFactor.root",year.Data()), "RECREATE");	  
-  	  hfData[i]->SetTitle(TString::Format("R_{yield} transfer factor %s", year.Data()));
-	  hfData[i]->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
-      hfData[i]->SetMarkerStyle(marker[i]);
-	  hfData[i]->SetMarkerColor(col[i]);
-	  hfData[i]->SetLineColor(col[i]);
-	  hfData[i]->GetYaxis()->SetTitleOffset(1.25);
-      hfData[i]->GetYaxis()->SetRangeUser(0.1,0.8);
-	  can[i] = new TCanvas(TString::Format("can_%s", year.Data()),TString::Format("can_%s", year.Data()),800,600);
-	  hfData[i]->Draw("hist e");
-	  can[i]->Print(TString::Format("%s/Ryield/TransferFactor.pdf",year.Data()),"pdf");
+  	  outF = new TFile(TString::Format("%s/TransferFactor.root",year.Data()), "RECREATE");	  
+  	  hfData->SetTitle(TString::Format("R_{yield} transfer factor %s", year.Data()));
+	  hfData->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
+      hfData->SetMarkerStyle(marker[i]);
+	  hfData->SetMarkerColor(col[i]);
+	  hfData->SetLineColor(col[i]);
+	  hfData->GetYaxis()->SetTitleOffset(1.25);
+      hfData->GetYaxis()->SetRangeUser(0.1,0.8);
+	  can = new TCanvas(TString::Format("can_%s", year.Data()),TString::Format("can_%s", year.Data()),800,600);
+	  hfData->Draw("hist e");
+	  can->Print(TString::Format("%s/Ryield/TransferFactor.pdf",year.Data()),"pdf");
 
-	  hfData[i]->Write("dataTransferFactor");
+	  hfData->Write("dataTransferFactor");
 	  //now plot them QCD
-  	  hfQCD[i]->SetTitle(TString::Format("R_{yield} transfer factor %s (Closure Test)", year.Data()));
-	  hfQCD[i]->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
-      hfQCD[i]->SetMarkerStyle(marker[i]);
-	  hfQCD[i]->SetMarkerColor(col[i]);
-	  hfQCD[i]->SetLineColor(col[i]);
-	  hfQCD[i]->GetYaxis()->SetTitleOffset(1.25);
-      hfQCD[i]->GetYaxis()->SetRangeUser(0.1,0.5);
-	  canQCD[i] = new TCanvas(TString::Format("canQCD_%s", year.Data()),TString::Format("canQCD_%s", year.Data()),800,600);
-	  hfQCD[i]->Draw("hist e");
-	  canQCD[i]->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral.pdf",year.Data()),"pdf");
+  	  hfQCD->SetTitle(TString::Format("R_{yield} transfer factor %s (Closure Test)", year.Data()));
+	  hfQCD->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
+      hfQCD->SetMarkerStyle(marker[i]);
+	  hfQCD->SetMarkerColor(col[i]);
+	  hfQCD->SetLineColor(col[i]);
+	  hfQCD->GetYaxis()->SetTitleOffset(1.25);
+      hfQCD->GetYaxis()->SetRangeUser(0.1,0.5);
+	  canQCD = new TCanvas(TString::Format("canQCD_%s", year.Data()),TString::Format("canQCD_%s", year.Data()),800,600);
+	  hfQCD->Draw("hist e");
+	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral.pdf",year.Data()),"pdf");
 
-	  hfQCD[i]->Write("ClosureTest_TransferFactor");
-    }
+	  hfQCD->Write("ClosureTest_TransferFactor");
+  
 
 	
 

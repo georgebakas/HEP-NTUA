@@ -9,14 +9,14 @@ void MassFitNew(TString ALIAS="",TString CUT="", int REBIN= 5)
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
   
-  TFile *inf = TFile::Open("Histo_JetHT_Run2016-17Jul2018_50.root");
+  TFile *inf = TFile::Open("Histo_Data_2017_Loose_100.root");
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop"+CUT+"_2btag");
   //h2b->Rebin(REBIN);
   // -----------------------------------------
   const float LUMI = 35922;
   
-  TFile *fTemplatesBkg = TFile::Open("templates_Bkg_"+CUT+"50.root");
-  TFile *fTemplatesSig = TFile::Open("templates_Sig_"+CUT+"50.root");
+  TFile *fTemplatesBkg = TFile::Open("templates_Bkg_"+CUT+"100.root");
+  TFile *fTemplatesSig = TFile::Open("templates_Sig_"+CUT+"100.root");
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
   
@@ -53,7 +53,7 @@ void MassFitNew(TString ALIAS="",TString CUT="", int REBIN= 5)
   
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,1e+4);
  
-  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+4);  
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+5);  
 
   
   
@@ -140,7 +140,7 @@ void MassFitNew(TString ALIAS="",TString CUT="", int REBIN= 5)
 
   //CMS_lumi(can2b,4,0);
 
-  can2b->Print("plots/"+TString(can2b->GetName())+".pdf");
+  can2b->Print("plots/SimpleMassFit/"+TString(can2b->GetName())+".pdf");
   
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
