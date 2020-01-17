@@ -65,8 +65,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   gPad->Update();
   canQCD->Print(TString::Format("%s/plots/templateResults/"+TString(canQCD->GetName())+".pdf", year.Data()));
 
-  //RooArgSet *parsQCD = (RooArgSet*)qcd->getParameters(roohData);
-  //parsQCD->setAttribAll("Constant",true);
+  RooArgSet *parsQCD = (RooArgSet*)qcd->getParameters(roohData);
+  parsQCD->setAttribAll("Constant",true);
 
   w->import(*qcd);
   w->import(*fBkgJet);
