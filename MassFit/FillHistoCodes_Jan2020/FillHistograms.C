@@ -669,14 +669,16 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     
   }
   TFile *outFile;
+  TString loose = ""; 
+  if(isLoose) loose = "_Loose";
   if(selection ==0)
-    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100.root",year.Data(),year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
   else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100.root",year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100%s.root",year.Data(),loose.Data()), "RECREATE");
   //else if(selection ==4)
     //outFile = new TFile("Histo_TT_NominalMC_100.root", "RECREATE");
 
