@@ -56,6 +56,17 @@ void initFileNames()
   listOfFiles.push_back("ST_t-channel_top_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8.root");
   listOfFiles.push_back("ST_t-channel_antitop_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8.root");
   }
+  else if(selection ==5) //bkg mc
+  {
+  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Bkg/";
+  listOfFiles.push_back("QCD_bEnriched_HT200to300_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT300to500_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT500to700_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT700to1000_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT1000to1500_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT2000toInf_TuneCP5_13TeV-madgraph-pythia8.root");
+  }
 }
 
 void initXsections()
@@ -67,12 +78,12 @@ void initXsections()
   }
   else if(selection ==2)
   {
-  XSEC.push_back(3.67e+5);
-  XSEC.push_back(2.94e+4);
-  XSEC.push_back(6.524e+03);
-  XSEC.push_back(1.064e+03);
-  XSEC.push_back(121.5);
-  XSEC.push_back(2.542e+01);
+  XSEC.push_back(322600);
+  XSEC.push_back(29980);
+  XSEC.push_back(6334);
+  XSEC.push_back(1088);
+  XSEC.push_back(99.11);
+  XSEC.push_back(20.23);
   }
   else if(selection ==3)
   {
@@ -85,6 +96,16 @@ void initXsections()
   XSEC.push_back(113.3); //ST_t-channel_top_4f_inclusiveDecays
   XSEC.push_back(67.91); //ST_t-channel_antitop_4f_inclusiveDecays
   
+  }
+  else if(selection ==5) //b enriched qcd
+  {
+  XSEC.push_back(80430);
+  XSEC.push_back(16620);
+  XSEC.push_back(1487);
+  XSEC.push_back(296.5);
+  XSEC.push_back(46.61);
+  XSEC.push_back(3.72);
+  XSEC.push_back(0.6462);
   }
 }
 
@@ -115,6 +136,15 @@ void initHistoNames()
     histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+  }
+  else if (selection ==5)
+  {
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_300_500");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_500_700");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_700_1000");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_1000_1500");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_1500_2000");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_2000_Inf");
   }
 }
 
@@ -615,6 +645,8 @@ void FillHistograms_Reduced_UnequalBinning(int sel = 0)
     outFile = new TFile("Histo_QCD_HT300toInf_100_reduced_UnequalBinning.root", "RECREATE");
   if(selection ==3)
     outFile = new TFile("Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", "RECREATE");
+  if(selection ==5)
+    outFile = new TFile("Histo_QCD_bEnriched_HT200toInf_100_reduced_UnequalBinning.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {

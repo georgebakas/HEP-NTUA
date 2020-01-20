@@ -53,12 +53,33 @@ void initXsections()
   }
   else
   {
-	XSEC.push_back(3.67e+5);
-	XSEC.push_back(2.94e+4);
-	XSEC.push_back(6.524e+03);
-	XSEC.push_back(1.064e+03);
-	XSEC.push_back(121.5);	
-	XSEC.push_back(2.542e+01);
+  	if(year.EqualTo("2016"))
+  	{
+		XSEC.push_back(351400);
+		XSEC.push_back(32260);
+		XSEC.push_back(6830);
+		XSEC.push_back(1207);
+		XSEC.push_back(119.1);	
+		XSEC.push_back(25.16);
+	}
+	else if(year.EqualTo("2017"))
+  	{
+		XSEC.push_back(322600);
+		XSEC.push_back(29980);
+		XSEC.push_back(6334);
+		XSEC.push_back(1088);
+		XSEC.push_back(99.11);	
+		XSEC.push_back(20.23);
+	}
+	else if(year.EqualTo("2018"))
+  	{
+		XSEC.push_back(323400);
+		XSEC.push_back(30140);
+		XSEC.push_back(6310);
+		XSEC.push_back(1094);
+		XSEC.push_back(99.38);	
+		XSEC.push_back(20.2);
+	}
   }
 }
 

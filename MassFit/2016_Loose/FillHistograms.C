@@ -59,8 +59,20 @@ void initFileNames()
   }
   else if(selection ==4)
   {
-  	eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/";
-  	listOfFiles.push_back("TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+    eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/";
+    listOfFiles.push_back("TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+  }
+  else if(selection ==5) //bkg mc
+  {
+  eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Bkg/";
+  listOfFiles.push_back("QCD_bEnriched_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+  listOfFiles.push_back("QCD_bEnriched_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root");
+
   }
 }
 
@@ -73,12 +85,12 @@ void initXsections()
   }
   else if(selection ==2)
   {
-  XSEC.push_back(3.67e+5);
-  XSEC.push_back(2.94e+4);
-  XSEC.push_back(6.524e+03);
-  XSEC.push_back(1.064e+03);
-  XSEC.push_back(121.5);
-  XSEC.push_back(2.542e+01);
+  XSEC.push_back(351400);
+  XSEC.push_back(32260);
+  XSEC.push_back(6830);
+  XSEC.push_back(1207);
+  XSEC.push_back(119.1);
+  XSEC.push_back(25.16);
   }
   else if(selection ==3)
   {
@@ -91,7 +103,17 @@ void initXsections()
   }
   else if(selection ==4)
   {
-  XSEC.push_back(832);	
+  XSEC.push_back(832);  
+  }
+  else if(selection ==5)
+  {
+  XSEC.push_back(88320);
+  XSEC.push_back(179050);
+  XSEC.push_back(1594);
+  XSEC.push_back(321.3);
+  XSEC.push_back(51.61);
+  XSEC.push_back(4.445);
+  XSEC.push_back(0.7845);
   }
 }
 
@@ -124,8 +146,19 @@ void initHistoNames()
   }
   else if(selection ==4)
   {
-  	histoNames.push_back("Signal_histo_NominalMC");
+    histoNames.push_back("Signal_histo_NominalMC");
   }
+  else if (selection ==5)
+  {
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_200_300");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_300_500");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_500_700");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_700_1000");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_1000_1500");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_1500_2000");
+  histoNames.push_back("QCD_bEnriched_histo_Mtt_2000_Inf");
+  }
+
 }
 
 void initGlobals()
@@ -627,6 +660,8 @@ void FillHistograms(int sel = 0)
     outFile = new TFile("Histo_SubdominantBkgs_New_100.root", "RECREATE");
   else if(selection ==4)
   	outFile = new TFile("Histo_TT_NominalMC_100.root", "RECREATE");
+  else if(selection ==5)
+    outFile = new TFile("Histo_QCD_bErniched_HT200toInf_100.root", "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
