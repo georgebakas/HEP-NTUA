@@ -130,7 +130,7 @@ void initHistoNames()
  	  histoNames.push_back("QCD_histo_1500_2000");
  	  histoNames.push_back("QCD_histo_2000_Inf");
   }
-  else
+  else if(selection==3)
   {
     histoNames.push_back("DYJetsToQQ_HT180");
     histoNames.push_back("WJetsToQQ_HT400-600");

@@ -21,7 +21,7 @@ TString eosPath;
 bool isSignal;
 float LUMI;
 float deepCSVFloat;
-
+TString globalYear;
 
 void initFileNames(TString year = "2016")
 {
@@ -53,7 +53,7 @@ void initXsections()
   }
   else
   {
-  	if(year.EqualTo("2016"))
+  	if(globalYear.EqualTo("2016"))
   	{
 		XSEC.push_back(351400);
 		XSEC.push_back(32260);
@@ -62,7 +62,7 @@ void initXsections()
 		XSEC.push_back(119.1);	
 		XSEC.push_back(25.16);
 	}
-	else if(year.EqualTo("2017"))
+	else if(globalYear.EqualTo("2017"))
   	{
 		XSEC.push_back(322600);
 		XSEC.push_back(29980);
@@ -71,7 +71,7 @@ void initXsections()
 		XSEC.push_back(99.11);	
 		XSEC.push_back(20.23);
 	}
-	else if(year.EqualTo("2018"))
+	else if(globalYear.EqualTo("2018"))
   	{
 		XSEC.push_back(323400);
 		XSEC.push_back(30140);
@@ -110,6 +110,7 @@ void initGlobals(TString year = "2016")
  
 void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 {
+  globalYear = year;
   initFilesMapping();
   LUMI = luminosity[year.Data()];
   float LUMI_CR = 1670;
@@ -602,9 +603,9 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
   
   TFile *outFile;
   if(isSignal) 
-  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV_%s.root", selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSVLoose_%s.root", selMvaCut,year.Data()), "RECREATE");
   else 
-  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV_%s.root",selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSVLoose_%s.root",selMvaCut,year.Data()), "RECREATE");
 	 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {

@@ -128,7 +128,7 @@ void initHistoNames()
   histoNames.push_back("QCD_histo_Mtt_1500_2000");
   histoNames.push_back("QCD_histo_Mtt_2000_Inf");
   }
-  else
+  else if(selection==3)
   {
     histoNames.push_back("DYJetsToQQ_HT180");
     histoNames.push_back("WJetsToQQ_HT400-600");
@@ -146,37 +146,6 @@ void initHistoNames()
   histoNames.push_back("QCD_bEnriched_histo_Mtt_1000_1500");
   histoNames.push_back("QCD_bEnriched_histo_Mtt_1500_2000");
   histoNames.push_back("QCD_bEnriched_histo_Mtt_2000_Inf");
-  }
-}
-
-
-void initHistoNames()
-{
-  
-  if(selection ==0) histoNames.push_back("Data_2017");
-  else if(selection ==1)
-  {
-  histoNames.push_back("Signal_histo_Mtt_700_1000"); 
-  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
-  }
-  else if (selection ==2)
-  {
-  histoNames.push_back("QCD_histo_Mtt_300_500");
-  histoNames.push_back("QCD_histo_Mtt_500_700");
-  histoNames.push_back("QCD_histo_Mtt_700_1000");
-  histoNames.push_back("QCD_histo_Mtt_1000_1500");
-  histoNames.push_back("QCD_histo_Mtt_1500_2000");
-  histoNames.push_back("QCD_histo_Mtt_2000_Inf");
-  }
-  else
-  {
-    histoNames.push_back("DYJetsToQQ_HT180");
-    histoNames.push_back("WJetsToQQ_HT400-600");
-    histoNames.push_back("WJetsToQQ_HT600-800");
-    histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-    histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-    histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-    histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
   }
 }
 
