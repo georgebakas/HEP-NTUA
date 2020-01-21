@@ -189,7 +189,7 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
   	hDenom->GetYaxis()->SetRangeUser(10E-2,hDenom->GetMaximum()+200);
   }
   closureLegend->Draw();
-  //closure_pad1->SetLogy();
+  closure_pad1->SetLogy();
   
   
   TH1F *hRatio;
@@ -215,6 +215,6 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
   else hRatio->GetXaxis()->SetTitle(recoVar);
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
-  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s_nolog.pdf",year.Data(),recoVar.Data()),"pdf");
-  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s_nolog.pdf",year.Data(),recoVar.Data()),"pdf");
+  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
