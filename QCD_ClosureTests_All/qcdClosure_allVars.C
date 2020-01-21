@@ -162,6 +162,8 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
   inf = TFile::Open(eosPath+listOfFiles[f]);	 
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
   
+  ofstream myfile;
+  myfile.open("entries.txt");
   float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
   weights.push_back(XSEC[f]/NORM);
   
@@ -214,6 +216,8 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
   trIN->SetBranchAddress("deepAK8Tagger"  ,&deepAK8);
   trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
   
+  int evtNo;
+  trIN->SetBranchAddress("evtNo",&evtNo); 
   //deepCSV
   trIN->SetBranchAddress("jetBtagSub0DCSVbb" ,&jetBtagSub0DCSVbb);
   trIN->SetBranchAddress("jetBtagSub1DCSVbb" ,&jetBtagSub1DCSVbb);
@@ -516,8 +520,10 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 			hSR[f][ivar]->Fill(xReco,genEvtWeight);
 		  //Control Region with tTagger
 		 if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
+		 {
 			hCR[f][ivar]->Fill(xReco,genEvtWeight);
-			 
+			myfile << evtNo << "\n";
+		 }
 		 //1 btag region with tTagger
 		 if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
 			h1Btag[f][ivar]->Fill(xReco,genEvtWeight);
@@ -603,9 +609,9 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
   
   TFile *outFile;
   if(isSignal) 
-  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV_%s.root", selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSVLoose_%s.root", selMvaCut,year.Data()), "RECREATE");
   else 
-  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV_%s.root",selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSVLoose_%s.root",selMvaCut,year.Data()), "RECREATE");
 	 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
