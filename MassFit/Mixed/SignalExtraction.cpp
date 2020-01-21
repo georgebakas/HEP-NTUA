@@ -70,6 +70,7 @@ void SignalExtraction(TString year)
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
         SignalExtractionSpecific(year, vars[i]);
+        break;
     }
 }
 
@@ -88,11 +89,21 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infDataLoose->Get(TString::Format("hWt_%s_0btag", variable.Data()));
     //open the file to get the Ryield
-    TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor.root",year.Data()));
+    TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor_HT300toInf_100.root",year.Data()));
     TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
-    float Ryield = hRyield->GetBinContent(3);
-    float Ryield_error = hRyield->GetBinError(3);
+    float Ryield = hRyield->GetBinContent(1);
+    float Ryield_error = hRyield->GetBinError(1);
 
+    float r_yield_correction;
+    TH1F *hRyieldMC = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
+    r_yield_correction = (hRyieldMC->GetBinContent(2)/ hRyieldMC->GetBinContent(1));
+    cout<<"-------------------------"<<endl;
+    cout<<"Ryield_data (0): "<<Ryield<<endl;
+    cout<<"r_yield_correction: "<<r_yield_correction<<endl;
+
+    cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
+    cout<<"corrected Ryield: "<<r_yield_correction * Ryield<<endl;
+    return;
 
     //open the file to get the Nbkg
     float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
