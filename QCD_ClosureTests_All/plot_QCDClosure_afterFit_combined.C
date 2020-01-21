@@ -14,8 +14,20 @@ using std::cout;
 using std::endl;
 
 #include "TemplateConstants.h"
+void plotYearVar(TString year, TString recoVar = "jetPt0");
+void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason, bool isClosure);
 
-void plot_QCDClosure_afterFit_combined(TString year = "2016", TString recoVar = "jetPt0")
+void plot_QCDClosure_afterFit_combined(TString year = "2016")
+{
+	const int NVAR = 7;
+	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "jetMassSoftDrop0", "jetMassSoftDrop1"};
+
+	for(int ivar = 0; ivar < NVAR; ivar++)
+	{
+		plotYearVar(year,recoVar[ivar]);
+	}
+}
+void plotYearVar(TString year, TString recoVar = "jetPt0")
 {
   initFilesMapping();
   //TT file 
@@ -31,15 +43,13 @@ void plot_QCDClosure_afterFit_combined(TString year = "2016", TString recoVar = 
   TFile *infBkg = TFile::Open(filesBkg[yearSignalRegion.Data()]);
   TFile *infBkgLoose = TFile::Open(filesBkg[yearControlRegion.Data()]);
   TH1F *hBkg_CR, *hBkg_SR, *hBkg_CRExpYield;  
-  TH1F *hSig_CR;    
-  TH1F *hSig_1Btag, *hBkg_1Btag;
+  TH1F *hSig_CRExpYield;    
   
   //TH1F used for the TRatioPlot
   hBkg_CR = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s",recoVar.Data())); //from file with loose WP's
   hBkg_SR = (TH1F*)infBkg->Get(TString::Format("SR_tTagger_%s",recoVar.Data())); //from file with medium WP's
   
-  hBkg_1Btag = (TH1F*)infBkg->Get(TString::Format("h1Btag_tTagger_%s",recoVar.Data())); //from file with medium WP's
-    //get the fit result
+  //get the fit result
   TFile *fitFile; 
   TF1 *fitResult; 
   //scale now all over the bins
@@ -76,110 +86,135 @@ void plot_QCDClosure_afterFit_combined(TString year = "2016", TString recoVar = 
   }
   
   //These are bkg Signal region and bkg region
-  hBkg_CR->SetTitle("QCD Closure tTagger");
-  hBkg_SR->SetTitle("QCD Closure tTagger");
+  hBkg_CR->SetTitle("QCD_{CR} 0btag (Loose)");
+  hBkg_SR->SetTitle("QCD_{SR} 2btag (Medium)");
   
+  hBkg_CR->Scale(1./hBkg_CR->Integral());
+  hBkg_SR->Scale(1./hBkg_SR->Integral());
   
   hBkg_CRExpYield = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
   hBkg_CRExpYield->SetLineColor(kRed);
   
-  hBkg_CRExpYield->SetTitle("TT Contamination tTagger");
+  hBkg_CRExpYield->SetTitle("QCD_{CR} Exp.Yield");
   
-  hSig_CR = (TH1F*)infTTLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
-  hSig_CR -> SetLineColor(kBlue);
-  hSig_CR -> SetTitle("TT Contamination tTagger");
-/*
-  if(recoVar.EqualTo("jetMassSoftDrop"))
+  hSig_CRExpYield = (TH1F*)infTTLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
+  hSig_CRExpYield -> SetLineColor(kBlue);
+  hSig_CRExpYield -> SetTitle("TT_{CR} Exp.Yield");
+
+  if(recoVar.EqualTo("jetMassSoftDrop0") || recoVar.EqualTo("jetMassSoftDrop1"))
   {
-    hBkg_CR[0]->Rebin(4);
-    hBkg_CR[1]->Rebin(4);
-
-    hBkg_SR[0]->Rebin(4);
-    hBkg_SR[1]->Rebin(4);
-
-    hBkg_1Btag[0]->Rebin(4);
-    //hBkg_1Btag[1]->Rebin(4);
-
-    hBkg_CRExpYield[0]->Rebin(4);
-    hBkg_CRExpYield[1]->Rebin(4);
-
-    hSig_CR[0]->Rebin(4);
-    hSig_CR[1]->Rebin(4);
-
+    hBkg_CR->Rebin(5);
+    hBkg_SR->Rebin(5);
+    hBkg_CRExpYield->Rebin(5);
+    hSig_CRExpYield->Rebin(5);
   }
-  */
-  TLegend *closureLegend = new TLegend(0.5,0.6,0.7,0.8);
-  closureLegend->AddEntry(hBkg_SR,"Signal Region (2btag)", "l");
-  closureLegend->AddEntry(hBkg_CR,"Control Region (0btag)", "f");
-  closureLegend->AddEntry(hBkg_1Btag,"1btag Region", "l");
   
-  auto c1 = new TCanvas("QCD closure Test tTagger", "QCD closure Test tTagger", 700,600);
-  auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3); 
+  //this is closure test
+  TString reas = "QCD Closure";
+  ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true);
+
+  //this is ttbar contamination
+  reas = "TTbar Contamination";
+  ratioPlot(year, hSig_CRExpYield,hBkg_CRExpYield, recoVar, reas, false);
+
+}
+
+
+
+void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason, bool isClosure)
+{
+  TString titleNum = hNum->GetTitle();
+  TString titleDenom = hDenom->GetTitle();
+  TLegend *closureLegend = new TLegend(0.65,0.65,0.9,0.9);
+  closureLegend->AddEntry(hNum,titleNum, "lep");
+  closureLegend->AddEntry(hDenom,titleDenom, "lep");
+
+  if(isClosure)
+  {
+  	hNum->SetTitle("QCD Closure");
+  	hDenom->SetTitle("QCD Closure");
+  }
+  else
+  {
+  	hNum->SetTitle("TTbar Contamination");
+  	hDenom->SetTitle("TTbar Contamination");
+  }
+  auto c1 = new TCanvas(reason, reason, 800,700);
+  auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.4); 
   closure_pad2->Draw();
   closure_pad2->SetTopMargin(0.05);
   closure_pad2->SetBottomMargin(0.3);
   closure_pad2->SetGrid();
 
-  auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.3,1.,1.);  
+  auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.4,1.,1.);  
   closure_pad1->Draw();
   closure_pad1->SetBottomMargin(0.005);
   closure_pad1->cd();
   //closure_pad1->SetGrid();
-  hBkg_SR->GetYaxis()->SetTitleSize(20);
-  hBkg_SR->GetYaxis()->SetTitleFont(43);
-  hBkg_SR->GetYaxis()->SetTitleOffset(1.4);  
+  hNum->GetYaxis()->SetTitleSize(20);
+  hNum->GetYaxis()->SetTitleFont(43);
+  hNum->GetYaxis()->SetTitleOffset(1.4); 
+  hNum->ResetAttLine();
+  hNum->ResetAttMarker();
+  hNum->SetLineColor(kRed-7);
+  hNum->SetMarkerStyle(22);
+  hNum->SetMarkerColor(kRed-7); 
   //hBkg_SR[0]->GetXaxis()->SetTitleOffset(1.5);
-  hBkg_SR->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  if(!recoVar.EqualTo("yJJ")) hNum->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  else hNum->GetXaxis()->SetTitle(recoVar);
   // h2 settings
   
   //hBkg_CR[0]->ResetAttFill();
-  hBkg_CR->ResetAttLine();
-  hBkg_CR->ResetAttMarker();
-  hBkg_CR->SetLineColor(33); 
-  hBkg_CR->SetFillStyle(3001);
-  hBkg_CR->SetFillColor(33);
+  hDenom->ResetAttLine();
+  hDenom->ResetAttMarker();
+  hDenom->SetLineColor(kBlue-2); 
+  hDenom->SetMarkerStyle(21);
+  hDenom->SetMarkerColor(kBlue-2);
+
+  //hDenom->SetFillStyle(3305);
+  //hDenom->SetFillColor(kBlue-2);
   
-  hBkg_1Btag->SetLineColor(kBlue);
-  hBkg_SR->Draw();
-  hBkg_CR->Draw("Hist same");
-  hBkg_1Btag->Draw("same");
+  if(isClosure)
+  {	
+  	//this is for qcd closure
+  	cout<<"CLOSURE"<<endl;
+ 	hNum->Draw();
+  	hDenom->Draw("same");
+  }
+  else
+  {
+  	cout<<"ttbar contamination"<<endl;
+  	hDenom->Draw();
+  	hNum->Draw("same");
+  	hDenom->GetYaxis()->SetRangeUser(10E-2,hDenom->GetMaximum()*10);
+  }
   closureLegend->Draw();
   closure_pad1->SetLogy();
   
   
-  TH1F *hClosure[2];
+  TH1F *hRatio;
   closure_pad2->cd();
-  hClosure[0] = (TH1F*)hBkg_SR->Clone("hClosure_0"); 
-  hClosure[0]->SetTitle("");
-  hClosure[0]->GetYaxis()->SetTitle("ratio SR/CR");
-  hClosure[0]->GetYaxis()->SetTitleSize(14);
-  hClosure[0]->GetYaxis()->SetTitleFont(43);
-  hClosure[0]->GetYaxis()->SetTitleOffset(1.55);
-  hClosure[0]->GetYaxis()->SetLabelFont(43);
-  hClosure[0]->GetYaxis()->SetLabelSize(15);
-  hClosure[0]->GetXaxis()->SetTitleSize(0.09);
-  //hClosure[0]->GetXaxis()->SetTitleFont(43);
-  //hClosure[0]->GetXaxis()->SetTitleOffset(4.);
-  //hClosure[0]->GetXaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-  hClosure[0]->GetXaxis()->SetLabelSize(0.09);
-  hClosure[1] = (TH1F*)hBkg_1Btag->Clone("hClosure_1"); 
-  hClosure[0]->Divide(hBkg_CR);
-  hClosure[1]->Divide(hBkg_CR_uncorrected);
-  hClosure[0]->SetLineColor(kRed);
-  hClosure[1]->SetLineColor(kBlue);
-  hClosure[0]->GetXaxis()->SetTitle(recoVar+" (GeV)");
-  //hClosure[0]->GetXaxis()->SetTitleOffset(1);
-  hClosure[0]->Draw();
-  hClosure[1]->Draw("same");
-  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  hRatio = (TH1F*)hNum->Clone("hNumerator_0"); 
+  hRatio->SetTitle("");
+  hRatio->ResetAttMarker();
+  //hRatio->GetYaxis()->SetTitle(TString::Format("ratio %s/%s",hNum->GetTitle(),hDenom->GetTitle()));
+  hRatio->GetYaxis()->SetTitle("ratio Red/Blue");
+  hRatio->GetYaxis()->SetTitleSize(20);
+  hRatio->GetYaxis()->SetTitleFont(43);
+  hRatio->GetYaxis()->SetTitleOffset(1.55);
+  hRatio->GetYaxis()->SetLabelFont(43);
+  hRatio->GetYaxis()->SetLabelSize(15);
+  hRatio->GetXaxis()->SetTitleSize(0.06);
 
 
-  auto c3 = new TCanvas("TT contamination tTagger", "TT contamination tTagger", 700,600);
-  auto rp_tTagger = new TRatioPlot(hSig_CR,hBkg_CRExpYield);
-  c3->SetTicks(0,1);
-  rp_tTagger->Draw();
-  rp_tTagger->GetUpperRefYaxis()->SetTitle("Exp. Yield");
-  rp_tTagger->GetLowerRefYaxis()->SetTitle("ratio");
-  c3->Update();
-  c3->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  if(isClosure) hRatio->GetYaxis()->SetRangeUser(0,2);
+  hRatio->GetXaxis()->SetLabelSize(0.06);
+  hRatio->Divide(hDenom);
+  hRatio->SetLineColor(kBlack);
+  if(!recoVar.EqualTo("yJJ")) hRatio->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  else hRatio->GetXaxis()->SetTitle(recoVar);
+  //hRatio->GetXaxis()->SetTitleOffset(1);
+  hRatio->Draw();
+  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
