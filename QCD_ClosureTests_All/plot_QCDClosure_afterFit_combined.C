@@ -57,6 +57,9 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
   
   hBkg_CR->Scale(1./hBkg_CR->Integral());
   hBkg_SR->Scale(1./hBkg_SR->Integral());
+  cout<<"hBkg_CR Loose Entries: "<<hBkg_CR->GetEntries()<<endl;
+  cout<<"hBkg_SR Medium Entries: "<<hBkg_SR->GetEntries()<<endl;
+
   
   //now for contamination
   hBkg_CRExpYield = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
@@ -76,12 +79,14 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
     hSig_CRExpYield->Rebin(5);
   }
   
+  cout<<"hBkg_CR_expYield Loose Entries: "<<hBkg_CRExpYield->GetEntries()<<endl;
+  cout<<"hSig_CR_expYield Loose Entries: "<<hSig_CRExpYield->GetEntries()<<endl;
   //this is ttbar contamination
-  reas = "TTbar Contamination";
+  TString reas = "TTbar Contamination";
   ratioPlot(year, hSig_CRExpYield,hBkg_CRExpYield, recoVar, reas, false);
 
   //this is closure test
-  TString reas = "QCD Closure";
+  reas = "QCD Closure";
   ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true);
 
 }
@@ -153,7 +158,7 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
   	hDenom->GetYaxis()->SetRangeUser(10E-2,hDenom->GetMaximum()+200);
   }
   closureLegend->Draw();
-  //closure_pad1->SetLogy();
+  closure_pad1->SetLogy();
   
   
   TH1F *hRatio;
@@ -179,8 +184,8 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
   else hRatio->GetXaxis()->SetTitle(recoVar);
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
-  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s_nolog.pdf",year.Data(),recoVar.Data()),"pdf");
-  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s_nolog.pdf",year.Data(),recoVar.Data()),"pdf");
+  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
 //needed for fit
 /*
