@@ -151,7 +151,7 @@ void GetMCHistograms(TString y="2016", int sel = 0)
   trIN->SetBranchAddress("ptJJ"         ,&ptJJ);
   trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   trIN->SetBranchAddress("mva"          ,&mva);
-
+  trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
   
   if(selection == 1)
   {
@@ -197,35 +197,36 @@ void GetMCHistograms(TString y="2016", int sel = 0)
     decade = k;
   trIN->GetEntry(iev);
 
+  	if(nJets >1)
+ 	{
+	  xRecoAll.clear();
+	  xRecoAll.push_back(mJJ);
+	  xRecoAll.push_back(ptJJ);
+	  xRecoAll.push_back(yJJ);
+	  xRecoAll.push_back((*jetPt)[0]);
+	  xRecoAll.push_back((*jetPt)[1]);
 
-  xRecoAll.clear();
-  xRecoAll.push_back(mJJ);
-  xRecoAll.push_back(ptJJ);
-  xRecoAll.push_back(yJJ);
-  xRecoAll.push_back((*jetPt)[0]);
-  xRecoAll.push_back((*jetPt)[1]);
+	  xRecoAll.push_back(fabs((*jetY)[0]));
+	  xRecoAll.push_back(fabs((*jetY)[1]));
+	  xRecoAll.push_back((*jetTtag)[0]);
+	  xRecoAll.push_back((*jetTtag)[1]);
+	  xRecoAll.push_back((*jetMassSoftDrop)[0]);
+	  for(int ijet=1; ijet<nJets; ijet++)
+	   xRecoAll.push_back((*jetMassSoftDrop)[ijet]);
+	  
+	   for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
+	   {
+	     //cout<<"enter loop"<<endl;
+	     xReco = xRecoAll[ivar];
+	     //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
+	     if(ivar < 10)
+	       h[f][ivar]->Fill(xReco, genEvtWeight);
+	     else
+	       h[f][10]->Fill(xReco,genEvtWeight);
+	        
+	   }
 
-  xRecoAll.push_back(fabs((*jetY)[0]));
-  xRecoAll.push_back(fabs((*jetY)[1]));
-  xRecoAll.push_back((*jetTtag)[0]);
-  xRecoAll.push_back((*jetTtag)[1]);
-  xRecoAll.push_back((*jetMassSoftDrop)[0]);
-  for(int ijet=1; ijet<nJets; ijet++)
-   xRecoAll.push_back((*jetMassSoftDrop)[ijet]);
-
-   for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
-   {
-     //cout<<"enter loop"<<endl;
-     xReco = xRecoAll[ivar];
-     //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-     if(ivar < 10)
-       h[f][ivar]->Fill(xReco, genEvtWeight);
-     else
-       h[f][10]->Fill(xReco,genEvtWeight);
-        
-   }
-
-
+  	}//end of nJets
   } //---end of event loop
 
   }//----end of fileSize loop 
