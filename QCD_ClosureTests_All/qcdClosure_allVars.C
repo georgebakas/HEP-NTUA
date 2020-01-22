@@ -23,23 +23,23 @@ float LUMI;
 float deepCSVFloat;
 TString globalYear;
 
-void initFileNames(TString year = "2016")
+void initFileNames()
 {
   if(isSignal)
   {
-	eosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/Signal/",year.Data()); 
-	listOfFiles.push_back(filesTT[year]["700-1000"]); //files[year]["data"]
-	listOfFiles.push_back(filesTT[year]["1000-Inf"]);
+	eosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/Signal/",globalYear.Data()); 
+	listOfFiles.push_back(filesTT[globalYear]["700-1000"]); //files[year]["data"]
+	listOfFiles.push_back(filesTT[globalYear]["1000-Inf"]);
   }
   else
   {
-	eosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/Bkg/", year.Data())	;
-	listOfFiles.push_back(filesQCD[year]["300-500"]);
-	listOfFiles.push_back(filesQCD[year]["500-700"]);
-	listOfFiles.push_back(filesQCD[year]["700-1000"]);
-	listOfFiles.push_back(filesQCD[year]["1000-1500"]);
-	listOfFiles.push_back(filesQCD[year]["1500-2000"]);
-	listOfFiles.push_back(filesQCD[year]["2000-Inf"]);
+	eosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/Bkg/", globalYear.Data())	;
+	listOfFiles.push_back(filesQCD[globalYear]["300-500"]);
+	listOfFiles.push_back(filesQCD[globalYear]["500-700"]);
+	listOfFiles.push_back(filesQCD[globalYear]["700-1000"]);
+	listOfFiles.push_back(filesQCD[globalYear]["1000-1500"]);
+	listOfFiles.push_back(filesQCD[globalYear]["1500-2000"]);
+	listOfFiles.push_back(filesQCD[globalYear]["2000-Inf"]);
 	
   }
 }
@@ -101,20 +101,27 @@ void initHistoNames()
   }
 }
 
-void initGlobals(TString year = "2016")
+void initGlobals()
 {
-  initFileNames(year);
+  initFileNames();
   initXsections();
   initHistoNames();
 }
  
-void qcdClosure_allVars(TString year = "2016", bool isSig = false)
+void qcdClosure_allVars(TString year = "2016", bool isSig = false, bool isLoose = false)
 {
   globalYear = year;
   initFilesMapping();
   LUMI = luminosity[year.Data()];
   float LUMI_CR = 1670;
-  deepCSVFloat = deepCSVWP[year.Data()]; 
+
+  if(isLoose)
+  {
+  	TString temp = year+"_Loose";
+  	cout<<temp<<endl;
+  	deepCSVFloat = deepCSVWP[temp.Data()]; 
+  }
+  else deepCSVFloat = deepCSVWP[year.Data()];
   float selMvaCut=tTaggerSel[year.Data()];
   cout<<deepCSVFloat<<endl;
   isSignal = isSig;
@@ -606,12 +613,13 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false)
 	}
   }
   
-  
+  TString suffix = "";
+  if(isLoose) suffix = "Loose";
   TFile *outFile;
   if(isSignal) 
-  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSVLoose_%s.root", selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("SignalOutput_AllRegions_%0.2f_deepCSV%s_%s.root", selMvaCut,suffix.Data(),year.Data()), "RECREATE");
   else 
-  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSVLoose_%s.root",selMvaCut,year.Data()), "RECREATE");
+  	outFile = new TFile(TString::Format("BkgOutput_AllRegions_%0.2f_deepCSV%s_%s.root",selMvaCut,suffix.Data(),year.Data()), "RECREATE");
 	 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
