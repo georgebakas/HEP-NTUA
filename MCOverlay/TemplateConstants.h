@@ -20,6 +20,8 @@ map<TString, int> variableConstant;
 TColor color;
 
 map<TString, float> luminosity;
+map<TString, TString> filesttbar;
+map<TString, TString> filesqcd;
 map<TString, float> luminosityCR;
 map<TString, float> deepCSVFloatMap;
 map<TString, int> triggerSRConst;
@@ -183,84 +185,16 @@ void initFilesMapping()
 	subdominantBkgXSEC.insert(pair<TString, map<TString, float>>("2018",sub18XSEC));
 
 //----------------------------------------------------------------------------------------------------------------
+                           																		 
+	//thsese will be used for getting the histo names ttbar	  							  
+	filesttbar.insert(pair<TString,TString>("2016", "HistoMC_TT_Mtt-700toInf_100bins_2016.root"));
+	filesttbar.insert(pair<TString,TString>("2017", "HistoMC_TT_Mtt-700toInf_100bins_2017.root"));
+	filesttbar.insert(pair<TString,TString>("2018", "HistoMC_TT_Mtt-700toInf_100bins_2018.root"));
 
-
-	//thsese will be used either for naming the files for FillHistograms, or either for getting the histo names 
-	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
-	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2016/Histo_SubdominantBkgs_100.root"},
-	                               	   {"qcd"  , "2016/Histo_QCD_HT300toInf_100.root"}};
-
-	map<TString, TString> files2016Loose = {{"data",  "2016/Histo_Data_2016_100_Loose.root"},
-	                                   		{"mcSig", "2016/Histo_TT_Mtt-700toInf_100_Loose.root"},
-	                                   		{"mcSub", "2016/Histo_SubdominantBkgs_100_Loose.root"},
-	                                   		{"qcd"  , "2016/Histo_QCD_HT300toInf_100_Loose.root"}};	                                   
-																		 
-	map<TString, TString> files2017 = {{"data",  "2017/Histo_Data_2017_100.root"},
-	                                   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2017/Histo_SubdominantBkgs_100.root"},
-	                                   {"qcd"  , "2017/Histo_QCD_HT300toInf_100.root"}};
-
-    
-    map<TString, TString> files2017Loose = {{"data",  "2017/Histo_Data_2017_100_Loose.root"},
-	                                   		{"mcSig", "2017/Histo_TT_Mtt-700toInf_100_Loose.root"},
-	                                   		{"mcSub", "2017/Histo_SubdominantBkgs_100_Loose.root"},
-	                                   		{"qcd"  , "2017/Histo_QCD_HT300toInf_100_Loose.root"}};		                              
-	
-	map<TString, TString> files2018 = {{"data",  "2018/Histo_Data_2018_100.root"},
-	                                   {"mcSig", "2018/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2018/Histo_SubdominantBkgs_100.root"},
-	                                   {"qcd"  , "2018/Histo_QCD_HT300toInf_100.root"}};
-																		 
-	map<TString, TString> files2018Loose = {{"data",  "2018/Histo_Data_2018_100_Loose.root"},
-	                                   		{"mcSig", "2018/Histo_TT_Mtt-700toInf_100_Loose.root"},
-	                                   		{"mcSub", "2018/Histo_SubdominantBkgs_100_Loose.root"},
-	                                   		{"qcd"  , "2018/Histo_QCD_HT300toInf_100_Loose.root"}};	
-	                                   																			 
-	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
-	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
-	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
-	files.insert(pair<TString, map<TString, TString>>("2016_Loose", files2016Loose));
-	files.insert(pair<TString, map<TString, TString>>("2017_Loose", files2017Loose));
-	files.insert(pair<TString, map<TString, TString>>("2018_Loose", files2018Loose));
-
-
-	map<TString, TString> files2016Reduced = {{"data",  "2016/Histo_Data_2016_100_reduced.root"},
-	                                   		  {"mcSig", "2016/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2016/Histo_SubdominantBkgs_100_reduced.root"},
-	                                   		  {"qcd"  , "2016/Histo_QCD_HT300toInf_100_reduced.root"}};
-																		 
-	map<TString, TString> files2017Reduced = {{"data",  "2017/Histo_Data_2017_100_reduced.root"},
-	                                   		  {"mcSig", "2017/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced.root"},
-	                                   		  {"qcd"  , "20167Histo_QCD_HT300toInf_100_reduced.root"}};                                		  
-	
-	map<TString, TString> files2018Reduced = {{"data",  "2018/Histo_Data_2018_100_reduced.root"},
-	                                   	      {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced.root"},
-	                                   		  {"qcd"  , "2018/Histo_QCD_HT300toInf_100_reduced.root"}};
-
-	map<TString, TString> files2016ReducedLoose = {{"data",  "2016/Histo_Data_2016_100_reduced_Loose.root"},
-	                                   		       {"mcSig", "2016/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
-	                                   		       {"mcSub", "2016/Histo_SubdominantBkgs_100_reduced_Loose.root"},
-	                                   		       {"qcd"  , "2016/Histo_QCD_HT300toInf_100_reduced_Loose.root"}};
-																		 
-	map<TString, TString> files2017ReducedLoose = {{"data",  "2017/Histo_Data_2017_100_reduced_Loose.root"},
-	                                   		  	   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
-	                                   		  	   {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced_Loose.root"},
-	                                   		  	   {"qcd"  , "2017/Histo_QCD_HT300toInf_100_reduced_Loose.root"}};                                		  
-	
-	map<TString, TString> files2018ReducedLoose = {{"data",  "2018/Histo_Data_2018_100_reduced_Loose.root"},
-	                                   	           {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
-	                                   		       {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced_Loose.root"},
-	                                   		       {"qcd"  , "2018/Histo_QCD_HT300toInf_100_reduced_Loose.root"}};                                  		  
-																		 
-	filesReduced.insert(pair<TString, map<TString, TString>>("2016", files2016Reduced));
-	filesReduced.insert(pair<TString, map<TString, TString>>("2017", files2017Reduced));
-	filesReduced.insert(pair<TString, map<TString, TString>>("2018", files2018Reduced));
-	filesReduced.insert(pair<TString, map<TString, TString>>("2016Loose", files2016ReducedLoose));
-	filesReduced.insert(pair<TString, map<TString, TString>>("2017Loose", files2017ReducedLoose));
-	filesReduced.insert(pair<TString, map<TString, TString>>("2018Loose", files2018ReducedLoose));
+	//thsese will be used for getting the histo names qcd
+	filesqcd.insert(pair<TString, TString>("2016", "HistoMC_QCD_HT300toInf_100bins_2016.root"));
+	filesqcd.insert(pair<TString, TString>("2017", "HistoMC_QCD_HT300toInf_100bins_2017.root"));
+	filesqcd.insert(pair<TString, TString>("2018", "HistoMC_QCD_HT300toInf_100bins_2018.root"));
 	
 	
 	luminosity.insert(pair<TString, float>("2016",35920));
