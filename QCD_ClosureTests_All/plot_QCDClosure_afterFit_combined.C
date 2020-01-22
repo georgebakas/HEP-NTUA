@@ -22,7 +22,7 @@ void plot_QCDClosure_afterFit_combined(TString year = "2016")
 	const int NVAR = 7;
 	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "jetMassSoftDrop0", "jetMassSoftDrop1"};
 
-	for(int ivar = 0; ivar < NVAR; ivar++)
+	for(int ivar = 0; ivar<NVAR; ivar++)
 	{
 		plotYearVar(year,recoVar[ivar]);
 	}
@@ -30,61 +30,27 @@ void plot_QCDClosure_afterFit_combined(TString year = "2016")
 void plotYearVar(TString year, TString recoVar = "jetPt0")
 {
   initFilesMapping();
-  //TT file 
+   
   //I need 2 files for each:
   //1. Signal Region files which contain everything with medium WP's
   //2. Control Region files which contain everything with loose WP's
   TString yearSignalRegion = year;
   TString yearControlRegion = year + "_Loose";
+  
+  //TT files
   TFile *infTT = TFile::Open(filesSignal[yearSignalRegion.Data()]);  
   TFile *infTTLoose = TFile::Open(filesSignal[yearControlRegion.Data()]);  
-  //QCD file
   
+  //QCD files 
   TFile *infBkg = TFile::Open(filesBkg[yearSignalRegion.Data()]);
   TFile *infBkgLoose = TFile::Open(filesBkg[yearControlRegion.Data()]);
-  TH1F *hBkg_CR, *hBkg_SR, *hBkg_CRExpYield;  
-  TH1F *hSig_CRExpYield;    
+  TH1F *hBkg_CR, *hBkg_SR;  
+  TH1F *hSig_CRExpYield, *hBkg_CRExpYield;    
   
-  //TH1F used for the TRatioPlot
-  hBkg_CR = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s",recoVar.Data())); //from file with loose WP's
-  hBkg_SR = (TH1F*)infBkg->Get(TString::Format("SR_tTagger_%s",recoVar.Data())); //from file with medium WP's
-  
-  //get the fit result
-  TFile *fitFile; 
-  TF1 *fitResult; 
-  //scale now all over the bins
+  //for closure test
+  hBkg_CR = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data())); //from file with loose WP's
+  hBkg_SR = (TH1F*)infBkg->Get(TString::Format("SR_tTagger_%s_expYield",recoVar.Data())); //from file with medium WP's
 
-
-  bool useSF=false;
-  /*
-  if((recoVar.EqualTo("mJJ") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("jetPt0"))
-      && !year.EqualTo("2016_Loose") && !year.EqualTo("2016"))
-  {
-    cout<<"in"<<endl;
-    useSF = true; 
-    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
-    fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
-
-  }
-  if(year.EqualTo("2017") && recoVar.EqualTo("ptJJ"))
-  {
-    useSF = true; 
-    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
-    fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
-  } 
-  */ 
-  TH1F *hBkg_CR_uncorrected = (TH1F*)hBkg_CR->Clone("hBkg_CR_uncorrected");
-  int NBINS = hBkg_CR->GetNbinsX();
-  float SF =1;
-  for(int ibin=1; ibin<= NBINS; ibin++)
-  {
-    float binContent = hBkg_CR->GetBinContent(ibin);
-    float chi = hBkg_CR->GetBinCenter(ibin);
-    if(useSF)  SF = fitResult->Eval(chi);
-
-    hBkg_CR->SetBinContent(ibin, binContent * SF);
-  }
-  
   //These are bkg Signal region and bkg region
   hBkg_CR->SetTitle("QCD_{CR} 0btag (Loose)");
   hBkg_SR->SetTitle("QCD_{SR} 2btag (Medium)");
@@ -92,14 +58,15 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
   hBkg_CR->Scale(1./hBkg_CR->Integral());
   hBkg_SR->Scale(1./hBkg_SR->Integral());
   
+  //now for contamination
   hBkg_CRExpYield = (TH1F*)infBkgLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
   hBkg_CRExpYield->SetLineColor(kRed);
   
   hBkg_CRExpYield->SetTitle("QCD_{CR} Exp.Yield");
   
   hSig_CRExpYield = (TH1F*)infTTLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
-  hSig_CRExpYield -> SetLineColor(kBlue);
-  hSig_CRExpYield -> SetTitle("TT_{CR} Exp.Yield");
+  hSig_CRExpYield->SetLineColor(kBlue);
+  hSig_CRExpYield->SetTitle("TT_{CR} Exp.Yield");
 
   if(recoVar.EqualTo("jetMassSoftDrop0") || recoVar.EqualTo("jetMassSoftDrop1"))
   {
@@ -109,13 +76,13 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
     hSig_CRExpYield->Rebin(5);
   }
   
-  //this is closure test
-  TString reas = "QCD Closure";
-  ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true);
-
   //this is ttbar contamination
   reas = "TTbar Contamination";
   ratioPlot(year, hSig_CRExpYield,hBkg_CRExpYield, recoVar, reas, false);
+
+  //this is closure test
+  TString reas = "QCD Closure";
+  ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true);
 
 }
 
@@ -215,3 +182,38 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
   if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s_nolog.pdf",year.Data(),recoVar.Data()),"pdf");
   else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s_nolog.pdf",year.Data(),recoVar.Data()),"pdf");
 }
+//needed for fit
+/*
+  //get the fit result
+  TFile *fitFile; 
+  TF1 *fitResult; 
+  bool useSF=false;
+  
+  if((recoVar.EqualTo("mJJ") || recoVar.EqualTo("jetPt1") || recoVar.EqualTo("jetPt0"))
+      && !year.EqualTo("2016_Loose") && !year.EqualTo("2016"))
+  {
+    cout<<"in"<<endl;
+    useSF = true; 
+    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
+    fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
+
+  }
+  if(year.EqualTo("2017") && recoVar.EqualTo("ptJJ"))
+  {
+    useSF = true; 
+    fitFile =  TFile::Open(TString::Format("QCD_Closure_%s/FitOutput.root",year.Data()));
+    fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",recoVar.Data()));
+  } 
+   
+  TH1F *hBkg_CR_uncorrected = (TH1F*)hBkg_CR->Clone("hBkg_CR_uncorrected");
+  int NBINS = hBkg_CR->GetNbinsX();
+  float SF =1;
+  for(int ibin=1; ibin<= NBINS; ibin++)
+  {
+    float binContent = hBkg_CR->GetBinContent(ibin);
+    float chi = hBkg_CR->GetBinCenter(ibin);
+    if(useSF)  SF = fitResult->Eval(chi);
+
+    hBkg_CR->SetBinContent(ibin, binContent * SF);
+  }
+  */
