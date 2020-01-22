@@ -29,7 +29,7 @@ void initFileNames()
   
   if(selection ==0) //data
   {
-    eosPath = TString::Format("%s/%s",eosDataPath.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/",eosDataPath.Data(), year.Data());  
     listOfFiles.push_back(dataFiles[year.Data()]);
   }
   else if(selection ==1) //signal ttbar mc

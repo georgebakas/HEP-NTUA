@@ -29,7 +29,7 @@ void initFileNames()
   
   if(selection ==0) //data
   {
-    eosPath = TString::Format("%s/%s",eosDataPath.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/",eosDataPath.Data(), year.Data());  
     listOfFiles.push_back(dataFiles[year.Data()]);
   }
   else if(selection ==1) //signal ttbar mc
@@ -194,7 +194,6 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   LUMI_CR = luminosityCR[year.Data()];
   initGlobals();  
   selection = sel;
-  initGlobals();  
   gStyle->SetOptStat(0);
   const int NVAR =11;
   const int N_MJJ = 20;
@@ -676,14 +675,16 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   }
 
   TFile *outFile;
+  TString loose = ""; 
+  if(isLoose) loose = "_Loose";
   if(selection ==0)
-    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root",year.Data(),year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
   else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root",year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced_UnequalBinning.root",year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced_UnequalBinning%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root",year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning%s.root",year.Data(),loose.Data()), "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
