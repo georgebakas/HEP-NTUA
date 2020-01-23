@@ -20,6 +20,7 @@ std::vector<TString> histoNames;
 TString eosPath;
 TString year;
 int selection;
+float LUMI;
 
 void initFileNames()
 {
@@ -96,17 +97,16 @@ void GetMCHistograms(TString y="2016", int sel = 0)
   selection = sel;
   initGlobals();  
   gStyle->SetOptStat(0);
-  const int NVAR =11;
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1",
-               "mva", "topTagger1", "mTop", "jetMassSoftDrop"};  
+  const int NVAR =9;
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","mTop", "jetMassSoftDrop"};  
   
   int fileSize = listOfFiles.size();
   TFile *inf;
   vector<float> weights(0);
   
- 
+ LUMI = luminosity[year];
  //initialize the required histograms 
- TH1F *h[listOfFiles.size()][NVAR];
+ TH1F *h[listOfFiles.size()][NVAR], *hParton[listOfFiles.size()][NVAR], *hParticle[listOfFiles.size()][NVAR];
  for(int f=0; f<listOfFiles.size(); f++)
  {
   cout<<"Entering "<<listOfFiles[f]<<endl;
@@ -134,11 +134,17 @@ void GetMCHistograms(TString y="2016", int sel = 0)
   vector<float> *jetPhi(0), *jetEta(0), *jetY(0);
   vector<int> *partonId(0), *partonMatchIdx(0);
   
-  vector<float> *partonEta(0), *partonPhi(0), *partonMatchDR(0),  *partonPt(0), *partonE(0), *partonMass(0), *deepAK8(0);
+  vector<float> *partonEta(0), *partonPhi(0), *partonMatchDR(0), *partonY(0), *partonPt(0), *partonE(0), *partonMass(0), *deepAK8(0);
   std::vector<int> *addedIndexes = new std::vector<int>(0);
   std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
   std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
   std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
+
+  //particle
+  std::vector<float> *genjetPt(0), *genjetY(0), *genjetEta(0), *genSoftDropMass(0), *genjetMassSoftDrop(0);
+  std::vector<int> *nSubGenJets(0);
+  int nJetsGen(0);
+  float mJJGen(0), ptJJGen(0), yJJGen(0);
   //------- input tree --------------
   trIN->SetBranchAddress("nJets"          ,&nJets);
   trIN->SetBranchAddress("jetPt"          ,&jetPt);
@@ -160,28 +166,47 @@ void GetMCHistograms(TString y="2016", int sel = 0)
   trIN->SetBranchAddress("ptTTbarParton"  ,&ptTTbarParton);
   trIN->SetBranchAddress("partonPt"     ,&partonPt);
   trIN->SetBranchAddress("partonEta"    ,&partonEta);
+  trIN->SetBranchAddress("partonY"    ,&partonY);
   trIN->SetBranchAddress("partonMass"     ,&partonMass);
   trIN->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
   trIN->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
   trIN->SetBranchAddress("partonPhi"      ,&partonPhi);
+
+  trIN->SetBranchAddress("mJJGen"			,&mJJGen);
+  trIN->SetBranchAddress("ptJJGen"		,&ptJJGen);
+  trIN->SetBranchAddress("yJJGen"			,&yJJGen);
+  trIN->SetBranchAddress("genjetPt"		,&genjetPt);
+  trIN->SetBranchAddress("genjetY"		,&genjetY);
+  trIN->SetBranchAddress("genjetEta"		,&genjetEta);
+  trIN->SetBranchAddress("nJetsGen"		,&nJetsGen);
+  trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
+
   }
 
-  float xReco(0);
+  float xReco(0), xParton(0), xParticle(0);
   std::vector<float> xRecoAll(0);
-  
+  std::vector<float> xPartonAll(0);
+  std::vector<float> xParticleAll(0);
+
   int NBINS = 100;
-  float x_min[NVAR] = {1000,0,-2.4, 400, 400, 0.0, 0.0};
-  float x_max[NVAR] = {5000, 1300, 2.4, 1500, 1500, 2.4, 2.4};
+  float x_min[NVAR] = {700,0,-3, 200, 200, 0.0, 0.0};
+  float x_max[NVAR] = {5000, 1300, 3, 1500, 1500, 3, 3};
   //book the histograms
   //histograms for Signal/QCD in CR 
   for(int ivar =0; ivar< NVAR; ivar++)
   {
     if(ivar < 7)
-      h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
-    else if (ivar == 9 || ivar == 10)
-      h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
+      {
+      	h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
+      	hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
+      	hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
+      }
     else if (ivar == 7 || ivar == 8)
-      h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s_",histoNames[f].Data(),varReco[ivar].Data()), NBINS, -1,1);
+    {
+      h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
+      hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
+      hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
+    }
 
   }  
 
@@ -195,11 +220,13 @@ void GetMCHistograms(TString y="2016", int sel = 0)
     if (k > decade) 
       cout<<10*k<<" %"<<endl;
     decade = k;
-  trIN->GetEntry(iev);
+   trIN->GetEntry(iev);
 
   	if(nJets >1)
  	{
 	  xRecoAll.clear();
+	  xPartonAll.clear();
+   	  xParticleAll.clear();
 	  xRecoAll.push_back(mJJ);
 	  xRecoAll.push_back(ptJJ);
 	  xRecoAll.push_back(yJJ);
@@ -208,22 +235,48 @@ void GetMCHistograms(TString y="2016", int sel = 0)
 
 	  xRecoAll.push_back(fabs((*jetY)[0]));
 	  xRecoAll.push_back(fabs((*jetY)[1]));
-	  xRecoAll.push_back((*jetTtag)[0]);
-	  xRecoAll.push_back((*jetTtag)[1]);
 	  xRecoAll.push_back((*jetMassSoftDrop)[0]);
+
 	  for(int ijet=1; ijet<nJets; ijet++)
 	   xRecoAll.push_back((*jetMassSoftDrop)[ijet]);
 	  
 	   for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
 	   {
-	     //cout<<"enter loop"<<endl;
 	     xReco = xRecoAll[ivar];
-	     //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-	     if(ivar < 10)
+	     if(ivar < 8)
 	       h[f][ivar]->Fill(xReco, genEvtWeight);
 	     else
-	       h[f][10]->Fill(xReco,genEvtWeight);
+	       h[f][8]->Fill(xReco,genEvtWeight);
 	        
+	   }
+
+	   if(selection == 1)
+	   {
+		  xPartonAll.push_back(mTTbarParton);
+		  xPartonAll.push_back(ptTTbarParton);
+		  xPartonAll.push_back(yTTbarParton);
+		  xPartonAll.push_back((*partonPt)[0]);
+		  xPartonAll.push_back((*partonPt)[1]);
+		  xPartonAll.push_back(fabs((*partonY)[0]));
+		  xPartonAll.push_back(fabs((*partonY)[1]));
+		  xPartonAll.push_back((*partonMass)[0]);
+
+		  xParticleAll.push_back(mJJGen);
+		  xParticleAll.push_back(ptJJGen);
+		  xParticleAll.push_back(yJJGen);
+		  xParticleAll.push_back((*genjetPt)[0]);
+		  xParticleAll.push_back((*genjetPt)[1]);
+		  xParticleAll.push_back(fabs((*genjetY)[0]));
+		  xParticleAll.push_back(fabs((*genjetY)[1]));
+		  xParticleAll.push_back((*genjetMassSoftDrop)[0]);
+
+		  for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
+	   	  {
+		     xParton = xPartonAll[ivar];
+		     xParticle = xParticleAll[ivar];  
+		     hParton[f][ivar]->Fill(xParton, genEvtWeight);
+		     hParticle[f][ivar]->Fill(xParticle, genEvtWeight);
+	   	  }	
 	   }
 
   	}//end of nJets
@@ -232,21 +285,39 @@ void GetMCHistograms(TString y="2016", int sel = 0)
   }//----end of fileSize loop 
   
   //this will be used for the combined scale to XSEC histogram
-  TH1F *h_Clone[listOfFiles.size()][NVAR];
+  TH1F *h_Clone[listOfFiles.size()][NVAR], *hParton_Clone[listOfFiles.size()][NVAR], *hParticle_Clone[listOfFiles.size()][NVAR];
 
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
     //for every slice
     for(int j=0; j<listOfFiles.size(); j++)
     {
+    	//reco
         h_Clone[j][ivar]=(TH1F*)h[j][ivar]->Clone(TString::Format("h_%s_Clone",histoNames[j].Data()));       
-        h_Clone[j][ivar]->Scale(weights[j]); //this is the new to be added afterwards
+        h_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is the new to be added afterwards
+        h[j][ivar]->Scale(weights[j]*LUMI);
+      	//parton
+      	if(selection ==1)
+      	{
+	        hParton_Clone[j][ivar]=(TH1F*)hParton[j][ivar]->Clone(TString::Format("hParton_%s_Clone",histoNames[j].Data()));       
+	        hParton_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is the new to be added afterwards
+	        hParton[j][ivar]->Scale(weights[j]*LUMI);
+	      	//particle
+	        hParticle_Clone[j][ivar]=(TH1F*)hParticle[j][ivar]->Clone(TString::Format("hParticle_%s_Clone",histoNames[j].Data()));       
+	        hParticle_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is the new to be added afterwards
+	        hParticle[j][ivar]->Scale(weights[j]*LUMI);
+    	}
     }
     
     for(int j=1; j<listOfFiles.size(); j++)
     {      
       //Add them to get the whole phase space
       h_Clone[0][ivar]->Add(h_Clone[j][ivar]);
+      if(selection ==1)
+      {
+      	hParton_Clone[0][ivar]->Add(hParton_Clone[j][ivar]);
+      	hParticle_Clone[0][ivar]->Add(hParticle_Clone[j][ivar]);
+  	  }
     } 
   
     
@@ -279,15 +350,6 @@ void GetMCHistograms(TString y="2016", int sel = 0)
       }
     }
     
-    if(ivar == 8)
-    {
-      for(int f=0; f<listOfFiles.size(); f++)
-      {
-        h[f][ivar-1]->Add(h[f][ivar]);
-      }
-      h_Clone[0][ivar-1]->Add(h_Clone[0][ivar]);
-    }
-
   }//end of ivar loop
   
 
@@ -297,8 +359,15 @@ void GetMCHistograms(TString y="2016", int sel = 0)
     for(int f=0; f<listOfFiles.size(); f++)
     {
       h[f][ivar]->Write(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()));
+      if(selection ==1)
+      {
+      	hParton[f][ivar]->Write(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()));
+      	hParticle[f][ivar]->Write(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()));
+      }
     }
     h_Clone[0][ivar]->Write(TString::Format("hScaledXSEC_%s", varReco[ivar].Data()));
+    hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
+    hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data()));
   }
   listOfFiles.clear();
   XSEC.clear();

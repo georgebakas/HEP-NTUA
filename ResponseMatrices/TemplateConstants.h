@@ -14,16 +14,25 @@ TColor color;
 
 void initFilesMapping()
 {
-
+	
 	map<TString, TString> files2016 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                               	   {"TTNominal", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
 
 	map<TString, TString> files2017 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};	                                   
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext1.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext1.root"}	};	                                   
 	
 	map<TString, TString> files2018 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};
-
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext2.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext3.root"}};
+	
 	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/"));
 	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/"));
 	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/"));                                  	
@@ -31,16 +40,17 @@ void initFilesMapping()
 	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
+
 	
 	//these are btagging Working points for each year Medium WP	
-	//floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
-	//floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
-	//floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
+	floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
+	floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
+	floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
 	
 	//these are btagging Working points for each year Loose WP
-	floatConstants.insert(pair<TString, float>("btagWP2016", 0.2217));
-	floatConstants.insert(pair<TString, float>("btagWP2017", 0.1522));
-	floatConstants.insert(pair<TString, float>("btagWP2018", 0.1241));
+	//floatConstants.insert(pair<TString, float>("btagWP2016", 0.2217));
+	//floatConstants.insert(pair<TString, float>("btagWP2017", 0.1522));
+	//floatConstants.insert(pair<TString, float>("btagWP2018", 0.1241));
 
 	topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.2));
 	topTaggerConstants.insert(pair<TString, float>("topTagger2017", 0.0));

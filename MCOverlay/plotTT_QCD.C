@@ -87,7 +87,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   	hSig_slice[0][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year1.Data()));
   	hSig_slice[1][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year2.Data()));
   }
-  //scaled TT to xsec
+  //scaled TT to xsec and LUMI
   hSigAll[0] = (TH1F*)infTT[0]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
   hSigAll[1] = (TH1F*)infTT[1]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
   hSigAll[0]->SetTitle(TString::Format("TT All Slices %s", year1.Data()));
@@ -95,7 +95,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   hSigAll[0]->SetName(TString::Format("TT All Slices %s", year1.Data()));
   hSigAll[1]->SetName(TString::Format("TT All Slices %s", year2.Data()));
 
-  //scaled qcd to xsec
+  //scaled qcd to xsec and LUMI
   hQCDAll[0] = (TH1F*)infBkg[0]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
   hQCDAll[1] = (TH1F*)infBkg[1]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
   hQCDAll[0]->SetTitle(TString::Format("QCD All Slices %s", year1.Data()));
@@ -105,6 +105,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   
   TString reason;
   //we do 17/18 so numerator is 17 --> [0] and denominator is 18 --> [1]
+  /*
   for(int i =0; i<histoNamesTT.size(); i++)
   {	
   	reason = "TT MC Overlay " + histoNamesTT[i];
@@ -116,7 +117,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   	reason = "QCD MC Overlay "+ histoNamesQCD[i];	
   	ratioPlot(hQCD_slice[0][i],hQCD_slice[1][i], recoVar, reason);
   }
-
+  */
   reason = "TT MC Overlay all slices";
   ratioPlot(hSigAll[0], hSigAll[1],recoVar,reason);
 

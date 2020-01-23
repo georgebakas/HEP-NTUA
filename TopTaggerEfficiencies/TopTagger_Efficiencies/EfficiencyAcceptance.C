@@ -26,20 +26,23 @@ void initFileNames()
 {
   
   eosPath = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/";  
-  listOfFiles.push_back("TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
-  listOfFiles.push_back("TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+  //listOfFiles.push_back("TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+  //listOfFiles.push_back("TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
+  listOfFiles.push_back("TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root");
 }
 
 void initXsections()
 {
-  XSEC.push_back(69.64);
-  XSEC.push_back(16.74);
+  //XSEC.push_back(69.64);
+  //XSEC.push_back(16.74);
+	XSEC.push_back(832);
 }
 
 void initHistoNames()
 {
-  histoNames.push_back("Signal_histo_Mtt_700_1000"); 
-  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+  //histoNames.push_back("Signal_histo_Mtt_700_1000"); 
+  //histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+	histoNames.push_back("Signal_histo_Nominal");
 }
 
 void initGlobals()
