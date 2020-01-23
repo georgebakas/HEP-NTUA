@@ -22,28 +22,28 @@ bool globalIsNominalMC;
 
 void initXsections()
 {
-  if(globalIsNominalMC)
+  if(!globalIsNominalMC)
   {
   	XSEC.push_back(69.64);
   	XSEC.push_back(16.74);
   }
   else
   {
- 	if(globalYear.EqualTo("2016"))
- 		XSEC.push_back(832.);
- 	else
- 	{
- 		XSEC.push_back(687.1);
- 		XSEC.push_back(687.1);
- 		XSEC.push_back(687.1);
- 		XSEC.push_back(687.1);
+   	if(globalYear.EqualTo("2016"))
+   		XSEC.push_back(832.);
+   	else
+   	{
+   		XSEC.push_back(687.1);
+   		XSEC.push_back(687.1);
+   		XSEC.push_back(687.1);
+   		XSEC.push_back(687.1);
  	}
   }
 }
 
 void initHistoNames()
 {
-  if(globalIsNominalMC)
+  if(!globalIsNominalMC)
   {
 	  histoNames.push_back("Signal_histo_Mtt_700_1000"); 
 	  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
@@ -77,9 +77,6 @@ void initHistoNames()
 void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
 {
   globalIsNominalMC = isNominalMC;
-  initFilesMapping();
-  initHistoNames();
-  initXsections();
   globalYear = year;
   initFilesMapping();
   initHistoNames();
@@ -121,9 +118,10 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   TH1F *hRecoParton[fileNames.size()][NVAR], *hPartonReco[fileNames.size()][NVAR];
   TH1F *hRecoParticle[fileNames.size()][NVAR], *hParticleReco[fileNames.size()][NVAR];
   TH2F *hPartonResponse[fileNames.size()][NVAR], *hParticleResponse[fileNames.size()][NVAR];
-
+  cout<<fileNames.size()<<endl;
 for(int f=0; f<fileNames.size(); f++)
 {
+
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR-2; ivar++)
   	{	
@@ -212,7 +210,7 @@ for(int f=0; f<fileNames.size(); f++)
     trIN->SetBranchAddress("triggerBit"     ,&bit);
     trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
     trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
-    trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
+    //trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
     trIN->SetBranchAddress("mJJ"   			,&mJJ);
     trIN->SetBranchAddress("yJJ"   			,&yJJ);
     trIN->SetBranchAddress("ptJJ"   		,&ptJJ);
@@ -366,7 +364,7 @@ for(int f=0; f<fileNames.size(); f++)
 						eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
 						phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
 						jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
-						jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
+						//jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
 						jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
 						
 						jetBtagSub0DCSVbb_->push_back((*jetBtagSub0DCSVbb)[(*partonMatchIdx)[indexMin]]);
@@ -648,7 +646,7 @@ for(int f=0; f<fileNames.size(); f++)
 
   TFile *outFile;
   TString nominal ="";
-  if(isNominalMC) nominal = "NominalMC"
+  if(isNominalMC) nominal = "NominalMC";
   outFile = TFile::Open(TString::Format("%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
   //outFile->cd();
   //write them to file

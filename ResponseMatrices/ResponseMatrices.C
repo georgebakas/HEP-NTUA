@@ -23,15 +23,14 @@ bool globalIsNominalMC;
 
 void initXsections()
 {
-  if(globalIsNominalMC)
+  if(!globalIsNominalMC)
   {
   	XSEC.push_back(69.64);
   	XSEC.push_back(16.74);
   }
   else
   {
- 	if(globalYear.EqualTo("2016"))
- 		XSEC.push_back(832.);
+ 	if(globalYear.EqualTo("2016")) XSEC.push_back(832.);
  	else
  	{
  		XSEC.push_back(687.1);
@@ -44,7 +43,7 @@ void initXsections()
 
 void initHistoNames()
 {
-  if(globalIsNominalMC)
+  if(!globalIsNominalMC)
   {
 	  histoNames.push_back("Signal_histo_Mtt_700_1000"); 
 	  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
@@ -78,14 +77,15 @@ void initHistoNames()
 void ResponseMatrices(TString year = "2016", bool isNominalMC= false)
 { 
   globalIsNominalMC = isNominalMC;
+  globalYear = year;
   initFilesMapping();
   initHistoNames();
   initXsections();
-  globalYear = year;
+  
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
-  
+  cout<<eospath[year.Data()]+files[year.Data()][fileNames[0].Data()]<<endl;
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 													{0,60,150,300,450,600,750,950,1100,1300}, //ptjj
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
@@ -108,7 +108,7 @@ void ResponseMatrices(TString year = "2016", bool isNominalMC= false)
   TH1F *hRecoParton[fileNames.size()][NVAR], *hPartonReco[fileNames.size()][NVAR];
   TH1F *hRecoParticle[fileNames.size()][NVAR], *hParticleReco[fileNames.size()][NVAR];
   TH2F *hPartonResponse[fileNames.size()][NVAR], *hParticleResponse[fileNames.size()][NVAR];
-
+  cout<<fileNames.size()<<endl; 
 for(int f=0; f<fileNames.size(); f++)
 {
   	//declare the histograms
@@ -191,7 +191,7 @@ for(int f=0; f<fileNames.size(); f++)
     trIN->SetBranchAddress("yJJ"   			,&yJJ);
     trIN->SetBranchAddress("ptJJ"   		,&ptJJ);
 	trIN->SetBranchAddress("jetBtagSub0"	,&jetBtagSub0);
-    trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
+    //trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
     trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   	trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
   	//deepCSV
@@ -340,7 +340,7 @@ for(int f=0; f<fileNames.size(); f++)
 						eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
 						phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
 						jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
-						jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
+						//jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
 						jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
 						
 						jetBtagSub0DCSVbb_->push_back((*jetBtagSub0DCSVbb)[(*partonMatchIdx)[indexMin]]);
@@ -674,7 +674,7 @@ for(int f=0; f<fileNames.size(); f++)
 
   TFile *outFile;
   TString nominal ="";
-  if(isNominalMC) nominal = "NominalMC"
+  if(isNominalMC) nominal = "NominalMC";
   outFile = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
   //outFile->cd();
   //write them to file

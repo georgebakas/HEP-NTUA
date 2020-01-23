@@ -166,7 +166,7 @@ void GetMCHistograms(TString y="2016", int sel = 0)
   trIN->SetBranchAddress("ptTTbarParton"  ,&ptTTbarParton);
   trIN->SetBranchAddress("partonPt"     ,&partonPt);
   trIN->SetBranchAddress("partonEta"    ,&partonEta);
-  trIN->SetBranchAddress("partonY"    ,&partonY);
+  //trIN->SetBranchAddress("partonY"    ,&partonY);
   trIN->SetBranchAddress("partonMass"     ,&partonMass);
   trIN->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
   trIN->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
@@ -252,15 +252,16 @@ void GetMCHistograms(TString y="2016", int sel = 0)
 
 	   if(selection == 1)
 	   {
+		 // cout<<"here"<<endl;
 		  xPartonAll.push_back(mTTbarParton);
 		  xPartonAll.push_back(ptTTbarParton);
 		  xPartonAll.push_back(yTTbarParton);
 		  xPartonAll.push_back((*partonPt)[0]);
 		  xPartonAll.push_back((*partonPt)[1]);
-		  xPartonAll.push_back(fabs((*partonY)[0]));
-		  xPartonAll.push_back(fabs((*partonY)[1]));
+		  xPartonAll.push_back(1);
+		  xPartonAll.push_back(1);
 		  xPartonAll.push_back((*partonMass)[0]);
-
+		 //cout<<"here"<<endl;
 		  xParticleAll.push_back(mJJGen);
 		  xParticleAll.push_back(ptJJGen);
 		  xParticleAll.push_back(yJJGen);
@@ -270,7 +271,7 @@ void GetMCHistograms(TString y="2016", int sel = 0)
 		  xParticleAll.push_back(fabs((*genjetY)[1]));
 		  xParticleAll.push_back((*genjetMassSoftDrop)[0]);
 
-		  for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
+		  for(int ivar = 0; ivar <xPartonAll.size(); ivar ++)
 	   	  {
 		     xParton = xPartonAll[ivar];
 		     xParticle = xParticleAll[ivar];  
@@ -366,8 +367,11 @@ void GetMCHistograms(TString y="2016", int sel = 0)
       }
     }
     h_Clone[0][ivar]->Write(TString::Format("hScaledXSEC_%s", varReco[ivar].Data()));
-    hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
-    hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data()));
+    if(selection ==1)
+    {
+	hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
+    	hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data())); 
+    }
   }
   listOfFiles.clear();
   XSEC.clear();

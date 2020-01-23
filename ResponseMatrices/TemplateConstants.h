@@ -17,14 +17,14 @@ void initFilesMapping()
 	
 	map<TString, TString> files2016 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
 	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                               	   {"TTNominal", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
+	                               	   {"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
 
 	map<TString, TString> files2017 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext1.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext1.root"}	};	                                   
+	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext1.root"}};	                                   
 	
 	map<TString, TString> files2018 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
 	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
