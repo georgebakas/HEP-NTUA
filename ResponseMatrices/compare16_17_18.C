@@ -11,7 +11,24 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0", TString particleVar = "genjetPt0")
+void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "partonPt0", TString particleVar = "genjetPt0",
+					 bool isEqual = true, bool isNominal = true);
+
+void compare16_17_18(bool isEqual, bool isNominal)
+{
+  const int NVAR =7;
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"}; 
+  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
+  TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"}; 
+
+  for(int ivar = 1; ivar<NVAR-2; ivar++)
+  {
+  	plotEfficiencyResponse(varReco[ivar], varParton[ivar], varParticle[ivar], isEqual, isNominal);
+  }
+}
+
+void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "partonPt0", TString particleVar = "genjetPt0",
+					 bool isEqual = true, bool isNominal = true)
 {
    gStyle->SetOptStat(0);
    gStyle->SetPaintTextFormat("4.4f");
@@ -22,9 +39,14 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
  	
    TFile *eff[3];
    //for efficiencies and acceptance
-   eff[0] = TFile::Open("./2016/UnequalBins/ResponsesEfficiency_2016.root"); 
-   eff[1] = TFile::Open("./2017/UnequalBins/ResponsesEfficiency_2017.root");
-   eff[2] = TFile::Open("./2018/UnequalBins/ResponsesEfficiency_2018.root");
+   TString binning = "EqualBins";
+   if(!isEqual) binning = "UnequalBins";
+
+   TString nominal = "";
+   if(isNominal) nominal = "NominalMC";
+   eff[0] = TFile::Open(TString::Format("./2016/%s/ResponsesEfficiency%s_2016.root",binning.Data(), nominal.Data())); 
+   eff[1] = TFile::Open(TString::Format("./2017/%s/ResponsesEfficiency%s_2017.root",binning.Data(), nominal.Data()));
+   eff[2] = TFile::Open(TString::Format("./2018/%s/ResponsesEfficiency%s_2018.root",binning.Data(), nominal.Data()));
 
    TFile *oldInf[2];
    oldInf[0] = TFile::Open("PartonEfficiencyAll_July19.root");
@@ -100,7 +122,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
 	   accOld16[i]->SetLineColor(colors[3]);
    }
 
-   TLegend *effLeg = new TLegend(0.65,0.7,0.9,0.9);
+   TLegend *effLeg = new TLegend(0.65,0.73,0.9,0.9);
    effLeg->AddEntry(eff16[0], "tTagger '16", "lp");
    effLeg->AddEntry(eff17[0], "tTagger '17", "lp");
    effLeg->AddEntry(eff18[0], "tTagger '18", "lp");
@@ -113,30 +135,45 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
    {  
 	   can_eff[i] = new TCanvas(TString::Format("Efficiency can_%s",phaseSpace[i].Data()), TString::Format("Efficiency can_%s",phaseSpace[i].Data()), 700, 600);
-	   eff18[i]->SetTitle(TString::Format("%s Efficiency '16,'17,'18;%s (GeV);Efficiency",phaseSpace[i].Data(),recoVar.Data())); 
+	   eff18[i]->SetTitle(TString::Format("%s Efficiency '16,'17,'18 %s;%s (GeV);Efficiency",phaseSpace[i].Data(), nominal.Data(),recoVar.Data())); 
 	   eff18[i]->Draw();
 	   eff17[i]->Draw("same");
 	   eff16[i]->Draw("same");
 	   effOld16[i]->Draw("same");
 	   effLeg->Draw();
-      double xmin, xmax, ymin, ymax;
-      can_eff[i]->cd();
-      gPad->GetRangeAxis(xmin,ymin,xmax,ymax);
-      if(i==0)gPad->Range(xmin,0,xmax,0.1);
-      else gPad->Range(xmin,0,xmax,0.4);
-	   can_eff[i]->Print(TString::Format("plots/%s/Efficiency%s_%s.pdf",recoVar.Data(),phaseSpace[i].Data(),recoVar.Data()),"pdf");
+
+		gPad->Update(); 
+		auto graph = eff18[i]->GetPaintedGraph(); 
+		if(i==0)
+		{
+			graph->SetMinimum(0.);
+			graph->SetMaximum(0.1); 
+		}
+		else 
+		{
+			graph->SetMinimum(0.0);
+			graph->SetMaximum(0.4); 
+		}
+		gPad->Update(); 
+
+      //if(i==0)gPad->Range(xmin,0,xmax,0.2);
+      //else gPad->Range(xmin,0,xmax,0.4);
+	   can_eff[i]->Print(TString::Format("plots%s/%s/%s/Efficiency%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
 	   
 	   can_acc[i] = new TCanvas(TString::Format("Acceptance can_%s",phaseSpace[i].Data()), TString::Format("Acceptance can_%s",phaseSpace[i].Data()), 700, 600);
-	   acc18[i]->SetTitle(TString::Format("%s Acceptance '16,'17,'18;%s (GeV);Acceptance",phaseSpace[i].Data(),recoVar.Data()));  
+	   acc18[i]->SetTitle(TString::Format("%s Acceptance '16,'17,'18 %s;%s (GeV);Acceptance",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));  
 	   acc18[i]->Draw();
 	   acc17[i]->Draw("same");
 	   acc16[i]->Draw("same");
 	   accOld16[i]->Draw("same");
-      effLeg->Draw(); 
-      can_acc[i]->cd();
-      gPad->GetRangeAxis(xmin,ymin,xmax,ymax);
-      gPad->Range(xmin,0.4,xmax,1.1);
-	   can_eff[i]->Print(TString::Format("plots/%s/Acceptance%s_%s.pdf",recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+       effLeg->Draw(); 
+       gPad->Update(); 
+		auto graphAcc = acc18[i]->GetPaintedGraph(); 
+		graphAcc->SetMinimum(0.5);
+		graphAcc->SetMaximum(1.2); 
+		gPad->Update(); 
+
+	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    }
 
    
@@ -150,7 +187,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    		 								 TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),800,600);
    		hResponses[iy][i] = (TH2F*)eff[iy]->Get(TString::Format("h%sResponse_%s",phaseSpace[i].Data() ,recoVar.Data()));
    		hResponses[iy][i]->Scale(1./hResponses[iy][i]->Integral());
-   		hResponses[iy][i]->SetTitle(TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()));
+   		hResponses[iy][i]->SetTitle(TString::Format("Response Reco-%s %s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data(), nominal.Data()));
    		if(isAngular) 
    		{	
    			hResponses[iy][i]->GetXaxis()->SetTitle(recoVar.Data());
@@ -165,7 +202,7 @@ void compare16_17_18(TString recoVar = "jetPt0",TString partonVar = "partonPt0",
    			else hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
-   		canResponse[iy][i]->Print(TString::Format("%s/UnequalBins/%s/%sResponseMatrix_%s.pdf",years[iy].Data(),recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrix%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
    	}
    }
 

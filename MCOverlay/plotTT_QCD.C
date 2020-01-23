@@ -19,9 +19,9 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason);
 
 void plotTT_QCD(TString year1 = "2017", TString year2 = "2018")
 {
-	const int NVAR = 11;
-	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1",
-               "mva", "topTagger1", "mTop", "jetMassSoftDrop"};
+	const int NVAR = 9;
+	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1"
+							 ,"mTop", "jetMassSoftDrop"};
 
 	for(int ivar = 1; ivar<NVAR; ivar++)
 	{
@@ -133,10 +133,12 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
 {
   TString titleNum = hNum->GetTitle();
   TString titleDenom = hDenom->GetTitle();
-  TLegend *closureLegend = new TLegend(0.6,0.55,0.9,0.9);
+  TLegend *closureLegend = new TLegend(0.65,0.73,0.9,0.9);
   closureLegend->AddEntry(hNum,titleNum, "lep");
   closureLegend->AddEntry(hDenom,titleDenom, "lep");
 
+  //hNum->Scale(1./hNum->Integral());
+  //hDenom->Scale(1./hDenom->Integral());
   //hNum->SetTitle(TString::Format,reason ));
   //hDenom->SetTitle("QCD Closure");
 
@@ -203,4 +205,5 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
   c1->Print(TString::Format("./Comparison/%s/comparison_mc17_18_%s.pdf",recoVar.Data(),reason.Data()),"pdf");
+  //c1->Print(TString::Format("./ComparisonScaledIntegral/%s/comparison_mc17_18_%s.pdf",recoVar.Data(),reason.Data()),"pdf");
 }

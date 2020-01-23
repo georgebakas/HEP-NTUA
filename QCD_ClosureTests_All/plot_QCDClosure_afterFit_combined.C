@@ -26,7 +26,6 @@ void plot_QCDClosure_afterFit_combined(TString year = "2016", bool useScaleFacto
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
     plotYearVar(year,recoVar[ivar], useScaleFactor, fitRecoVar[ivar]);
-    break;
   }
 }
 void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= true, TString fitRecoVar= "leadingJetPt")
@@ -223,6 +222,6 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
     hRatio->Draw();
     //fitResult->Draw("same");
   } 
-  //if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
-  //else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
