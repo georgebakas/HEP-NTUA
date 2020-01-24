@@ -23,10 +23,9 @@ void plotTT_QCD(TString year1 = "2017", TString year2 = "2018")
 	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1"
 							 ,"mTop", "jetMassSoftDrop"};
 
-	for(int ivar = 1; ivar<NVAR; ivar++)
+	for(int ivar = 0; ivar<NVAR; ivar++)
 	{
 		plotYearVar(year1, year2,recoVar[ivar]);
-
 	}
 }
 void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
@@ -82,10 +81,10 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   	hQCD_slice[0][i] = (TH1F*)infBkg[0]->Get(TString::Format("h_%s_%s",histoNamesQCD[i].Data(),recoVar.Data()));
   	hQCD_slice[1][i] = (TH1F*)infBkg[1]->Get(TString::Format("h_%s_%s",histoNamesQCD[i].Data(),recoVar.Data()));
 
-  	hSig_slice[0][i]->SetTitle(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year1.Data()));
-  	hSig_slice[1][i]->SetTitle(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year2.Data()));
-  	hSig_slice[0][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year1.Data()));
-  	hSig_slice[1][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year2.Data()));
+  	hQCD_slice[0][i]->SetTitle(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year1.Data()));
+  	hQCD_slice[1][i]->SetTitle(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year2.Data()));
+  	hQCD_slice[0][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year1.Data()));
+  	hQCD_slice[1][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year2.Data()));
   }
   //scaled TT to xsec and LUMI
   hSigAll[0] = (TH1F*)infTT[0]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
@@ -105,7 +104,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   
   TString reason;
   //we do 17/18 so numerator is 17 --> [0] and denominator is 18 --> [1]
-  /*
+  
   for(int i =0; i<histoNamesTT.size(); i++)
   {	
   	reason = "TT MC Overlay " + histoNamesTT[i];
@@ -117,14 +116,16 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   	reason = "QCD MC Overlay "+ histoNamesQCD[i];	
   	ratioPlot(hQCD_slice[0][i],hQCD_slice[1][i], recoVar, reason);
   }
-  */
+  
+  /*
   reason = "TT MC Overlay all slices";
   ratioPlot(hSigAll[0], hSigAll[1],recoVar,reason);
 
   reason = "QCD MC Overlay all slices";
   ratioPlot(hQCDAll[0], hQCDAll[1],recoVar,reason);
- 
-
+  */
+  histoNamesQCD.clear();
+  histoNamesTT.clear();
 }
 
 
@@ -139,8 +140,10 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
 
   //hNum->Scale(1./hNum->Integral());
   //hDenom->Scale(1./hDenom->Integral());
-  //hNum->SetTitle(TString::Format,reason ));
-  //hDenom->SetTitle("QCD Closure");
+  //cout<<"---------------"<<endl;
+  //cout<<reason<<endl;
+  //cout<<"hNum name: "<<hNum->GetTitle()<<endl;
+  //cout<<"hDenom name: "<<hDenom->GetTitle()<<endl;
 
   auto c1 = new TCanvas(reason+recoVar, reason+recoVar, 800,700);
   auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.4); 

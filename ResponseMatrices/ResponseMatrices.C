@@ -30,6 +30,7 @@ void initXsections()
   }
   else
   {
+  	//this is for nominal files
  	if(globalYear.EqualTo("2016")) XSEC.push_back(832.);
  	else
  	{

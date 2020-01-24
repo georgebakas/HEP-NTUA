@@ -74,10 +74,10 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
 
   if(recoVar.EqualTo("jetMassSoftDrop0") || recoVar.EqualTo("jetMassSoftDrop1"))
   {
-    hBkg_CR->Rebin(5);
-    hBkg_SR->Rebin(5);
-    hBkg_CRExpYield->Rebin(5);
-    hSig_CRExpYield->Rebin(5);
+    hBkg_CR->Rebin(2);
+    hBkg_SR->Rebin(2);
+    hBkg_CRExpYield->Rebin(2);
+    hSig_CRExpYield->Rebin(2);
   }
   
   TFile *fitFile = TFile::Open(TString::Format("fitResults_%s.root",year.Data()));
@@ -97,7 +97,7 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
         float chi = hBkg_CR->GetBinCenter(ibin);
         SF = fitResult->Eval(chi);
         //cout<<SF<<endl;
-        hBkg_CR->SetBinContent(ibin, binContent / SF);
+        hBkg_CR->SetBinContent(ibin, binContent * SF);
         cout<<"after fit: "<<hBkg_SR->GetBinContent(ibin)/hBkg_CR->GetBinContent(ibin)<<endl;
       }
     }
@@ -122,6 +122,7 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
 void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason, bool isClosure, 
   bool useScaleFactor, TF1 *fitResult)
 {
+  cout<<"after fitINSIDE: "<<hNum->GetBinContent(9)/hDenom->GetBinContent(9)<<endl;
   TString titleNum = hNum->GetTitle();
   TString titleDenom = hDenom->GetTitle();
   TLegend *closureLegend = new TLegend(0.65,0.65,0.9,0.9);

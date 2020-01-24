@@ -38,8 +38,8 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 	infQCDLoose = TFile::Open(TString::Format("%s/Histo_QCD%s_Loose.root", str.Data(),bEnr.Data()));
 	infQCDReducedLoose = TFile::Open(TString::Format("%s/Histo_QCD%s_reduced_Loose.root",str.Data(),bEnr.Data()));
 
-	TH1F *hData[3], *hDataReduced[3];
-	TH1F *hQCD[3], *hQCDReduced[3];
+	TH1F *hData[2], *hDataReduced[2];
+	TH1F *hQCD[2], *hQCDReduced[2];
 	hfData = new TH1F(TString::Format("hTransf_%s",year.Data()), TString::Format("hTransf_%s",year.Data()),2,0,2);	
     hfQCD  = new TH1F(TString::Format("hTransfClosure_%s",year.Data()), TString::Format("hTransfClosure_%s",year.Data()),2,0,2);
      	
@@ -69,11 +69,11 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 
 	for(int i =1; i<2; i++)
 	{
-		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_mTop_%dbtag_expYield",i));
-		hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i));
+		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
+		hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
 
-		hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_mTop_%dbtag_expYield",i));
-		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i));
+		hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
+		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
 
 		tFactorData[i] = (hDataReduced[i]->GetEntries() / hData[i]->GetEntries());
 		tFactorDataError[i] = TMath::Sqrt((hDataReduced[i]->GetEntries()*(hData[i]->GetEntries() + hDataReduced[i]->GetEntries()))/ TMath::Power(hData[i]->GetEntries(),3));
@@ -121,7 +121,7 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
       hfData->GetYaxis()->SetRangeUser(0.1,0.8);
 	  can = new TCanvas(TString::Format("can_%s", year.Data()),TString::Format("can_%s", year.Data()),800,600);
 	  hfData->Draw("hist e");
-	  can->Print(TString::Format("%s/Ryield/TransferFactor.pdf",year.Data()),"pdf");
+	  can->Print(TString::Format("%s/Ryield/TransferFactor%s.pdf",year.Data(), bEnr.Data()),"pdf");
 
 	  hfData->Write("dataTransferFactor");
 	  //now plot them QCD
@@ -134,16 +134,9 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
       hfQCD->GetYaxis()->SetRangeUser(0.1,0.5);
 	  canQCD = new TCanvas(TString::Format("canQCD_%s", year.Data()),TString::Format("canQCD_%s", year.Data()),800,600);
 	  hfQCD->Draw("hist e");
-	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral.pdf",year.Data()),"pdf");
+	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral%s.pdf",year.Data(), bEnr.Data()),"pdf");
 
 	  hfQCD->Write("ClosureTest_TransferFactor");
-  
-
-	
-
-   
-
-		
 
 
 
