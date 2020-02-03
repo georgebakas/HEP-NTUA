@@ -25,6 +25,7 @@ map<TString, float> NQCD2_reduced;
 TColor color;
 
 map<TString, float> luminosity;
+map<TString, TString> eospath;
 //std::vector< std::vector <Float_t> > BND;
 
 
@@ -32,26 +33,37 @@ map<TString, float> luminosity;
 
 void initFilesMapping(bool free_eb = true)
 {
-	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
-	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2016/Histo_SubdominantBkgs_100.root"}};
-																		 
-	map<TString, TString> files2017 = {{"data",  "2017/Histo_Data_2017_100.root"},
-	                                   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2017/Histo_SubdominantBkgs_100.root"}};
-	
-	map<TString, TString> files2018 = {{"data",  "2018/Histo_Data_2018_100.root"},
-	                                   {"mcSig", "2018/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2018/Histo_SubdominantBkgs_100.root"}};
-																		 
-	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
-	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
-	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
-
 	
 	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
 	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
 	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
+
+
+	map<TString, TString> files2016 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                               	   {"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
+
+	map<TString, TString> files2017 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext1.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext1.root"}};	                                   
+	
+	map<TString, TString> files2018 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext2.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext3.root"}};
+	
+	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/"));
+	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/"));
+	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/"));   
+
+	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
+	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
+	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
 
 	
 	luminosity.insert(pair<TString, float>("2016",35920));

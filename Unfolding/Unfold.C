@@ -81,11 +81,12 @@ void Unfold(TString inYear = "2016", bool isParton = true)
                                                         //{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 
   float LUMI = luminosity[year];
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/ABCDMethod/free_eb/SignalHistograms_ABCDMethod_freeEb.root", 
+  TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/FiducialMeasurement/UnequalBinning/simpleMassFit/SignalHistograms.root", 
                                   year.Data()));    
 
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
 
+  TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplates.root", year.Data()));
   //whether parton or particle
   varParton = "Parton";
   if(!isParton) varParton = "Particle";
@@ -107,11 +108,19 @@ void Unfold(TString inYear = "2016", bool isParton = true)
   TH1F *hUnf_Clone[BND_reco.size()];
   //TH1 *histRhoi[BND_reco.size()];
 
+  //theoretical Histogram
+  TH1F *hTheory[BND_reco.size()];
+  
+
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()];
   TFile *outf = TFile::Open(TString::Format("%s/OutputFile_%s.root", year.Data(), varParton.Data()),"UPDATE");
 
   for(int ivar =0; ivar<BND_reco.size(); ivar++)
   {
+    //thory histogram:
+    hTheory[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data())); 
+    hTheory[ivar]->SetLineColor(kRed); //scaled to lumi and width
+
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
     std::copy(BND_reco[ivar].begin(), BND_reco[ivar].end(), tempBND);
@@ -177,20 +186,16 @@ void Unfold(TString inYear = "2016", bool isParton = true)
       float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
       hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
     }
-    //hUnf[ivar]->Scale(1/LUMI, "width");
-    //hUnf_Clone[ivar]->Scale(1/LUMI, "width");
-    //hUnf_Clone[ivar]->SetLineColor(kRed);
+    hUnf[ivar]->Scale(1/luminosity[year], "width");
 	   
     outf->cd();
     hSig[ivar]->Write(TString::Format("RecoInputAcc_%s", variable[ivar].Data()));
     hUnf[ivar]->Write(TString::Format("FinalOut_%s", variable[ivar].Data()));
     hUnf_Clone[ivar]->Write(TString::Format("UnfOut_%s", variable[ivar].Data()));
 
-    //check shape
-    //hUnf[ivar]->Scale(1./hUnf[ivar]->Integral());
-    //hUnf_Clone[ivar]->Scale(1./hUnf_Clone[ivar]->Integral());
 
 	hUnf[ivar]->Draw();
+  hTheory[ivar]->Draw("same");
 	//hUnf_Clone[ivar]->Draw("same");
   }
   outf->Close();
