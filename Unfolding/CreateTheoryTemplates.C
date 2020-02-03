@@ -88,7 +88,7 @@ void initHistoNames()
   }
 }
 
-void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true, bool isNominalMC= true)
+void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 {
   globalIsNominalMC = isNominalMC;
   globalYear = inYear;
@@ -132,9 +132,10 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true, bool i
  cout<<"ok with histograms!"<<endl;
   
 
-  cout<<"Working in file: "<<files[year.Data()][fileNames[f].Data()]<<endl;
+  //cout<<"Working in file: "<<files[year.Data()][fileNames[f].Data()]<<endl;
   TFile *file = TFile::Open(eospath[year.Data()]+files[year.Data()][fileNames[f].Data()]);
   TTree *trIN = (TTree*)file->Get("boosted/events");
+  cout<<"working in file:"<<eospath[year.Data()]+files[year.Data()][fileNames[f].Data()]<<endl;
   //parton
   std::vector<float> *partonPt(0), *partonPhi(0), *partonMass(0),*partonMatchDR(0),*partonEta(0);
   float yTTbarParton(0), ptTTbarParton(0), mTTbarParton(0);
@@ -180,7 +181,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true, bool i
   std::vector<float> xPartonAll(0);
   std::vector<float> xParticleAll(0);
   int decade(0);
-  
+
   for(int iev=1;iev<NN;iev++) 
   {
     double progress = 10.0*iev/(1.0*NN);
@@ -251,7 +252,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isParton = true, bool i
 		hParton[0][ivar]->Add(hParton[f][ivar]);
 
 		hParticle[f][ivar]->Scale(weights[f]*LUMI);
-		hParticle[0][ivar]->Add(hParton[f][ivar]);
+		hParticle[0][ivar]->Add(hParticle[f][ivar]);
 	  }
   }
 
