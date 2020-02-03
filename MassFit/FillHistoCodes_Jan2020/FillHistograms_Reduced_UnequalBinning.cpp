@@ -204,8 +204,8 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   const int N_JETMASS = 100;
   const int N_MVA = 100;
 
-  float selMvaCut=0.2;
-  float floatBTag = 0.8838;
+ float selMvaCut=topTaggerCuts[year];
+ float floatBTag = 0.8838;
   
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21

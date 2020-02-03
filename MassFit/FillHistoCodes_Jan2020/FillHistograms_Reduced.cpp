@@ -202,7 +202,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
   const int N_JETMASS = 100;
   const int N_MVA = 100;
 
-  float selMvaCut=0.2;
+  float selMvaCut=topTaggerCuts[year];
   float floatBTag = 0.8838;
   
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
@@ -675,13 +675,13 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
   if(isLoose) loose = "_Loose";
   
   if(selection ==0)
-    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100_reduced_%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100_reduced%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
   else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced_%s.root",year.Data(), loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced%s.root",year.Data(), loose.Data()), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {

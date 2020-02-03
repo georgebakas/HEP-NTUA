@@ -201,9 +201,13 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   const int N_JETMASS = 100;
   const int N_MVA = 100;
 
-  float selMvaCut=0.2;
-  float floatBTag = 0.8838;
+  float selMvaCut=topTaggerCuts[year];
   
+  cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
+  cout<<"triggerCRConst[year.Data()]]: "<<triggerCRConst[year.Data()]<<endl;
+  cout<<"topTagger: "<<selMvaCut<<endl;
+  cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
+
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
                        {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
@@ -229,8 +233,9 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
  
  for(int f=0; f<listOfFiles.size(); f++)
  {
-  int counter;
-  cout<<"Entering "<<listOfFiles[f]<<endl;
+  int counter(0);
+  cout<<"Entering "<<eosPath+listOfFiles[f]<<endl;
+  continue;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
   
