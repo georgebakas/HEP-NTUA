@@ -54,7 +54,8 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   	//for CR use Loose WP files
   	if(icat ==0 )infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data()));  
   	//for SR use Medium WP files
-  	else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data()));  
+  	else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data()));
+    //infMC = TFile::Open(TString::Format("%s/output_2016_mcSig_02_extended.root",year.Data()));  
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
     if (icat==0) {
@@ -120,8 +121,8 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
     RooBernstein sigComb("ttbar_bkg_"+CAT,"ttbar_bkg_"+CAT,*x,RooArgList(bSig0,bSig1,bSig2,bSig3));
 
-    RooRealVar m1("m_"+CAT, "m1"+CAT, 130,120,140);
-    RooRealVar s1("s_"+CAT, "s1"+CAT, 50, 10, 200);
+    RooRealVar m1("m_"+CAT, "m1"+CAT, 130,120,200);
+    RooRealVar s1("s_"+CAT, "s1"+CAT, 50, 10, 100);
     RooGaussian g1("gaus_"+CAT, "g1"+CAT, *x, m1,s1);
 
     RooRealVar fsig1("ttbar_f1_"+CAT,"ttbar_f1_"+CAT,0,0,1);

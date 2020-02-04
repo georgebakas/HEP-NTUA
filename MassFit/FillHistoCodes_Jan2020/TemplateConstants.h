@@ -147,8 +147,8 @@ void initFilesMapping(bool isLoose)
 	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8.root"},
 	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8.root"},
 	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8.root"},
-	                           	   {"ST_t-channel_top_5f", "ST_t-channel_antitop_5f_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               {"ST_t-channel_antitop_5f", "ST_t-channel_top_5f_TuneCP5_13TeV-powheg-pythia8.root"}};
+	                           	   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_TuneCP5_13TeV-powheg-pythia8.root"}};
 
 	map<TString, float> sub16XSEC = {{"DY",1208 },
 	                               {"WJetsToQQ_HT180",3105 },
