@@ -235,7 +235,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
  {
   int counter(0);
   cout<<"Entering "<<eosPath+listOfFiles[f]<<endl;
-  continue;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
   

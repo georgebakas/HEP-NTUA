@@ -234,7 +234,7 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
  for(int f=0; f<listOfFiles.size(); f++)
  {
   int counter(0);
-  cout<<"Entering "<<listOfFiles[f]<<endl;
+  cout<<"Entering "<<eosPath+listOfFiles[f]<<endl;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
   
