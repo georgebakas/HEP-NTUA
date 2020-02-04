@@ -193,7 +193,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   LUMI = luminosity[year.Data()];
   LUMI_CR = luminosityCR[year.Data()];
   initGlobals();  
-  selection = sel;
+  
   gStyle->SetOptStat(0);
   const int NVAR =11;
   const int N_MJJ = 20;
@@ -205,7 +205,10 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   const int N_MVA = 100;
 
  float selMvaCut=topTaggerCuts[year];
- float floatBTag = 0.8838;
+ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
+  cout<<"triggerCRConst[year.Data()]]: "<<triggerCRConst[year.Data()]<<endl;
+  cout<<"topTagger: "<<selMvaCut<<endl;
+  cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
   
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
@@ -234,8 +237,8 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
  
  for(int f=0; f<listOfFiles.size(); f++)
  {
-  int counter;
-  cout<<"Entering "<<listOfFiles[f]<<endl;
+  int counter(0);
+  cout<<"Entering "<<eosPath+listOfFiles[f]<<endl;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
   
