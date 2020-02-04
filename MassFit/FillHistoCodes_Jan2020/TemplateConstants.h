@@ -147,8 +147,8 @@ void initFilesMapping(bool isLoose)
 	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8.root"},
 	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8.root"},
 	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8.root"},
-	                           	   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_TuneCP5_13TeV-powheg-pythia8.root"}};
+	                           	   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               {"ST_t-channel_top_5f", "ST_t-channel_top_5f_TuneCP5_13TeV-powheg-pythia8.root"}};
 
 	map<TString, float> sub16XSEC = {{"DY",1208 },
 	                               {"WJetsToQQ_HT180",3105 },
@@ -172,8 +172,8 @@ void initFilesMapping(bool isLoose)
 	                               {"ST_tW_antitop_5f",34.97},
 	                               {"ST_t-channel_top_4f", 113.3},
 	                               {"ST_t-channel_antitop_4f",67.91},
-	                           	   {"ST_t-channel_top_5f",71.74},
-	                           	   {"ST_t-channel_antitop_5f",119.7}};
+	                           	   {"ST_t-channel_antitop_5f",71.74},
+	                           	   {"ST_t-channel_top_5f",119.7}};
 
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016",sub16));
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2017",sub17));
