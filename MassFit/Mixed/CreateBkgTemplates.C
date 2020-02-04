@@ -26,6 +26,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   w->import(*x);
   //---- first do the data template ---------------
   TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
+  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
   //hData->Rebin(2);
   RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);  

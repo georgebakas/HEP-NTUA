@@ -120,13 +120,13 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
     RooBernstein sigComb("ttbar_bkg_"+CAT,"ttbar_bkg_"+CAT,*x,RooArgList(bSig0,bSig1,bSig2,bSig3));
 
-    RooRealVar m1("m_"+CAT, "m1"+CAT, 130,120,200);
-    RooRealVar s1("s_"+CAT, "s1"+CAT, 50, 10, 100);
+    RooRealVar m1("m_"+CAT, "m1"+CAT, 130,120,140);
+    RooRealVar s1("s_"+CAT, "s1"+CAT, 50, 10, 200);
     RooGaussian g1("gaus_"+CAT, "g1"+CAT, *x, m1,s1);
 
     RooRealVar fsig1("ttbar_f1_"+CAT,"ttbar_f1_"+CAT,0,0,1);
     RooRealVar fsig2("ttbar_f2_"+CAT,"ttbar_f2_"+CAT,0.1,0.01,1);
-    RooRealVar fsig3("ttbar_f3_"+CAT,"ttbar_f3_"+CAT,0.1,0.01,1);
+    RooRealVar fsig3("ttbar_f3_"+CAT,"ttbar_f3_"+CAT,0.1,0.,1);
 	
     RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb,g1),RooArgList(fsig1,fsig2,fsig3));
     cout<<"ttbar_pdf_"+CAT<<endl;

@@ -9,6 +9,7 @@ map<TString, int> variableConstant;
 TColor color;
 
 map<TString, float> luminosity;
+map<TString, float> floatConstants	;
 
 
 void initFilesMapping()
@@ -97,6 +98,10 @@ void initFilesMapping()
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.91e+02));
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 2.55e+02));
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 3.27e+02));
+
+	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
+	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
+	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj
 	BND[variableConstant["ptJJ"]].push_back({0,60,150,300,450,600,750,950,1100,1300}); //ptjj

@@ -11,13 +11,11 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   
   //Take SR data from Medium WP
   TFile *inf = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
-  TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop"+CUT+"_2btag");
+  TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
   //h2b->Rebin(REBIN);
-  // -----------------------------------------
-  const float LUMI = 35922;
-  
-  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));
-  TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_"+CUT+"100.root",year.Data()));
+  // -----------------------------------------  
+  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));
+  TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_100.root",year.Data()));
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
   
@@ -43,11 +41,15 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   
   //---- QCD correction factor ---------------------------
   
-  RooRealVar kQCD2b("kQCD_2b","kQCD_2b",1e-3,-1,1);
+  RooRealVar kQCD2b_0("kQCD_2b_0","kQCD_2b_0",1e-3,-1,1);
+  //RooRealVar kQCD2b_0("kQCD_2b_0","kQCD_2b_0",1e-2,1e-4,1);
+  RooRealVar kQCD2b_1("kQCD_2b_1","kQCD_2b_1",1e-2,1e-4,1e-3);
   
-  kQCD2b.setConstant(false);
+  kQCD2b_0.setConstant(false);
+  kQCD2b_1.setConstant(false);
   
-  RooFormulaVar qcdCor_2b("qcdCor_2b","1+@0*@1",RooArgList(*x,kQCD2b));
+  RooFormulaVar qcdCor_2b("qcdCor_2b","1+@0*@1",RooArgList(*x,kQCD2b_0));
+  //RooFormulaVar qcdCor_2b("qcdCor_2b","@0*@1+@0*@0*@2",RooArgList(*x,kQCD2b_0,kQCD2b_1));
   //---- corrected QCD -----------------------------------
   
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
@@ -55,8 +57,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,1e+4);
  
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+5);  
-
-  
   
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,1e+5);
   
