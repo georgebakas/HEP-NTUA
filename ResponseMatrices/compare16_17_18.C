@@ -21,7 +21,7 @@ void compare16_17_18(bool isEqual, bool isNominal)
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
   TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"}; 
 
-  for(int ivar = 1; ivar<NVAR-2; ivar++)
+  for(int ivar = 0; ivar<NVAR-2; ivar++)
   {
   	plotEfficiencyResponse(varReco[ivar], varParton[ivar], varParticle[ivar], isEqual, isNominal);
   }
