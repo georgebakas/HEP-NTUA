@@ -156,7 +156,8 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   closure_pad1->SetBottomMargin(0.005);
   closure_pad1->cd();
   //closure_pad1->SetGrid();
-  hNum->GetYaxis()->SetRangeUser(hNum->GetMaximum()-0.4, hNum->GetMaximum()+0.2);
+  if(reason.Contains("Efficiency")) hNum->GetYaxis()->SetRangeUser(0,0.1);
+  else hNum->GetYaxis()->SetRangeUser(hNum->GetMaximum()-0.4, hNum->GetMaximum()+0.2);
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
   hNum->GetYaxis()->SetTitleOffset(1.4); 

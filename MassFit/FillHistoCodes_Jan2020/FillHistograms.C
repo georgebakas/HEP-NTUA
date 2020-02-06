@@ -242,8 +242,11 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   {
     float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights(); 
     weights.push_back(XSEC[f]/NORM);  
-  }
-  
+  } 
+  cout<<"file: "<<eosPath+listOfFiles[f]<<endl;
+  cout<<"weight: "<<weights[f]<<endl;
+  cout<<"LUMI: "<<LUMI<<endl;
+  cout<<"LUMI_CR: "<<LUMI_CR<<endl;
   int decade(0);
   int NN = trIN->GetEntries();
   

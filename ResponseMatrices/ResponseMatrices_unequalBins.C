@@ -26,18 +26,24 @@ void initXsections()
   {
   	if(globalYear.EqualTo("2016"))
   	{
-  		XSEC.push_back(80.73);
-  		XSEC.push_back(21.35);
+  		//XSEC.push_back(80.73);
+  		//XSEC.push_back(21.35);
+  		XSEC.push_back(69.14);
+        XSEC.push_back(16.74);
   	}
   	else if(globalYear.EqualTo("2017"))
   	{
-  		XSEC.push_back(231.01);
-  		XSEC.push_back(61.08);
-  	}
+  		//XSEC.push_back(231.01);
+  		//XSEC.push_back(61.08);
+  	 	XSEC.push_back(69.14);
+        XSEC.push_back(16.74);
+  	} 
   	else if(globalYear.EqualTo("2018"))
   	{
-  		XSEC.push_back(114.66);
-  		XSEC.push_back(30.32);
+  		//XSEC.push_back(114.66);
+  		//XSEC.push_back(30.32);
+  		XSEC.push_back(69.14);
+        XSEC.push_back(16.74);
   	}
   }
   else
