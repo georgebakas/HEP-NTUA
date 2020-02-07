@@ -84,7 +84,7 @@ void Unfold(TString inYear = "2016", bool isParton = true)
   TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/FiducialMeasurement/UnequalBinning/simpleMassFit/SignalHistograms.root", 
                                   year.Data()));    
 
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
 
   TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplates.root", year.Data()));
   //whether parton or particle
@@ -175,29 +175,31 @@ void Unfold(TString inYear = "2016", bool isParton = true)
     cout<<"hUnf received!!"<<endl;
     cout<<variable[ivar]<<endl;
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+
+    
     for(int i =1; i<=hUnf[ivar]->GetNbinsX(); i++)
     {
       float eff = efficiency->GetEfficiency(i);
       cout<<"i= "<<i<<" eff="<<eff<<endl;
-      cout<<hUnf_Clone[ivar]->GetBinContent(i)<<endl;
-      hUnf[ivar]->SetBinContent(i, hUnf[ivar]->GetBinContent(i)/eff);
+      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
+      hUnf[ivar]->SetBinContent(i, newContent);
       cout<<hUnf[ivar]->GetBinContent(i)<<endl;
       //handle errors as well--> asymmetric error from acceptance
       float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
       hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
     }
-    hUnf[ivar]->Scale(1/luminosity[year], "width");
-	   
-    outf->cd();
-    hSig[ivar]->Write(TString::Format("RecoInputAcc_%s", variable[ivar].Data()));
-    hUnf[ivar]->Write(TString::Format("FinalOut_%s", variable[ivar].Data()));
-    hUnf_Clone[ivar]->Write(TString::Format("UnfOut_%s", variable[ivar].Data()));
+    
+	  hUnf[ivar]->Scale(1/luminosity[year], "width");
+    //outf->cd();
+    //hSig[ivar]->Write(TString::Format("RecoInputAcc_%s", variable[ivar].Data()));
+    //hUnf[ivar]->Write(TString::Format("FinalOut_%s", variable[ivar].Data()));
+    //hUnf_Clone[ivar]->Write(TString::Format("UnfOut_%s", variable[ivar].Data()));
 	
   	hTheory[ivar]->Draw();
   	hUnf[ivar]->Draw("same");
-    break;
+    //break;
   }
-  outf->Close();
+  //outf->Close();
   
 }
 
@@ -213,7 +215,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	
 	const Int_t nScan=1000;
 	Double_t tauMax=20;
- 	Double_t tauMin=10E-4;
+ 	Double_t tauMin=10E-9;
  	float tau = tauMin;
  	float step = (tauMax - tauMin)/nScan;
 
@@ -222,7 +224,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	//run all over taus and find the one that shows the minimum average global correlation 
 	do{
 
-		unfold.DoUnfold(tau);
+		//unfold.DoUnfold(tau);
 		float rho = unfold.GetRhoAvg();
 		r[i] = rho;
 		t[i] = tau;
@@ -230,15 +232,17 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 		tau = tau +step;
 		i++;
 	}while (i <= nScan);
+ 
 
-	TGraph *globalCorrGraph = new TGraph(nScan,t,r);
-	TCanvas *canGr = new TCanvas (TString::Format("globalCorrGraph_%s",variable.Data()), TString::Format("globalCorrGraph_%s",variable.Data()),
-                                 800,600);
-	globalCorrGraph->Draw();
+//	TGraph *globalCorrGraph = new TGraph(nScan,t,r);
+//	TCanvas *canGr = new TCanvas (TString::Format("globalCorrGraph_%s",variable.Data()), TString::Format("globalCorrGraph_%s",variable.Data()),
+ //                                800,600);
+//	globalCorrGraph->Draw();
 	//==========================================================================  
 	// retreive results into histograms
 	// get unfolded distribution
 
+/*
  	TFile *outf = TFile::Open(TString::Format("%s/OutputFileRhoGraphs_%s.root",year.Data(), varParton.Data()),"UPDATE");
  	globalCorrGraph->Write(TString::Format("globalCorrGraph_%s",variable.Data()));
  	outf->Close();
@@ -265,9 +269,9 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 
   }while (found == true);
   cout<<"minTau= "<<minTau<<endl;
-
-
-  unfold.DoUnfold(minTau);
+  */
+  tauMin = 10e-9;
+  unfold.DoUnfold(tauMin);
   
   //set up a bin map, excluding underflow and overflow bins
   // the binMap relates the the output of the unfolding to the final
