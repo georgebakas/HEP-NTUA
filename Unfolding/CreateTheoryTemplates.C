@@ -182,13 +182,13 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   bool partonCuts, particleCuts;
   
   long NN = trIN->GetEntries();
-    //NN = 100000;
+    //NN = 1000;
   std::cout<<"Entries: "<<NN<<std::endl;
   std::vector<float> xPartonAll(0);
   std::vector<float> xParticleAll(0);
   int decade(0);
 
-  for(int iev=1;iev<NN;iev++) 
+  for(int iev=0;iev<NN;iev++) 
   {
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress); 
@@ -196,20 +196,22 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
       cout<<10*k<<" %"<<endl;
     decade = k;
    trIN->GetEntry(iev);
-   xPartonAll.clear();
+  //cout<<"entry; "<<trIN->GetEntry(iev)<<endl; 
+  xPartonAll.clear();
    xParticleAll.clear();
-
-	 int leadingPt =0;
+   if(nJets > 1)
+   {
+   int leadingPt =0;
    int genLeadingPt = 0;
    int subleadingPt = 1;
    int genSubleadingPt = 1;
-
   if((*partonPt)[0] < (*partonPt)[1])
     {
         subleadingPt =0;
         leadingPt = 1;
     }
-    xPartonAll.push_back(mTTbarParton);
+ // cout<<"ok"<<endl;  
+  xPartonAll.push_back(mTTbarParton);
     xPartonAll.push_back(ptTTbarParton);
     xPartonAll.push_back(yTTbarParton);
     xPartonAll.push_back((*partonPt)[leadingPt]);
@@ -234,7 +236,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
       (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
     
   }
-
+    }
 	for(int ivar = 0; ivar < xParticleAll.size(); ivar++)
 	{
 		if(partonCuts) hParton[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
