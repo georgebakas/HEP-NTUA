@@ -1,4 +1,4 @@
-#include <iostream>
+	#include <iostream>
 #include "TTree.h"
 #include "TFile.h"
 #include "TMath.h"
@@ -363,14 +363,14 @@ void GetMCHistograms(TString y="2016", int sel = 0)
       if(selection ==1)
       {
       	hParton[f][ivar]->Write(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()));
-      	hParticle[f][ivar]->Write(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()));
+      	hParticle[f][ivar]->Write(TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()));
       }
     }
     h_Clone[0][ivar]->Write(TString::Format("hScaledXSEC_%s", varReco[ivar].Data()));
     if(selection ==1)
     {
 	hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
-    	hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data())); 
+    hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data())); 
     }
   }
   listOfFiles.clear();
