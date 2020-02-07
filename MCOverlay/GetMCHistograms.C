@@ -90,7 +90,7 @@ void initGlobals()
   initHistoNames();
 }
  
-void GetMCHistograms(TString y="2016", int sel = 0)
+void GetMCHistograms(TString y="2017", int sel = 1)
 {
   year =y;
   initFilesMapping();
