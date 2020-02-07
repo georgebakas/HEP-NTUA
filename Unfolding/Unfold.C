@@ -84,7 +84,7 @@ void Unfold(TString inYear = "2016", bool isParton = true)
   TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/FiducialMeasurement/UnequalBinning/simpleMassFit/SignalHistograms.root", 
                                   year.Data()));    
 
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
 
   TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplates.root", year.Data()));
   //whether parton or particle
@@ -195,6 +195,7 @@ void Unfold(TString inYear = "2016", bool isParton = true)
 	
   	hTheory[ivar]->Draw();
   	hUnf[ivar]->Draw("same");
+    break;
   }
   outf->Close();
   

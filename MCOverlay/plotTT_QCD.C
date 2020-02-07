@@ -63,16 +63,31 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   TH1F *hQCD_slice[2][6], *hSig_slice[2][2];
 
 
+  /*
+  all
+  hScaledXSEC_mJJ
+  hPartonScaledXSEC_mJJ
+  hParticleScaledXSEC_mJJ
+
+  per slice
+  h_Signal_histo_Mtt_700_1000_mJJ
+  hParton_Signal_histo_Mtt_700_1000_mJJ
+  hParticle_Signal_histo_Mtt_700_1000_mJJ
+  */
+
   //get the histograms 
   //tt slices
+  TString level = ""; //reco 
+  //TString level = "Parton";
+  //TString level = "Particle";
   for(int i =0; i<histoNamesTT.size(); i++)
   {
-  	hSig_slice[0][i] = (TH1F*)infTT[0]->Get(TString::Format("h_%s_%s",histoNamesTT[i].Data(),recoVar.Data()));
-  	hSig_slice[1][i] = (TH1F*)infTT[1]->Get(TString::Format("h_%s_%s",histoNamesTT[i].Data(),recoVar.Data()));
-  	hSig_slice[0][i]->SetTitle(TString::Format("Slice: %s %s", histoNamesTT[i].Data(), year1.Data()));
-  	hSig_slice[1][i]->SetTitle(TString::Format("Slice: %s %s", histoNamesTT[i].Data(), year2.Data()));
-  	hSig_slice[0][i]->SetName(TString::Format("Slice: %s %s", histoNamesTT[i].Data(), year1.Data()));
-  	hSig_slice[1][i]->SetName(TString::Format("Slice: %s %s", histoNamesTT[i].Data(), year2.Data()));
+  	hSig_slice[0][i] = (TH1F*)infTT[0]->Get(TString::Format("h%s_%s_%s",level.Data(),histoNamesTT[i].Data(),recoVar.Data()));
+  	hSig_slice[1][i] = (TH1F*)infTT[1]->Get(TString::Format("h%s_%s_%s",level.Data(),histoNamesTT[i].Data(),recoVar.Data()));
+  	hSig_slice[0][i]->SetTitle(TString::Format("Slice %s: %s %s",level.Data(), histoNamesTT[i].Data(), year1.Data()));
+  	hSig_slice[1][i]->SetTitle(TString::Format("Slice %s: %s %s",level.Data(), histoNamesTT[i].Data(), year2.Data()));
+  	hSig_slice[0][i]->SetName(TString::Format("Slice %s: %s %s",level.Data(), histoNamesTT[i].Data(), year1.Data()));
+  	hSig_slice[1][i]->SetName(TString::Format("Slice %s: %s %s",level.Data(), histoNamesTT[i].Data(), year2.Data()));
   }
   
   //qcd slices
@@ -87,12 +102,12 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   	hQCD_slice[1][i]->SetName(TString::Format("Slice: %s %s", histoNamesQCD[i].Data(), year2.Data()));
   }
   //scaled TT to xsec and LUMI
-  hSigAll[0] = (TH1F*)infTT[0]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
-  hSigAll[1] = (TH1F*)infTT[1]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
-  hSigAll[0]->SetTitle(TString::Format("TT All Slices %s", year1.Data()));
-  hSigAll[1]->SetTitle(TString::Format("TT All Slices %s", year2.Data()));
-  hSigAll[0]->SetName(TString::Format("TT All Slices %s", year1.Data()));
-  hSigAll[1]->SetName(TString::Format("TT All Slices %s", year2.Data()));
+  hSigAll[0] = (TH1F*)infTT[0]->Get(TString::Format("h%sScaledXSEC_%s",level.Data(), recoVar.Data()));
+  hSigAll[1] = (TH1F*)infTT[1]->Get(TString::Format("h%sScaledXSEC_%s",level.Data(), recoVar.Data()));
+  hSigAll[0]->SetTitle(TString::Format("TT %s All Slices %s",level.Data(), year1.Data()));
+  hSigAll[1]->SetTitle(TString::Format("TT %s All Slices %s",level.Data(), year2.Data()));
+  hSigAll[0]->SetName(TString::Format("TT %s All Slices %s",level.Data(), year1.Data()));
+  hSigAll[1]->SetName(TString::Format("TT %s All Slices %s",level.Data(), year2.Data()));
 
   //scaled qcd to xsec and LUMI
   hQCDAll[0] = (TH1F*)infBkg[0]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
@@ -114,16 +129,16 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   for(int i =0; i<histoNamesQCD.size(); i++)
   {
   	reason = "QCD MC Overlay "+ histoNamesQCD[i];	
-  	ratioPlot(hQCD_slice[0][i],hQCD_slice[1][i], recoVar, reason);
+  	//ratioPlot(hQCD_slice[0][i],hQCD_slice[1][i], recoVar, reason);
   }
   
-  /*
+  
   reason = "TT MC Overlay all slices";
   ratioPlot(hSigAll[0], hSigAll[1],recoVar,reason);
 
   reason = "QCD MC Overlay all slices";
-  ratioPlot(hQCDAll[0], hQCDAll[1],recoVar,reason);
-  */
+  //ratioPlot(hQCDAll[0], hQCDAll[1],recoVar,reason);
+  
   histoNamesQCD.clear();
   histoNamesTT.clear();
 }
@@ -207,6 +222,6 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   else hRatio->GetXaxis()->SetTitle(recoVar);
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
-  c1->Print(TString::Format("./Comparison/%s/comparison_mc17_18_%s.pdf",recoVar.Data(),reason.Data()),"pdf");
-  //c1->Print(TString::Format("./ComparisonScaledIntegral/%s/comparison_mc17_18_%s.pdf",recoVar.Data(),reason.Data()),"pdf");
+  //c1->Print(TString::Format("./Comparison/%s/comparison_mc17_18_%sParticle.pdf",recoVar.Data(),reason.Data()),"pdf");
+  //c1->Print(TString::Format("./ComparisonScaledIntegral/%s/comparison_mc17_18_%sParticle.pdf",recoVar.Data(),reason.Data()),"pdf");
 }

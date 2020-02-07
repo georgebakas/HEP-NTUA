@@ -12,7 +12,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   //Take SR data from Medium WP
   TFile *inf = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
-  //h2b->Rebin(REBIN);
+  //h2b->Rebin(2);
   // -----------------------------------------  
   TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));
   TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_100.root",year.Data()));
@@ -41,7 +41,27 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   
   //---- QCD correction factor ---------------------------
   
-  RooRealVar kQCD2b_0("kQCD_2b_0","kQCD_2b_0",1e-3,-1,1);
+  float sP, min, max;
+  if(year.EqualTo("2016")) 
+  {
+    sP = 0.11;
+    min = -0.3;
+    max = 10e+2;
+  }
+  else if(year.EqualTo("2018") || year.EqualTo("2017")) 
+  {
+    sP= 8.9e-3;
+    min = 1e-4;
+    max = 1e-0;
+  }
+  else
+  {
+    sP = 1e-3;
+    min = -1;
+    max = 1;
+  } 
+  RooRealVar kQCD2b_0("kQCD_2b_0","kQCD_2b_0", sP, min, max);
+  
   //RooRealVar kQCD2b_0("kQCD_2b_0","kQCD_2b_0",1e-2,1e-4,1);
   RooRealVar kQCD2b_1("kQCD_2b_1","kQCD_2b_1",1e-2,1e-4,1e-3);
   
@@ -54,11 +74,11 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
   
-  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,1e+4);
+  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,10e+3);
  
-  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,1e+5);  
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);  
   
-  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,1e+5);
+  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
   
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag"); 
 

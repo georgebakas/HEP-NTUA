@@ -80,15 +80,18 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
     hSig_CRExpYield->Rebin(2);
   }
   
-  TFile *fitFile = TFile::Open(TString::Format("fitResults_%s.root",year.Data()));
-  TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
+  TFile *fitFile; 
   //get the fit result 
+  if(recoVar.EqualTo("jetMassSoftDrop0")) fitFile = TFile::Open(TString::Format("fitResults_%s_jetMassSoftDrop.root",year.Data()));
+  else fitFile = TFile::Open(TString::Format("fitResults_%s.root",year.Data()));
+  TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
+
   if(useScaleFactor)
   {
-    if(!recoVar.EqualTo("jetMassSoftDrop0") && !recoVar.EqualTo("jetMassSoftDrop1"))
+    int NBINS = hBkg_CR->GetNbinsX();
+    float SF;
+    if(/*!recoVar.EqualTo("jetMassSoftDrop0") && */!recoVar.EqualTo("jetMassSoftDrop1"))
     {
-      int NBINS = hBkg_CR->GetNbinsX();
-      float SF;
       for(int ibin=1; ibin<= NBINS; ibin++)
       {
         cout<<"----------"<<endl;
