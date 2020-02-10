@@ -115,7 +115,7 @@ void Unfold(TString inYear = "2016", bool isParton = true)
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()];
   TFile *outf = TFile::Open(TString::Format("%s/OutputFile_%s.root", year.Data(), varParton.Data()),"UPDATE");
 
-  for(int ivar =0; ivar<BND_reco.size(); ivar++)
+  for(int ivar =3; ivar<BND_reco.size(); ivar++)
   {
     //thory histogram:
     hTheory[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data())); 
@@ -197,7 +197,7 @@ void Unfold(TString inYear = "2016", bool isParton = true)
 	
   	hTheory[ivar]->Draw();
   	hUnf[ivar]->Draw("same");
-    //break;
+    break;
   }
   //outf->Close();
   
@@ -208,7 +208,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
 	//hResponse_->Draw("BOX");
 
-  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize);
+  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeNone);
   unfold.SetInput(hReco);
       //========================================================================
 	  // the unfolding is done here
@@ -270,7 +270,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
   }while (found == true);
   cout<<"minTau= "<<minTau<<endl;
   */
-  tauMin = 10e-9;
+  tauMin = 10e-5;
   unfold.DoUnfold(tauMin);
   
   //set up a bin map, excluding underflow and overflow bins

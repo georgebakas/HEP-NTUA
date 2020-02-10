@@ -272,7 +272,9 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
     hParticle[0][ivar]->Scale(1/LUMI, "width");
   }
 
-  TFile *outf = new TFile(TString::Format("%s/TheoryTemplates.root", year.Data()), "RECREATE");
+  TString nominal = "NominalMC";
+  if(!globalIsNominalMC) nominal = "HighMtt";
+  TFile *outf = new TFile(TString::Format("%s/TheoryTemplates%s.root", year.Data(), nominal.Data()), "RECREATE");
   outf->cd();
   //write them to file
   for(int ivar=0; ivar<NVAR-2; ivar++) 
