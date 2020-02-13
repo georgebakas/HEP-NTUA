@@ -3,12 +3,12 @@
 map<TString, map<TString, TString>> files;
 map<TString, map<TString, TString>> filesReduced;
 
-map<TString, map<TString, TString>> mttFiles;
+map<TString, map<TString, TString>> ttFiles;
 map<TString, map<TString, TString>> subdominantBkgFiles;
 map<TString, map<TString, TString>> qcdBkgFiles;
 map<TString, map<TString, TString>> nominalMCFiles;
 
-map<TString, map<TString, float>> mttXSEC;
+map<TString, map<TString, float>> ttXSEC;
 map<TString, map<TString, float>> subdominantBkgXSEC;
 map<TString, map<TString, float>> qcdBkgXSEC;
 map<TString, map<TString, float>> nominalMCXSEC;
@@ -34,31 +34,48 @@ void initFilesMapping()
 	//files to be used from eos:
 //----------------------------------------------------------------------------------------------------------------	
 	//Mtt files (MC):
-	map<TString, TString> eosMtt16 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
+	map<TString, TString> eostt16 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                                  {"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
 	
-    map<TString, TString> eosMtt17 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};	                              
+    map<TString, TString> eostt17 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                  {"TTHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+                                      {"TTSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+                                      {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 
-    map<TString, TString> eosMtt18 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};	
+
+    map<TString, TString> eostt18 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                  {"TTHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+                                      {"TTSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+                                      {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 	
-	map<TString, float> eosMttXSEC16 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74}};
+	map<TString, float> eosttXSEC16 = {{"700-1000",69.64},
+	                                  {"1000-Inf",16.74},
+	                                  {"TTNominal", 832.}};
 	
-    map<TString, float> eosMttXSEC17 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74}};	                              
+    map<TString, float> eosttXSEC17 = {{"700-1000",69.64},
+	                                  {"1000-Inf",16.74},
+	                                  {"TTHadronic", 377.96 },
+                                      {"TTSemiLeptonic", 365.34},
+                                      {"TTTo2L2Nu", 88.29}};
 
-    map<TString, float> eosMttXSEC18 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74}};		                                  
 
-    mttFiles.insert(pair<TString, map<TString, TString>>("2016", eosMtt16));
-	mttFiles.insert(pair<TString, map<TString, TString>>("2017", eosMtt17));
-	mttFiles.insert(pair<TString, map<TString, TString>>("2018", eosMtt18));                               
 
-	mttXSEC.insert(pair<TString, map<TString, float>>("2016",eosMttXSEC16));
-	mttXSEC.insert(pair<TString, map<TString, float>>("2017",eosMttXSEC17));
-	mttXSEC.insert(pair<TString, map<TString, float>>("2018",eosMttXSEC18));
+    map<TString, float> eosttXSEC18 = {{"700-1000",69.64},
+	                                  {"1000-Inf",16.74},
+	                                  {"TTHadronic", 377.96 },
+                                      {"TTSemiLeptonic", 365.34},
+                                      {"TTTo2L2Nu", 88.29}};		                                  
+
+    ttFiles.insert(pair<TString, map<TString, TString>>("2016", eostt16));
+	ttFiles.insert(pair<TString, map<TString, TString>>("2017", eostt17));
+	ttFiles.insert(pair<TString, map<TString, TString>>("2018", eostt18));                               
+
+	ttXSEC.insert(pair<TString, map<TString, float>>("2016",eosttXSEC16));
+	ttXSEC.insert(pair<TString, map<TString, float>>("2017",eosttXSEC17));
+	ttXSEC.insert(pair<TString, map<TString, float>>("2018",eosttXSEC18));
 //----------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------

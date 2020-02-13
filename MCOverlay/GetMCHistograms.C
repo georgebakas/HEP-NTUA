@@ -21,6 +21,7 @@ TString eosPath;
 TString year;
 int selection;
 float LUMI;
+bool globalIsNominalMC;
 
 void initFileNames()
 {
@@ -28,9 +29,23 @@ void initFileNames()
   {
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());  
     cout<<eosPath<<endl;
-    cout<<mttFiles[year.Data()]["700-1000"]<<endl;
-    listOfFiles.push_back(mttFiles[year.Data()]["700-1000"]);
-    listOfFiles.push_back(mttFiles[year.Data()]["1000-Inf"]);
+    if(!globalIsNominalMC)
+	{
+	    listOfFiles.push_back(ttFiles[year.Data()]["700-1000"]);
+   	 	listOfFiles.push_back(ttFiles[year.Data()]["1000-Inf"]);
+	}
+	else
+	{
+	    if(year.EqualTo("2016"))
+	        listOfFiles.push_back(ttFiles[year.Data()]["TTNominal"]);
+	    else
+	    {
+	        listOfFiles.push_back(ttFiles[year.Data()]["TTHadronic"]);
+	        listOfFiles.push_back(ttFiles[year.Data()]["TTSemiLeptonic"]);
+	        listOfFiles.push_back(ttFiles[year.Data()]["TTTo2L2Nu"]);
+		}
+	}
+    
   }
   else if(selection ==2) //bkg mc
   {
@@ -48,8 +63,23 @@ void initXsections()
 {
   if(selection ==1) //signal ttbar mc
   {
-    XSEC.push_back(mttXSEC[year.Data()]["700-1000"]);
-    XSEC.push_back(mttXSEC[year.Data()]["1000-Inf"]);
+    if(!globalIsNominalMC)
+	{
+	     XSEC.push_back(ttXSEC[year.Data()]["700-1000"]);
+    	 XSEC.push_back(ttXSEC[year.Data()]["1000-Inf"]);
+	}
+	else
+	{
+	    if(year.EqualTo("2016"))
+	        XSEC.push_back(ttXSEC[year.Data()]["TTNominal"]);
+	    else
+	    {
+	        XSEC.push_back(ttXSEC[year.Data()]["TTHadronic"]);
+	        XSEC.push_back(ttXSEC[year.Data()]["TTSemiLeptonic"]);
+	        XSEC.push_back(ttXSEC[year.Data()]["TTTo2L2Nu"]);
+		}
+	}
+
   }
   else if(selection ==2) //bkg mc
   {
@@ -68,8 +98,22 @@ void initHistoNames()
   
   if(selection ==1)
   {
-    histoNames.push_back("Signal_histo_Mtt_700_1000"); 
-    histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+	if(!globalIsNominalMC)
+	{
+	    histoNames.push_back("Signal_histo_Mtt_700_1000"); 
+   		histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+	}
+	else
+	{
+	    if(year.EqualTo("2016"))
+	        histoNames.push_back("Signal_histo_Nominal");
+	    else
+	    {
+			histoNames.push_back("Signal_histo_TTHadronic");
+			histoNames.push_back("Signal_histo_TTSemiLeptonic");
+			histoNames.push_back("Signal_histo_TTTo2L2Nu");
+		}
+	}
   }
   else if (selection ==2)
   {
@@ -90,8 +134,9 @@ void initGlobals()
   initHistoNames();
 }
  
-void GetMCHistograms(TString y="2017", int sel = 1)
+void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 {
+  globalIsNominalMC = isNominalMC;	
   year =y;
   initFilesMapping();
   selection = sel;
@@ -109,7 +154,9 @@ void GetMCHistograms(TString y="2017", int sel = 1)
  TH1F *h[listOfFiles.size()][NVAR], *hParton[listOfFiles.size()][NVAR], *hParticle[listOfFiles.size()][NVAR];
  for(int f=0; f<listOfFiles.size(); f++)
  {
-  cout<<"Entering "<<listOfFiles[f]<<endl;
+  cout<<"Entering "<<eosPath<<listOfFiles[f]<<endl;
+  cout<<"XSEC of slice: "<<XSEC[f]<<endl;
+  cout<<"LUMI: "<<LUMI<<endl;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
   
@@ -326,7 +373,10 @@ void GetMCHistograms(TString y="2017", int sel = 1)
 
   TFile *outFile;
   if(selection ==1)
-    outFile = new TFile(TString::Format("HistoMC_TT_Mtt-700toInf_100bins_%s.root",year.Data()), "RECREATE");
+  	if(!isNominalMC)
+    	outFile = new TFile(TString::Format("HistoMC_TT_Mtt-700toInf_100bins_%s.root",year.Data()), "RECREATE");
+    else
+    	outFile = new TFile(TString::Format("HistoMC_TT_NominalMC_100bins_%s.root",year.Data()), "RECREATE");
   else if(selection ==2)
     outFile = new TFile(TString::Format("HistoMC_QCD_HT300toInf_100bins_%s.root",year.Data()), "RECREATE");
 

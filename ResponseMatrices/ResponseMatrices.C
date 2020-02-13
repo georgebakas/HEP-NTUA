@@ -30,21 +30,21 @@ void initXsections()
   		//XSEC.push_back(80.73);
   		//XSEC.push_back(21.35);
   		XSEC.push_back(69.14);
-      XSEC.push_back(16.74);
+                XSEC.push_back(16.74);
   	}
   	else if(globalYear.EqualTo("2017"))
   	{
   		//XSEC.push_back(231.01);
   		//XSEC.push_back(61.08);
   		XSEC.push_back(69.14);
-      XSEC.push_back(16.74);
+                XSEC.push_back(16.74);
   	}
   	else if(globalYear.EqualTo("2018"))
   	{
   		//XSEC.push_back(114.66);
   		//XSEC.push_back(30.32);
   		XSEC.push_back(69.14);
-      XSEC.push_back(16.74);
+                XSEC.push_back(16.74);
   	}
   }
   else
@@ -54,11 +54,11 @@ void initXsections()
  	else
  	{
  		XSEC.push_back(377.96);
- 		XSEC.push_back(377.96);
+ 		//XSEC.push_back(377.96);
  		XSEC.push_back(365.34);
- 		XSEC.push_back(365.34);
+ 		//XSEC.push_back(365.34);
  		XSEC.push_back(88.29);
- 		XSEC.push_back(88.29);
+ 		//XSEC.push_back(88.29);
  	}
   }
 }
@@ -83,18 +83,18 @@ void initHistoNames()
 	  else
 	  {
 	  	fileNames.push_back("TTHadronic_0");
-	  	fileNames.push_back("TTHadronic_1");
+	  	//fileNames.push_back("TTHadronic_1");
 	  	fileNames.push_back("TTSemiLeptonic_0");
-	  	fileNames.push_back("TTSemiLeptonic_1");
+	  	//fileNames.push_back("TTSemiLeptonic_1");
 	  	fileNames.push_back("TTTo2L2Nu_0");
-	  	fileNames.push_back("TTTo2L2Nu_1");
+	  	//fileNames.push_back("TTTo2L2Nu_1");
 
 	  	histoNames.push_back("Signal_histo_TTHadronic_0");
-	  	histoNames.push_back("Signal_histo_TTHadronic_1");
+	  	//histoNames.push_back("Signal_histo_TTHadronic_1");
 	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
-	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_1");
+	  	//histoNames.push_back("Signal_histo_TTSemiLeptonic_1");
 	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
-	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_1");
+	  	//histoNames.push_back("Signal_histo_TTTo2L2Nu_1");
 
 	  }
   }

@@ -184,7 +184,7 @@ void initGlobals()
   initHistoNames();
 }
  
-void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
+void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool isLoose=false)
 {
   year =y;
   initFilesMapping(isLoose);
@@ -237,7 +237,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
     weights.push_back(XSEC[f]/NORM);  
   } 
   cout<<"file: "<<eosPath+listOfFiles[f]<<endl;
-  cout<<"weight: "<<weights[f]<<endl;
+ // cout<<"weight: "<<weights[f]<<endl;
   cout<<"LUMI: "<<LUMI<<endl;
   cout<<"LUMI_CR: "<<LUMI_CR<<endl;
   int decade(0);
@@ -543,8 +543,8 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
       revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
   
      TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
-     p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
-     p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
+     p4T[leadingPt].SetPtEtaPhiM((*jetPt)[leadingPt], (*jetEta)[leadingPt], (*jetPhi)[leadingPt], (*jetMassSoftDrop)[leadingPt]);
+     p4T[subleadingPt].SetPtEtaPhiM((*jetPt)[subleadingPt], (*jetEta)[subleadingPt], (*jetPhi)[subleadingPt], (*jetMassSoftDrop)[subleadingPt]);
 
      TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
             

@@ -237,7 +237,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     weights.push_back(XSEC[f]/NORM);  
   } 
   cout<<"file: "<<eosPath+listOfFiles[f]<<endl;
-  cout<<"weight: "<<weights[f]<<endl;
+  //cout<<"weight: "<<weights[f]<<endl;
   cout<<"LUMI: "<<LUMI<<endl;
   cout<<"LUMI_CR: "<<LUMI_CR<<endl;
   int decade(0);
@@ -510,7 +510,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
    
     }//----end of selection ==1 so that we do this only when we deal with signal MC 
-  
+ 
   else //we are in QCD samples or Subdominant BKG or Data sample
   {
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
@@ -526,7 +526,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       leadingPt = 1;
       subleadingPt = 0;
     }
-
     recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
@@ -541,11 +540,11 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
    
     //0 btag category with deepCSV
       revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
-  
+     
      TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
-     p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
-     p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
-
+     p4T[leadingPt].SetPtEtaPhiM((*jetPt)[leadingPt], (*jetEta)[leadingPt], (*jetPhi)[leadingPt], (*jetMassSoftDrop)[leadingPt]);
+     p4T[subleadingPt].SetPtEtaPhiM((*jetPt)[subleadingPt], (*jetEta)[subleadingPt], (*jetPhi)[subleadingPt], (*jetMassSoftDrop)[subleadingPt]);
+     
      TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
             
      p4T_ZMF[0].SetPtEtaPhiM(p4T[leadingPt].Pt(), p4T[leadingPt].Eta(), p4T[leadingPt].Phi(), p4T[leadingPt].M());
@@ -553,7 +552,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
      p4T_ZMF[0].Boost(ttbarBoostVector);
      p4T_ZMF[1].Boost(ttbarBoostVector);
                 
-
      float chi0(0), chi1(0);
      //chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
      //chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));
@@ -562,7 +560,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
      xRecoAll.push_back(yStarExp); //this is chi 
      xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
      xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
-    
   }//---end of else of isSignal
   
   btagCut = deepCSV;
