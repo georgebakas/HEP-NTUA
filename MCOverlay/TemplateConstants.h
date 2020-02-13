@@ -208,6 +208,10 @@ void initFilesMapping()
 	filesttbar.insert(pair<TString,TString>("2017", "HistoMC_TT_Mtt-700toInf_100bins_2017.root"));
 	filesttbar.insert(pair<TString,TString>("2018", "HistoMC_TT_Mtt-700toInf_100bins_2018.root"));
 
+	filesttbar.insert(pair<TString,TString>("2016Nominal", "HistoMC_TT_NominalMC_100bins_2016.root"));
+	filesttbar.insert(pair<TString,TString>("2017Nominal", "HistoMC_TT_NominalMC_100bins_2017.root"));
+	filesttbar.insert(pair<TString,TString>("2018Nominal", "HistoMC_TT_NominalMC_100bins_2018.root"));
+
 	//thsese will be used for getting the histo names qcd
 	filesqcd.insert(pair<TString, TString>("2016", "HistoMC_QCD_HT300toInf_100bins_2016.root"));
 	filesqcd.insert(pair<TString, TString>("2017", "HistoMC_QCD_HT300toInf_100bins_2017.root"));

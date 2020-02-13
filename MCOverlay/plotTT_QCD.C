@@ -16,9 +16,19 @@ using std::endl;
 #include "TemplateConstants.h"
 void plotYearVar(TString year, TString year2, TString recoVar = "jetPt0");
 void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason);
+bool globalIsNominalMC;
+TString globalYear1, globalYear2;
 
-void plotTT_QCD(TString year1 = "2017", TString year2 = "2018")
+void plotTT_QCD(TString year1 = "2017", TString year2 = "2018", bool isNominalMC = false)
 {
+	globalIsNominalMC = isNominalMC;
+	globalYear1 = year1;
+	globalYear2 = year2;
+	globalYear1.Remove(TString::kBoth,'2');
+	globalYear2.Remove(TString::kBoth,'2');
+	globalYear1.Remove(TString::kBoth,'0');
+	globalYear2.Remove(TString::kBoth,'0');
+	
 	const int NVAR = 9;
 	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1"
 							 ,"mTop", "jetMassSoftDrop"};
@@ -26,10 +36,12 @@ void plotTT_QCD(TString year1 = "2017", TString year2 = "2018")
 	for(int ivar = 0; ivar<NVAR; ivar++)
 	{
 		plotYearVar(year1, year2,recoVar[ivar]);
+		//break;
 	}
 }
 void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
 {
+
   initFilesMapping();
 
   std::vector<TString> histoNamesTT;
@@ -37,9 +49,17 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   histoNamesTT.clear();
   histoNamesQCD.clear();
 
-  histoNamesTT.push_back("Signal_histo_Mtt_700_1000"); 
-  histoNamesTT.push_back("Signal_histo_Mtt_1000_Inf");
-  
+  if(!globalIsNominalMC)
+  {
+  	histoNamesTT.push_back("Signal_histo_Mtt_700_1000"); 
+  	histoNamesTT.push_back("Signal_histo_Mtt_1000_Inf");
+  }
+  else 
+  {
+  	histoNamesTT.push_back("Signal_histo_TTHadronic");
+  	histoNamesTT.push_back("Signal_histo_TTSemiLeptonic");
+  	histoNamesTT.push_back("Signal_histo_TTTo2L2Nu");
+  }
   histoNamesQCD.push_back("QCD_histo_300_500");
   histoNamesQCD.push_back("QCD_histo_500_700");
   histoNamesQCD.push_back("QCD_histo_700_1000");
@@ -50,8 +70,12 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   //0 is 2017 and //1 is 2018
   //TT files
   TFile *infTT[2];
-  infTT[0] = TFile::Open(filesttbar[year1.Data()]);  
-  infTT[1] = TFile::Open(filesttbar[year2.Data()]);  
+  cout<<histoNamesTT.size()<<endl;
+
+  TString temp = "";
+  if(globalIsNominalMC) temp = "Nominal";
+  infTT[0] = TFile::Open(filesttbar[TString::Format("%s%s",year1.Data(),temp.Data())]); 
+  infTT[1] = TFile::Open(filesttbar[TString::Format("%s%s",year2.Data(),temp.Data())]);  
   
   //QCD files 
   TFile *infBkg[2];
@@ -60,7 +84,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
 
   TH1F *hQCDAll[2], *hSigAll[2];
   
-  TH1F *hQCD_slice[2][6], *hSig_slice[2][2];
+  TH1F *hQCD_slice[2][6], *hSig_slice[2][histoNamesTT.size()];
 
 
   /*
@@ -153,8 +177,8 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   closureLegend->AddEntry(hNum,titleNum, "lep");
   closureLegend->AddEntry(hDenom,titleDenom, "lep");
 
-  //hNum->Scale(1./hNum->Integral());
-  //hDenom->Scale(1./hDenom->Integral());
+  hNum->Scale(1./hNum->Integral());
+  hDenom->Scale(1./hDenom->Integral());
   //cout<<"---------------"<<endl;
   //cout<<reason<<endl;
   //cout<<"hNum name: "<<hNum->GetTitle()<<endl;
@@ -222,6 +246,11 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   else hRatio->GetXaxis()->SetTitle(recoVar);
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
-  //c1->Print(TString::Format("./Comparison/%s/comparison_mc17_18_%sParticle.pdf",recoVar.Data(),reason.Data()),"pdf");
-  //c1->Print(TString::Format("./ComparisonScaledIntegral/%s/comparison_mc17_18_%sParticle.pdf",recoVar.Data(),reason.Data()),"pdf");
+  TString temp;
+  if(globalIsNominalMC) temp = "NominalMC";
+  else temp = "TT_Mtt";
+  //c1->Print(TString::Format("./Comparison/%s/%s/comparison_mc%s_%s_%s.pdf",temp.Data(),recoVar.Data(),
+   //							globalYear1.Data(), globalYear2.Data(),reason.Data()),"pdf");
+  c1->Print(TString::Format("./ComparisonScaledIntegral/%s/%s/comparison_mc%s_%s_%sP.pdf",temp.Data(),recoVar.Data(),
+  							 globalYear1.Data(), globalYear2.Data(), reason.Data()),"pdf");
 }
