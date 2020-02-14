@@ -273,8 +273,9 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
  	{
 	  xRecoAll.clear();
 	  xPartonAll.clear();
-   	  xParticleAll.clear();
-	  xRecoAll.push_back(mJJ);
+   	xParticleAll.clear();
+	  
+    xRecoAll.push_back(mJJ);
 	  xRecoAll.push_back(ptJJ);
 	  xRecoAll.push_back(yJJ);
 	  xRecoAll.push_back((*jetPt)[0]);
@@ -419,7 +420,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
     h_Clone[0][ivar]->Write(TString::Format("hScaledXSEC_%s", varReco[ivar].Data()));
     if(selection ==1)
     {
-	hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
+	  hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
     hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data())); 
     }
   }
