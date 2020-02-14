@@ -83,7 +83,7 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
   //get the histograms 
   //tt slices
   //TString level = ""; //reco 
-  //TString level = "Parton";
+  TString level = "Parton";
   //TString level = "Particle";
  
   //scaled TT to xsec and LUMI

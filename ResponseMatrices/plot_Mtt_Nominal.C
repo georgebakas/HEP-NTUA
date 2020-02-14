@@ -50,6 +50,9 @@ void plotYearVar(TString year ,TString recoVar, TString varParton, TString varPa
   TEfficiency *effParton[2], *effParticle[2];
   TEfficiency *accParton[2], *accParticle[2];
 
+  TEfficiency *effParton_[2], *effParticle_[2];
+  TEfficiency *accParton_[2], *accParticle_[2];
+
   //get the efficiencies and acceptances
   
   //get total and passed histo
@@ -62,24 +65,28 @@ void plotYearVar(TString year ,TString recoVar, TString varParton, TString varPa
   {
   	//get parton efficiency and make it into a th1
   	effParton[i] = (TEfficiency*)infTT[i]->Get(TString::Format("EfficiencyParton_%s",varParton.Data()));
+  	effParton_[i] = (TEfficiency*)infTT[i]->Get(TString::Format("EfficiencyParton_%s",varParton.Data()));
   	hTotalPartonEff[i] = (TH1F*)effParton[i]->GetTotalHistogram();
     hPassedPartonEff[i] = (TH1F*)effParton[i]->GetPassedHistogram();
     hPassedPartonEff[i]->Divide(hTotalPartonEff[i]);
 
 	//get particle efficiency and make it into a th1
 	effParticle[i] = (TEfficiency*)infTT[i]->Get(TString::Format("EfficiencyParticle_%s",varParticle.Data()));
+	effParticle_[i] = (TEfficiency*)infTT[i]->Get(TString::Format("EfficiencyParticle_%s",varParticle.Data()));
     hTotalParticleEff[i] = (TH1F*)effParticle[i]->GetTotalHistogram();
     hPassedParticleEff[i] = (TH1F*)effParticle[i]->GetPassedHistogram();
     hPassedParticleEff[i]->Divide(hTotalParticleEff[i]);
 
     //get parton acceptance and make it into a th1
     accParton[i] = (TEfficiency*)infTT[i]->Get(TString::Format("AcceptanceParton_%s",recoVar.Data()));
+    accParton_[i] = (TEfficiency*)infTT[i]->Get(TString::Format("AcceptanceParton_%s",recoVar.Data()));
     hTotalPartonAcc[i] = (TH1F*)accParton[i]->GetTotalHistogram();
     hPassedPartonAcc[i] = (TH1F*)accParton[i]->GetPassedHistogram();
     hPassedPartonAcc[i]->Divide(hTotalPartonAcc[i]);
 
     //get particle acceptance and make it into a th1
     accParticle[i] = (TEfficiency*)infTT[i]->Get(TString::Format("AcceptanceParticle_%s",recoVar.Data()));
+    accParticle_[i] = (TEfficiency*)infTT[i]->Get(TString::Format("AcceptanceParticle_%s",recoVar.Data()));
     hTotalParticleAcc[i] = (TH1F*)accParticle[i]->GetTotalHistogram();
     hPassedParticleAcc[i] = (TH1F*)accParticle[i]->GetPassedHistogram();
     hPassedParticleAcc[i]->Divide(hTotalParticleAcc[i]);
@@ -112,18 +119,20 @@ void plotYearVar(TString year ,TString recoVar, TString varParton, TString varPa
   TString reason;
   
   reason = "Parton Efficiency " + year;
-  ratioPlot(effParton[0], effParton[1],hPassedPartonEff[0], hPassedPartonEff[1],recoVar,reason);
+  ratioPlot(effParton_[0], effParton_[1],hPassedPartonEff[0], hPassedPartonEff[1],recoVar,reason);
 
   reason = "Particle Efficiency " + year;
-  ratioPlot(effParticle[0], effParticle[1],hPassedParticleEff[0], hPassedParticleEff[1],recoVar,reason);
+  ratioPlot(effParticle_[0], effParticle_[1],hPassedParticleEff[0], hPassedParticleEff[1],recoVar,reason);
 
   reason = "Parton Acceptance " + year;
-  ratioPlot(accParton[0],accParton[1],hPassedPartonAcc[0], hPassedPartonAcc[1],recoVar,reason);
+  ratioPlot(accParton_[0],accParton_[1],hPassedPartonAcc[0], hPassedPartonAcc[1],recoVar,reason);
 
   reason = "Particle Acceptance " + year;
-  ratioPlot(accParticle[0],accParticle[1],hPassedParticleAcc[0], hPassedParticleAcc[1],recoVar,reason);
+  ratioPlot(accParticle_[0],accParticle_[1],hPassedParticleAcc[0], hPassedParticleAcc[1],recoVar,reason);
   
   histoNames.clear();
+
+  
 }
 
 
@@ -156,35 +165,38 @@ void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom, TH1F *hNum ,TH1F *hDe
   closure_pad1->SetBottomMargin(0.005);
   closure_pad1->cd();
   //closure_pad1->SetGrid();
+  TH1F *hEfficiencyNum, *hEfficiencyDenom;
+/*
   if(reason.Contains("Efficiency"))
   { 
   	if(reason.Contains("Parton")) hNum->GetYaxis()->SetRangeUser(0,0.1);
   	else hNum->GetYaxis()->SetRangeUser(0,0.4);
   }
   else hNum->GetYaxis()->SetRangeUser(hNum->GetMaximum()-0.4, hNum->GetMaximum()+0.2);
+  */
+  //effNum->GetYaxis()->SetTitleSize(20);
+  //effNum->GetYaxis()->SetTitleFont(43);
+  //effNum->GetYaxis()->SetTitleOffset(1.4); 
+  //effNum->ResetAttLine();
+  //effNum->ResetAttMarker();
+  effNum->SetLineColor(kRed-7);
+  effNum->SetMarkerStyle(22);
+  effNum->SetMarkerColor(kRed-7);
+  //effDenom->ResetAttLine();
+  //effDenom->ResetAttMarker();
+  effDenom->SetLineColor(kBlue-2); 
+  effDenom->SetMarkerStyle(21);
+  effDenom->SetMarkerColor(kBlue-2);
   
-  hNum->GetYaxis()->SetTitleSize(20);
-  hNum->GetYaxis()->SetTitleFont(43);
-  hNum->GetYaxis()->SetTitleOffset(1.4); 
-  hNum->ResetAttLine();
-  hNum->ResetAttMarker();
-  hNum->SetLineColor(kRed-7);
-  hNum->SetMarkerStyle(22);
-  hNum->SetMarkerColor(kRed-7); 
+  effNum->Draw();
+  effDenom->Draw("same"); 
   //hBkg_SR[0]->GetXaxis()->SetTitleOffset(1.5);
-  if(!recoVar.EqualTo("yJJ") && !recoVar.EqualTo("jetY0") && !recoVar.EqualTo("jetY1")) hNum->GetXaxis()->SetTitle(recoVar+" (GeV)");
-  else hNum->GetXaxis()->SetTitle(recoVar);
+  //if(!recoVar.EqualTo("yJJ") && !recoVar.EqualTo("jetY0") && !recoVar.EqualTo("jetY1")) hNum->GetXaxis()->SetTitle(recoVar+" (GeV)");
+  //else hNum->GetXaxis()->SetTitle(recoVar);
   // h2 settings
   
   //hBkg_CR[0]->ResetAttFill();
-  hDenom->ResetAttLine();
-  hDenom->ResetAttMarker();
-  hDenom->SetLineColor(kBlue-2); 
-  hDenom->SetMarkerStyle(21);
-  hDenom->SetMarkerColor(kBlue-2);
   
-  hNum->Draw();
-  hDenom->Draw("same");
   
   closureLegend->Draw();
   //closure_pad1->SetLogy();
