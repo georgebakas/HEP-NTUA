@@ -159,7 +159,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   cout<<"LUMI: "<<LUMI<<endl;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");
-  TTree *trINCnt = (TTree*)inf->Get("eventCounter/events");  
+  TTree *trINCnt = (TTree*)inf->Get("eventCounter/events"); 
   
   float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights(); 
   weights.push_back(XSEC[f]/NORM);  
@@ -270,11 +270,9 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
       cout<<10*k<<" %"<<endl;
     decade = k;
    trIN->GetEntry(iev);
-
   	if(nJets >1)
  	{
 	  xRecoAll.clear();
-	  xPartonAll.clear();
    	xParticleAll.clear();
 	  
     xRecoAll.push_back(mJJ);
@@ -301,16 +299,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 	   }
 
 	   if(selection == 1)
-	   {
-		 // cout<<"here"<<endl;
-		  xPartonAll.push_back(mTTbarParton);
-		  xPartonAll.push_back(ptTTbarParton);
-		  xPartonAll.push_back(yTTbarParton);
-		  xPartonAll.push_back(partonPt[0]);
-		  xPartonAll.push_back(partonPt[1]);
-		  xPartonAll.push_back(partonY[0]);
-		  xPartonAll.push_back(partonY[1]);
-		  xPartonAll.push_back(partonMass[0]);
+	   {  
 		 //cout<<"here"<<endl;
 		  xParticleAll.push_back(mJJGen);
 		  xParticleAll.push_back(ptJJGen);
@@ -321,17 +310,44 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 		  xParticleAll.push_back(fabs((*genjetY)[1]));
 		  xParticleAll.push_back((*genjetMassSoftDrop)[0]);
 
-		  for(int ivar = 0; ivar <xPartonAll.size(); ivar ++)
+		  for(int ivar = 0; ivar <xParticleAll.size(); ivar ++)
 	   	  {
-		     xParton = xPartonAll[ivar];
 		     xParticle = xParticleAll[ivar];  
-		     hParton[f][ivar]->Fill(xParton, genEvtWeight);
 		     hParticle[f][ivar]->Fill(xParticle, genEvtWeight);
 	   	  }	
 	   }
 
   	}//end of nJets
   } //---end of event loop
+
+  //now for parton
+  
+  if(selection ==1)
+  {
+      
+	  int NNCnt = trINCnt->GetEntries();
+	  for(int iev =0; iev<NNCnt; iev++)
+	  {
+	  	  xPartonAll.clear();
+	  	  trINCnt->GetEntry(iev);
+
+	  	  //cout<<mTTbarParton<<endl;
+	  	  xPartonAll.push_back(mTTbarParton);
+		  xPartonAll.push_back(ptTTbarParton);
+		  xPartonAll.push_back(yTTbarParton);
+		  xPartonAll.push_back(partonPt[0]);
+		  xPartonAll.push_back(partonPt[1]);
+		  xPartonAll.push_back(partonY[0]);
+		  xPartonAll.push_back(partonY[1]);
+		  xPartonAll.push_back(partonMass[0]);
+
+		  for(int ivar = 0; ivar <xParticleAll.size(); ivar ++)
+	   	  {
+		     xParton = xPartonAll[ivar];
+		     hParton[f][ivar]->Fill(xParton, genEvtWeight);
+		  }
+	  }
+  }
 
   }//----end of fileSize loop 
   
