@@ -15,7 +15,7 @@ using std::endl;
 
 #include "TemplateConstants.h"
 void plotYearVar(TString year ,TString recoVar, TString varParton, TString varParticle ,bool isEqual);
-void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason);
+void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom,TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason);
 
 void plot_Mtt_Nominal(TString year="2017", bool isEqual = true)
 {
@@ -112,23 +112,23 @@ void plotYearVar(TString year ,TString recoVar, TString varParton, TString varPa
   TString reason;
   
   reason = "Parton Efficiency " + year;
-  ratioPlot(hPassedPartonEff[0], hPassedPartonEff[1],recoVar,reason);
+  ratioPlot(effParton[0], effParton[1],hPassedPartonEff[0], hPassedPartonEff[1],recoVar,reason);
 
   reason = "Particle Efficiency " + year;
-  ratioPlot(hPassedParticleEff[0], hPassedParticleEff[1],recoVar,reason);
+  ratioPlot(effParticle[0], effParticle[1],hPassedParticleEff[0], hPassedParticleEff[1],recoVar,reason);
 
   reason = "Parton Acceptance " + year;
-  ratioPlot(hPassedPartonAcc[0], hPassedPartonAcc[1],recoVar,reason);
+  ratioPlot(accParton[0],accParton[1],hPassedPartonAcc[0], hPassedPartonAcc[1],recoVar,reason);
 
   reason = "Particle Acceptance " + year;
-  ratioPlot(hPassedParticleAcc[0], hPassedParticleAcc[1],recoVar,reason);
+  ratioPlot(accParticle[0],accParticle[1],hPassedParticleAcc[0], hPassedParticleAcc[1],recoVar,reason);
   
   histoNames.clear();
 }
 
 
 
-void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
+void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
 {
 
   TString titleNum = hNum->GetTitle();
@@ -162,6 +162,7 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   	else hNum->GetYaxis()->SetRangeUser(0,0.4);
   }
   else hNum->GetYaxis()->SetRangeUser(hNum->GetMaximum()-0.4, hNum->GetMaximum()+0.2);
+  
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
   hNum->GetYaxis()->SetTitleOffset(1.4); 

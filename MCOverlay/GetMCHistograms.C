@@ -182,7 +182,8 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   vector<float> *jetPhi(0), *jetEta(0), *jetY(0);
   vector<int> *partonId(0), *partonMatchIdx(0);
   
-  vector<float> *partonEta(0), *partonPhi(0), *partonMatchDR(0), *partonY(0), *partonPt(0), *partonE(0), *partonMass(0), *deepAK8(0);
+  float partonEta[2], partonPhi[2], partonY[2], partonPt[2], partonE[2], partonMass[2];
+  std::vector<float>  *deepAK8(0);
   std::vector<int> *addedIndexes = new std::vector<int>(0);
   std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
   std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
@@ -305,11 +306,11 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 		  xPartonAll.push_back(mTTbarParton);
 		  xPartonAll.push_back(ptTTbarParton);
 		  xPartonAll.push_back(yTTbarParton);
-		  xPartonAll.push_back((*partonPt)[0]);
-		  xPartonAll.push_back((*partonPt)[1]);
-		  xPartonAll.push_back((*yTopParton)[0]);
-		  xPartonAll.push_back((*yTopParton[1]));
-		  xPartonAll.push_back((*partonMass)[0]);
+		  xPartonAll.push_back(partonPt[0]);
+		  xPartonAll.push_back(partonPt[1]);
+		  xPartonAll.push_back(partonY[0]);
+		  xPartonAll.push_back(partonY[1]);
+		  xPartonAll.push_back(partonMass[0]);
 		 //cout<<"here"<<endl;
 		  xParticleAll.push_back(mJJGen);
 		  xParticleAll.push_back(ptJJGen);
