@@ -1,4 +1,4 @@
-	#include <iostream>
+#include <iostream>
 #include "TTree.h"
 #include "TFile.h"
 #include "TMath.h"
@@ -158,7 +158,8 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   cout<<"XSEC of slice: "<<XSEC[f]<<endl;
   cout<<"LUMI: "<<LUMI<<endl;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
-  TTree *trIN    = (TTree*)inf->Get("boosted/events");  
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+  TTree *trINCnt = (TTree*)inf->Get("eventCounter/events");  
   
   float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights(); 
   weights.push_back(XSEC[f]/NORM);  
@@ -208,16 +209,16 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   
   if(selection == 1)
   {
-  trIN->SetBranchAddress("mTTbarParton" ,&mTTbarParton);
-  trIN->SetBranchAddress("yTTbarParton" ,&yTTbarParton);
-  trIN->SetBranchAddress("ptTTbarParton"  ,&ptTTbarParton);
-  trIN->SetBranchAddress("partonPt"     ,&partonPt);
-  trIN->SetBranchAddress("partonEta"    ,&partonEta);
-  //trIN->SetBranchAddress("partonY"    ,&partonY);
-  trIN->SetBranchAddress("partonMass"     ,&partonMass);
-  trIN->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
-  trIN->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
-  trIN->SetBranchAddress("partonPhi"      ,&partonPhi);
+  trINCnt->SetBranchAddress("mTTbarParton" ,&mTTbarParton);
+  trINCnt->SetBranchAddress("yTTbarParton" ,&yTTbarParton);
+  trINCnt->SetBranchAddress("ptTTbarParton"  ,&ptTTbarParton);
+  trINCnt->SetBranchAddress("ptTopParton"    ,&partonPt);
+  trINCnt->SetBranchAddress("etaTopParton"   ,&partonEta);
+  trINCnt->SetBranchAddress("yTopParton"     ,&partonY);
+  trINCnt->SetBranchAddress("mTopParton"     ,&partonMass);
+  //trINCnt->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
+  //trINCnt->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
+  trINCnt->SetBranchAddress("phiTopParton"      ,&partonPhi);
 
   trIN->SetBranchAddress("mJJGen"			,&mJJGen);
   trIN->SetBranchAddress("ptJJGen"		,&ptJJGen);
@@ -306,8 +307,8 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 		  xPartonAll.push_back(yTTbarParton);
 		  xPartonAll.push_back((*partonPt)[0]);
 		  xPartonAll.push_back((*partonPt)[1]);
-		  xPartonAll.push_back(1);
-		  xPartonAll.push_back(1);
+		  xPartonAll.push_back((*yTopParton)[0]);
+		  xPartonAll.push_back((*yTopParton[1]));
 		  xPartonAll.push_back((*partonMass)[0]);
 		 //cout<<"here"<<endl;
 		  xParticleAll.push_back(mJJGen);
