@@ -24,6 +24,7 @@ void compare16_17_18(bool isEqual, bool isNominal)
   for(int ivar = 0; ivar<NVAR-2; ivar++)
   {
   	plotEfficiencyResponse(varReco[ivar], varParton[ivar], varParticle[ivar], isEqual, isNominal);
+    break;
   }
 }
 

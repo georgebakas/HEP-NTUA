@@ -27,6 +27,7 @@ void plot_Mtt_Nominal(TString year="2017", bool isEqual = true)
 	for(int ivar = 0; ivar<NVAR-2; ivar++)
 	{
 		plotYearVar(year,recoVar[ivar],varParton[ivar], varParticle[ivar] ,isEqual);
+		break;
 	}
 }
 void plotYearVar(TString year ,TString recoVar, TString varParton, TString varParticle ,bool isEqual)

@@ -30,21 +30,21 @@ void initXsections()
   		//XSEC.push_back(80.73);
   		//XSEC.push_back(21.35);
   		XSEC.push_back(80.78);
-                XSEC.push_back(21.43);
+      XSEC.push_back(21.43);
   	}
   	else if(globalYear.EqualTo("2017"))
   	{
   		//XSEC.push_back(231.01);
   		//XSEC.push_back(61.08);
   		XSEC.push_back(0.);
-                XSEC.push_back(20.09);
+      XSEC.push_back(20.09);
   	}
   	else if(globalYear.EqualTo("2018"))
   	{
   		//XSEC.push_back(114.66);
   		//XSEC.push_back(30.32);
   		XSEC.push_back(0.);
-                XSEC.push_back(20.09);
+      XSEC.push_back(20.09);
   	}
   }
   else
@@ -54,11 +54,8 @@ void initXsections()
  	else
  	{
  		XSEC.push_back(377.96);
- 		//XSEC.push_back(377.96);
  		XSEC.push_back(365.34);
- 		//XSEC.push_back(365.34);
  		XSEC.push_back(88.29);
- 		//XSEC.push_back(88.29);
  	}
   }
 }
@@ -83,18 +80,12 @@ void initHistoNames()
 	  else
 	  {
 	  	fileNames.push_back("TTHadronic_0");
-	  	//fileNames.push_back("TTHadronic_1");
 	  	fileNames.push_back("TTSemiLeptonic_0");
-	  	//fileNames.push_back("TTSemiLeptonic_1");
 	  	fileNames.push_back("TTTo2L2Nu_0");
-	  	//fileNames.push_back("TTTo2L2Nu_1");
 
 	  	histoNames.push_back("Signal_histo_TTHadronic_0");
-	  	//histoNames.push_back("Signal_histo_TTHadronic_1");
 	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
-	  	//histoNames.push_back("Signal_histo_TTSemiLeptonic_1");
 	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
-	  	//histoNames.push_back("Signal_histo_TTTo2L2Nu_1");
 
 	  }
   }
@@ -146,7 +137,7 @@ for(int f=0; f<fileNames.size(); f++)
          std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
   		 
   		 //denominators for parton efficiency (hParton vs parton), particle eff (hParticle vs particle) and acceptance (same for both hReco vs reco)
-  		 hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBins, tempBND);
+  		   hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBins, tempBND);
          hReco[f][ivar] = new TH1F(TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
          hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBins, tempBND);
          hParton[f][ivar]->Sumw2();
