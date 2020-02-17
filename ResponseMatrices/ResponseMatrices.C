@@ -137,6 +137,7 @@ void ResponseMatrices(TString year = "2016", bool isNominalMC= false)
   cout<<fileNames.size()<<endl; 
 for(int f=0; f<fileNames.size(); f++)
 {
+    cout<<"XSEC: "<<XSEC[f]<<endl;
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR-2; ivar++)
   	{	
