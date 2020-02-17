@@ -101,8 +101,8 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
 
   //get the histograms 
   //tt slices
-  TString level = ""; //reco 
-  //TString level = "Parton";
+  //TString level = ""; //reco 
+  TString level = "Parton";
   //TString level = "Particle";
   for(int i =0; i<histoNamesTT.size(); i++)
   {
@@ -251,6 +251,6 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   else temp = "TT_Mtt";
   //c1->Print(TString::Format("./Comparison/%s/%s/comparison_mc%s_%s_%s.pdf",temp.Data(),recoVar.Data(),
    //							globalYear1.Data(), globalYear2.Data(),reason.Data()),"pdf");
-  c1->Print(TString::Format("./ComparisonScaledIntegral/%s/%s/comparison_mc%s_%s_%sP.pdf",temp.Data(),recoVar.Data(),
+  c1->Print(TString::Format("./ComparisonScaledIntegral/%s/%s/comparison_mc%s_%s_%sParton.pdf",temp.Data(),recoVar.Data(),
   							 globalYear1.Data(), globalYear2.Data(), reason.Data()),"pdf");
 }

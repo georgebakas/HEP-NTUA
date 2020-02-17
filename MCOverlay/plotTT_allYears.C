@@ -108,32 +108,33 @@ void plotVar(TString recoVar = "jetPt0")
 
   for(int y=0; y<3; y++)
   {
-  	leg[0]->AddEntry(hReco[y],year[y],"lep");
+  	//leg[0]->AddEntry(hReco[y],year[y],"lep");
   	leg[1]->AddEntry(hParton[y],year[y],"lep");
-  	leg[2]->AddEntry(hParticle[y],year[y],"lep");
+  	//leg[2]->AddEntry(hParticle[y],year[y],"lep");
   }
+  /*
   can[0]->cd();
   hReco[0]->Draw();
   gPad->SetLogy();
   hReco[1]->Draw("same");
   hReco[2]->Draw("same");
   leg[0]->Draw();
-
+*/
   can[1]->cd();
   hParton[0]->Draw();
   gPad->SetLogy();
   hParton[1]->Draw("same");
   hParton[2]->Draw("same");
   leg[1]->Draw();
-
+/*
   can[2]->cd();
   hParticle[0]->Draw();
   gPad->SetLogy();
   hParticle[1]->Draw("same");
   hParticle[2]->Draw("same");
-  leg[2]->Draw();
+  leg[2]->Draw(); */
   
-  for(int l =0; l<3; l++)
+  for(int l =1; l<2; l++)
 	can[l]->Print(TString::Format("./allYears/%s/%s/allyears_%s%s.pdf",nominal.Data(),
 									recoVar.Data(), recoVar.Data(), level[l].Data()),"pdf");
   
