@@ -28,22 +28,22 @@ void initXsections()
   	{
   		//XSEC.push_back(80.73);
   		//XSEC.push_back(21.35);
-  		XSEC.push_back(69.14);
-        XSEC.push_back(16.74);
+  		XSEC.push_back(80.78);
+        	XSEC.push_back(21.43);
   	}
   	else if(globalYear.EqualTo("2017"))
   	{
   		//XSEC.push_back(231.01);
   		//XSEC.push_back(61.08);
-  	 	XSEC.push_back(69.14);
-        XSEC.push_back(16.74);
+  	 	XSEC.push_back(0.);
+       		 XSEC.push_back(20.09);
   	} 
   	else if(globalYear.EqualTo("2018"))
   	{
   		//XSEC.push_back(114.66);
   		//XSEC.push_back(30.32);
-  		XSEC.push_back(69.14);
-        XSEC.push_back(16.74);
+  		XSEC.push_back(0.);
+        	XSEC.push_back(16.74);
   	}
   }
   else
