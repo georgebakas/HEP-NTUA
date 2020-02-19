@@ -168,7 +168,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   int NN = trIN->GetEntries();
   
   int nJets,nLeptons;
-  float genEvtWeight;
+  float genEvtWeight, genEvtWeightCnt;
   vector<float> *jetPt(0),*tau3(0),*tau2(0),*tau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
@@ -210,6 +210,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   
   if(selection == 1)
   {
+  trINCnt->SetBranchAddress("genEvtWeight" ,&genEvtWeightCnt);  
   trINCnt->SetBranchAddress("mTTbarParton" ,&mTTbarParton);
   trINCnt->SetBranchAddress("yTTbarParton" ,&yTTbarParton);
   trINCnt->SetBranchAddress("ptTTbarParton"  ,&ptTTbarParton);
@@ -334,7 +335,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 		  for(int ivar = 0; ivar <xParticleAll.size(); ivar ++)
 	   	  {
 		     xParton = xPartonAll[ivar];
-		     hParton[f][ivar]->Fill(xParton, genEvtWeight);
+		     hParton[f][ivar]->Fill(xParton, genEvtWeightCnt);
 		  }
 	  }
   }
