@@ -93,12 +93,11 @@ void initGlobals()
   initHistoNames();
 }
  
-void GetPartonMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
+void GetPartonMCHistograms(TString y="2017", bool isNominalMC= false)
 {
   globalIsNominalMC = isNominalMC;  
   year =y;
   initFilesMapping();
-  selection = sel;
   initGlobals();  
   gStyle->SetOptStat(0);
   const int NVAR =9;
@@ -125,7 +124,6 @@ void GetPartonMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= fals
   weights.push_back(XSEC[f]/NORM);  
   
   int decade(0);
-  int NN = trIN->GetEntries();
   
   int nJets,nLeptons;
   float genEvtWeight;
@@ -199,7 +197,7 @@ void GetPartonMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= fals
       xPartonAll.push_back(partonY[1]);
       xPartonAll.push_back(partonMass[0]);
 
-      for(int ivar = 0; ivar <xParticleAll.size(); ivar ++)
+      for(int ivar = 0; ivar <xPartonAll.size(); ivar ++)
         {
          xParton = xPartonAll[ivar];
          hParton[f][ivar]->Fill(xParton, genEvtWeight);
@@ -222,7 +220,6 @@ void GetPartonMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= fals
     for(int j=1; j<listOfFiles.size(); j++)
     {      
       hParton_Clone[0][ivar]->Add(hParton_Clone[j][ivar]);
-      hParticle_Clone[0][ivar]->Add(hParticle_Clone[j][ivar]);
     }  
   }//end of ivar loop
 
@@ -235,18 +232,18 @@ void GetPartonMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= fals
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
     TString varNameParton = varParton[ivar];
-    cout<<varNameReco<<endl;
+   cout<<varNameParton<<endl;
     for(int f=0; f<listOfFiles.size(); f++)
     {
       if(ivar ==0 || ivar ==1 || ivar == 3 || ivar == 4 || ivar == 9 || ivar ==10 )
       {
-        h[f][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
-        h_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
+        hParton[f][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameParton.Data()));
+        hParton_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameParton.Data()));
       }
       else
       {
-        h[f][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
-        h_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
+        hParton[f][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameParton.Data()));
+        hParton_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameParton.Data()));
       }
     }
     
