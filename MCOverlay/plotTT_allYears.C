@@ -74,36 +74,25 @@ void plotVar(TString recoVar = "jetPt0")
   	  can[i] = new TCanvas(TString::Format("can %s %s", level[i].Data(), recoVar.Data()), 
   	  					   TString::Format("can %s %s", level[i].Data(), recoVar.Data()), 800, 700);
   	  leg[i] = new TLegend(0.65,0.73,0.9,0.9);
-	  hReco[i] = (TH1F*)infTT[i]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
+	  //hReco[i] = (TH1F*)infTT[i]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
 	  hParton[i] = (TH1F*)infTT[i]->Get(TString::Format("hPartonScaledXSEC_%s", recoVar.Data()));
-	  hParticle[i] = (TH1F*)infTT[i]->Get(TString::Format("hParticleScaledXSEC_%s", recoVar.Data()));
-	  hReco[i]->SetTitle(TString::Format("TT %s MC", nominal.Data()));
+	  //hParticle[i] = (TH1F*)infTT[i]->Get(TString::Format("hParticleScaledXSEC_%s", recoVar.Data()));
+	  //hReco[i]->SetTitle(TString::Format("TT %s MC", nominal.Data()));
 	  hParton[i]->SetTitle(TString::Format("TT Parton %s MC", nominal.Data()));
-	  hParticle[i]->SetTitle(TString::Format("TT Particle %s MC", nominal.Data()));
-	  hReco[i]->SetName(TString::Format("TT %s MC", nominal.Data()));
+	  //hParticle[i]->SetTitle(TString::Format("TT Particle %s MC", nominal.Data()));
+	  //hReco[i]->SetName(TString::Format("TT %s MC", nominal.Data()));
 	  hParton[i]->SetName(TString::Format("TT Parton %s MC", nominal.Data()));
-	  hParticle[i]->SetName(TString::Format("TT Particle %s MC", nominal.Data()));
+	  //hParticle[i]->SetName(TString::Format("TT Particle %s MC", nominal.Data()));
 	 
-	  hReco[i]->SetLineColor(col[i]);
+	 // hReco[i]->SetLineColor(col[i]);
 	  hParton[i]->SetLineColor(col[i]);
-	  hParticle[i]->SetLineColor(col[i]);
+	 // hParticle[i]->SetLineColor(col[i]);
 
-	  hReco[i]->Scale(1./hReco[i]->Integral());
+	 // hReco[i]->Scale(1./hReco[i]->Integral());
 	  hParton[i]->Scale(1./hParton[i]->Integral());
-	  hParticle[i]->Scale(1./hParticle[i]->Integral());
+	 // hParticle[i]->Scale(1./hParticle[i]->Integral());
 
-	  if(!recoVar.EqualTo("yJJ") || !recoVar.EqualTo("jetY0") || !recoVar.EqualTo("jetY1")) 
-	  {
-	  	hReco[i]->GetXaxis()->SetTitle(recoVar+" (GeV)");
-	  	hParton[i]->GetXaxis()->SetTitle(recoVar+" (GeV)");
-	  	hParticle[i]->GetXaxis()->SetTitle(recoVar+" (GeV)");
-	  }
- 	  else
- 	  {
- 	  	hReco[i]->GetXaxis()->SetTitle(recoVar);
- 	  	hParton[i]->GetXaxis()->SetTitle(recoVar);
- 	  	hParticle[i]->GetXaxis()->SetTitle(recoVar);
- 	  } 
+	  
   }	
 
   for(int y=0; y<3; y++)
