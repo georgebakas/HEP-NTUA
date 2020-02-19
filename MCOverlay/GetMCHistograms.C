@@ -238,30 +238,21 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
   std::vector<float> xParticleAll(0);
 
   int NBINS = 100;
-  float x_min[NVAR] = {700,0,-3, 200, 200, 0.0, 0.0};
-  float x_max[NVAR] = {5000, 1300, 3, 1500, 1500, 3, 3};
+  float x_min[NVAR] = {700,0,-3, 200, 200, 0.0, 0.0, 0, 0};
+  float x_max[NVAR] = {5000, 1300, 3, 1500, 1500, 3, 3, 300,300};
   //book the histograms
   //histograms for Signal/QCD in CR 
   for(int ivar =0; ivar< NVAR; ivar++)
   {
-    if(ivar < 7)
-      {
-      	h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
-      	hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
-      	hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
-      }
-    else if (ivar == 7 || ivar == 8)
-    {
-      h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
-      hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
-      hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, 50,300);
-    }
-
+    h[f][ivar] = new TH1F(TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
+    hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
+    hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticle_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), NBINS, x_min[ivar], x_max[ivar]);
   }  
 
 
   //event loop
-  cout<<"Reading "<<NN<<" entries"<<endl;
+  //åcout<<"Reading "<<NN<<" entries"<<endl;
+  
   for(int iev=0;iev<NN;iev++) 
   {
     double progress = 10.0*iev/(1.0*NN);
@@ -318,13 +309,12 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 	   }
 
   	}//end of nJets
-  } //---end of event loop
+  } //---end of event loop 
 
   //now for parton
   
   if(selection ==1)
   {
-      
 	  int NNCnt = trINCnt->GetEntries();
 	  for(int iev =0; iev<NNCnt; iev++)
 	  {
@@ -439,7 +429,7 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
     if(selection ==1)
     {
 	  hParton_Clone[0][ivar]->Write(TString::Format("hPartonScaledXSEC_%s", varReco[ivar].Data()));
-    hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data())); 
+      hParticle_Clone[0][ivar]->Write(TString::Format("hParticleScaledXSEC_%s", varReco[ivar].Data())); 
     }
   }
   listOfFiles.clear();
