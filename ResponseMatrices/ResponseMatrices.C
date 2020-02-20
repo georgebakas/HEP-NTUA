@@ -30,21 +30,21 @@ void initXsections()
   		//XSEC.push_back(80.73);
   		//XSEC.push_back(21.35);
   		XSEC.push_back(80.78);
-      XSEC.push_back(21.43);
+        XSEC.push_back(21.43);
   	}
   	else if(globalYear.EqualTo("2017"))
   	{
   		//XSEC.push_back(231.01);
   		//XSEC.push_back(61.08);
   		XSEC.push_back(0.);
-      XSEC.push_back(20.09);
+        XSEC.push_back(20.09);
   	}
   	else if(globalYear.EqualTo("2018"))
   	{
   		//XSEC.push_back(114.66);
   		//XSEC.push_back(30.32);
   		XSEC.push_back(0.);
-      XSEC.push_back(20.09);
+        XSEC.push_back(20.09);
   	}
   }
   else
@@ -573,7 +573,7 @@ for(int f=0; f<fileNames.size(); f++)
   TEfficiency *efficiency_particle[NVAR], *acceptance_particle[NVAR];
  
   //efficiency for parton quantity and for topTagger (new)
-
+  /*
   for(int ivar = 0; ivar< NVAR-2; ivar++)
   {
   	if(hParton[0][ivar]->GetBinContent(0) > 0)
@@ -592,7 +592,7 @@ for(int f=0; f<fileNames.size(); f++)
   		hRecoParticle[0][ivar]->SetBinContent(0,0.0);
   	if(hParticleReco[0][ivar]->GetBinContent(0) > 0)
   		hParticleReco[0][ivar]->SetBinContent(0,0.0);
-  }
+  }*/
 
 
   for(int ivar = 0; ivar< NVAR-2; ivar++)
