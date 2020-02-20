@@ -328,8 +328,8 @@ void GetMCHistograms(TString y="2017", int sel = 1, bool isNominalMC= false)
 		  xPartonAll.push_back(yTTbarParton);
 		  xPartonAll.push_back(partonPt[0]);
 		  xPartonAll.push_back(partonPt[1]);
-		  xPartonAll.push_back(partonY[0]);
-		  xPartonAll.push_back(partonY[1]);
+		  xPartonAll.push_back(fabs(partonY[0]));
+		  xPartonAll.push_back(fabs(partonY[1]));
 		  xPartonAll.push_back(partonMass[0]);
 
 		  for(int ivar = 0; ivar <xParticleAll.size(); ivar ++)

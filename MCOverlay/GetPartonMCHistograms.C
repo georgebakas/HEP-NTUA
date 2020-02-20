@@ -100,10 +100,10 @@ void GetPartonMCHistograms(TString y="2017", bool isNominalMC= false)
   initFilesMapping();
   initGlobals();  
   gStyle->SetOptStat(0);
-  const int NVAR =9;
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","mTop", "jetMassSoftDrop"};  
+  const int NVAR =11;
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","jetPhi0","jetPhi1","mTop0", "mTop1"};  
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","Leading PartonPt","Subleading PartonPt", 
-                              "Leading jetY", "Subleading JetY","Leading mTop", "Subleading mTop"};  
+                              "Leading jetY", "Subleading JetY","Leading jetPhi", "Subleading JetPhi","Leading mTop", "Subleading mTop"};  
   
   int fileSize = listOfFiles.size();
   TFile *inf;
@@ -123,35 +123,10 @@ void GetPartonMCHistograms(TString y="2017", bool isNominalMC= false)
   float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights(); 
   weights.push_back(XSEC[f]/NORM);  
   
-  int decade(0);
-  
-  int nJets,nLeptons;
   float genEvtWeight;
-  vector<float> *jetPt(0),*tau3(0),*tau2(0),*tau1(0);
-  vector<float> *jetMassSub0(0), *jetMassSub1(0);
-  vector<float> *jetMassSoftDrop(0);
-
-  float mva(0);
-  vector<float> *jetTtag(0);
-  vector<bool> *bit = new vector<bool>;
-  float mTTbarParton(0),mJJ(0), yJJ(0), ptJJ(0), yTTbarParton(0), ptTTbarParton(0);
-  int  category(0);
-  //matching info 
-  vector<float> *jetPhi(0), *jetEta(0), *jetY(0);
-  vector<int> *partonId(0), *partonMatchIdx(0);
+  float mTTbarParton(0),yTTbarParton(0), ptTTbarParton(0);
   
   float partonEta[2], partonPhi[2], partonY[2], partonPt[2], partonE[2], partonMass[2];
-  std::vector<float>  *deepAK8(0);
-  std::vector<int> *addedIndexes = new std::vector<int>(0);
-  std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
-  std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
-  std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
-
-  //particle
-  std::vector<float> *genjetPt(0), *genjetY(0), *genjetEta(0), *genSoftDropMass(0), *genjetMassSoftDrop(0);
-  std::vector<int> *nSubGenJets(0);
-  int nJetsGen(0);
-  float mJJGen(0), ptJJGen(0), yJJGen(0);
   //------- input tree --------------
   
   trINCnt->SetBranchAddress("genEvtWeight", &genEvtWeight);
@@ -162,16 +137,15 @@ void GetPartonMCHistograms(TString y="2017", bool isNominalMC= false)
   trINCnt->SetBranchAddress("etaTopParton"   ,&partonEta);
   trINCnt->SetBranchAddress("yTopParton"     ,&partonY);
   trINCnt->SetBranchAddress("mTopParton"     ,&partonMass);
+  trINCnt->SetBranchAddress("phiTopParton"   ,&partonPhi);
   //trINCnt->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
   //trINCnt->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
-  trINCnt->SetBranchAddress("phiTopParton"      ,&partonPhi);
-
   float xParton(0);
   std::vector<float> xPartonAll(0);
 
   int NBINS = 100;
-  float x_min[NVAR] = {700,0,-3, 200, 200, 0.0, 0.0, 0, 0};
-  float x_max[NVAR] = {5000, 1300, 3, 1500, 1500, 3, 3, 300, 300};
+  float x_min[NVAR] = {700,0,-3, 200, 200, 0.0, 0.0, -3,-3,0, 0};
+  float x_max[NVAR] = {5000, 1300, 3, 1500, 1500, 3, 3, 3,3,300, 300};
   //book the histograms
   //histograms for Signal/QCD in CR 
   for(int ivar =0; ivar< NVAR; ivar++)
@@ -193,9 +167,12 @@ void GetPartonMCHistograms(TString y="2017", bool isNominalMC= false)
       xPartonAll.push_back(yTTbarParton);
       xPartonAll.push_back(partonPt[0]);
       xPartonAll.push_back(partonPt[1]);
-      xPartonAll.push_back(partonY[0]);
-      xPartonAll.push_back(partonY[1]);
+      xPartonAll.push_back(fabs(partonY[0]));
+      xPartonAll.push_back(fabs(partonY[1]));
+      xPartonAll.push_back(partonPhi[0]);
+      xPartonAll.push_back(partonPhi[1]);
       xPartonAll.push_back(partonMass[0]);
+      xPartonAll.push_back(partonMass[1]);
 
       for(int ivar = 0; ivar <xPartonAll.size(); ivar ++)
         {
