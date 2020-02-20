@@ -7,6 +7,7 @@
 #include "TCanvas.h"
 #include "TLatex.h"
 
+#include "TemplateConstants.h"
 using std::cin;
 using std::cout;
 using std::endl;
@@ -31,6 +32,7 @@ void compare16_17_18(bool isEqual, bool isNominal)
 void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "partonPt0", TString particleVar = "genjetPt0",
 					 bool isEqual = true, bool isNominal = true)
 {
+   initFilesMapping();
    gStyle->SetOptStat(0);
    gStyle->SetPaintTextFormat("4.4f");
    std::vector<Color_t> colors = {kBlue,kRed, kGreen,kBlack, kMagenta};
@@ -145,6 +147,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
 		gPad->Update(); 
 		auto graph = eff18[i]->GetPaintedGraph(); 
+		graph->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 		if(i==0)
 		{
 			graph->SetMinimum(0.);
@@ -170,14 +173,15 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
        effLeg->Draw(); 
        gPad->Update(); 
 		auto graphAcc = acc18[i]->GetPaintedGraph(); 
-		graphAcc->SetMinimum(0.5);
-		graphAcc->SetMaximum(1.2); 
+	 	graphAcc->SetMinimum(0.5);
+		graphAcc->SetMaximum(1.2);
+		graphAcc->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 		gPad->Update(); 
 
 	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    }
 
-   
+   /*
    TH2F *hResponses[3][2]; //3 is for years , 16-0, 17-1, 18-2 and 2 is for parton particle: parton-0, particle 1
    TCanvas *canResponse[3][2];
    for(int iy = 0; iy<sizeof(years)/sizeof(years[0]); iy++)
@@ -205,7 +209,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    		hResponses[iy][i]->Draw("colz text");
    		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrix%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
    	}
-   }
+   }*/
 
 
   

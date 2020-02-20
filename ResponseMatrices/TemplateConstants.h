@@ -10,8 +10,16 @@ map<TString, int> variableConstantParticle;
 map<TString, float> luminosity;
 map<TString, TString> eospath;
 TColor color;
+map<TString, float>BNDmin;
+map<TString, float>BNDmax;
 //std::vector< std::vector <Float_t> > BND;
-
+/*std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
+													{0,60,150,300,450,600,750,950,1100,1300}, //ptjj
+													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
+		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
+													{400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt1
+													{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
+                                                    {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1*/
 void initFilesMapping()
 {
 	
@@ -87,13 +95,35 @@ void initFilesMapping()
 	luminosity.insert(pair<TString,float>("luminosity2016", 35920));
 	luminosity.insert(pair<TString,float>("luminosity2017", 41530));
 	luminosity.insert(pair<TString,float>("luminosity2018", 59740));
-	/*
-	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj
-	BND[variableConstant["ptJJ"]].push_back({0,60,150,300,450,600,750,950,1100,1300}); //ptjj
-	BND[variableConstant["yJJ"]].push_back({-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}); //yjj
-	BND[variableConstant["jetPt0"]].push_back({400,450,500,570,650,750,850,950,1100,1300,1500}); //jetPt0	
-	BND[variableConstant["jetPt1"]].push_back({400,450,500,570,650,750,850,950,1100,1300,1500}); //jetPt1
-	BND[variableConstant["jetY0"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY0
-	BND[variableConstant["jetY1"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY1
-	*/
+	
+	float fluc[7][2] = {{1000, 5000}, //mjj
+				    {0, 1300}, //ptjj
+				    {-2.4, 2.4}, //yjj
+				    {400, 1500}, //jetPt0
+				    {400, 1500}, //jetPt1
+				    {0, 2.4}, //jetY0
+				    {0, 2.4}}; //jetY1
+	/*std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
+													{0,60,150,300,450,600,750,950,1100,1300}, //ptjj
+													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
+		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
+													{400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt1
+													{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
+                                                    {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1*/
+	BNDmin.insert(pair<TString, float>("mJJ",1000));
+	BNDmin.insert(pair<TString, float>("ptJJ",0));
+	BNDmin.insert(pair<TString, float>("yJ",-2.4));
+	BNDmin.insert(pair<TString, float>("jetPt0",400));
+	BNDmin.insert(pair<TString, float>("jetPt1",400));
+	BNDmin.insert(pair<TString, float>("jetY0",0));
+	BNDmin.insert(pair<TString, float>("jetY1t",0));
+
+	BNDmax.insert(pair<TString, float>("mJJ",5000));
+	BNDmax.insert(pair<TString, float>("ptJJ",1300));
+	BNDmax.insert(pair<TString, float>("yJ",2.4));
+	BNDmax.insert(pair<TString, float>("jetPt0",1500));
+	BNDmax.insert(pair<TString, float>("jetPt1",1500));
+	BNDmax.insert(pair<TString, float>("jetY0",2.4));
+	BNDmax.insert(pair<TString, float>("jetY1t",2.4));
+
 }

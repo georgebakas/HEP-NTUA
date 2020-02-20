@@ -19,6 +19,7 @@ void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom,TH1F *hNum ,TH1F *hDen
 
 void plot_Mtt_Nominal(TString year="2017")
 {
+	initFilesMapping();
 	const int NVAR = 7;
 	TString recoVar[NVAR] = {"mJJ", "ptJJ", "yJJ","jetPt0", "jetPt1","jetY0", "jetY1"};
 	TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"};
@@ -116,7 +117,8 @@ void plotYearVar(TString year ,TString recoVar, TString varParton, TString varPa
 
   
   TString reason;
-  
+
+
   reason = "Parton Efficiency " + year;
   ratioPlot(effParton_[0], effParton_[1],hPassedPartonEff[0], hPassedPartonEff[1],recoVar,reason);
 
@@ -152,6 +154,8 @@ void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom, TH1F *hNum ,TH1F *hDe
   //cout<<"hNum name: "<<hNum->GetTitle()<<endl;
   //cout<<"hDenom name: "<<hDenom->GetTitle()<<endl;
 
+
+
   auto c1 = new TCanvas(reason+recoVar, reason+recoVar, 800,700);
   auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.45); 
   closure_pad2->Draw();
@@ -164,32 +168,24 @@ void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom, TH1F *hNum ,TH1F *hDe
   closure_pad1->SetBottomMargin(0.005);
   closure_pad1->cd();
   //closure_pad1->SetGrid();
-  TH1F *hEfficiencyNum, *hEfficiencyDenom;
-/*
-  if(reason.Contains("Efficiency"))
-  { 
-  	if(reason.Contains("Parton")) hNum->GetYaxis()->SetRangeUser(0,0.1);
-  	else hNum->GetYaxis()->SetRangeUser(0,0.4);
-  }
-  else hNum->GetYaxis()->SetRangeUser(hNum->GetMaximum()-0.4, hNum->GetMaximum()+0.2);
-  */
-  //effNum->GetYaxis()->SetTitleSize(20);
-  //effNum->GetYaxis()->SetTitleFont(43);
-  //effNum->GetYaxis()->SetTitleOffset(1.4); 
-  //effNum->ResetAttLine();
-  //effNum->ResetAttMarker();
   effNum->SetLineColor(kRed-7);
   effNum->SetMarkerStyle(22);
   effNum->SetMarkerColor(kRed-7);
-
-  //effDenom->ResetAttLine();
-  //effDenom->ResetAttMarker();
+  
   effDenom->SetLineColor(kBlue-2); 
   effDenom->SetMarkerStyle(21);
   effDenom->SetMarkerColor(kBlue-2);
-  
+
   effNum->Draw();
   effDenom->Draw("same"); 
+  gPad->Update(); 
+
+  auto grEfficiencyNum = effNum->GetPaintedGraph();
+  auto grEfficiencyDenom = effDenom->GetPaintedGraph();
+  grEfficiencyNum->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
+  grEfficiencyDenom->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
+  gPad->Update(); 
+ 
   //hBkg_SR[0]->GetXaxis()->SetTitleOffset(1.5);
   //if(!recoVar.EqualTo("yJJ") && !recoVar.EqualTo("jetY0") && !recoVar.EqualTo("jetY1")) hNum->GetXaxis()->SetTitle(recoVar+" (GeV)");
   //else hNum->GetXaxis()->SetTitle(recoVar);
