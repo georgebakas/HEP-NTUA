@@ -22,9 +22,8 @@ TString globalYear1;
 void plotTT_allYears(bool isNominalMC = false)
 {
 	globalIsNominalMC = isNominalMC;
-	const int NVAR = 9;
-	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1"
-							 ,"mTop", "jetMassSoftDrop"};
+	const int NVAR = 11;
+	TString recoVar[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","jetPhi0","jetPhi1","mTop0", "mTop1"};
 
 	for(int ivar = 0; ivar<NVAR; ivar++)
 	{
@@ -64,68 +63,35 @@ void plotVar(TString recoVar = "jetPt0")
   std::vector<Color_t> col = {kBlue, kRed, kGreen-6}; //this refers to each year
   TString year[] = {"'16", "'17", "'18"};
   TString level[] = {"Reco", "Parton", "Particle"};
-  TCanvas *can[3]; //this 3 refers to the number of levels--> 0 reco , 1 parton and 2 particle
-  TLegend *leg[3];	
+  TCanvas *can = new TCanvas(TString::Format("canParton %s", recoVar.Data()), 
+                   TString::Format("canParton %s", recoVar.Data()), 800, 700);
+  TLegend *leg = new TLegend(0.65,0.73,0.9,0.9);
   //scaled TT to xsec and LUMI
   if(!globalIsNominalMC) nominal = "Mtt";
   for(int i = 0; i < 3; i++) //loop on all years...
   {
-
-  	  can[i] = new TCanvas(TString::Format("can %s %s", level[i].Data(), recoVar.Data()), 
-  	  					   TString::Format("can %s %s", level[i].Data(), recoVar.Data()), 800, 700);
-  	  leg[i] = new TLegend(0.65,0.73,0.9,0.9);
-	  //hReco[i] = (TH1F*)infTT[i]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
 	  hParton[i] = (TH1F*)infTT[i]->Get(TString::Format("hPartonScaledXSEC_%s", recoVar.Data()));
-	  //hParticle[i] = (TH1F*)infTT[i]->Get(TString::Format("hParticleScaledXSEC_%s", recoVar.Data()));
-	  //hReco[i]->SetTitle(TString::Format("TT %s MC", nominal.Data()));
 	  hParton[i]->SetTitle(TString::Format("TT Parton %s MC", nominal.Data()));
-	  //hParticle[i]->SetTitle(TString::Format("TT Particle %s MC", nominal.Data()));
-	  //hReco[i]->SetName(TString::Format("TT %s MC", nominal.Data()));
 	  hParton[i]->SetName(TString::Format("TT Parton %s MC", nominal.Data()));
-	  //hParticle[i]->SetName(TString::Format("TT Particle %s MC", nominal.Data()));
 	 
-	 // hReco[i]->SetLineColor(col[i]);
 	  hParton[i]->SetLineColor(col[i]);
-	 // hParticle[i]->SetLineColor(col[i]);
-
-	 // hReco[i]->Scale(1./hReco[i]->Integral());
 	  hParton[i]->Scale(1./hParton[i]->Integral());
-	 // hParticle[i]->Scale(1./hParticle[i]->Integral());
-
-	  
   }	
 
   for(int y=0; y<3; y++)
   {
-  	//leg[0]->AddEntry(hReco[y],year[y],"lep");
-  	leg[1]->AddEntry(hParton[y],year[y],"lep");
-  	//leg[2]->AddEntry(hParticle[y],year[y],"lep");
+  	leg->AddEntry(hParton[y],year[y],"lep");
   }
-  /*
-  can[0]->cd();
-  hReco[0]->Draw();
-  gPad->SetLogy();
-  hReco[1]->Draw("same");
-  hReco[2]->Draw("same");
-  leg[0]->Draw();
-*/
-  can[1]->cd();
+
+  can->cd();
   hParton[0]->Draw();
   gPad->SetLogy();
   hParton[1]->Draw("same");
   hParton[2]->Draw("same");
-  leg[1]->Draw();
-/*
-  can[2]->cd();
-  hParticle[0]->Draw();
-  gPad->SetLogy();
-  hParticle[1]->Draw("same");
-  hParticle[2]->Draw("same");
-  leg[2]->Draw(); */
-  
-  for(int l =1; l<2; l++)
-	can[l]->Print(TString::Format("./allYears/%s/%s/allyears_%s%s.pdf",nominal.Data(),
-									recoVar.Data(), recoVar.Data(), level[l].Data()),"pdf");
+  leg->Draw();
+
+	can->Print(TString::Format("./allYears/%s/%s/allyears_%sParton.pdf",nominal.Data(),
+									recoVar.Data(), recoVar.Data()),"pdf");
   
   
 }

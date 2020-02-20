@@ -31,9 +31,8 @@ void plotTT_QCD_16_other(TString year1 = "2017", bool isNominalMC = false)
 	globalYear2.Remove(TString::kBoth,'0');
 
 
-	const int NVAR = 9;
-	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1"
-							 ,"mTop", "jetMassSoftDrop"};
+	const int NVAR = 11;
+	TString recoVar[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","jetPhi0","jetPhi1","mTop0", "mTop1"};
 
 	for(int ivar = 0; ivar<NVAR; ivar++)
 	{
@@ -132,7 +131,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   hSigAll[1]->SetTitle(TString::Format("TT %s All Slices %s",level.Data(), year2.Data()));
   hSigAll[0]->SetName(TString::Format("TT %s All Slices %s",level.Data(), year1.Data()));
   hSigAll[1]->SetName(TString::Format("TT %s All Slices %s",level.Data(), year2.Data()));
-
+/*
   //scaled qcd to xsec and LUMI
   hQCDAll[0] = (TH1F*)infBkg[0]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
   hQCDAll[1] = (TH1F*)infBkg[1]->Get(TString::Format("hScaledXSEC_%s", recoVar.Data()));
@@ -140,16 +139,16 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   hQCDAll[1]->SetTitle(TString::Format("QCD All Slices %s", year2.Data()));
   hQCDAll[0]->SetName(TString::Format("QCD All Slices %s", year1.Data()));
   hQCDAll[1]->SetName(TString::Format("QCD All Slices %s", year2.Data()));
-  
+  */
   TString reason;
   //we do 17/18 so numerator is 17 --> [0] and denominator is 18 --> [1]
   
-
+  /*
   for(int i =0; i<histoNamesQCD.size(); i++)
   {
   	reason = "QCD MC Overlay "+ histoNamesQCD[i];	
   	//ratioPlot(hQCD_slice[0][i],hQCD_slice[1][i], recoVar, reason);
-  }
+  }*/
   
   
   reason = "TT MC Overlay all slices";
@@ -245,8 +244,6 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   TString temp;
   if(globalIsNominalMC) temp = "NominalMC";
   else temp = "TT_Mtt";
-  //c1->Print(TString::Format("./Comparison/%s/%s/comparison_mc%s_%s_%s.pdf",temp.Data(),recoVar.Data(),
-   //							globalYear1.Data(), globalYear2.Data(),reason.Data()),"pdf");
   c1->Print(TString::Format("./ComparisonScaledIntegral/%s/%s/comparison_mc%s_%s_%sParton.pdf",temp.Data(),recoVar.Data(),
   							 globalYear1.Data(), globalYear2.Data(), reason.Data()),"pdf");
 }

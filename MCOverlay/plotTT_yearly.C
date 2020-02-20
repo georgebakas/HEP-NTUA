@@ -25,9 +25,8 @@ void plotTT_yearly(TString year = "2016")
 	globalYear1.Remove(TString::kBoth,'2');
 	globalYear1.Remove(TString::kBoth,'0');
 
-	const int NVAR = 9;
-	TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1","jetY0", "jetY1"
-							 ,"mTop", "jetMassSoftDrop"};
+	const int NVAR = 11;
+	TString recoVar[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","jetPhi0","jetPhi1","mTop0", "mTop1"};
 
 	for(int ivar = 0; ivar<NVAR; ivar++)
 	{
