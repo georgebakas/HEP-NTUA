@@ -14,10 +14,10 @@ using std::cout;
 using std::endl;
 
 #include "TemplateConstants.h"
-void plotYearVar(TString year ,TString recoVar, TString varParton, TString varParticle ,bool isEqual);
+void plotYearVar(TString year ,TString recoVar, TString varParton, TString varParticle );
 void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom,TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason);
 
-void plot_Mtt_Nominal(TString year="2017", bool isEqual = true)
+void plot_Mtt_Nominal(TString year="2017")
 {
 	const int NVAR = 7;
 	TString recoVar[NVAR] = {"mJJ", "ptJJ", "yJJ","jetPt0", "jetPt1","jetY0", "jetY1"};
@@ -26,11 +26,11 @@ void plot_Mtt_Nominal(TString year="2017", bool isEqual = true)
 	
 	for(int ivar = 0; ivar<NVAR-2; ivar++)
 	{
-		plotYearVar(year,recoVar[ivar],varParton[ivar], varParticle[ivar] ,isEqual);
-		break;
+		plotYearVar(year,recoVar[ivar],varParton[ivar], varParticle[ivar]);
+		//break;
 	}
 }
-void plotYearVar(TString year ,TString recoVar, TString varParton, TString varParticle ,bool isEqual)
+void plotYearVar(TString year ,TString recoVar, TString varParton, TString varParticle)
 {
   gStyle->SetOptStat(0);
   std::vector<TString> histoNames;
@@ -41,12 +41,10 @@ void plotYearVar(TString year ,TString recoVar, TString varParton, TString varPa
   
   //0 is 2017 and //1 is 2018
   //TT files
-  TString equalBinning = "EqualBins";
-  if(!isEqual) equalBinning = "UnequalBins";
 
   TFile *infTT[2];
-  infTT[0] = TFile::Open(TString::Format("%s/%s/ResponsesEfficiency_%s.root", year.Data(), equalBinning.Data(), year.Data()));  
-  infTT[1] = TFile::Open(TString::Format("%s/%s/ResponsesEfficiencyNominalMC_%s.root", year.Data(),equalBinning.Data(), year.Data())); 
+  infTT[0] = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));  
+  infTT[1] = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data())); 
 
   TEfficiency *effParton[2], *effParticle[2];
   TEfficiency *accParton[2], *accParticle[2];
@@ -144,8 +142,8 @@ void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom, TH1F *hNum ,TH1F *hDe
   TString titleNum = hNum->GetTitle();
   TString titleDenom = hDenom->GetTitle();
   TLegend *closureLegend = new TLegend(0.65,0.73,0.9,0.9);
-  closureLegend->AddEntry(hNum,titleNum, "lep");
-  closureLegend->AddEntry(hDenom,titleDenom, "lep");
+  closureLegend->AddEntry(effNum,titleNum, "lep");
+  closureLegend->AddEntry(effDenom,titleDenom, "lep");
 
   hNum->SetTitle(reason);
   hDenom->SetTitle(reason);
@@ -183,6 +181,7 @@ void ratioPlot(TEfficiency *effNum, TEfficiency *effDenom, TH1F *hNum ,TH1F *hDe
   effNum->SetLineColor(kRed-7);
   effNum->SetMarkerStyle(22);
   effNum->SetMarkerColor(kRed-7);
+
   //effDenom->ResetAttLine();
   //effDenom->ResetAttMarker();
   effDenom->SetLineColor(kBlue-2); 
