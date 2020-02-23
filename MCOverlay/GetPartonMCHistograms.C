@@ -144,8 +144,8 @@ void GetPartonMCHistograms(TString y="2017", bool isNominalMC= false)
   std::vector<float> xPartonAll(0);
 
   int NBINS = 100;
-  float x_min[NVAR] = {700,0,-3, 200, 200, 0.0, 0.0, -3,-3,0, 0};
-  float x_max[NVAR] = {5000, 1300, 3, 1500, 1500, 3, 3, 3,3,300, 300};
+  float x_min[NVAR] = {0,0,-3.5, 0,0, 0.0, 0.0, -3.5,-3.5,0, 0};
+  float x_max[NVAR] = {5000, 1300, 3.5, 1500, 1500, 3.5, 3.5, 3.5,3.5,300, 300};
   //book the histograms
   //histograms for Signal/QCD in CR 
   for(int ivar =0; ivar< NVAR; ivar++)
