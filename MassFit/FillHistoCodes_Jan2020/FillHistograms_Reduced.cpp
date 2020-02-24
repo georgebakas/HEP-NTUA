@@ -32,7 +32,7 @@ void initFileNames()
     eosPath = TString::Format("%s%s/",eosDataPath.Data(), year.Data());  
     listOfFiles.push_back(dataFiles[year.Data()]);
   }
-  else if(selection ==1) //signal ttbar mc
+  else if(selection ==1) //signal ttbar mc mtt
   {
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());  
     cout<<eosPath<<endl;
@@ -78,6 +78,18 @@ void initFileNames()
       }
     }
   }
+  else if(selection ==4) //signal ttbar mc nominal
+  {
+    eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());  
+    cout<<eosPath<<endl;
+    if(year.EqualTo("2016")) listOfFiles.push_back(ttNominalFiles[year.Data()]["TTNominal"]);
+    else
+    {
+      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic_0"]);
+      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic_0"]);
+      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu_0"]);
+    }
+  }
 }
 
 void initXsections()
@@ -121,6 +133,16 @@ void initXsections()
         XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
         XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
       }
+    }
+  }
+  else if(selection ==4)
+  {
+    if(year.EqualTo("2016")) XSEC.push_back(ttNominalXSEC[year.Data()]["TTNominal"]);
+    else
+    {
+      XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic_0"]);
+      XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic_0"]);
+      XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu_0"]);
     }
   }
 
@@ -170,6 +192,16 @@ void initHistoNames()
         histoNames.push_back("ST_t-channel_top_5f");
         histoNames.push_back("ST_t-channel_antitop_5f");
       }
+    }
+  }
+  else if(selection ==4)
+  {
+    if(year.EqualTo("2016")) histoNames.push_back("TTNominal");
+    else
+    {
+      histoNames.push_back("TTHadronic_0");
+      histoNames.push_back("TTSemiLeptonic_0");
+      histoNames.push_back("TTTo2L2Nu_0");
     }
   }
 
@@ -685,6 +717,8 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced%s.root",year.Data(), loose.Data()), "RECREATE");
   else if(selection ==3)
     outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
+  else if(selection ==4)
+    outFile = new TFile(TString::Format("%s/Histo_TT_NominalMC_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
