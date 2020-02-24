@@ -79,7 +79,8 @@ void initFileNames()
     }
   }
   else if(selection ==4) //signal ttbar mc nominal
-  {
+  { 
+    cout<<"nominal!!!"<<endl;
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());  
     cout<<eosPath<<endl;
     if(year.EqualTo("2016")) listOfFiles.push_back(ttNominalFiles[year.Data()]["TTNominal"]);
@@ -269,7 +270,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   cout<<"Entering "<<eosPath+listOfFiles[f]<<endl;
   inf = TFile::Open(eosPath+listOfFiles[f]);   
   TTree *trIN    = (TTree*)inf->Get("boosted/events");  
-  
+  cout<<"XSEC: "<<XSEC[f]<<endl; 
   if(selection != 0)
   {
     float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights(); 
@@ -401,7 +402,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   float jetDr_(0);
   
   cout<<"Reading "<<NN<<" entries"<<endl;
-  for(int iev=0;iev<NN;iev++) 
+  for(int iev=4;iev<NN;iev++) 
   {
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress); 
@@ -504,14 +505,14 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       }     
      }//----end of if jetMatchedIndexes > 0
     }//----end of for on all jets for mathching
-     
+ 
     //---------------------------------------END OF MATCHING------------------------------------------------------
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
     dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0];
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
-    
+   // cout<<"right before the cut init"<<endl;
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
@@ -527,9 +528,9 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
    
    //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
-    
     if(isMatched > 1)
     {
+     // cout<<"entered isMatched > 1"<<endl;
       int leadingPt = 0;
       int subleadingPt = 1;
       if ((*pt_)[0] < (*pt_)[1]) 
