@@ -43,7 +43,7 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
   infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_Loose.root",year.Data()));  //mtt mc
 
   TH1F *hCR_Data, *hCR_Nominal, *hCR_Mtt;
- 
+  
   //scaled TT to xsec and LUMI
   hCR_Data = (TH1F*)infTT[0]->Get(TString::Format("hWt_%s_0btag", recoVar.Data()));
   hCR_Nominal = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_0btag_expYield", recoVar.Data()));
@@ -57,6 +57,13 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
   hCR_Nominal->SetName(TString::Format("TT %s Nominal", year.Data()));
   hCR_Data->SetName(TString::Format("TT %s Data", year.Data()));
   
+  if(recoVar.EqualTo("mTop") || recoVar.EqualTo("jetMassSoftDrop"))
+  {
+  	hCR_Mtt->Rebin(4);
+  	hCR_Nominal->Rebin(4);
+  	hCR_Data->Rebin(4);
+  }
+
   TString reason;  
   reason = "CR_ShapeComparison";
   ratioPlot(hCR_Data, hCR_Nominal, hCR_Mtt, recoVar, reason);
