@@ -38,16 +38,20 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
 {
   //TT files 
   TFile *infTT[3];
-  infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_Loose.root",year.Data(),year.Data())); //data
-  infTT[1] = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced_Loose.root",year.Data())); //nominal mc
-  infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_Loose.root",year.Data()));  //mtt mc
+  infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_Loose.root",year.Data(),year.Data())); //data CR
+  infTT[1] = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced_Loose.root",year.Data())); //nominal mc CR 
+  infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_Loose.root",year.Data()));  //mtt mc CR
+
+  //infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root",year.Data(),year.Data())); //data SR
+  //infTT[1] = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root",year.Data())); //nominal mc SR
+  //infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root",year.Data()));  //mtt mc SR
 
   TH1F *hCR_Data, *hCR_Nominal, *hCR_Mtt;
   
   //scaled TT to xsec and LUMI
-  hCR_Data = (TH1F*)infTT[0]->Get(TString::Format("hWt_%s_0btag", recoVar.Data()));
-  hCR_Nominal = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_0btag_expYield", recoVar.Data()));
-  hCR_Mtt = (TH1F*)infTT[2]->Get(TString::Format("hWt_%s_0btag_expYield", recoVar.Data())); //hWt_jetPt0_0btag_expYield
+  hCR_Data = (TH1F*)infTT[0]->Get(TString::Format("hWt_%s_2btag", recoVar.Data()));
+  hCR_Nominal = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data()));
+  hCR_Mtt = (TH1F*)infTT[2]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data())); //hWt_jetPt0_0btag_expYield
   
   hCR_Mtt->SetTitle(TString::Format("TT %s Mtt",year.Data()));
   hCR_Nominal->SetTitle(TString::Format("TT %s Nominal", year.Data()));
@@ -85,10 +89,6 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
   hNum->Scale(1./hNum->Integral());
   hDenom_0->Scale(1./hDenom_0->Integral());
   hDenom_1->Scale(1./hDenom_1->Integral());
-  //cout<<"---------------"<<endl;
-  //cout<<reason<<endl;
-  //cout<<"hNum name: "<<hNum->GetTitle()<<endl;
-  //cout<<"hDenom name: "<<hDenom->GetTitle()<<endl;
 
   auto c1 = new TCanvas(reason+recoVar, reason+recoVar, 800,700);
   auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.4); 
@@ -162,5 +162,5 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
 
   hRatio[0]->Draw();
   hRatio[1]->Draw("same");
-  c1->Print(TString::Format("./YearlyCRShapeComparison/%s/CRCShapeComparison_%s.pdf",globalYear1.Data(),recoVar.Data()),"pdf");
+  //c1->Print(TString::Format("./YearlyCRShapeComparison/%s/CRCShapeComparison_%s.pdf",globalYear1.Data(),recoVar.Data()),"pdf");
 }

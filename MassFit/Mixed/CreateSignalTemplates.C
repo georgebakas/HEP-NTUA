@@ -52,9 +52,11 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
   for(int icat=0;icat<3;icat++) {
   	//for CR use Loose WP files
-  	if(icat ==0 )infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data()));  
+  	//if(icat ==0 )infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data())); //mtt
+    if(icat ==0 )infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_Loose.root",year.Data()));  //nominal
   	//for SR use Medium WP files
-  	else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data()));
+  	//else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt files
+    else infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data())); //nominal
     //infMC = TFile::Open(TString::Format("%s/output_2016_mcSig_02_extended.root",year.Data()));  
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;

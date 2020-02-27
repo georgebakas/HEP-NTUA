@@ -90,8 +90,8 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	TFile *file0 = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(), year.Data()));
 	TH1F* h0b = (TH1F*) file0->Get("hWt_mTop_0btag_expYield");
 	TH1F* h2b = (TH1F*) file2->Get("hWt_mTop_2btag_expYield");
-	h0b->Rebin(2);
-	h2b->Rebin(2);
+	//h0b->Rebin(2);
+	//h2b->Rebin(2);
 	
 	TFile *fileMC0 = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root", year.Data()));
 	TFile *fileMC2 = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root", year.Data()));
