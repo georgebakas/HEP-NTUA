@@ -121,7 +121,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   {
     sP = 0.11;
     min = 10e-5;
-    max = 10e-2;
+    max = 10e+2;
   }
   else if(year.EqualTo("2018") || year.EqualTo("2017")) 
   {
