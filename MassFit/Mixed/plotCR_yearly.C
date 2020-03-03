@@ -37,40 +37,40 @@ void plotCR_yearly(TString year = "2016")
 void plotYearVar(TString year, TString recoVar = "jetPt0")
 {
   //TT files 
-  TFile *infTT[3];
+  TFile *infTT[2];
   infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_Loose.root",year.Data(),year.Data())); //data CR
-  infTT[1] = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced_Loose.root",year.Data())); //nominal mc CR 
-  infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_Loose.root",year.Data()));  //mtt mc CR
+  infTT[1] = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); //nominal mc CR 
+  //infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_Loose.root",year.Data()));  //mtt mc CR
 
   //infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root",year.Data(),year.Data())); //data SR
   //infTT[1] = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root",year.Data())); //nominal mc SR
   //infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root",year.Data()));  //mtt mc SR
 
-  TH1F *hCR_Data, *hCR_Nominal, *hCR_Mtt;
+  TH1F *hCR_Data, *hCR_QCD, *hSR_QCD;
   
   //scaled TT to xsec and LUMI
-  hCR_Data = (TH1F*)infTT[0]->Get(TString::Format("hWt_%s_2btag", recoVar.Data()));
-  hCR_Nominal = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data()));
-  hCR_Mtt = (TH1F*)infTT[2]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data())); //hWt_jetPt0_0btag_expYield
+  hCR_Data = (TH1F*)infTT[0]->Get(TString::Format("hWt_%s_0btag", recoVar.Data()));
+  hCR_QCD = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_0btag_expYield", recoVar.Data()));
+  hSR_QCD = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data())); //hWt_jetPt0_0btag_expYield
   
-  hCR_Mtt->SetTitle(TString::Format("TT %s Mtt",year.Data()));
-  hCR_Nominal->SetTitle(TString::Format("TT %s Nominal", year.Data()));
-  hCR_Data->SetTitle(TString::Format("TT %s Data", year.Data()));
-  
-  hCR_Mtt->SetName(TString::Format("TT %s Mtt", year.Data()));
-  hCR_Nominal->SetName(TString::Format("TT %s Nominal", year.Data()));
-  hCR_Data->SetName(TString::Format("TT %s Data", year.Data()));
+  hCR_QCD->SetTitle(TString::Format("CR QCD MC %s",year.Data()));
+  hSR_QCD->SetTitle(TString::Format("SR QCD MC %s", year.Data()));
+  hCR_Data->SetTitle(TString::Format("CR %s Data", year.Data()));
+
+  hCR_QCD->SetName(TString::Format("CR QCD MC %s",year.Data()));
+  hSR_QCD->SetName(TString::Format("SR QCD MC %s", year.Data()));
+  hCR_Data->SetName(TString::Format("CR %s Data", year.Data()));
   
   if(recoVar.EqualTo("mTop") || recoVar.EqualTo("jetMassSoftDrop"))
   {
-  	hCR_Mtt->Rebin(4);
-  	hCR_Nominal->Rebin(4);
+  	hCR_QCD->Rebin(4);
+  	hSR_QCD->Rebin(4);
   	hCR_Data->Rebin(4);
   }
 
   TString reason;  
-  reason = "CR_ShapeComparison";
-  ratioPlot(hCR_Data, hCR_Nominal, hCR_Mtt, recoVar, reason);
+  reason = "ShapeComparison";
+  ratioPlot(hCR_Data, hCR_QCD, hSR_QCD, recoVar, reason);
   
 }
 
@@ -162,5 +162,5 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
 
   hRatio[0]->Draw();
   hRatio[1]->Draw("same");
-  //c1->Print(TString::Format("./YearlyCRShapeComparison/%s/CRCShapeComparison_%s.pdf",globalYear1.Data(),recoVar.Data()),"pdf");
+  c1->Print(TString::Format("./YearlyCRShapeComparison/%s/QCDShapeComparison_%s.pdf",globalYear1.Data(),recoVar.Data()),"pdf");
 }

@@ -117,34 +117,17 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   //---- QCD correction factor ---------------------------
   
   float sP, min, max;
-  if(year.EqualTo("2016")) 
-  {
-    sP = 0.11;
-    min = 10e-5;
-    max = 10e+2;
-  }
-  else if(year.EqualTo("2018") || year.EqualTo("2017")) 
-  {
-    sP= 8.9e-3;
-    min = 1e-4;
-    max = 1e-0;
-  }
-  else
-  {
-    sP = 1e-3;
-    min = -1;
-    max = 1;
-  } 
-  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b_0","kQCD_2b_0", sP, min, max);
-  
-  //RooRealVar kQCD2b_0("kQCD_2b_0","kQCD_2b_0",1e-2,1e-4,1);
-  RooRealVar *kQCD2b_1 = new RooRealVar("kQCD_2b_1","kQCD_2b_1",1e-2,1e-4,1e-3);
-  
+  sP = 1e-3;
+  min = -1;
+  max = 10;
+
+  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", sP, min, max);
+  RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
+  mBar->setConstant(true);
   kQCD2b_0->setConstant(false);
-  kQCD2b_1->setConstant(false);
-  
-  RooFormulaVar qcdCor_2b("qcdCor_2b","1+@0*@1",RooArgList(*x,*kQCD2b_0));
-  //RooFormulaVar qcdCor_2b("qcdCor_2b","@0*@1+@0*@0*@2",RooArgList(*x,kQCD2b_0,kQCD2b_1));
+
+  RooFormulaVar qcdCor_2b("qcdCor","(1+@0*@1)/(1+@1*@2)",RooArgList(*x,*kQCD2b_0,*mBar));
+  //RooFormulaVar qcdCor_2b("qcdCor_2b","(1+@0*@1)",RooArgList(*x,*kQCD2b_0));
   //---- corrected QCD -----------------------------------
   
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
@@ -245,7 +228,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   wOut->import(*yieldTT);
   wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+".root");
 
-
+  /*
   correlation(kQCD2b_0, nFitBkg2b, res, "kQCD2b ", "nFitBkg2b");
   correlation(kQCD2b_0, nFitQCD2b, res, "kQCD2b", "nFitQCD2b");
   correlation(kQCD2b_0, nFitSig2b, res, "kQCD2b", "nFitSig2b");
@@ -255,6 +238,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   for(int i=0; i<correlationCanvases.size(); i++)
   {
 	  correlationCanvases[i]->Print(TString::Format("%s/correlationPlots/%s.pdf", year.Data(), correlationCanvases[i]->GetName()), "pdf");
-  }
+  }*/	
 }
 
