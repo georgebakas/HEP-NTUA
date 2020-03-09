@@ -134,7 +134,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 	
 	//QCD correction factor
-	RooRealVar *kQCD2b = new RooRealVar("kQCD_2b", "kQCD_2b", 1e-3, -1, 1);
+	RooRealVar *kQCD2b = new RooRealVar("kQCD_2b", "kQCD_2b", 1, -1, 100);
 	kQCD2b->setConstant(false);
 	RooFormulaVar qcdCor_2b("qcdCor_2b", "1+@0*@1", RooArgList(*x, *kQCD2b));
 	

@@ -1,5 +1,8 @@
+#include "QCDBkgConstants.h"
+
 void CreateBkgTemplates(TString year, TString CUT = "")
 {
+  initQCDParams();
   gROOT->ForceStyle();
   
   RooMsgService::instance().setSilentMode(kTRUE);
@@ -16,7 +19,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   float XMIN,XMAX;
 
   VAR = "mTop";
-  XMIN = 0.;
+  XMIN = 50.;
   XMAX = 300.; 
 
   RooWorkspace *w = new RooWorkspace("w","workspace");
@@ -25,8 +28,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *x = new RooRealVar("mTop","mTop",XMIN,XMAX);
   w->import(*x);
   //---- first do the data template ---------------
-  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
-  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
+  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
+  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
   //hData->Rebin(2);
   RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);  
@@ -35,19 +38,25 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *fBkgJet = new RooRealVar("fBkgJet","fBkgJet",hDataJet->Integral()/hData->Integral());
   RooRealVar *fBkgEvt = new RooRealVar("fBkgEvt","fBkgEvt",hDataEvt->Integral()/hData->Integral());
   //---- QCD -----------------------------------
-  RooRealVar bQCD0("qcd_b0","qcd_b0",0.74,0,2.);
-  RooRealVar bQCD1("qcd_b1","qcd_b1",1.5,0,2.);
-  RooRealVar bQCD2("qcd_b2","qcd_b2",1.5,0,2.);
-  RooRealVar bQCD3("qcd_b3","qcd_b3",0.08,0,2.);
-  RooRealVar bQCD4("qcd_b4","qcd_b4",0.04,0,2.);
-  RooBernstein qcd1("qcd_brn","qcd_brn",*x,RooArgList(bQCD0,bQCD1,bQCD2,bQCD3, bQCD4));
+  RooRealVar bQCD0("qcd_b0","qcd_b0",qcdParams[year]["qcd_b0"],0,2.);
+  RooRealVar bQCD1("qcd_b1","qcd_b1",qcdParams[year]["qcd_b1"],0,2.);
+  RooRealVar bQCD2("qcd_b2","qcd_b2",qcdParams[year]["qcd_b2"],0,2.);
+  RooRealVar bQCD3("qcd_b3","qcd_b3",qcdParams[year]["qcd_b3"],0,2.);
+  RooRealVar bQCD4("qcd_b4","qcd_b4",qcdParams[year]["qcd_b4"],0,2.);
+  RooBernstein qcd1("qcd_brn","qcd_brn",*x,RooArgList(bQCD0,bQCD1,bQCD2,bQCD3,bQCD4));
   
 
-  RooRealVar mQCD("qcd_mean" ,"qcd_mean",150,130,300);
-  RooRealVar sQCD("qcd_sigma","qcd_sigma",35,10,200);
+  RooRealVar mQCD("qcd_mean" ,"qcd_mean",qcdParams[year]["qcd_mean"],130,300);
+  RooRealVar sQCD("qcd_sigma","qcd_sigma",qcdParams[year]["qcd_sigma"],10,200);
   RooGaussian qcd2("qcd_gaus" ,"qcd_gaus",*x,mQCD,sQCD);
 
+
+  RooRealVar mWqcd("qcd_meanW", "qcd_meanW", 75, 60, 90);
+  RooRealVar sWqcd("qcd_sigmaW", "qcd_sigmaW", 10, 0, 20);
+  RooGaussian qcd3("qcd_gausW", "qcd_gausW", *x, mWqcd, sWqcd);
+
   RooRealVar fqcd1("qcd_f1","qcd_f1",0.5,0,1);
+  RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
   RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
   
@@ -61,6 +70,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   qcd->plotOn(frameQCD);
   qcd->plotOn(frameQCD,RooFit::Components("qcd_brn"),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
   qcd->plotOn(frameQCD,RooFit::Components("qcd_gaus"),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
+  //qcd->plotOn(frameQCD,RooFit::Components("qcd_gausW"),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
   frameQCD->GetXaxis()->SetTitle("m_{t} (GeV)");
   frameQCD->Draw();
   gPad->Update();
@@ -72,7 +82,6 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   w->import(*qcd);
   w->import(*fBkgJet);
   w->import(*fBkgEvt);
-  
   //TH1F *hMeanTop[2],*hSigmaTop[2],*hMeanW[2],*hSigmaW[2];
 
   float LUMI(0);
@@ -82,15 +91,10 @@ void CreateBkgTemplates(TString year, TString CUT = "")
 
   for(int icat=0;icat<3;icat++) {
   	if(icat ==0) //for CR use the Loose WP
-  	{
-  		infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
   		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_Loose.root",year.Data()));	
-  	} 
   	else //for 1 btag and SR use medium WP
-  	{
-  		infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(),year.Data())); 
   		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
-  	}
+    
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
     
@@ -153,5 +157,9 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   }  
 
   w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));
+
+
+
+
 }                            
 

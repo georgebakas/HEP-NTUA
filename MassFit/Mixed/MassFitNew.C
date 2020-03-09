@@ -113,7 +113,17 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooAbsPdf *pdf_bkg_2b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_2btag");
   
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
+
+  RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag"); 
   
+  /*
+  RooPlot *testFrame = x->frame();
+  pdf_signal_2b->plotOn(testFrame);
+  pdf_qcd_2b->plotOn(testFrame, LineColor(kGreen+2));
+  pdf_bkg_2b->plotOn(testFrame, LineColor(kBlack));
+
+  testFrame->Draw();
+  return; */
   //---- QCD correction factor ---------------------------
   
   float sP, min, max;
@@ -121,7 +131,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   min = -1;
   max = 10;
 
-  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", sP, min, max);
+  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", sP);//, min, max);
   RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
   mBar->setConstant(true);
   kQCD2b_0->setConstant(false);
@@ -138,8 +148,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
   
-  RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag"); 
-
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
 
 
@@ -223,10 +231,14 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
+  //wOut->import(*pdf_qcd_2b);
+  wOut->import(pdf_qcdCor_2b);
   wOut->import(*nFitQCD2b);
   wOut->import(*nFitSig2b);
   wOut->import(*yieldTT);
   wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+".root");
+  //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
+  //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");
 
   /*
   correlation(kQCD2b_0, nFitBkg2b, res, "kQCD2b ", "nFitBkg2b");
@@ -238,6 +250,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   for(int i=0; i<correlationCanvases.size(); i++)
   {
 	  correlationCanvases[i]->Print(TString::Format("%s/correlationPlots/%s.pdf", year.Data(), correlationCanvases[i]->GetName()), "pdf");
-  }*/	
+  }	*/
 }
 

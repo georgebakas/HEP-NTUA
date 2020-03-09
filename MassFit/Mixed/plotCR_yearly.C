@@ -37,21 +37,19 @@ void plotCR_yearly(TString year = "2016")
 void plotYearVar(TString year, TString recoVar = "jetPt0")
 {
   //TT files 
-  TFile *infTT[2];
-  infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_Loose.root",year.Data(),year.Data())); //data CR
-  infTT[1] = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); //nominal mc CR 
+  TFile *infTT[3];
+  infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root",year.Data(),year.Data())); //data CR
+  infTT[1] = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); //qcd mc CR 
+  infTT[2] = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100.root",year.Data())); //qcd mc SR
   //infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_Loose.root",year.Data()));  //mtt mc CR
 
-  //infTT[0] = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root",year.Data(),year.Data())); //data SR
-  //infTT[1] = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root",year.Data())); //nominal mc SR
-  //infTT[2] = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root",year.Data()));  //mtt mc SR
 
   TH1F *hCR_Data, *hCR_QCD, *hSR_QCD;
   
   //scaled TT to xsec and LUMI
   hCR_Data = (TH1F*)infTT[0]->Get(TString::Format("hWt_%s_0btag", recoVar.Data()));
   hCR_QCD = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_0btag_expYield", recoVar.Data()));
-  hSR_QCD = (TH1F*)infTT[1]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data())); //hWt_jetPt0_0btag_expYield
+  hSR_QCD = (TH1F*)infTT[2]->Get(TString::Format("hWt_%s_2btag_expYield", recoVar.Data())); //hWt_jetPt0_0btag_expYield
   
   hCR_QCD->SetTitle(TString::Format("CR QCD MC %s",year.Data()));
   hSR_QCD->SetTitle(TString::Format("SR QCD MC %s", year.Data()));
@@ -63,9 +61,9 @@ void plotYearVar(TString year, TString recoVar = "jetPt0")
   
   if(recoVar.EqualTo("mTop") || recoVar.EqualTo("jetMassSoftDrop"))
   {
-  	hCR_QCD->Rebin(4);
-  	hSR_QCD->Rebin(4);
-  	hCR_Data->Rebin(4);
+  	hCR_QCD->Rebin(2);
+  	hSR_QCD->Rebin(2);
+  	hCR_Data->Rebin(2);
   }
 
   TString reason;  
@@ -84,7 +82,7 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
   TLegend *closureLegend = new TLegend(0.65,0.73,0.9,0.9);
   closureLegend->AddEntry(hNum,titleNum, "lep");
   closureLegend->AddEntry(hDenom_0,titleDenom_0, "lep");
-  closureLegend->AddEntry(hDenom_1,titleDenom_1, "lep");
+  //closureLegend->AddEntry(hDenom_1,titleDenom_1, "lep");
 
   hNum->Scale(1./hNum->Integral());
   hDenom_0->Scale(1./hDenom_0->Integral());
@@ -129,7 +127,7 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
   hDenom_1->SetMarkerColor(kGreen+3);
   
   hDenom_0->Draw();
-  hDenom_1->Draw("same");
+  //hDenom_1->Draw("same");
   hNum->Draw("same");
   
   closureLegend->Draw();
@@ -146,7 +144,7 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
   	hRatio[ir]->GetYaxis()->SetTitleSize(20);
   	hRatio[ir]->GetYaxis()->SetTitleFont(43);
   	hRatio[ir]->GetYaxis()->SetTitleOffset(1.55);
- 	hRatio[ir]->GetYaxis()->SetLabelFont(43);
+ 	  hRatio[ir]->GetYaxis()->SetLabelFont(43);
   	hRatio[ir]->GetYaxis()->SetLabelSize(15);
   	hRatio[ir]->GetXaxis()->SetTitleSize(0.06);
   	hRatio[ir]->GetXaxis()->SetLabelSize(0.06);
@@ -161,6 +159,6 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom_0, TH1F *hDenom_1, TString recoVar, TStr
 
 
   hRatio[0]->Draw();
-  hRatio[1]->Draw("same");
+  //hRatio[1]->Draw("same");
   c1->Print(TString::Format("./YearlyCRShapeComparison/%s/QCDShapeComparison_%s.pdf",globalYear1.Data(),recoVar.Data()),"pdf");
 }

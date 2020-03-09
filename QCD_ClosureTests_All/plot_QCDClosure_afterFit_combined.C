@@ -71,14 +71,14 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
   hSig_CRExpYield = (TH1F*)infTTLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
   hSig_CRExpYield->SetLineColor(kBlue);
   hSig_CRExpYield->SetTitle("TT_{CR} Exp.Yield");
-
+  /*
   if(recoVar.EqualTo("jetMassSoftDrop0") || recoVar.EqualTo("jetMassSoftDrop1"))
   {
     hBkg_CR->Rebin(2);
     hBkg_SR->Rebin(2);
     hBkg_CRExpYield->Rebin(2);
     hSig_CRExpYield->Rebin(2);
-  }
+  }*/
   
   TFile *fitFile; 
   //get the fit result 

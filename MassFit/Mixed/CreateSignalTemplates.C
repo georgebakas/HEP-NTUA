@@ -28,7 +28,6 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooRealVar *AccTT;
   TH1F *hMC;
   RooDataHist *roohMC;
-  RooAddPdf *signal;
   
   TString VAR,TAG;
   float XMIN,XMAX;
