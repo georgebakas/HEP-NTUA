@@ -4,9 +4,9 @@ void shapeComparison_CR(TString year)
 {
   gROOT->ForceStyle();
   
-  //RooMsgService::instance().setSilentMode(kTRUE);
-  //RooMsgService::instance().setStreamStatus(0,kFALSE);
-  //RooMsgService::instance().setStreamStatus(1,kFALSE);
+  RooMsgService::instance().setSilentMode(kTRUE);
+  RooMsgService::instance().setStreamStatus(0,kFALSE);
+  RooMsgService::instance().setStreamStatus(1,kFALSE);
 
   //comparison of 3 things:
   //template without any corrections
@@ -34,5 +34,5 @@ void shapeComparison_CR(TString year)
   pdf_qcdCor_2b->plotOn(testFrame, RooFit::Name("Corrected"), LineColor(kOrange+1));
   testFrame->Draw();
 
-  can2b->Print(TString::Format("%s/plots/shapeComparisonBeforeAfterCorrection/"+TString(can2b->GetName())+".pdf", year.Data()));
+  can2b->Print(TString::Format("%s/plots/shapeComparisonBeforeAfterCorrection/"+TString(can2b->GetName())+"_data.pdf", year.Data()));
 }
