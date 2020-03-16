@@ -115,6 +115,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag"); 
+  RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag"); 
   
   /*
   RooPlot *testFrame = x->frame();
@@ -147,6 +148,9 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);  
   
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
+
+  RooRealVar *nFitSig0b = (RooRealVar*)wTemplatesSig->var("YieldTT_0btag");
+  nFitSig0b->setConstant(true); 
   
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
 

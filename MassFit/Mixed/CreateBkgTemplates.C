@@ -28,10 +28,20 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *x = new RooRealVar("mTop","mTop",XMIN,XMAX);
   w->import(*x);
   //---- first do the data template ---------------
-  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
-  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
+  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
+  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
-  //hData->Rebin(2);
+
+  //because of contamination we need to substract the ttbar from the CR.
+  //we do that by extracting the 0btag th1 using nominal or mtt mc
+  TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_Loose.root",year.Data()));  //nominal
+  //TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data())); //mtt
+  TH1F *hCR_MC = (TH1F*)infTTMCLoose->Get("hWt_mTop_0btag_expYield");
+  
+  //substract ttbar contribution
+  //hData->Add(hCR_MC,-1);
+
+
   RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);  
   TH1F *hDataJet = (TH1F*)infDataLoose->Get("hWt_jetMassSoftDrop_0btag");
   TH1F *hDataEvt = (TH1F*)infDataLoose->Get("hWt_mJJ_0btag"); 
@@ -58,7 +68,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar fqcd1("qcd_f1","qcd_f1",0.5,0,1);
   RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
-  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2,qcd3), RooArgList(fqcd1,fqcd2));
+  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
   
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);

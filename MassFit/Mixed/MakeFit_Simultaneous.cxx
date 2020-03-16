@@ -129,12 +129,12 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooAbsPdf *pdf_bkg_0b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_0btag");
 	RooAbsPdf *pdf_bkg_2b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_2btag");
 	
-	//CR
+	//QCD
 	RooAbsPdf *pdf_qcd_0b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 	RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 	
 	//QCD correction factor
-	RooRealVar *kQCD2b = new RooRealVar("kQCD_2b", "kQCD_2b", 1, -1, 100);
+	RooRealVar *kQCD2b = new RooRealVar("kQCD_2b", "kQCD_2b", 10e-4, -1, 1);
 	kQCD2b->setConstant(false);
 	RooFormulaVar qcdCor_2b("qcdCor_2b", "1+@0*@1", RooArgList(*x, *kQCD2b));
 	
@@ -184,7 +184,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	
 	for(int i=0; i< canvases.size(); i++)
 	{
-		//canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
+		//canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_2regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
 	}
 	/*
 	correlation(nFitSig, btagEff, res, "t#bar{t} events", "btag efficiency");
