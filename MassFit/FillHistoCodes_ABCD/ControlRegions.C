@@ -86,10 +86,11 @@ void ControlRegions(TString year = "2016")
 		hQCD[ireg]= (TH1F*)infQCD->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 		hBkg[ireg] = (TH1F*)infBkg->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 
-		totalYield[ireg] = hTTNominal[ireg]->Integral() + hQCD[ireg]->Integral() + hBkg[ireg]->Integral();
+		//totalYield[ireg] = hTTNominal[ireg]->Integral() + hQCD[ireg]->Integral() + hBkg[ireg]->Integral();
+		totalYield[ireg] = hData[ireg]->Integral();
 		ttFraction[ireg] = hTTNominal[ireg]->Integral() / totalYield[ireg];
-
-		cout<<totalYield[ireg]<<endl;
+		
+		//cout<<totalYield[ireg]<<endl;
 		cout<<"The ttbar fraction in CR_"<<regions[ireg]<<" is: "<<ttFraction[ireg]<<endl;
 
 	}
