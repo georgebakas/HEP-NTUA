@@ -747,8 +747,8 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
      //genEventWeight is set probably to a value and this is why the histos have so many entries
      if(selection == 0) genEvtWeight =1;
      //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-     bool basicCutsSR = recoCuts && btagCut && massCut && tTaggerCut && triggerSR;
-     bool basicCutsCR = recoCuts && btagCut && massCut && tTaggerCut && triggerCR;
+     bool basicCutsSR = recoCuts && massCut && triggerSR;
+     bool basicCutsCR = recoCuts && massCut && triggerCR;
      if(ivar < 10)
      {
       //recoCuts, btagCut, massCut, triggerSR or triggerCR
