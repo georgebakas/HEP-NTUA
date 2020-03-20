@@ -75,6 +75,7 @@ void ControlRegions(TString year = "2016")
 
 	float totalYield[controlRegions];
 	float ttFraction[controlRegions];
+	float totalData[controlRegions];
 
 	TH1F *hData[controlRegions], *hTTMtt[controlRegions], *hQCD[controlRegions], *hBkg[controlRegions], *hTTNominal[controlRegions];
 
@@ -86,14 +87,31 @@ void ControlRegions(TString year = "2016")
 		hQCD[ireg]= (TH1F*)infQCD->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 		hBkg[ireg] = (TH1F*)infBkg->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 
-		//totalYield[ireg] = hTTNominal[ireg]->Integral() + hQCD[ireg]->Integral() + hBkg[ireg]->Integral();
-		totalYield[ireg] = hData[ireg]->Integral();
-		ttFraction[ireg] = hTTNominal[ireg]->Integral() / totalYield[ireg];
+		totalYield[ireg] = hTTNominal[ireg]->Integral() + hQCD[ireg]->Integral() + hBkg[ireg]->Integral();
+		totalData[ireg]  = hData[ireg]->Integral();
+		ttFraction[ireg] = hTTNominal[ireg]->Integral() / totalData[ireg];
 		
-		//cout<<totalYield[ireg]<<endl;
+		cout<<"--------------"<<endl;
+		cout<<"MC total: "<<totalYield[ireg]<<" Data: "<<totalData[ireg]<<endl;
+		cout<<"ttbar: "<<hTTNominal[ireg]->Integral()<<endl;
 		cout<<"The ttbar fraction in CR_"<<regions[ireg]<<" is: "<<ttFraction[ireg]<<endl;
 
 	}
+
+	//now get the qcd expectation --> 
+	//qcd = data - ttbar - bkg
+	float qcdExp[controlRegions];
+	for(int ireg=0; ireg<controlRegions; ireg++)
+	{
+		qcdExp[ireg] = hData[ireg]->Integral() - hTTNominal[ireg]->Integral() - hBkg[ireg]->Integral();
+
+	}
+	//I --> 8, L-->11, S-->15, O-->14
+
+	//expectation 
+	cout<<"Expected qcd in signal from MC is: "<<qcdExp[15]<<endl;
+	float CR_S = qcdExp[14] * qcdExp[11] / qcdExp[8];
+	cout<<"From ABCD method: "<<CR_S<<endl;
 
 
 

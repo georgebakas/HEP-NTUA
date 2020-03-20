@@ -301,21 +301,25 @@ void initFilesMapping(bool isLoose)
 	luminosityCR.insert(pair<TString, float>("2017",41530));
 	luminosityCR.insert(pair<TString, float>("2018",59740));
 
-	topTaggerCuts.insert(pair<TString, float>("2016",0.0));
-	topTaggerCuts.insert(pair<TString, float>("2017",-0.1));
-	topTaggerCuts.insert(pair<TString, float>("2018",-0.1));
-
 	if(!isLoose)
 	{
 		deepCSVFloatMap.insert(pair<TString, float>("2016",0.6321));
 		deepCSVFloatMap.insert(pair<TString, float>("2017",0.4941));
 		deepCSVFloatMap.insert(pair<TString, float>("2018",0.4184));
+
+		topTaggerCuts.insert(pair<TString, float>("2016",0.2));
+		topTaggerCuts.insert(pair<TString, float>("2017",0.0));
+		topTaggerCuts.insert(pair<TString, float>("2018",0.1));
 	}
 	else
 	{
 		deepCSVFloatMap.insert(pair<TString, float>("2016",0.2217));
 		deepCSVFloatMap.insert(pair<TString, float>("2017",0.1522));
 		deepCSVFloatMap.insert(pair<TString, float>("2018",0.1241));
+
+		topTaggerCuts.insert(pair<TString, float>("2016",-0.3));
+		topTaggerCuts.insert(pair<TString, float>("2017",-0.4));
+		topTaggerCuts.insert(pair<TString, float>("2018",-0.4));
 	}
 
 	triggerSRConst.insert(pair<TString, int>("2016",2));

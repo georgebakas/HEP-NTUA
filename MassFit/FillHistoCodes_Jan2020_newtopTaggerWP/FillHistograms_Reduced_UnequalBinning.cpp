@@ -434,6 +434,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
   xRecoAll.clear();
   bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
+  bool revert_tTaggerCut;
   bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;  
   bool btagCut, revertBtag, btag1;
   
@@ -518,6 +519,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
+    revert_tTaggerCut = (*jetTtag_)[0] < selMvaCut && (*jetTtag_)[1] < selMvaCut;
     //2 btag category with deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
            (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
@@ -570,6 +572,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+    revert_tTaggerCut = (*jetTtag)[0] < selMvaCut && (*jetTtag)[1] < selMvaCut;
     //2 btag category with csvv2 and deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) && 
            (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
@@ -627,7 +630,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
         hSR[f][ivar]->Fill(xReco,genEvtWeight);
        }
         //Control Region with tTagger
-       if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
+       if(recoCuts && revertBtag && massCut && revert_tTaggerCut && triggerCR)
         hCR[f][ivar]->Fill(xReco,genEvtWeight);
        //1 btag region with tTagger
        if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
@@ -642,7 +645,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
       }
         
       //Control Region with tTagger
-      if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
+      if(recoCuts && revertBtag && massCut && revert_tTaggerCut && triggerCR)
       {
         hCR[f][10]->Fill(xReco,genEvtWeight);  
       }

@@ -87,6 +87,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     //open the file to get the Ryield
     TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor_HT300toInf_100.root",year.Data()));
+    //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
     float Ryield = hRyield->GetBinContent(1);
     float Ryield_error = hRyield->GetBinError(1);
@@ -146,25 +147,20 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
 
-    if(year.EqualTo("2017") || year.EqualTo("2018"))
+    if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))       
     {
-        if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || (year.EqualTo("2017") && variable.EqualTo("ptJJ")))       
+        TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
+        //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
+        TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
+        for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
         {
-            TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
-            //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
-            TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
-            for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
-            {
-                float chi = hQ_rebinned->GetBinCenter(i+1);
-                SF[i] = fitResult->Eval(chi);
-            }
+            float chi = hQ_rebinned->GetBinCenter(i+1);
+            SF[i] = fitResult->Eval(chi);
         }
-        else for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
     }
     else
-    {
-        for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
-    }
+     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+    
     
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
 
@@ -190,8 +186,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //for reviewing get the MC signal
     //!!!NEEDS TO CHANGE TO NOMINAL
     TFile *infSignalMC;
-    if(year.EqualTo("2016")) infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
-    else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data()));
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
+    //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data()));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
 
 

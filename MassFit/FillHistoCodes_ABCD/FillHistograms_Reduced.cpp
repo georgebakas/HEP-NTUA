@@ -599,7 +599,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
     CR[4] = (!leadTopCut && !leadBCut) && (subleadTopCut && !subleadBCut);
     //F      1t0b       1t0b
     CR[5] = (leadTopCut && !leadBCut) && (subleadTopCut && !subleadBCut);
-  //G      0t1b       1t0b
+    //G      0t1b       1t0b
     CR[6] = (!leadTopCut && leadBCut) && (subleadTopCut && !subleadBCut);
     //H      0t1b       0t1b
     CR[7] = (!leadTopCut && leadBCut) && (!subleadTopCut && subleadBCut); 

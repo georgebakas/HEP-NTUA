@@ -232,7 +232,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   //CMS_lumi(can2b,4,0);
 
   can2b->Print(TString::Format("%s/plots/SimpleMassFit/", year.Data())+TString(can2b->GetName())+".pdf");
-  
+
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
   //wOut->import(*pdf_qcd_2b);

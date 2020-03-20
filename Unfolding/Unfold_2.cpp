@@ -60,7 +60,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold(TString inYear = "2016", bool isParton = true)
+void Unfold_2(TString inYear = "2016", bool isParton = true)
 {
   year = inYear;
   initFilesMapping();
@@ -81,17 +81,20 @@ void Unfold(TString inYear = "2016", bool isParton = true)
                                                         //{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 
   float LUMI = luminosity[year];
+  //get the files:
+  //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/FiducialMeasurement/UnequalBinning/simpleMassFit/SignalHistograms.root", 
   								  year.Data()));    
-  
-  
+  //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure 
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
-
+  //3. This file is the theoretical parton/particle file that we use for comparison
   TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplatesNominalMC.root", year.Data()));
-  //whether parton or particle
+  
+  //whether parton or particle, from the choice of the user 
   varParton = "Parton";
   if(!isParton) varParton = "Particle";
 
+  //get the number of bins for each 
   int NBINS[BND_reco.size()];
   int NBINS_GEN[BND_gen.size()];
   const int NVAR = 7;
@@ -130,14 +133,9 @@ void Unfold(TString inYear = "2016", bool isParton = true)
 
     float tempBNDGen[NBINS_GEN[ivar]+1];
     std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDGen);
-    cout<<"------"<<endl;
-    cout<<sizeBins<<endl;
-    cout<<NBINS_GEN[ivar]<<endl; 
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));  
     can[ivar] = new TCanvas(TString::Format("can_%d",ivar), TString::Format("can_%d",ivar),800,600);
-    //inSig[ivar]->Draw();
-    //hSig[ivar]->Draw();
     
     //set the new content and get acceptance
     TEfficiency *acceptance =  (TEfficiency*)effAccInf->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
@@ -170,23 +168,16 @@ void Unfold(TString inYear = "2016", bool isParton = true)
     	hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
     else 
     	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s [GeV]", variable[ivar].Data()));
+
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
-    hUnf_Clone[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_Clone %s",variable[ivar].Data()));
+    
+    //hUnf_Clone[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_Clone %s",variable[ivar].Data()));
     can[ivar] ->cd();
     can[ivar] ->SetLogy();
     cout<<"hUnf received!!"<<endl;
     cout<<variable[ivar]<<endl;
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
-
-    hSig[ivar]->Scale(1./hSig[ivar]->Integral());
-    hSig[ivar]->SetLineColor(kMagenta);
-    hTheory[ivar]->Scale(1./hTheory[ivar]->Integral());
-    hUnf_Clone[ivar]->Scale(1./hUnf_Clone[ivar]->Integral());
-    hTheory[ivar]->Draw();
-    hUnf_Clone[ivar]->Draw("same");
-    hSig[ivar]->Draw("same");
-    /*
     
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
@@ -194,23 +185,21 @@ void Unfold(TString inYear = "2016", bool isParton = true)
       if(eff >0)
       {
 	      cout<<"i= "<<i<<" eff="<<eff<<endl;
+        float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
 	      hUnf[ivar]->SetBinContent(i, newContent);
-	      cout<<hUnf[ivar]->GetBinContent(i)<<endl;
-	      //handle errors as well--> asymmetric error from acceptance
+        cout<<"old: "<<oldContent<<endl;
+	      cout<<"new: "<<hUnf[ivar]->GetBinContent(i)<<endl;
+	      //handle errors as well--> asymmetric error from efficiency
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
 	      hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
   	  }
     }
     
-    
-	hUnf[ivar]->Scale(1/luminosity[year], "width");
-
-	*/
- 
-  	//hTheory[ivar]->Draw();
-  	//hUnf[ivar]->Draw("same");
-    //break;
+	  hUnf[ivar]->Scale(1/luminosity[year], "width");
+  	hTheory[ivar]->Draw();
+  	hUnf[ivar]->Draw("same");
+    //break;  
   }
   
 }
@@ -219,72 +208,41 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 {	
 	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
 	//hResponse_->Draw("BOX");
+  cout<<variable<<endl;
+  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeMixed);
+  //unfold.SetInput(hReco);
 
-  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeNone);
-  unfold.SetInput(hReco);
+  /*
+    Return value: nError1+10000*nError2:
+
+    -->nError1: number of bins where the uncertainty is zero. 
+                these bins either are not used for the unfolding (if oneOverZeroError==0) or 1/uncertainty is set to oneOverZeroError.
+    -->nError2: return values>10000 are fatal errors, because the unfolding can not be done. 
+                The number nError2 corresponds to the number of truth bins which are not constrained by data points
+  */
+  if(unfold.SetInput(hReco)>=10000) {
+    std::cout<<"Unfolding result may be wrong\n";
+  }
       //========================================================================
 	  // the unfolding is done here
-	
-	const Int_t nScan=1000;
-	Double_t tauMax=20;
- 	Double_t tauMin=10E-9;
- 	float tau = tauMin;
- 	float step = (tauMax - tauMin)/nScan;
+  //========================================================================
+  // the unfolding is done here
+  //
+  // scan L curve and find best point
+  Int_t nScan=30;
+  // use automatic L-curve scan: start with taumin=taumax=0.0
+  Double_t tauMin=0.0;
+  Double_t tauMax=0.0;
+  Int_t iBest;
+  TSpline *logTauX,*logTauY;
+  TGraph *lCurve;
 
- 	float t[nScan], r[nScan];
- 	int i=0;
-	//run all over taus and find the one that shows the minimum average global correlation 
-	do{
+  // this method scans the parameter tau and finds the kink in the L curve
+  // finally, the unfolding is done for the best choice of tau
+  iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
+  std::cout<<"tau="<<unfold.GetTau()<<endl;
+  //TH1 *histMunfold=unfold.GetOutput("Unfolded");
 
-		//unfold.DoUnfold(tau);
-		float rho = unfold.GetRhoAvg();
-		r[i] = rho;
-		t[i] = tau;
-
-		tau = tau +step;
-		i++;
-	}while (i <= nScan);
- 
-
-//	TGraph *globalCorrGraph = new TGraph(nScan,t,r);
-//	TCanvas *canGr = new TCanvas (TString::Format("globalCorrGraph_%s",variable.Data()), TString::Format("globalCorrGraph_%s",variable.Data()),
- //                                800,600);
-//	globalCorrGraph->Draw();
-	//==========================================================================  
-	// retreive results into histograms
-	// get unfolded distribution
-
-/*
- 	TFile *outf = TFile::Open(TString::Format("%s/OutputFileRhoGraphs_%s.root",year.Data(), varParton.Data()),"UPDATE");
- 	globalCorrGraph->Write(TString::Format("globalCorrGraph_%s",variable.Data()));
- 	outf->Close();
-
-  
-  //find the minimum
-  Double_t *gx, *gy;
-  gy = globalCorrGraph->GetY();
-  gx = globalCorrGraph->GetX(); 
-  float minTau;
-  float minRho = TMath::MinElement(nScan,gy);
-  cout<<"------"<<endl;
-  cout<<minRho<<endl;
-  bool found = true;
-  i=0;
-  do{
-    //cout<<r[i]<<endl;
-    if(minRho == gy[i]) 
-      {
-        minTau = gx[i];
-        found = false;
-      }
-    i++;
-
-  }while (found == true);
-  cout<<"minTau= "<<minTau<<endl;
-  */
-  tauMin = 10e-12;
-  unfold.DoUnfold(tauMin);
-  
   //set up a bin map, excluding underflow and overflow bins
   // the binMap relates the the output of the unfolding to the final
   // histogram bins
@@ -292,7 +250,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
   for(Int_t i=1;i<=sizeBins;i++) binMap[i]=i;
   binMap[0]=-1;
   binMap[sizeBins+1]=-1;
-
+  
   TH1F *histMunfold = new TH1F (TString::Format("UnfoldedOutput_%s",variable.Data()),TString::Format("UnfoldedOutput_%s",variable.Data()),
                                sizeBins, BND);
   unfold.GetOutput(histMunfold, binMap);

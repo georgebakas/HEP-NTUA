@@ -91,13 +91,13 @@ void initFilesMapping()
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 
 	//these are fit results from mixed medium wp and loose wp
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.7202e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.6557e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.7447e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.7777e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.5357e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.7672e+03));
 
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.91e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 2.55e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 3.27e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.48e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.94e+02));
 
 	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
 	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));

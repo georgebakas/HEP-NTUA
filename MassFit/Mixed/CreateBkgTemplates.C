@@ -28,8 +28,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *x = new RooRealVar("mTop","mTop",XMIN,XMAX);
   w->import(*x);
   //---- first do the data template ---------------
-  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
-  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
+  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
+  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
 
   //because of contamination we need to substract the ttbar from the CR.
