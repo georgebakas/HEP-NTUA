@@ -60,7 +60,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_2(TString inYear = "2016", bool isParton = true)
+void Unfold_MC(TString inYear = "2016", bool isParton = true)
 {
   year = inYear;
   initFilesMapping();
@@ -83,7 +83,7 @@ void Unfold_2(TString inYear = "2016", bool isParton = true)
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/FiducialMeasurement/UnequalBinning/simpleMassFit/SignalHistograms.root", 
+  TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root", 
   								  year.Data()));    
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure 
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
@@ -134,7 +134,7 @@ void Unfold_2(TString inYear = "2016", bool isParton = true)
     float tempBNDGen[NBINS_GEN[ivar]+1];
     std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDGen);
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
-    hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));  
+    hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("hWt_%s_2btag_expYield",variable[ivar].Data()));  
     can[ivar] = new TCanvas(TString::Format("can_%d",ivar), TString::Format("can_%d",ivar),800,600);
     
     //set the new content and get acceptance

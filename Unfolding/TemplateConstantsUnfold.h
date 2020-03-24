@@ -46,20 +46,14 @@ void initFilesMapping(bool free_eb = true)
 	map<TString, TString> files2017 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext1.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext1.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTTo2L2Nu_1", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_v2.root"}};	                                   
 	
 	map<TString, TString> files2018 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
 	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                   {"TTHadronic_1", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_ext2.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTSemiLeptonic_1", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_ext3.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_ext1.root"},
-	                               	   {"TTTo2L2Nu_1", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};	 
 										
 	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/"));
 	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/"));

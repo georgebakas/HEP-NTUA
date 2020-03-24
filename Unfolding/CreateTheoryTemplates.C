@@ -48,10 +48,7 @@ void initXsections()
    	else
    	{
    		XSEC.push_back(377.96);
-   		XSEC.push_back(377.96);
    		XSEC.push_back(365.34);
-      XSEC.push_back(365.34);
-   		XSEC.push_back(88.29);
       XSEC.push_back(88.29);
  	}
   }
@@ -77,18 +74,12 @@ void initHistoNames()
 	  else
 	  {
 	  	fileNames.push_back("TTHadronic_0");
-	  	fileNames.push_back("TTHadronic_1");
 	  	fileNames.push_back("TTSemiLeptonic_0");
-	  	fileNames.push_back("TTSemiLeptonic_1");
       fileNames.push_back("TTTo2L2Nu_0");
-      fileNames.push_back("TTTo2L2Nu_1");
 
 	  	histoNames.push_back("Signal_histo_TTHadronic_0");
-	  	histoNames.push_back("Signal_histo_TTHadronic_1");
 	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
-	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_1");
       histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
-      histoNames.push_back("Signal_histo_TTTo2L2Nu_1");
 
 	  }
   }
@@ -232,7 +223,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 	  xParticleAll.push_back((*genjetPt)[genLeadingPt]);
 	  xParticleAll.push_back((*genjetPt)[genSubleadingPt]);
   
-    particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
+    particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) < 2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
       (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
     
   }
@@ -257,10 +248,10 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 	  for(int f=1; f<fileNames.size(); f++) 
 	  {
 	    hParton[f][ivar]->Scale(weights[f]*LUMI);
-		hParton[0][ivar]->Add(hParton[f][ivar]);
+		  hParton[0][ivar]->Add(hParton[f][ivar]);
 
-		hParticle[f][ivar]->Scale(weights[f]*LUMI);
-		hParticle[0][ivar]->Add(hParticle[f][ivar]);
+		  hParticle[f][ivar]->Scale(weights[f]*LUMI);
+		  hParticle[0][ivar]->Add(hParticle[f][ivar]);
 	  }
   }
 
