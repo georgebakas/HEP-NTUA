@@ -545,8 +545,8 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     xRecoAll.push_back((*pt_)[subleadingPt]);
     xRecoAll.push_back(fabs((*y_)[leadingPt]));
     xRecoAll.push_back(fabs((*y_)[subleadingPt])); 
-    xRecoAll.push_back((*jetTtag_)[0]);
-    xRecoAll.push_back((*jetTtag_)[1]);
+    xRecoAll.push_back((*jetTtag_)[leadingPt]);
+    xRecoAll.push_back((*jetTtag_)[subleadingPt]);
     xRecoAll.push_back((*mass_)[leadingPt]);    
     for(int ijet=1; ijet<nJets; ijet++)
       xRecoAll.push_back((*mass_)[ijet]);
@@ -586,16 +586,8 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
    xRecoAll.push_back(yJJ);
    xRecoAll.push_back((*jetPt)[0]);
    xRecoAll.push_back((*jetPt)[1]);
-   if(selection ==0)
-   {
-    xRecoAll.push_back(1);
-    xRecoAll.push_back(1);
-   }
-   else
-   {
-    xRecoAll.push_back(fabs((*jetY)[0]));
-    xRecoAll.push_back(fabs((*jetY)[1]));
-   }
+   xRecoAll.push_back(fabs((*jetY)[0]));
+   xRecoAll.push_back(fabs((*jetY)[1]));
    xRecoAll.push_back((*jetTtag)[0]);
    xRecoAll.push_back((*jetTtag)[1]);
    xRecoAll.push_back((*jetMassSoftDrop)[0]);

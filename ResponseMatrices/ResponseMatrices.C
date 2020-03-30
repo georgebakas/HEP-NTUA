@@ -174,7 +174,7 @@ for(int f=0; f<fileNames.size(); f++)
     vector<float> *jetMassSoftDrop(0), *partonEta(0);
 
     //parton
-    std::vector<float> *partonPt(0), *partonPhi(0), *partonMass(0),*partonMatchDR(0);
+    std::vector<float> *partonPt(0), *partonPhi(0), *partonMass(0),*partonMatchDR(0), *partonY(0);
     float yTTbarParton(0), ptTTbarParton(0), mTTbarParton(0);
     
     //float yTopParton[2], ptTopParton[2]; 
@@ -201,6 +201,7 @@ for(int f=0; f<fileNames.size(); f++)
     trIN->SetBranchAddress("jetPt"          ,&jetPt);
     trIN->SetBranchAddress("jetEta"         ,&jetEta);
     trIN->SetBranchAddress("jetPhi"         ,&jetPhi);
+    trIN->SetBranchAddress("jetY"           ,&jetY);
     trIN->SetBranchAddress("jetTau3"        ,&tau3);
     trIN->SetBranchAddress("jetTau2"        ,&tau2);
     trIN->SetBranchAddress("jetTau1"        ,&tau1);
@@ -234,6 +235,7 @@ for(int f=0; f<fileNames.size(); f++)
 	trIN->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
 	trIN->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
 	trIN->SetBranchAddress("partonPhi"      ,&partonPhi);
+	trIN->SetBranchAddress("partonY"        ,&partonY);
     
     //particle
     trIN->SetBranchAddress("mJJGen"			,&mJJGen);
@@ -255,6 +257,7 @@ for(int f=0; f<fileNames.size(); f++)
 	std::vector<float> *jetMatchedDr = new std::vector<float>(0);
 	std::vector<float> *eta_ = new std::vector<float>(0);
 	std::vector<float> *phi_ = new std::vector<float>(0);
+	std::vector<float> *y_   = new std::vector<float>(0);
 	std::vector<float> *mass_ = new std::vector<float>(0);
 	std::vector<float> *pt_ = new std::vector<float>(0);
 	std::vector<float> *jetTtag_ = new std::vector<float>(0);
@@ -265,6 +268,7 @@ for(int f=0; f<fileNames.size(); f++)
 	std::vector<float> *partonEta_ = new std::vector<float>(0);
 	std::vector<float> *partonMass_ = new std::vector<float>(0);
 	std::vector<float> *partonPhi_ = new std::vector<float>(0);
+	std::vector<float> *partonY_  = new std::vector<float>(0);
 	
 	std::vector<float> *jetBtagSub0DCSVbb_ = new std::vector<float>(0);
 	std::vector<float> *jetBtagSub1DCSVbb_ = new std::vector<float>(0);
@@ -294,6 +298,7 @@ for(int f=0; f<fileNames.size(); f++)
         mass_->clear();
         pt_->clear();
         phi_->clear();
+        y_->clear();
         jetBtagSub0_->clear();
         jetBtagSub1_->clear();
         jetTtag_->clear();
@@ -302,6 +307,7 @@ for(int f=0; f<fileNames.size(); f++)
        partonMass_->clear();
        partonPhi_->clear();
        partonEta_->clear();
+       partonY_->clear();
 	  
 	   jetBtagSub0DCSVbb_->clear();
 	   jetBtagSub1DCSVbb_->clear();
@@ -359,7 +365,8 @@ for(int f=0; f<fileNames.size(); f++)
 						pt_->push_back((*jetPt)[(*partonMatchIdx)[indexMin]]);
 						mass_->push_back((*jetMassSoftDrop)[(*partonMatchIdx)[indexMin]]);
 						eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
-						phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
+						phi_->push_back((*jetPhi)[(*partonMatchIdx)[indexMin]]);
+						y_->push_back((*jetY)[(*partonMatchIdx)[indexMin]]);
 						jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
 						//jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
 						jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
@@ -369,10 +376,11 @@ for(int f=0; f<fileNames.size(); f++)
 						jetBtagSub0DCSVbbb_->push_back((*jetBtagSub0DCSVbbb)[(*partonMatchIdx)[indexMin]]);
 						jetBtagSub1DCSVbbb_->push_back((*jetBtagSub1DCSVbbb)[(*partonMatchIdx)[indexMin]]);
 
-						partonPt_->push_back( (*partonPt)[indexMin]);
-						partonMass_->push_back( (*partonMass)[indexMin]);
-						partonPhi_->push_back( (*partonPhi)[indexMin]);
-						partonEta_->push_back( (*partonEta)[indexMin]);
+						partonPt_->push_back((*partonPt)[indexMin]);
+						partonMass_->push_back((*partonMass)[indexMin]);
+						partonPhi_->push_back((*partonPhi)[indexMin]);
+						partonEta_->push_back((*partonEta)[indexMin]);
+						partonY_->push_back((*partonY)[indexMin]);
 						
 						
 						//cout<<(*partonMatchIdx)[indexMin]<<endl;
@@ -397,24 +405,24 @@ for(int f=0; f<fileNames.size(); f++)
 		xRecoAll.push_back(yJJ);
 		xRecoAll.push_back((*pt_)[leadingPt]);
 		xRecoAll.push_back((*pt_)[subleadingPt]);
-		xRecoAll.push_back(fabs((*eta_)[0]));
-		xRecoAll.push_back(fabs((*eta_)[1])); 
+		xRecoAll.push_back(fabs((*y_)[0]));
+		xRecoAll.push_back(fabs((*y_)[1])); 
 				
 		xPartonAll.push_back(mTTbarParton);
 		xPartonAll.push_back(ptTTbarParton);
 		xPartonAll.push_back(yTTbarParton);
 		xPartonAll.push_back((*partonPt_)[leadingPt]);
 		xPartonAll.push_back((*partonPt_)[subleadingPt]);
-		xPartonAll.push_back(fabs((*partonEta_)[0]));
-		xPartonAll.push_back(fabs((*partonEta_)[1])); 
+		xPartonAll.push_back(fabs((*partonY_)[0]));
+		xPartonAll.push_back(fabs((*partonY_)[1])); 
 
 		xParticleAll.push_back(mJJGen);
 		xParticleAll.push_back(ptJJGen);
 		xParticleAll.push_back(yJJGen);
 		xParticleAll.push_back((*genjetPt)[leadingPt]);
 		xParticleAll.push_back((*genjetPt)[subleadingPt]);	
-		xParticleAll.push_back((*genjetEta)[leadingPt]);
-		xParticleAll.push_back((*genjetEta)[subleadingPt]);	
+		xParticleAll.push_back(fabs((*genjetY)[leadingPt]));
+		xParticleAll.push_back(fabs((*genjetY)[subleadingPt]));	
 	  		
 
 		
@@ -514,14 +522,18 @@ for(int f=0; f<fileNames.size(); f++)
 	  {
 	    xPartonAllCnt.push_back(partonPtCnt[0]);
 	    xPartonAllCnt.push_back(partonPtCnt[1]);
+	    
+	    xPartonAll.push_back(fabs(partonYCnt[0]));
+	    xPartonAll.push_back(fabs(partonYCnt[1]));
 	  }
 	  else
 	  {
 	  	xPartonAllCnt.push_back(partonPtCnt[1]);
 	    xPartonAllCnt.push_back(partonPtCnt[0]);
+
+	    xPartonAll.push_back(fabs(partonYCnt[1]));
+	    xPartonAll.push_back(fabs(partonYCnt[0]));
 	  }
-	  //xPartonAll.push_back(partonYCnt[0]);
-	  //xPartonAll.push_back(partonYCnt[1]);
 
 	  for(int ivar = 0; ivar < NVAR; ivar++)
 	  {
