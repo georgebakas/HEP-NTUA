@@ -101,7 +101,8 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
-  
+  cout<<LUMI<<endl;
+ 
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 													{0,60,150,300,450,600,750,950,1100,1300}, //ptjj
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
@@ -139,11 +140,13 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   TH1F *hRecoParticle[fileNames.size()][NVAR], *hParticleReco[fileNames.size()][NVAR];
   TH2F *hPartonResponse[fileNames.size()][NVAR], *hParticleResponse[fileNames.size()][NVAR];
   cout<<fileNames.size()<<endl;
+
+  ofstream myFile;
+  myFile.open("matching.txt");
+
 for(int f=0; f<fileNames.size(); f++)
 {
-    fstream myFile;
-    myFile.open("matching.txt");
-
+    cout<<XSEC[f]<<endl;
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR; ivar++)
   	{	
@@ -448,7 +451,7 @@ for(int f=0; f<fileNames.size(); f++)
         
         myFile<<"\n";
       }
-
+      //continue;
 
    	   	int leadingPt =0;
       	int subleadingPt = 1;
@@ -713,7 +716,7 @@ for(int f=0; f<fileNames.size(); f++)
   	hParticleResponse[0][ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
 
   }//end of ivar
-
+  myFile.close();
   outFile->Close();
   fileNames.clear();
   histoNames.clear();
