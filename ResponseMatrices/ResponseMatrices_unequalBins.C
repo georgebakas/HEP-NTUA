@@ -478,8 +478,8 @@ for(int f=0; f<fileNames.size(); f++)
 		  {
 		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-				hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);				
-			}
+				  hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);				
+			  }
 		  } 
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
 		  //fill also response matrix 
@@ -493,7 +493,7 @@ for(int f=0; f<fileNames.size(); f++)
 				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
-	      }//----- end of selection cuts parton and reco 
+	    }//----- end of selection cuts parton and reco 
 
 	      //3. Events pass reco and particle 
 	      if(particleCuts && recoCuts && tTaggerCut && btagCut)

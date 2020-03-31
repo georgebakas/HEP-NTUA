@@ -208,14 +208,14 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     hTheory[ivar]->Scale(1/luminosity[year], "width");  
     hTheory[ivar]->SetLineColor(kRed); //scaled to lumi and width
     
-	  hUnf[ivar]->Scale(1/luminosity[year], "width");
+	hUnf[ivar]->Scale(1/luminosity[year], "width");
   	hTheory[ivar]->Draw();
   	hUnf[ivar]->Draw("same");
     hTheory_2[ivar]->Draw("same");
     cout<<"------"<<endl;
-    cout<<"theory: "<<hTheory_2[ivar]->GetEntries()<<endl;
-    cout<<"theory from eff: "<<hTheory[ivar]->GetEntries()<<endl;
-    //break;  
+    cout<<"theory: "<<hTheory_2[ivar]->Integral()<<endl;
+    cout<<"theory from eff: "<<hTheory[ivar]->Integral()<<endl;
+    
   }
   
 }
@@ -225,7 +225,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
 	//hResponse_->Draw("BOX");
   cout<<variable<<endl;
-  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeDerivative);
+  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize);
   //unfold.SetInput(hReco);
 
   /*
