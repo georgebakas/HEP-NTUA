@@ -490,7 +490,7 @@ for(int f=0; f<fileNames.size(); f++)
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
            //myfile << evtNo << "\n";
-           if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar];
+           if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar]<<endl;
 				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
