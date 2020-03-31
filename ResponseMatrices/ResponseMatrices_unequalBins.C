@@ -10,7 +10,7 @@
 using std::cin;
 using std::cout;
 using std::endl;
-
+#include <fstream>
 
 std::vector<float> XSEC;
 std::vector<TString> histoNames;
@@ -141,6 +141,8 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   cout<<fileNames.size()<<endl;
 for(int f=0; f<fileNames.size(); f++)
 {
+    fstream myFile;
+    myFile.open("matching.txt");
 
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR; ivar++)
@@ -193,7 +195,7 @@ for(int f=0; f<fileNames.size(); f++)
     float genEvtWeight(0);
     float mJJ(0), ptJJ(0), yJJ(0),mva(0);
     vector<float> *tau3(0),*tau2(0),*tau1(0);
-	vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);
+	  vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);
     vector<float> *jetMassSoftDrop(0), *partonEta(0);
 
     //parton
@@ -415,6 +417,39 @@ for(int f=0; f<fileNames.size(); f++)
 			}
 	if(isMatched > 1)
     {
+      if((*pt_)[0] > 1300 && (*pt_)[1] < 1400)
+      {
+        myFile<<"Before Parton: ";  
+        for (int i = 0; i < partonPt->size(); i++)
+        {
+          myFile<<(*partonPt)[i];
+        }
+        myFile<<"Before Reco: ";
+        for (int i = 0; i < jetPt->size(); i++)
+        {
+          myFile<<(*jetPt)[i];
+          myFile<<" ";
+          myFile<<(*partonMatchIdx)[i];
+          myFile<<" ";
+          myFile<<(*partonMatchDR)[i];
+          myFile<<" ";
+        }
+        
+        myFile<<"\nAfter Parton: ";
+        for (unsigned int i = 0; i < partonPt_->size(); i++)
+        {
+          myFile<<(*partonPt_)[i]<<" ";
+        }
+        myFile<<"\nAfter Reco: ";
+        for (unsigned int i = 0; i < pt_->size(); i++)
+        {
+          myFile<<(*pt_)[i]<<" ";
+        }
+        
+        myFile<<"\n";
+      }
+
+
    	   	int leadingPt =0;
       	int subleadingPt = 1;
 
@@ -428,16 +463,16 @@ for(int f=0; f<fileNames.size(); f++)
 		xRecoAll.push_back(yJJ);
 		xRecoAll.push_back((*pt_)[leadingPt]);
 		xRecoAll.push_back((*pt_)[subleadingPt]);
-		xRecoAll.push_back(fabs((*y_)[0]));
-		xRecoAll.push_back(fabs((*y_)[1])); 
+		xRecoAll.push_back(fabs((*y_)[leadingPt]));
+		xRecoAll.push_back(fabs((*y_)[subleadingPt])); 
 				
 		xPartonAll.push_back(mTTbarParton);
 		xPartonAll.push_back(ptTTbarParton);
 		xPartonAll.push_back(yTTbarParton);
 		xPartonAll.push_back((*partonPt_)[leadingPt]);
 		xPartonAll.push_back((*partonPt_)[subleadingPt]);
-		xPartonAll.push_back(fabs((*partonY_)[0]));
-		xPartonAll.push_back(fabs((*partonY_)[1])); 
+		xPartonAll.push_back(fabs((*partonY_)[leadingPt]));
+		xPartonAll.push_back(fabs((*partonY_)[subleadingPt])); 
 
 		xParticleAll.push_back(mJJGen);
 		xParticleAll.push_back(ptJJGen);
@@ -483,7 +518,7 @@ for(int f=0; f<fileNames.size(); f++)
 	  			{			  	  
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
-
+           //myfile << evtNo << "\n";
 				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
@@ -509,7 +544,7 @@ for(int f=0; f<fileNames.size(); f++)
 	      }
 	  
 	 }//----- end of is matched 	
-    }//---end the event for
+  }//---end the event for
 
 	
 	//--------------------------------------------START OF EVENT COUNTER LOOP -------------------------------------------------------------------
@@ -607,7 +642,7 @@ for(int f=0; f<fileNames.size(); f++)
   for(int f=1; f<fileNames.size(); f++) 
   {
     hParton[f][ivar]->Scale(weights[f]*LUMI);
-	hParton[0][ivar]->Add(hParton[f][ivar]);
+	  hParton[0][ivar]->Add(hParton[f][ivar]);
   }
 
   }

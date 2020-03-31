@@ -22,7 +22,7 @@ void compare16_17_18(bool isEqual, bool isNominal)
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
   TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"}; 
 
-  for(int ivar = 0; ivar<NVAR-2; ivar++)
+  for(int ivar = 0; ivar<NVAR; ivar++)
   {
   	plotEfficiencyResponse(varReco[ivar], varParton[ivar], varParticle[ivar], isEqual, isNominal);
     //break;
@@ -33,8 +33,8 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 					 bool isEqual = true, bool isNominal = true)
 {
    initFilesMapping();
-   gStyle->SetOptStat(0);
-   gStyle->SetPaintTextFormat("4.4f");
+   //gStyle->SetOptStat(0);
+   gStyle->SetPaintTextFormat("2.2f");
    std::vector<Color_t> colors = {kBlue,kRed, kGreen,kBlack, kMagenta};
 	
    bool isAngular = false;
@@ -47,10 +47,12 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
    TString nominal = "";
    if(isNominal) nominal = "NominalMC";
+   TEfficiency *eff16[2];
+   
    eff[0] = TFile::Open(TString::Format("./2016/%s/ResponsesEfficiency%s_2016.root",binning.Data(), nominal.Data())); 
    eff[1] = TFile::Open(TString::Format("./2017/%s/ResponsesEfficiency%s_2017.root",binning.Data(), nominal.Data()));
    eff[2] = TFile::Open(TString::Format("./2018/%s/ResponsesEfficiency%s_2018.root",binning.Data(), nominal.Data()));
-
+   /*
    TFile *oldInf[2];
    oldInf[0] = TFile::Open("PartonEfficiencyAll_July19.root");
    oldInf[1] = TFile::Open("ParticleEfficiencyAll_July19.root");
@@ -178,10 +180,12 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 		graphAcc->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 		gPad->Update(); 
 
-	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+	   //can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    }
 
-   /*
+   */
+   TString years[] = {"2016", "2017", "2018"};
+   TString phaseSpace[] = {"Parton", "Particle"};
    TH2F *hResponses[3][2]; //3 is for years , 16-0, 17-1, 18-2 and 2 is for parton particle: parton-0, particle 1
    TCanvas *canResponse[3][2];
    for(int iy = 0; iy<sizeof(years)/sizeof(years[0]); iy++)
@@ -191,25 +195,27 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    		canResponse[iy][i] = new TCanvas(TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),
    		 								 TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),800,600);
    		hResponses[iy][i] = (TH2F*)eff[iy]->Get(TString::Format("h%sResponse_%s",phaseSpace[i].Data() ,recoVar.Data()));
-   		hResponses[iy][i]->Scale(1./hResponses[iy][i]->Integral());
+   		//hResponses[iy][i]->Scale(1./hResponses[iy][i]->Integral());
+      if(recoVar.EqualTo("jetPt0")) cout<<hResponses[iy][i]->Integral()<<endl;
    		hResponses[iy][i]->SetTitle(TString::Format("Response Reco-%s %s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data(), nominal.Data()));
    		if(isAngular) 
    		{	
-   			hResponses[iy][i]->GetXaxis()->SetTitle(recoVar.Data());
-   			if(i==0) hResponses[iy][i]->GetYaxis()->SetTitle(partonVar.Data());
-   			else hResponses[iy][i]->GetYaxis()->SetTitle(particleVar.Data());
+   			hResponses[iy][i]->GetYaxis()->SetTitle(recoVar.Data());
+   			if(i==0) hResponses[iy][i]->GetXaxis()->SetTitle(partonVar.Data());
+   			else hResponses[iy][i]->GetXaxis()->SetTitle(particleVar.Data());
    		}
    		else
    		{
 
-   			hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",recoVar.Data()));
-   			if(i==0) hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",partonVar.Data()));
-   			else hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
+   			hResponses[iy][i]->GetYaxis()->SetTitle(TString::Format("%s (GeV)",recoVar.Data()));
+   			if(i==0) hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",partonVar.Data()));
+   			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
    		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrix%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
    	}
-   }*/
+   	break;
+   }
 
 
   

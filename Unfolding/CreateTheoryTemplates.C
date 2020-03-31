@@ -114,7 +114,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   for(int f=0; f<fileNames.size(); f++)
   {
 
-  for(int ivar =0; ivar<NVAR-2; ivar++)
+  for(int ivar =0; ivar<NVAR; ivar++)
   {	
   		 int sizeBins = NBINS[ivar];
          float tempBND[NBINS[ivar]+1];
@@ -134,7 +134,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   TTree *trIN = (TTree*)file->Get("boosted/events");
   cout<<"working in file:"<<eospath[year.Data()]+files[year.Data()][fileNames[f].Data()]<<endl;
   //parton
-  std::vector<float> *partonPt(0), *partonPhi(0), *partonMass(0),*partonMatchDR(0),*partonEta(0);
+  std::vector<float> *partonPt(0), *partonPhi(0), *partonY(0), *partonMass(0),*partonMatchDR(0),*partonEta(0);
   float yTTbarParton(0), ptTTbarParton(0), mTTbarParton(0);
   vector<int> *partonMatchIdx(0);
   float genEvtWeight(0);
@@ -150,6 +150,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   trIN->SetBranchAddress("ptTTbarParton",&ptTTbarParton);
   trIN->SetBranchAddress("partonPt"     ,&partonPt);
   trIN->SetBranchAddress("partonEta"    ,&partonEta);
+  trIN->SetBranchAddress("partonY"      ,&partonY);
   trIN->SetBranchAddress("partonPhi"    ,&partonPhi);
   trIN->SetBranchAddress("partonMass"    ,&partonMass);
   trIN->SetBranchAddress("partonMatchDR" ,&partonMatchDR);
@@ -202,11 +203,13 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
         leadingPt = 1;
     }
  // cout<<"ok"<<endl;  
-  xPartonAll.push_back(mTTbarParton);
+    xPartonAll.push_back(mTTbarParton);
     xPartonAll.push_back(ptTTbarParton);
     xPartonAll.push_back(yTTbarParton);
     xPartonAll.push_back((*partonPt)[leadingPt]);
     xPartonAll.push_back((*partonPt)[subleadingPt]);
+    xPartonAll.push_back(fabs((*partonY)[leadingPt]));
+    xPartonAll.push_back(fabs((*partonY)[subleadingPt]));
   partonCuts = fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) <2.4 && (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && mTTbarParton > 1000;
 	
   if(nJetsGen>1)
@@ -222,6 +225,8 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 	  xParticleAll.push_back(yJJGen);
 	  xParticleAll.push_back((*genjetPt)[genLeadingPt]);
 	  xParticleAll.push_back((*genjetPt)[genSubleadingPt]);
+    xParticleAll.push_back(fabs((*genjetY)[genLeadingPt]));
+    xParticleAll.push_back(fabs((*genjetY)[genSubleadingPt]));
   
     particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) < 2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
       (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
@@ -241,7 +246,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 
 
   //for all vars in all files, scale
-  for(int ivar=0; ivar<NVAR-2; ivar++) 
+  for(int ivar=0; ivar<NVAR; ivar++) 
   {
 	  hParton[0][ivar]->Scale(weights[0]*LUMI);
 	  hParticle[0][ivar]->Scale(weights[0]*LUMI);
@@ -257,7 +262,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 
 
   //scale to luminosity and bin width
-  for(int ivar=0; ivar<NVAR-2; ivar++) 
+  for(int ivar=0; ivar<NVAR; ivar++) 
   {
     hParton[0][ivar]->Scale(1/LUMI, "width");
     hParticle[0][ivar]->Scale(1/LUMI, "width");
@@ -268,7 +273,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   TFile *outf = new TFile(TString::Format("%s/TheoryTemplates%s.root", year.Data(), nominal.Data()), "RECREATE");
   outf->cd();
   //write them to file
-  for(int ivar=0; ivar<NVAR-2; ivar++) 
+  for(int ivar=0; ivar<NVAR; ivar++) 
   {
     hParton[0][ivar]->Write(TString::Format("hParton_%s", var[ivar].Data()));
     hParticle[0][ivar]->Write(TString::Format("hParticle_%s", var[ivar].Data()));
