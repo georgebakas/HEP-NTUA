@@ -10,7 +10,7 @@
 
 */
 
-
+#include <TString.h>
 map<TString, map<TString, TString>> files;
 map<TString, map<TString, TString>> filesReduced;
 
