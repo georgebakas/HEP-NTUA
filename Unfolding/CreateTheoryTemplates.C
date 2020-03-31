@@ -231,6 +231,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
     particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) < 2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
       (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
     
+    
   }
     }
 	for(int ivar = 0; ivar < xParticleAll.size(); ivar++)

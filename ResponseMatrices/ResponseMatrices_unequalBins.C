@@ -141,8 +141,8 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   TH2F *hPartonResponse[fileNames.size()][NVAR], *hParticleResponse[fileNames.size()][NVAR];
   cout<<fileNames.size()<<endl;
 
-  ofstream myFile;
-  myFile.open("matchingInfo.txt");
+  //ofstream myFile;
+  //myFile.open("matchingInfo.txt");
 
 for(int f=0; f<fileNames.size(); f++)
 {
@@ -489,8 +489,7 @@ for(int f=0; f<fileNames.size(); f++)
 	  			{			  	  
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
-           //myfile << evtNo << "\n";
-           if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar]<<endl;
+           //if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar]<<endl;
 				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
@@ -685,7 +684,7 @@ for(int f=0; f<fileNames.size(); f++)
   	hParticleResponse[0][ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
 
   }//end of ivar
-  myFile.close();
+  //myFile.close();
   outFile->Close();
   fileNames.clear();
   histoNames.clear();

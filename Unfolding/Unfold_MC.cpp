@@ -88,6 +88,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
   								  year.Data()));    
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure 
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf2 = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //3. This file is the theoretical parton/particle file that we use for comparison
   TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplatesNominalMC.root", year.Data()));
   
@@ -117,7 +118,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
   //TH1 *histRhoi[BND_reco.size()];
 
   //theoretical Histogram
-  TH1F *hTheory[BND_reco.size()];
+  TH1F *hTheory[BND_reco.size()], *hTheory_2[BND_reco.size()];
 
   
 
@@ -139,6 +140,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     
     //set the new content and get acceptance
     TEfficiency *acceptance =  (TEfficiency*)effAccInf->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+
     for(int j =1; j<=hSig[ivar]->GetNbinsX(); j++)
     {
       float acc = acceptance->GetEfficiency(j);
@@ -179,7 +181,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     cout<<"hUnf received!!"<<endl;
     cout<<variable[ivar]<<endl;
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
-    
+
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       float eff = efficiency->GetEfficiency(i);
@@ -198,17 +200,21 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     }
 
     //theory histogram:
-    if(!isParton)
-     hTheory[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data())); 
-    else 
-      hTheory[ivar] = (TH1F*)efficiency->GetCopyTotalHisto();
+    hTheory_2[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data())); 
+    hTheory[ivar] = (TH1F*)efficiency->GetCopyTotalHisto();
+    
       
+    hTheory_2[ivar]->SetLineColor(kGreen+2); 
     hTheory[ivar]->Scale(1/luminosity[year], "width");  
     hTheory[ivar]->SetLineColor(kRed); //scaled to lumi and width
     
 	  hUnf[ivar]->Scale(1/luminosity[year], "width");
   	hTheory[ivar]->Draw();
   	hUnf[ivar]->Draw("same");
+    hTheory_2[ivar]->Draw("same");
+    cout<<"------"<<endl;
+    cout<<"theory: "<<hTheory_2[ivar]->GetEntries()<<endl;
+    cout<<"theory from eff: "<<hTheory[ivar]->GetEntries()<<endl;
     //break;  
   }
   
