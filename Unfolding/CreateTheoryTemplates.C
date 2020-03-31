@@ -161,7 +161,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   bool partonCuts, particleCuts;
   
   long NN = trIN->GetEntries();
-    //NN = 1000;
+  //NN = 1000;
   std::cout<<"Entries: "<<NN<<std::endl;
   std::vector<float> xPartonAll(0);
   std::vector<float> xParticleAll(0);
@@ -205,7 +205,11 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   }//nJetsGen
 
 	for(int ivar = 0; ivar < xParticleAll.size(); ivar++)
-		if(particleCuts) hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);				
+		if(particleCuts) 
+    {
+        hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);				
+        cout<<"filling h particle..."<<endl;
+    }
 
 
   } //end of tree entries for-loop for gen level
@@ -228,7 +232,6 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   for(int iev = 0; iev < NNCnt; iev++)
   {
     trCnt->GetEntry(iev);
-    
     std::vector<float> xPartonAllCnt(0);
     xPartonAllCnt.clear();
     bool partonCuts = fabs(partonEtaCnt[0]) < 2.4 && fabs(partonEtaCnt[1]) <2.4 && partonPtCnt[0] > 400 && partonPtCnt[1] > 400 && mTTbarPartonCnt > 1000;
