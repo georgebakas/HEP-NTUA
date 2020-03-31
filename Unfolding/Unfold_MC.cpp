@@ -91,6 +91,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
   //3. This file is the theoretical parton/particle file that we use for comparison
   TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplatesNominalMC.root", year.Data()));
   
+  
   //whether parton or particle, from the choice of the user 
   varParton = "Parton";
   if(!isParton) varParton = "Particle";
@@ -117,6 +118,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
 
   //theoretical Histogram
   TH1F *hTheory[BND_reco.size()];
+
   
 
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()];
@@ -124,9 +126,6 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
 
   for(int ivar =0; ivar<BND_reco.size(); ivar++)
   {
-    //thory histogram:
-    hTheory[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data())); 
-    hTheory[ivar]->SetLineColor(kRed); //scaled to lumi and width
 
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
@@ -154,6 +153,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
       tempVar = variableParton[ivar];
     else
       tempVar = variableGen[ivar];
+
 
     //get response matrix
     hResponse[ivar] = (TH2F*)effAccInf->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
@@ -196,6 +196,15 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
 	      hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
   	  }
     }
+
+    //theory histogram:
+    if(!isParton)
+     hTheory[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data())); 
+    else 
+      hTheory[ivar] = (TH1F*)efficiency->GetCopyTotalHisto();
+      
+    hTheory[ivar]->Scale(1/luminosity[year], "width");  
+    hTheory[ivar]->SetLineColor(kRed); //scaled to lumi and width
     
 	  hUnf[ivar]->Scale(1/luminosity[year], "width");
   	hTheory[ivar]->Draw();

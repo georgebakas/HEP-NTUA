@@ -142,7 +142,7 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   cout<<fileNames.size()<<endl;
 
   ofstream myFile;
-  myFile.open("matching.txt");
+  myFile.open("matchingInfo.txt");
 
 for(int f=0; f<fileNames.size(); f++)
 {
@@ -420,38 +420,6 @@ for(int f=0; f<fileNames.size(); f++)
 			}
 	if(isMatched > 1)
     {
-      if((*pt_)[0] > 1300 && (*pt_)[1] < 1400)
-      {
-        myFile<<"Before Parton: ";  
-        for (int i = 0; i < partonPt->size(); i++)
-        {
-          myFile<<(*partonPt)[i];
-        }
-        myFile<<"Before Reco: ";
-        for (int i = 0; i < jetPt->size(); i++)
-        {
-          myFile<<(*jetPt)[i];
-          myFile<<" ";
-          myFile<<(*partonMatchIdx)[i];
-          myFile<<" ";
-          myFile<<(*partonMatchDR)[i];
-          myFile<<" ";
-        }
-        
-        myFile<<"\nAfter Parton: ";
-        for (unsigned int i = 0; i < partonPt_->size(); i++)
-        {
-          myFile<<(*partonPt_)[i]<<" ";
-        }
-        myFile<<"\nAfter Reco: ";
-        for (unsigned int i = 0; i < pt_->size(); i++)
-        {
-          myFile<<(*pt_)[i]<<" ";
-        }
-        
-        myFile<<"\n";
-      }
-      //continue;
 
    	   	int leadingPt =0;
       	int subleadingPt = 1;
@@ -461,7 +429,7 @@ for(int f=0; f<fileNames.size(); f++)
    		    subleadingPt =0;
    		    leadingPt = 1;
    		}
-    	xRecoAll.push_back(mJJ);
+    xRecoAll.push_back(mJJ);
 		xRecoAll.push_back(ptJJ);
 		xRecoAll.push_back(yJJ);
 		xRecoAll.push_back((*pt_)[leadingPt]);
@@ -515,13 +483,14 @@ for(int f=0; f<fileNames.size(); f++)
 		  } 
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
 		  //fill also response matrix 
-	      if(partonCuts && recoCuts && tTaggerCut && btagCut)
+	   if(partonCuts && recoCuts && tTaggerCut && btagCut)
 		  {
 			  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  			{			  	  
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
            //myfile << evtNo << "\n";
+           if(ivar==3) myFile<<"Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar];
 				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 			  	
