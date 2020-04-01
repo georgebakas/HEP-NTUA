@@ -21,8 +21,10 @@ TColor color;
 
 map<TString, float> luminosity;
 map<TString, float> luminosityCR;
-map<TString, float> deepCSVFloatMap;
-map<TString, float> topTaggerCuts;
+map<TString, float> deepCSVFloatMapLoose;
+map<TString, float> deepCSVFloatMapMedium;
+map<TString, float> topTaggerCutsLoose;
+map<TString, float> topTaggerCutsMedium;
 map<TString, int> triggerSRConst;
 map<TString, int> triggerCRConst;
 TString eosDataPath, eosPathMC;
@@ -301,22 +303,22 @@ void initFilesMapping(bool isLoose)
 	luminosityCR.insert(pair<TString, float>("2017",41530));
 	luminosityCR.insert(pair<TString, float>("2018",59740));
 
-	topTaggerCuts.insert(pair<TString, float>("2016",0.2));
-	topTaggerCuts.insert(pair<TString, float>("2017",0.0));
-	topTaggerCuts.insert(pair<TString, float>("2018",0.1));
+	deepCSVFloatMapMedium.insert(pair<TString, float>("2016",0.6321));
+	deepCSVFloatMapMedium.insert(pair<TString, float>("2017",0.4941));
+	deepCSVFloatMapMedium.insert(pair<TString, float>("2018",0.4184));
 
-	if(!isLoose)
-	{
-		deepCSVFloatMap.insert(pair<TString, float>("2016",0.6321));
-		deepCSVFloatMap.insert(pair<TString, float>("2017",0.4941));
-		deepCSVFloatMap.insert(pair<TString, float>("2018",0.4184));
-	}
-	else
-	{
-		deepCSVFloatMap.insert(pair<TString, float>("2016",0.2217));
-		deepCSVFloatMap.insert(pair<TString, float>("2017",0.1522));
-		deepCSVFloatMap.insert(pair<TString, float>("2018",0.1241));
-	}
+	topTaggerCutsMedium.insert(pair<TString, float>("2016",0.2));
+	topTaggerCutsMedium.insert(pair<TString, float>("2017",0.0));	
+	topTaggerCutsMedium.insert(pair<TString, float>("2018",0.1));
+	
+	deepCSVFloatMapLoose.insert(pair<TString, float>("2016",0.2217));
+	deepCSVFloatMapLoose.insert(pair<TString, float>("2017",0.1522));
+	deepCSVFloatMapLoose.insert(pair<TString, float>("2018",0.1241));
+
+	topTaggerCutsLoose.insert(pair<TString, float>("2016",-0.3));
+	topTaggerCutsLoose.insert(pair<TString, float>("2017",-0.4));
+	topTaggerCutsLoose.insert(pair<TString, float>("2018",-0.4));
+	
 
 	triggerSRConst.insert(pair<TString, int>("2016",2));
 	triggerSRConst.insert(pair<TString, int>("2017",5));
@@ -334,14 +336,6 @@ void initFilesMapping(bool isLoose)
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 
-	//these are fit results from mixed medium wp and loose wp
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.2755e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 3.3491e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.5360e+03));
-
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 2.09e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 6.98e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.52e+02));
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj
 	BND[variableConstant["ptJJ"]].push_back({0,60,150,300,450,600,750,950,1100,1300}); //ptjj

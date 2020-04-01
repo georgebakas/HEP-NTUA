@@ -16,43 +16,14 @@ using std::endl;
 /*
 
 In this code I will try to test the ABCD method
-We will have 16 Control Regions:
-For each jet: 
-1. Leading jet:
-	a. 1top1b
-	b. 1top0b
-	c. 0top1b
-	d. 0top0b
-2. Sub-Leading jet:
-	a. 1top1b
-	b. 1top0b
-	c. 0top1b
-	d. 0top0b
+We will have 4 Control Regions:
+For both jets:
+A. 2jets top tagged (Medium WP) and 0jets b-tagged (Loose WP)
+B. 0jets top tagged (Loose WP)  and 0jets b-tagged (Loose WP)
+C. 2jets top tagged (Medium WP) and 2jets b-tagged (Medium WP)
+D. 0jets top tagged (Loose WP)  and 2jets b-tagged (Loose WP)
 
-The combination of each of the subcategories will give 16 in total
-
-Control Regions:
-
-Region LeadingJet SubleadingJet
-A      0t0b       0t0b
-B      0t0b       0t1b
-C      1t0b       0t0b
-D      1t0b       0t1b
-
-E      0t0b       1t0b
-F      1t0b       1t0b
-G      0t1b       1t0b
-H      0t1b       0t1b
-
-I      0t1b       0t0b
-J      0t0b       1t1b
-K      1t0b       1t1b
-L      0t1b       1t1b
-
-M      1t1b       1t0b
-N      1t1b       0t1b
-O      1t1b       0t0b
-Signal 1t1b       1t1b
+For 
 
 */
 

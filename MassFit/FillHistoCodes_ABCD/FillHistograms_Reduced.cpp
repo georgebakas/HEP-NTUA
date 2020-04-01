@@ -16,43 +16,17 @@ using std::endl;
 /*
 
 In this code I will try to test the ABCD method
-We will have 16 Control Regions:
-For each jet: 
-1. Leading jet:
-  a. 1top1b
-  b. 1top0b
-  c. 0top1b
-  d. 0top0b
-2. Sub-Leading jet:
-  a. 1top1b
-  b. 1top0b
-  c. 0top1b
-  d. 0top0b
+We will have 4 Control Regions:
+For both jets:
+A. 2jets top tagged (Medium WP) and 0jets b-tagged (Loose WP)
+B. 0jets top tagged (Loose WP)  and 0jets b-tagged (Loose WP)
+C. 2jets top tagged (Medium WP) and 2jets b-tagged (Medium WP)
+D. 0jets top tagged (Loose WP)  and 2jets b-tagged (Loose WP)
 
-The combination of each of the subcategories will give 16 in total
+What we do:
 
-Control Regions:
-
-Region LeadingJet SubleadingJet
-A      0t0b       0t0b
-B      0t0b       0t1b
-C      1t0b       0t0b
-D      1t0b       0t1b
-
-E      0t0b       1t0b
-F      1t0b       1t0b
-G      0t1b       1t0b
-H      0t1b       0t1b
-
-I      0t1b       0t0b
-J      0t0b       1t1b
-K      1t0b       1t1b
-L      0t1b       1t1b
-
-M      1t1b       1t0b
-N      1t1b       0t1b
-O      1t1b       0t0b
-Signal 1t1b       1t1b
+Find for all files:
+1. Data: Remove ttbar and subdominant bkg (both taken from MC) 
 
 */
 
@@ -61,7 +35,7 @@ std::vector<float> XSEC;
 std::vector<TString> histoNames;
 float LUMI;
 float LUMI_CR;
-float deepCSVFloat;
+float deepCSVFloatMedium, deepCSVFloatLoose;
 TString eosPath;
 TString year;
 int selection;
@@ -259,10 +233,11 @@ void initGlobals()
  
 void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
 {
-  const int controlRegions = 16;
+  const int controlRegions = 4;
   year =y;
   initFilesMapping(isLoose);
-  deepCSVFloat = deepCSVFloatMap[year.Data()];
+  deepCSVFloatMedium = deepCSVFloatMapMedium[year.Data()];
+  deepCSVFloatLoose = deepCSVFloatMapLoose[year.Data()];
   selection = sel;
   LUMI = luminosity[year.Data()];
   LUMI_CR = luminosityCR[year.Data()];
@@ -277,12 +252,15 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
   const int N_JETMASS = 100;
   const int N_MVA = 100;
 
-  float selMvaCut=topTaggerCuts[year];
+  float selMvaCutMedium=topTaggerCutsMedium[year];
+  float selMvaCutLoose=topTaggerCutsLoose[year];
   
   cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   cout<<"triggerCRConst[year.Data()]]: "<<triggerCRConst[year.Data()]<<endl;
-  cout<<"topTagger: "<<selMvaCut<<endl;
-  cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
+  cout<<"topTaggerLoose: "<<selMvaCutLoose<<endl;
+  cout<<"topTaggerMedium: "<<selMvaCutMedium<<endl;
+  cout<<"deepCSVFloatMedium: "<<deepCSVFloatMedium<<endl;
+  cout<<"deepCSVFloatLoose: "<<deepCSVFloatLoose<<endl;
 
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
@@ -297,7 +275,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
                "mva", "topTagger1", "mTop", "jetMassSoftDrop"}; 
 
 
-  TString regions[controlRegions] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "Signal"};
+  TString regions[controlRegions] = {"A", "B", "C", "D"};
   int fileSize = listOfFiles.size();
   TFile *inf;
   vector<float> weights(0);
@@ -410,7 +388,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
         hCR[f][ireg][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s",histoNames[f].Data(),varReco[ivar].Data(), regions[ireg].Data()), TString::Format("hCR_%s_%s_%s",histoNames[f].Data(),varReco[ivar].Data(), regions[ireg].Data()), sizeBins, 120,220);
       else if (ivar == 7 || ivar == 8)
         hCR[f][ireg][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s",histoNames[f].Data(),varReco[ivar].Data(), regions[ireg].Data()), TString::Format("hCR_%s_%s_%s",histoNames[f].Data(),varReco[ivar].Data(), regions[ireg].Data()), sizeBins, -1,1);
-  }
+    }
   }
   //for matching
   std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
@@ -474,6 +452,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
   bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;  
   bool btagCut, revertBtag, btag1;
   bool CR[controlRegions];
+  bool revertTtaggerCut;
 
   if (nJets >1)
   { 
@@ -566,61 +545,27 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
-    tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
+    tTaggerCut = (*jetTtag_)[0] > selMvaCutMedium && (*jetTtag_)[1] > selMvaCutMedium;
     //2 btag category with deepCSV
-    deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
-           (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
-    //1 btag category with deepCSV                
-    btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
-            ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
-   
-   //0 btag category with deepCSV
-    revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+    deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloatMedium || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloatMedium) && 
+           (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloatMedium || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloatMedium);
     
-    //now we have to do it by jet
-    //leading or subleading top tagged 
-    //leading or subleading b tagged
-    bool leadTopCut = (*jetTtag_)[leadingPt] > selMvaCut;
-    bool subleadTopCut = (*jetTtag_)[subleadingPt] > selMvaCut;
+    //0 btag category with deepCSV
+    revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloatLoose &&  dCSVScoreSub1[0] < deepCSVFloatLoose) 
+                      && (dCSVScoreSub0[1] < deepCSVFloatLoose && dCSVScoreSub1[1] < deepCSVFloatLoose);
 
-    bool leadBCut = dCSVScoreSub0[leadingPt] < deepCSVFloat && dCSVScoreSub1[leadingPt] < deepCSVFloat;
-    bool subleadBCut = dCSVScoreSub0[subleadingPt] < deepCSVFloat && dCSVScoreSub1[subleadingPt] < deepCSVFloat;
-
-    //A      0t0b       0t0b
-    CR[0] = (!leadTopCut && !leadBCut) && (!subleadTopCut && !subleadBCut);
-    //B      0t0b       0t1b
-    CR[1] = (!leadTopCut && !leadBCut) && (!subleadTopCut && subleadBCut);
-    //C      1t0b       0t0b
-    CR[2] = (leadTopCut && !leadBCut) && (!subleadTopCut && !subleadBCut);
-    //D      1t0b       0t1b
-    CR[3] = (leadTopCut && !leadBCut) && (!subleadTopCut && subleadBCut);
-
-    //E      0t0b       1t0b
-    CR[4] = (!leadTopCut && !leadBCut) && (subleadTopCut && !subleadBCut);
-    //F      1t0b       1t0b
-    CR[5] = (leadTopCut && !leadBCut) && (subleadTopCut && !subleadBCut);
-    //G      0t1b       1t0b
-    CR[6] = (!leadTopCut && leadBCut) && (subleadTopCut && !subleadBCut);
-    //H      0t1b       0t1b
-    CR[7] = (!leadTopCut && leadBCut) && (!subleadTopCut && subleadBCut); 
+    revertTtaggerCut = (*jetTtag_)[0] < selMvaCutLoose && (*jetTtag_)[1] < selMvaCutLoose;
     
-    //I      0t1b       0t0b
-    CR[8] = (!leadTopCut && leadBCut) && (!subleadTopCut && !subleadBCut);
-    //J      0t0b       1t1b
-    CR[9] = (!leadTopCut && !leadBCut) && (subleadTopCut && subleadBCut);
-  //K      1t0b       1t1b
-    CR[10] = (leadTopCut && !leadBCut) && (subleadTopCut && subleadBCut);
-    //L      0t1b       1t1b
-    CR[11] = (!leadTopCut && leadBCut) && (subleadTopCut && subleadBCut);
 
-    //M      1t1b       1t0b
-    CR[12] = (leadTopCut && leadBCut) && (subleadTopCut && !subleadBCut);
-    //N      1t1b       0t1b
-    CR[13] = (leadTopCut && leadBCut) && (!subleadTopCut && subleadBCut);
-  //O      1t1b       0t0b
-    CR[14] = (leadTopCut && leadBCut) && (!subleadTopCut && !subleadBCut);
-    //Signal 1t1b       1t1b
-    CR[15] = (leadTopCut && leadBCut) && (subleadTopCut && subleadBCut);
+    //A   2jets top tagged and 0 jets btagged
+    CR[0] = tTaggerCut && revertBtagDeepCSV;
+    //B   0jets top tagged and 0 jets btagged  
+    CR[1] = revertTtaggerCut && revertBtagDeepCSV; 
+    //C   2jets top tagged and 2 jets btagged   
+    CR[2] = tTaggerCut && deepCSV;
+    //D   0jets top tagged and 2 jets btagged
+    CR[3] = revertTtaggerCut && deepCSV;
+
 
     xRecoAll.push_back(mJJ);
     xRecoAll.push_back(ptJJ);
@@ -639,8 +584,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
 
 
    
-    }//----end of selection ==1 so that we do this only when we deal with signal MC 
-  
+  }//----end of selection ==1 so that we do this only when we deal with signal MC å
   else //we are in QCD samples or Subdominant BKG or Data sample
   {
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
@@ -653,77 +597,35 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
-    tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-    //2 btag category with csvv2 and deepCSV
-    deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) && 
-           (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
-    //1 btag category with  deepCSV   
-    btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
-            ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
-   
-    //0 btag category with deepCSV
-      revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
   
-   //now we have to do it by jet
-    //leading or subleading top tagged 
-    //leading or subleading b tagged
-    bool leadTopCut = (*jetTtag)[0] > selMvaCut;
-    bool subleadTopCut = (*jetTtag)[1] > selMvaCut;
-
-    bool leadBCut = dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat;
-    bool subleadBCut = dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat;
-
-    //A      0t0b       0t0b
-    CR[0] = (!leadTopCut && !leadBCut) && (!subleadTopCut && !subleadBCut);
-    //B      0t0b       0t1b
-    CR[1] = (!leadTopCut && !leadBCut) && (!subleadTopCut && subleadBCut);
-    //C      1t0b       0t0b
-    CR[2] = (leadTopCut && !leadBCut) && (!subleadTopCut && !subleadBCut);
-    //D      1t0b       0t1b
-    CR[3] = (leadTopCut && !leadBCut) && (!subleadTopCut && subleadBCut);
-
-    //E      0t0b       1t0b
-    CR[4] = (!leadTopCut && !leadBCut) && (subleadTopCut && !subleadBCut);
-    //F      1t0b       1t0b
-    CR[5] = (leadTopCut && !leadBCut) && (subleadTopCut && !subleadBCut);
-  //G      0t1b       1t0b
-    CR[6] = (!leadTopCut && leadBCut) && (subleadTopCut && !subleadBCut);
-    //H      0t1b       0t1b
-    CR[7] = (!leadTopCut && leadBCut) && (!subleadTopCut && subleadBCut); 
+    tTaggerCut = (*jetTtag)[0] > selMvaCutMedium && (*jetTtag)[1] > selMvaCutMedium;
+    //2 btag category with deepCSV
+    deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloatMedium || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloatMedium) && 
+           (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloatMedium || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloatMedium);
     
-    //I      0t1b       0t0b
-    CR[8] = (!leadTopCut && leadBCut) && (!subleadTopCut && !subleadBCut);
-    //J      0t0b       1t1b
-    CR[9] = (!leadTopCut && !leadBCut) && (subleadTopCut && subleadBCut);
-  //K      1t0b       1t1b
-    CR[10] = (leadTopCut && !leadBCut) && (subleadTopCut && subleadBCut);
-    //L      0t1b       1t1b
-    CR[11] = (!leadTopCut && leadBCut) && (subleadTopCut && subleadBCut);
+    //0 btag category with deepCSV
+    revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloatLoose &&  dCSVScoreSub1[0] < deepCSVFloatLoose) 
+                      && (dCSVScoreSub0[1] < deepCSVFloatLoose && dCSVScoreSub1[1] < deepCSVFloatLoose);
 
-    //M      1t1b       1t0b
-    CR[12] = (leadTopCut && leadBCut) && (subleadTopCut && !subleadBCut);
-    //N      1t1b       0t1b
-    CR[13] = (leadTopCut && leadBCut) && (!subleadTopCut && subleadBCut);
-  //O      1t1b       0t0b
-    CR[14] = (leadTopCut && leadBCut) && (!subleadTopCut && !subleadBCut);
-    //Signal 1t1b       1t1b
-    CR[15] = (leadTopCut && leadBCut) && (subleadTopCut && subleadBCut);
+    revertTtaggerCut = (*jetTtag)[0] < selMvaCutLoose && (*jetTtag)[1] < selMvaCutLoose;
+    
+
+    //A   2jets top tagged and 0 jets btagged
+    CR[0] = tTaggerCut && revertBtagDeepCSV;
+    //B   0jets top tagged and 0 jets btagged  
+    CR[1] = revertTtaggerCut && revertBtagDeepCSV; 
+    //C   2jets top tagged and 2 jets btagged   
+    CR[2] = tTaggerCut && deepCSV;
+    //D   0jets top tagged and 2 jets btagged
+    CR[3] = revertTtaggerCut && deepCSV;
 
    xRecoAll.push_back(mJJ);
    xRecoAll.push_back(ptJJ);
    xRecoAll.push_back(yJJ);
    xRecoAll.push_back((*jetPt)[0]);
    xRecoAll.push_back((*jetPt)[1]);
-   if(selection ==0)
-   {
-    xRecoAll.push_back(1);
-    xRecoAll.push_back(1);
-   }
-   else
-   {
-    xRecoAll.push_back(fabs((*jetY)[0]));
-    xRecoAll.push_back(fabs((*jetY)[1]));
-   }
+   xRecoAll.push_back(fabs((*jetY)[0]));
+   xRecoAll.push_back(fabs((*jetY)[1]));
    xRecoAll.push_back((*jetTtag)[0]);
    xRecoAll.push_back((*jetTtag)[1]);
    xRecoAll.push_back((*jetMassSoftDrop)[0]);
@@ -731,14 +633,8 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
     xRecoAll.push_back((*jetMassSoftDrop)[ijet]);
   
   
-  
-    
   }//---end of else of isSignal
   
-  btagCut = deepCSV;
-  revertBtag = revertBtagDeepCSV;
-  btag1 = btag1DeepCSV;
-
    //Signal Region with tTagger
    for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
    {
@@ -754,7 +650,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
       //recoCuts, btagCut, massCut, triggerSR or triggerCR
       for(int ireg=0; ireg<controlRegions; ireg++)
       {
-        if(ireg ==0 || (ireg>2 && ireg<6)) //CR trigger
+        if(ireg==0 || ireg==1) //CR trigger
         {
           if(basicCutsCR && CR[ireg])
             hCR[f][ireg][ivar]->Fill(xReco, genEvtWeight);
@@ -770,7 +666,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
    {
       for(int ireg=0; ireg<controlRegions; ireg++)
       {
-        if(ireg ==0 || (ireg>2 && ireg<6)) //CR trigger
+        if(ireg==0 || ireg==1) //CR trigger
         {
           if(basicCutsCR && CR[ireg])
             hCR[f][ireg][10]->Fill(xReco, genEvtWeight);

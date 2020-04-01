@@ -338,14 +338,18 @@ void initFilesMapping(bool isLoose)
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 
-	//these are fit results from mixed medium wp and loose wp
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 3.2755e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 3.3491e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.5360e+03));
+	 //these are fit results from mixed medium wp and loose wp
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.7777e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.5357e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.7672e+03));
 
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 2.09e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 6.98e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.52e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.48e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.94e+02));
+
+	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
+	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
+	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj
 	BND[variableConstant["ptJJ"]].push_back({0,60,150,300,450,600,750,950,1100,1300}); //ptjj
