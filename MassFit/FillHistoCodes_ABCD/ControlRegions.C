@@ -14,45 +14,18 @@ using std::cout;
 using std::endl;
 
 /*
-
 In this code I will try to test the ABCD method
-We will have 16 Control Regions:
-For each jet: 
-1. Leading jet:
-	a. 1top1b
-	b. 1top0b
-	c. 0top1b
-	d. 0top0b
-2. Sub-Leading jet:
-	a. 1top1b
-	b. 1top0b
-	c. 0top1b
-	d. 0top0b
+We will have 4 Control Regions:
+For both jets:
+A. 2jets top tagged (Medium WP) and 0jets b-tagged (Loose WP)
+B. 0jets top tagged (Loose WP)  and 0jets b-tagged (Loose WP)
+C. 2jets top tagged (Medium WP) and 2jets b-tagged (Medium WP)
+D. 0jets top tagged (Loose WP)  and 2jets b-tagged (Loose WP)
 
-The combination of each of the subcategories will give 16 in total
+What we do:
 
-Control Regions:
-
-Region LeadingJet SubleadingJet
-A      0t0b       0t0b
-B      0t0b       0t1b
-C      1t0b       0t0b
-D      1t0b       0t1b
-
-E      0t0b       1t0b
-F      1t0b       1t0b
-G      0t1b       1t0b
-H      0t1b       0t1b
-
-I      0t1b       0t0b
-J      0t0b       1t1b
-K      1t0b       1t1b
-L      0t1b       1t1b
-
-M      1t1b       1t0b
-N      1t1b       0t1b
-O      1t1b       0t0b
-Signal 1t1b       1t1b
+Find for all files:
+1. Data: Remove ttbar and subdominant bkg (both taken from MC) 
 
 */
 
@@ -62,7 +35,7 @@ void ControlRegions(TString year = "2016")
 {
 
 	TFile *ttFileNominal = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
-	TFile *ttFileMtt = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data())); 
+	//TFile *ttFileMtt = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data())); 
 
 	TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data()));	
 	TFile *infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced.root", year.Data()));
@@ -70,8 +43,8 @@ void ControlRegions(TString year = "2016")
 
 
 	//get all the control regions and find the ttbar yield in every region
-	const int controlRegions = 16;
-	TString regions[controlRegions] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "Signal"};
+	const int controlRegions = 4;
+	TString regions[controlRegions] = {"A", "B", "C", "D"};
 
 	float totalYield[controlRegions];
 	float ttFraction[controlRegions];
@@ -82,7 +55,7 @@ void ControlRegions(TString year = "2016")
 	for(int ireg=0; ireg<controlRegions; ireg++)
 	{
 		hData[ireg] = (TH1F*)infData->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
-		hTTMtt[ireg] = (TH1F*)ttFileMtt->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
+		//hTTMtt[ireg] = (TH1F*)ttFileMtt->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 		hTTNominal[ireg] = (TH1F*)ttFileNominal->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 		hQCD[ireg]= (TH1F*)infQCD->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
 		hBkg[ireg] = (TH1F*)infBkg->Get(TString::Format("hWt_mTop_CR%s_expYield",regions[ireg].Data()));
@@ -90,28 +63,30 @@ void ControlRegions(TString year = "2016")
 		totalYield[ireg] = hTTNominal[ireg]->Integral() + hQCD[ireg]->Integral() + hBkg[ireg]->Integral();
 		totalData[ireg]  = hData[ireg]->Integral();
 		ttFraction[ireg] = hTTNominal[ireg]->Integral() / totalData[ireg];
+
 		
 		cout<<"--------------"<<endl;
 		cout<<"MC total: "<<totalYield[ireg]<<" Data: "<<totalData[ireg]<<endl;
 		cout<<"ttbar: "<<hTTNominal[ireg]->Integral()<<endl;
 		cout<<"The ttbar fraction in CR_"<<regions[ireg]<<" is: "<<ttFraction[ireg]<<endl;
-
+		cout<<"MC/data: "<<totalYield[ireg]/totalData[ireg]<<endl;
 	}
-
-	//now get the qcd expectation --> 
-	//qcd = data - ttbar - bkg
+	cout<<"----------"<<endl;
+	//now apply abcd method
 	float qcdExp[controlRegions];
 	for(int ireg=0; ireg<controlRegions; ireg++)
 	{
 		qcdExp[ireg] = hData[ireg]->Integral() - hTTNominal[ireg]->Integral() - hBkg[ireg]->Integral();
-
+		cout<<"qcd from data region "<<regions[ireg]<<": "<<qcdExp[ireg]<<endl;
 	}
-	//I --> 8, L-->11, S-->15, O-->14
+	//is it consistent with abcd method??
+	cout<<"-----------"<<endl;
 
 	//expectation 
-	cout<<"Expected qcd in signal from MC is: "<<qcdExp[15]<<endl;
-	float CR_S = qcdExp[14] * qcdExp[11] / qcdExp[8];
+	cout<<"Expected qcd in signal from Data -subdominant bkg - ttbar  is: "<<qcdExp[2]<<endl;
+	float CR_S = qcdExp[0] * qcdExp[3] / qcdExp[1];
 	cout<<"From ABCD method: "<<CR_S<<endl;
+	cout<<"From MC qcd expectation: "<<hQCD[2]->Integral()<<endl;
 
 
 
