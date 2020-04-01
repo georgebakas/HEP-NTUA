@@ -121,24 +121,20 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
          std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
   		 
   		 //denominators for parton efficiency (hParton vs parton), particle eff (hParticle vs particle) and acceptance (same for both hReco vs reco)
-  		   hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),var[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),var[ivar].Data()), sizeBins, tempBND);
+  		 hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s",histoNames[f].Data(),var[ivar].Data()), TString::Format("hParton_%s_%s",histoNames[f].Data(),var[ivar].Data()), sizeBins, tempBND);
          hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s",histoNames[f].Data() ,var[ivar].Data()), TString::Format("hParticle_%s_%s",histoNames[f].Data() ,var[ivar].Data()), sizeBins, tempBND);
          hParton[f][ivar]->Sumw2();
          hParticle[f][ivar]->Sumw2();
   }
- cout<<"ok with histograms!"<<endl;
+  cout<<"ok with histograms!"<<endl;
   
 
-  //cout<<"Working in file: "<<files[year.Data()][fileNames[f].Data()]<<endl;
   TFile *file = TFile::Open(eospath[year.Data()]+files[year.Data()][fileNames[f].Data()]);
   TTree *trIN = (TTree*)file->Get("boosted/events");
   cout<<"working in file:"<<eospath[year.Data()]+files[year.Data()][fileNames[f].Data()]<<endl;
   //parton
-  std::vector<float> *partonPt(0), *partonPhi(0), *partonY(0), *partonMass(0),*partonMatchDR(0),*partonEta(0);
-  float yTTbarParton(0), ptTTbarParton(0), mTTbarParton(0);
-  vector<int> *partonMatchIdx(0);
+  //std::vector<float> *partonPt(0), *partonPhi(0), *partonY(0), *partonMass(0),*partonMatchDR(0),*partonEta(0);
   float genEvtWeight(0);
-  int nJets;
   
   float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
   float weight = XSEC[f]/norm;
@@ -156,34 +152,31 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   trIN->SetBranchAddress("genjetPt" ,&genjetPt);
   trIN->SetBranchAddress("genjetEta",&genjetEta);
   trIN->SetBranchAddress("genjetY"  ,&genjetY);
-  trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);  
+  trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
+  trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);   
 
-  bool partonCuts, particleCuts;
+  bool particleCuts;
   
   long NN = trIN->GetEntries();
   //NN = 1000;
   std::cout<<"Entries: "<<NN<<std::endl;
-  std::vector<float> xPartonAll(0);
   std::vector<float> xParticleAll(0);
   int decade(0);
 
   for(int iev=0;iev<NN;iev++) 
   {
-    double progress = 10.0*iev/(1.0*NN);
-    int k = TMath::FloorNint(progress); 
-    if (k > decade) 
-      cout<<10*k<<" %"<<endl;
-    decade = k;
-   trIN->GetEntry(iev);
-  //cout<<"entry; "<<trIN->GetEntry(iev)<<endl; 
+   double progress = 10.0*iev/(1.0*NN);
+      int k = TMath::FloorNint(progress); 
+      if (k > decade) 
+        cout<<10*k<<" %"<<endl;
+      decade = k;
+   trIN->GetEntry(iev);  
    xParticleAll.clear();
-   int leadingPt =0;
-   int genLeadingPt = 0;
-   int subleadingPt = 1;
    int genSubleadingPt = 1;
+   int genLeadingPt = 0;
  // cout<<"ok"<<endl;  
   if(nJetsGen>1)
-	{
+   {
 
     if((*genjetPt)[0] < (*genjetPt)[1])
     {
@@ -195,25 +188,24 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
 	  xParticleAll.push_back(yJJGen);
 	  xParticleAll.push_back((*genjetPt)[genLeadingPt]);
 	  xParticleAll.push_back((*genjetPt)[genSubleadingPt]);
-    xParticleAll.push_back(fabs((*genjetY)[genLeadingPt]));
-    xParticleAll.push_back(fabs((*genjetY)[genSubleadingPt]));
+      xParticleAll.push_back(fabs((*genjetY)[genLeadingPt]));
+      xParticleAll.push_back(fabs((*genjetY)[genSubleadingPt]));
   
     particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) < 2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
       (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
     
-    
-  }//nJetsGen
-
-	for(int ivar = 0; ivar < xParticleAll.size(); ivar++)
-		if(particleCuts) 
-    {
-        hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);				
-        cout<<"filling h particle..."<<endl;
+    if(particleCuts)
+    { 
+		for(int ivar = 0; ivar < xParticleAll.size(); ivar++) 
+		{
+		  //cout<<xParticleAll[ivar]<<endl; 
+	      hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);
+	    }
     }
-
-
+  }//nJetsGen
   } //end of tree entries for-loop for gen level
 
+  
   //loop over other tree -> eventCounter
   TTree *trCnt = (TTree*)file->Get("eventCounter/events");
   float ptTTbarPartonCnt(0), mTTbarPartonCnt(0), yTTbarPartonCnt(0);
@@ -228,7 +220,7 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
   trCnt->SetBranchAddress("ptTTbarParton"  ,&ptTTbarPartonCnt);
   trCnt->SetBranchAddress("genEvtWeight"   ,&genEvtWeightCnt);   
   int NNCnt = trCnt->GetEntries();
-  
+  cout<<"NNCnt: "<<NNCnt<<endl;
   for(int iev = 0; iev < NNCnt; iev++)
   {
     trCnt->GetEntry(iev);
@@ -245,32 +237,34 @@ void CreateTheoryTemplates(TString inYear = "2016", bool isNominalMC= true)
       xPartonAllCnt.push_back(partonPtCnt[0]);
       xPartonAllCnt.push_back(partonPtCnt[1]);
 
-      xPartonAll.push_back(fabs(partonYCnt[0]));
-      xPartonAll.push_back(fabs(partonYCnt[1]));
+      xPartonAllCnt.push_back(fabs(partonYCnt[0]));
+      xPartonAllCnt.push_back(fabs(partonYCnt[1]));
     }
     else
     {
       xPartonAllCnt.push_back(partonPtCnt[1]);
       xPartonAllCnt.push_back(partonPtCnt[0]);
 
-      xPartonAll.push_back(fabs(partonYCnt[1]));
-      xPartonAll.push_back(fabs(partonYCnt[0]));
+      xPartonAllCnt.push_back(fabs(partonYCnt[1]));
+      xPartonAllCnt.push_back(fabs(partonYCnt[0]));
     }
 
 
     for(int ivar = 0; ivar < xPartonAllCnt.size(); ivar++)
     {
-      if(partonCuts) hParton[f][ivar]->Fill(xPartonAll[ivar], genEvtWeightCnt);
+      if(partonCuts) hParton[f][ivar]->Fill(xPartonAllCnt[ivar], genEvtWeightCnt);
     }
   }//end of for -eventCounter loop
+  
 
   }// end of files loop
-
+  
   //for all vars in all files, scale
   for(int ivar=0; ivar<NVAR; ivar++) 
   {
 	  hParton[0][ivar]->Scale(weights[0]*LUMI);
 	  hParticle[0][ivar]->Scale(weights[0]*LUMI);
+	  cout<<hParticle[0][ivar]->GetEntries()<<endl;
 	  for(int f=1; f<fileNames.size(); f++) 
 	  {
 	    hParton[f][ivar]->Scale(weights[f]*LUMI);

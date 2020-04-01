@@ -170,7 +170,7 @@ for(int f=0; f<fileNames.size(); f++)
     float genEvtWeight(0);
     float mJJ(0), ptJJ(0), yJJ(0),mva(0);
     vector<float> *tau3(0),*tau2(0),*tau1(0);
-	vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);
+	  vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);
     vector<float> *jetMassSoftDrop(0), *partonEta(0);
 
     //parton
@@ -523,16 +523,16 @@ for(int f=0; f<fileNames.size(); f++)
 	    xPartonAllCnt.push_back(partonPtCnt[0]);
 	    xPartonAllCnt.push_back(partonPtCnt[1]);
 	    
-	    xPartonAll.push_back(fabs(partonYCnt[0]));
-	    xPartonAll.push_back(fabs(partonYCnt[1]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[0]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[1]));
 	  }
 	  else
 	  {
 	  	xPartonAllCnt.push_back(partonPtCnt[1]);
 	    xPartonAllCnt.push_back(partonPtCnt[0]);
 
-	    xPartonAll.push_back(fabs(partonYCnt[1]));
-	    xPartonAll.push_back(fabs(partonYCnt[0]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[1]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[0]));
 	  }
 
 	  for(int ivar = 0; ivar < NVAR; ivar++)

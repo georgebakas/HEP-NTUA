@@ -553,16 +553,16 @@ for(int f=0; f<fileNames.size(); f++)
 	    xPartonAllCnt.push_back(partonPtCnt[0]);
 	    xPartonAllCnt.push_back(partonPtCnt[1]);
 
-	    xPartonAll.push_back(fabs(partonYCnt[0]));
-	    xPartonAll.push_back(fabs(partonYCnt[1]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[0]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[1]));
 	  }
 	  else
 	  {
 	  	xPartonAllCnt.push_back(partonPtCnt[1]);
 	    xPartonAllCnt.push_back(partonPtCnt[0]);
 
-	    xPartonAll.push_back(fabs(partonYCnt[1]));
-	    xPartonAll.push_back(fabs(partonYCnt[0]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[1]));
+	    xPartonAllCnt.push_back(fabs(partonYCnt[0]));
 	  }
 
 
