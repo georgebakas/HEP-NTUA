@@ -91,11 +91,11 @@ void initFilesMapping()
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 
 	//these are fit results from mixed medium wp and loose wp
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.7777e+03));
+	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.7933e+03));
 	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.5357e+03));
 	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.7672e+03));
 
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.45e+02));
+	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.58e+02));
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 1.48e+02));
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 1.94e+02));
 

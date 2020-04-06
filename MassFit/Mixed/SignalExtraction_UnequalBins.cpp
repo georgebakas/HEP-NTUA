@@ -79,10 +79,11 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //open the signal file: get D(x) and Q(x) for every variable    
     TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
     TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning_Loose.root", year.Data(), year.Data()));
+    TFile *infQCDLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced_UnequalBinning_Loose.root",  year.Data()));
     
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
-    TH1F *hQ = (TH1F*)infDataLoose->Get(TString::Format("hWt_%s_0btag", variable.Data()));
+    TH1F *hQ = (TH1F*)infDataLoose->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //hQ has to be scaled to integral, because we need the shape
 
     //open the file to get the Ryield
@@ -236,25 +237,26 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //theory - data)/data.
     closure_padRatio->cd();
     TH1F *hMCClone[2];
+    TH1F *hSig_temp[2];
 
     hMCClone[0] = (TH1F*)hSMC->Clone("hMCClone0");
+    hSig_temp[0] = (TH1F*)hSignal->Clone("hSignal_Clone");
 
-    hMCClone[0]->SetTitle("");
-    hMCClone[0]->GetYaxis()->SetTitle("#frac{MC-data}{data}");
-    hMCClone[0]->GetYaxis()->SetTitleSize(14);
-    hMCClone[0]->GetYaxis()->SetTitleFont(43);
-    hMCClone[0]->GetYaxis()->SetTitleOffset(1.55);
-    hMCClone[0]->GetYaxis()->SetLabelFont(43);
-    hMCClone[0]->GetYaxis()->SetLabelSize(15);
-    hMCClone[0]->GetXaxis()->SetTitleSize(0.09);
+    hSig_temp[0]->SetTitle("");
+    hSig_temp[0]->GetYaxis()->SetTitle("#frac{Data}{MC}");
+    hSig_temp[0]->GetYaxis()->SetTitleSize(14);
+    hSig_temp[0]->GetYaxis()->SetTitleFont(43);
+    hSig_temp[0]->GetYaxis()->SetTitleOffset(1.55);
+    hSig_temp[0]->GetYaxis()->SetLabelFont(43);
+    hSig_temp[0]->GetYaxis()->SetLabelSize(15);
+    hSig_temp[0]->GetXaxis()->SetTitleSize(0.09);
 
-    hMCClone[0]->Add(hSignal, -1);
-    hMCClone[0]->Divide(hSignal);
-    hMCClone[0]->SetLineColor(kRed);
-    hMCClone[0]->SetMarkerStyle(20);
-    hMCClone[0]->SetMarkerColor(kRed);
-    hMCClone[0]->Draw();
-    hMCClone[0]->GetXaxis()->SetLabelSize(0.09);
+    hSig_temp[0]->Divide(hMCClone[0]);
+    hSig_temp[0]->SetLineColor(kRed);
+    hSig_temp[0]->SetMarkerStyle(20);
+    hSig_temp[0]->SetMarkerColor(kRed);
+    hSig_temp[0]->Draw();
+    hSig_temp[0]->GetXaxis()->SetLabelSize(0.09);
 
     TString path;
     TString method = "simpleMassFit";
