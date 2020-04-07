@@ -61,8 +61,8 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 void SignalExtraction(TString year)
 {
-    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1"};
-    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt"};
+    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
+    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
         SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
@@ -224,7 +224,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     
     hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
-    if(!variable.EqualTo("yJJ")) gPad->SetLogy();
+    if(!variable.EqualTo("yJJ") && !variable.EqualTo("jetY0") && !variable.EqualTo("jetY1") ) gPad->SetLogy();
 
     closure_pad1->cd();
     hSMC->Draw();
