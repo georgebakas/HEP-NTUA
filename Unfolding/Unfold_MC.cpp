@@ -61,7 +61,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_MC(TString inYear = "2016", bool isParton = true)
+void Unfold_MC(TString inYear = "2016", bool isParton = true, bool useRhoMethod=false)
 {
   year = inYear;
   initFilesMapping();
@@ -71,23 +71,25 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
                                                         {0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1100,1300}, //ptjj 17
                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
                                                         {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
-                                                        {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1100,1300,1500}}; //jetPt1 18
-                                                        //{0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}, //jetY0 25
-                                                        //{0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY1 25 
+                                                        {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1100,1300,1500}, //jetPt1 18
+                                                        {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}, //jetY0 25
+                                                        {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY1 25 
 
    std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
-                                                        {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
-                                                        {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
-                                                        {400,450,500,570,650,750,850,950,1100,1300,1500}}; //jetPt1
-                                                        //{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                        //{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+                                                         {0,60,150,300,450,600,750,1000,1300}, //ptjj
+                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
+                                                         {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
+                                                         {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
+                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
+                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root", 
-  								  year.Data()));    
+  								  year.Data())); 
+  //TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root", 
+  	//							  year.Data()));  								     
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure 
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   TFile *effAccInf2 = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
@@ -110,14 +112,12 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
 
   TH1F *inSig[BND_reco.size()], *hSig[BND_reco.size()], *hSig_Init[BND_reco.size()];
   TString variable[NVAR] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1","jetY0", "jetY1"};
-  TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen", "genjetPt0", "genjetPt1","genjetYt0", "genjetY1"};
+  TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen", "genjetPt0", "genjetPt1","genjetY0", "genjetY1"};
   TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton", "partonPt0", "partonPt1","partonY0", "partonY1"};    
 
   TH2F *hResponse[BND_reco.size()];
   TUnfold *unf[BND_reco.size()];
   TH1 *hUnf[BND_reco.size()];
-  TH1F *hUnf_Clone[BND_reco.size()];
-  //TH1 *histRhoi[BND_reco.size()];
 
   //theoretical Histogram
   TH1F *hTheory[BND_reco.size()], *hTheory_2[BND_reco.size()];
@@ -127,7 +127,10 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()], *canError[BND_reco.size()];
   TLegend *leg[BND_reco.size()];
   TH1F *hUnfTemp[BND_reco.size()], *hTheoryTemp[BND_reco.size()];
-  TFile *outf = TFile::Open(TString::Format("%s/OutputFile_%s.root", year.Data(), varParton.Data()),"UPDATE");
+
+  TString RhoMethod = "";
+  if(useRhoMethod) RhoMethod = "_RhoMethod";
+  TFile *outf = TFile::Open(TString::Format("%s/%sMeasurements/MC/OutputFile%s.root", year.Data(), varParton.Data(), RhoMethod.Data()),"RECREATE");
 
   for(int ivar =0; ivar<BND_reco.size(); ivar++)
   {
@@ -151,8 +154,13 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
       float acc = acceptance->GetEfficiency(j);
       hSig[ivar]->SetBinContent(j, acc*hSig[ivar]->GetBinContent(j));
       //handle errors as well--> asymmetric error from acceptance
+      //cout<<"hSig "<<j<<": "<<hSig[ivar]->GetBinContent(j)<<endl;
+      //cout<<"hSig Error "<<j<<": "<<hSig[ivar]->GetBinError(j)<<endl;
       float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
-      hSig[ivar]->SetBinError(j, accError*hSig[ivar]->GetBinError(j));
+      if(accError > 0)
+	      hSig[ivar]->SetBinError(j, accError*hSig[ivar]->GetBinError(j));
+	  else
+	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
     }
 
     TString tempVar;
@@ -169,8 +177,10 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     cout<<"entering unfolding method!"<<endl;
     
     hUnf[ivar] = new TH1F(TString::Format("hUnf_%s", variable[ivar].Data()), TString::Format("hUnf_%s", variable[ivar].Data()), NBINS_GEN[ivar], tempBNDGen);
-    hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
-    //hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
+    if(!useRhoMethod)
+    	hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
+    else
+    	hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     //continue;
     TString axisTitle = variable[ivar];
     if(variable[ivar].EqualTo("yJJ")) 
@@ -180,12 +190,8 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
 
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
-    
-    //hUnf_Clone[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_Clone %s",variable[ivar].Data()));
-    cout<<"hUnf received!!"<<endl;
-    cout<<variable[ivar]<<endl;
+      
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
-
 
      //here get the errors:
     
@@ -202,7 +208,6 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     for(int j=1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
       hErrorBefore[ivar]->SetBinContent(j,hSig[ivar]->GetBinError(j));
-      //cout<<"Error for bin "<<j<<": "<<hErrorBefore[ivar]->GetBinError(j)<<endl;
     }
     if(!variable[ivar].EqualTo("yJJ"))hErrorBefore[ivar]->Rebin(2);
     hErrorBefore[ivar]->SetLineColor(kBlue);
@@ -216,6 +221,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
     canError[ivar]->cd();
     hErrorAfter[ivar]->Draw();
     hErrorBefore[ivar]->Draw("same");
+    
 
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
@@ -226,8 +232,8 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
         float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
 	      hUnf[ivar]->SetBinContent(i, newContent);
-        cout<<"old: "<<oldContent<<endl;
-	      cout<<"new: "<<hUnf[ivar]->GetBinContent(i)<<endl;
+          //cout<<"old: "<<oldContent<<endl;
+	      //cout<<"new: "<<hUnf[ivar]->GetBinContent(i)<<endl;
 	      //handle errors as well--> asymmetric error from efficiency
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
 	      hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
@@ -276,7 +282,7 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
   	hUnf[ivar]->Draw("same");
   	leg[ivar]->Draw();
 
-  	if(!variable[ivar].EqualTo("yJJ")) gPad->SetLogy();
+  	if(!variable[ivar].EqualTo("yJJ") && !variable[ivar].EqualTo("jetY0") && !variable[ivar].EqualTo("jetY1")) gPad->SetLogy();
 
   	closure_padRatio->cd();
   	hUnfTemp[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_%s", variable[ivar].Data()));
@@ -302,11 +308,16 @@ void Unfold_MC(TString inYear = "2016", bool isParton = true)
 
 
     //hTheory_2[ivar]->Draw("same");
-    cout<<"------"<<endl;
-    cout<<"theory: "<<hTheory_2[ivar]->Integral()<<endl;
-    cout<<"theory from eff: "<<hTheory[ivar]->Integral()<<endl;
+   // cout<<"------"<<endl;
+   // cout<<"theory: "<<hTheory_2[ivar]->Integral()<<endl;
+    //cout<<"theory from eff: "<<hTheory[ivar]->Integral()<<endl;
 
-    //can[ivar]->Print(TString::Format("%s/%sMeasurements/MC/Unfold_%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data()), "pdf");
+    outf->cd();
+    hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+  	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+  	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
+    hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+    can[ivar]->Print(TString::Format("%s/%sMeasurements/MC/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), RhoMethod.Data()), "pdf");
     
   }
   
@@ -318,7 +329,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
 	//hResponse_->Draw("BOX");
   cout<<variable<<endl;
-  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeNone, TUnfold::kEConstraintArea);
+  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize, TUnfold::kEConstraintArea);
   
 
   /*
@@ -348,7 +359,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 
   // this method scans the parameter tau and finds the kink in the L curve
   // finally, the unfolding is done for the best choice of tau
-  //iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
+  // iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
   //std::cout<<"tau="<<unfold.GetTau()<<endl;
   unfold.DoUnfold(10E-9);
   //TH1 *histMunfold=unfold.GetOutput("Unfolded");
@@ -382,7 +393,7 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
       //========================================================================
     // the unfolding is done here
   
-  const Int_t nScan=1000;
+  const Int_t nScan=500;
   Double_t tauMax=5;
   Double_t tauMin=10E-9;
   float tau = tauMin;
@@ -412,9 +423,9 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
   // get unfolded distribution
 
 
-  //TFile *outf = TFile::Open(TString::Format("%s/OutputFileRhoGraphs_%s.root",year.Data(), varParton.Data()),"UPDATE");
-  //globalCorrGraph->Write(TString::Format("globalCorrGraph_%s",variable.Data()));
-  //outf->Close();
+  TFile *outf = TFile::Open(TString::Format("%s/%sMeasurements/MC/OutputFileRhoGraphs.root",year.Data(), varParton.Data()),"UPDATE");
+  globalCorrGraph->Write(TString::Format("globalCorrGraph_%s",variable.Data()));
+  outf->Close();
 
   
   //find the minimum
@@ -440,7 +451,7 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
   cout<<"minTau= "<<minTau<<endl;
   
   //tauMin = 10e-12;
-  unfold.DoUnfold(tauMin);
+  unfold.DoUnfold(minTau);
   
   //set up a bin map, excluding underflow and overflow bins
   // the binMap relates the the output of the unfolding to the final
