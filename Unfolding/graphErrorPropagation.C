@@ -37,13 +37,13 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 void graphErrorPropagation(TString year="2016", bool isParton = true, bool isData=false)
 {
-	std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
-                                                        {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
-                                                        {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
-                                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt1
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
+                                                         {0,60,150,300,450,600,750,1000,1300}, //ptjj
+                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
+                                                         {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
+                                                         {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
+                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
+                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
     int NBINS[BND_gen.size()];
   	for (int i = 0; i<BND_gen.size(); i++)  
   		NBINS[i] = BND_gen[i].size()-1;	                                                        
@@ -56,6 +56,7 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
 
 	TFile *infStd = TFile::Open(TString::Format("%s/%sMeasurements/%s/OutputFile.root",year.Data(),phaseSpace.Data(),dataMC.Data()));
 	TFile *infRho = TFile::Open(TString::Format("%s/%sMeasurements/%s/OutputFile_RhoMethod.root",year.Data(),phaseSpace.Data(),dataMC.Data()));
+    TFile *infLCurve = TFile::Open(TString::Format("%s/%sMeasurements/%s/OutputFile_LCurveMethod.root",year.Data(),phaseSpace.Data(),dataMC.Data()));
 
 	//hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     //hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
@@ -63,14 +64,14 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     const int NVAR = 7;
     TString variable[NVAR] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1","jetY0", "jetY1"};
 
-    TH1F *hErrorBeforeStd[NVAR], *hErrorBeforeRho[NVAR];
-    TH1F *hErrorBeforeStdRebinned[NVAR], *hErrorBeforeRhoRebinned[NVAR];
-    TH1F *hErrorAfterStd[NVAR], *hErrorAfterRho[NVAR];
+    TH1F *hErrorBeforeStd[NVAR], *hErrorBeforeRho[NVAR], *hErrorBeforeLCurve[NVAR];
+    TH1F *hErrorBeforeStdRebinned[NVAR], *hErrorBeforeRhoRebinned[NVAR], *hErrorBeforeLCurveRebinned[NVAR];
+    TH1F *hErrorAfterStd[NVAR], *hErrorAfterRho[NVAR], *hErrorAfterLCurve[NVAR];
 
     TGraph *globalCorrGraph[NVAR];
     TFile *globalCorrFile = TFile::Open(TString::Format("%s/%sMeasurements/%s/OutputFileRhoGraphs.root",year.Data(), phaseSpace.Data(), dataMC.Data()));
 
-    TCanvas *canStd[NVAR], *canRho[NVAR], *canGr[NVAR], *canCombined[NVAR];
+    TCanvas *canStd[NVAR], *canRho[NVAR], *canGr[NVAR], *canCombined[NVAR], *canLCurve[NVAR];
     TLegend *legComb[NVAR];
 
     for(int ivar=0; ivar<NVAR; ivar++)
@@ -83,11 +84,15 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	hErrorBeforeStd[ivar]->SetName(TString::Format("hErrorBeforeStd_%s", variable[ivar].Data()));
     	hErrorBeforeRho[ivar] = (TH1F*)infRho->Get(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     	hErrorBeforeRho[ivar]->SetName(TString::Format("hErrorBeforeRho_%s", variable[ivar].Data()));
+        hErrorBeforeLCurve[ivar] = (TH1F*)infLCurve->Get(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+        hErrorBeforeLCurve[ivar]->SetName(TString::Format("hErrorBeforeLCurve_%s", variable[ivar].Data()));
 
     	hErrorAfterStd[ivar] = (TH1F*)infStd->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     	hErrorAfterRho[ivar] = (TH1F*)infRho->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
+        hErrorAfterLCurve[ivar] = (TH1F*)infLCurve->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     	hErrorAfterStd[ivar]->GetYaxis()->SetTitle("#frac{Err.After}{Err.Before}");
     	hErrorAfterRho[ivar]->GetYaxis()->SetTitle("#frac{Err.After}{Err.Before}");
+        hErrorAfterLCurve[ivar]->GetYaxis()->SetTitle("#frac{Err.After}{Err.Before}");
     	hErrorAfterRho[ivar]->SetLineColor(kBlue);
     	hErrorAfterRho[ivar]->SetMarkerColor(kBlue);
     	hErrorAfterRho[ivar]->SetMarkerStyle(23);
@@ -95,19 +100,26 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	hErrorAfterStd[ivar]->SetMarkerColor(kRed);
     	hErrorAfterStd[ivar]->SetMarkerStyle(20);
 
+        hErrorAfterLCurve[ivar]->SetLineColor(kGreen+3);
+        hErrorAfterLCurve[ivar]->SetMarkerColor(kGreen+3);
+        hErrorAfterLCurve[ivar]->SetMarkerStyle(21);
+
 
     	if(!variable[ivar].EqualTo("yJJ"))
     	{
     		hErrorBeforeStdRebinned[ivar]=getRebinned(hErrorBeforeStd[ivar], tempBND, NBINS[ivar]);
     		hErrorBeforeRhoRebinned[ivar]=getRebinned(hErrorBeforeRho[ivar], tempBND, NBINS[ivar]);
+            hErrorBeforeLCurveRebinned[ivar]=getRebinned(hErrorBeforeLCurve[ivar], tempBND, NBINS[ivar]);
 
     		hErrorAfterStd[ivar]->Divide(hErrorBeforeStdRebinned[ivar]);
     		hErrorAfterRho[ivar]->Divide(hErrorBeforeRhoRebinned[ivar]);
+            hErrorAfterLCurve[ivar]->Divide(hErrorBeforeLCurveRebinned[ivar]);
     	}
     	else
 		{
 			hErrorAfterStd[ivar]->Divide(hErrorBeforeStd[ivar]);
     		hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);	
+            hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
 		}
     	
     	canStd[ivar] = new TCanvas(TString::Format("canStd_%s", variable[ivar].Data()), TString::Format("canStd_%s", variable[ivar].Data()), 800, 600);
@@ -124,13 +136,22 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	canRho[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorProp_%sRhoMethod.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
     										 variable[ivar].Data()), "pdf");
 
+        canLCurve[ivar] = new TCanvas(TString::Format("canLCurve_%s", variable[ivar].Data()), TString::Format("canLCurve_%s", variable[ivar].Data()), 800, 600);
+        canLCurve[ivar]->cd();
+        hErrorAfterLCurve[ivar]->Draw();
+
+        canLCurve[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorProp_%sLCurveMethod.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
+                                             variable[ivar].Data()), "pdf");
+
     	canCombined[ivar] = new TCanvas(TString::Format("canRhoComb_%s", variable[ivar].Data()), TString::Format("canRhoComb_%s", variable[ivar].Data()), 800, 600);
     	legComb[ivar] = new TLegend(0.65,0.7,0.9,0.9);
     	canCombined[ivar]->cd();
     	legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "lep");
     	legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "lep");
+        legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "lep");
     	hErrorAfterRho[ivar]->Draw();
     	hErrorAfterStd[ivar]->Draw("same");
+        hErrorAfterLCurve[ivar]->Draw("same");
     	legComb[ivar]->Draw();
 
     	canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombined_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),

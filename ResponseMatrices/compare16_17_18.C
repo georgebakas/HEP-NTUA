@@ -33,7 +33,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 					 bool isEqual = true, bool isNominal = true)
 {
    initFilesMapping();
-   //gStyle->SetOptStat(0);
+   gStyle->SetOptStat(0);
    gStyle->SetPaintTextFormat("2.2f");
    std::vector<Color_t> colors = {kBlue,kRed, kGreen,kBlack, kMagenta};
 	

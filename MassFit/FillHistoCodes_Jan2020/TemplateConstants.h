@@ -42,8 +42,8 @@ void initFilesMapping(bool isLoose)
     map<TString, TString> eosMtt18 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
 	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};	
 	
-	map<TString, float> eosMttXSEC16 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74}};
+	map<TString, float> eosMttXSEC16 = {{"700-1000",80.78},
+	                                    {"1000-Inf",21.43}};
 	
     map<TString, float> eosMttXSEC17 = {{"700-1000",69.64},
 	                                  {"1000-Inf",16.74}};	                              

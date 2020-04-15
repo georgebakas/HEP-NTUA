@@ -31,6 +31,7 @@ using std::endl;
 TH1F *getRebinned(TH1F *h, float BND[], int N);
 TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable);
 TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable);
+TH1 *unfoldedOutput_LCurve(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable);
 TString year;
 TString varParton;
 
@@ -61,7 +62,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_2(TString inYear = "2016", bool isParton = true, bool useRhoMethod=false)
+void Unfold_2(TString inYear = "2016", bool isParton = true, int unfoldMethod=1)
 {
   year = inYear;
   initFilesMapping();
@@ -125,9 +126,10 @@ void Unfold_2(TString inYear = "2016", bool isParton = true, bool useRhoMethod=f
   TH1F *hUnfTemp[BND_reco.size()], *hTheoryTemp[BND_reco.size()];
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()], *canError[BND_reco.size()];
 
-  TString RhoMethod = "";
-  if(useRhoMethod) RhoMethod = "_RhoMethod";
-   TFile *outf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), RhoMethod.Data()),"RECREATE");
+  TString unfMethodStr = "";
+  if(unfoldMethod ==2) unfMethodStr = "_LCurveMethod";
+  else if(unfoldMethod==3) unfMethodStr = "_RhoMethod";
+   TFile *outf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
 
   for(int ivar =0; ivar<BND_reco.size(); ivar++)
   {
@@ -172,11 +174,12 @@ void Unfold_2(TString inYear = "2016", bool isParton = true, bool useRhoMethod=f
     cout<<"entering unfolding method!"<<endl;
     
     hUnf[ivar] = new TH1F(TString::Format("hUnf_%s", variable[ivar].Data()), TString::Format("hUnf_%s", variable[ivar].Data()), NBINS_GEN[ivar], tempBNDGen);
-    if(!useRhoMethod)
+     if(unfoldMethod ==1)
     	hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
+    else if(unfoldMethod ==2)
+      hUnf[ivar] = unfoldedOutput_LCurve(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     else
     	hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
-    //continue;
     TString axisTitle = variable[ivar];
     if(variable[ivar].EqualTo("yJJ")) 
     	hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
@@ -325,7 +328,6 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	//hResponse_->Draw("BOX");
   cout<<variable<<endl;
   TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize, TUnfold::kEConstraintArea);
-  //unfold.SetInput(hReco);
 
   /*
     Return value: nError1+10000*nError2:
@@ -342,20 +344,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	  // the unfolding is done here
   //========================================================================
   // the unfolding is done here
-  //
-  // scan L curve and find best point
-  Int_t nScan=30;
-  // use automatic L-curve scan: start with taumin=taumax=0.0
-  Double_t tauMin=0.0;
-  Double_t tauMax=0.0;
-  Int_t iBest;
-  TSpline *logTauX,*logTauY;
-  TGraph *lCurve;
 
-  // this method scans the parameter tau and finds the kink in the L curve
-  // finally, the unfolding is done for the best choice of tau
-  //iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
-  //std::cout<<"tau="<<unfold.GetTau()<<endl;
   unfold.DoUnfold(10E-9);
   //TH1 *histMunfold=unfold.GetOutput("Unfolded");
 
@@ -485,7 +474,61 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
 
 }
 
+TH1 *unfoldedOutput_LCurve(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable)
+{ 
+  cout<<"Using Standard Unfolding method method"<<endl;
+  //TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
+  //hResponse_->Draw("BOX");
+  cout<<variable<<endl;
+  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize, TUnfold::kEConstraintArea);
   
+
+  /*
+    Return value: nError1+10000*nError2:
+
+    -->nError1: number of bins where the uncertainty is zero. 
+                these bins either are not used for the unfolding (if oneOverZeroError==0) or 1/uncertainty is set to oneOverZeroError.
+    -->nError2: return values>10000 are fatal errors, because the unfolding can not be done. 
+                The number nError2 corresponds to the number of truth bins which are not constrained by data points
+  */
+  if(unfold.SetInput(hReco)>=10000) {
+    std::cout<<"Unfolding result may be wrong\n";
+  }
+      //========================================================================
+    // the unfolding is done here
+  //========================================================================
+  // the unfolding is done here
+  //
+  // scan L curve and find best point
+  Int_t nScan=30;
+  // use automatic L-curve scan: start with taumin=taumax=0.0
+  Double_t tauMin=0.0;
+  Double_t tauMax=0.0;
+  Int_t iBest;
+  TSpline *logTauX,*logTauY;
+  TGraph *lCurve;
+
+  // this method scans the parameter tau and finds the kink in the L curve
+  // finally, the unfolding is done for the best choice of tau
+  iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
+  std::cout<<"tau="<<unfold.GetTau()<<endl;
+  unfold.DoUnfold(unfold.GetTau());
+  //TH1 *histMunfold=unfold.GetOutput("Unfolded");
+
+  //set up a bin map, excluding underflow and overflow bins
+  // the binMap relates the the output of the unfolding to the final
+  // histogram bins
+  Int_t *binMap=new Int_t[sizeBins+2];
+  for(Int_t i=1;i<=sizeBins;i++) binMap[i]=i;
+  binMap[0]=-1;
+  binMap[sizeBins+1]=-1;
+  
+  TH1F *histMunfold = new TH1F (TString::Format("UnfoldedOutput_%s",variable.Data()),TString::Format("UnfoldedOutput_%s",variable.Data()),
+                               sizeBins, BND);
+  unfold.GetOutput(histMunfold, binMap);
+  return histMunfold;
+
+}
 
 
 
