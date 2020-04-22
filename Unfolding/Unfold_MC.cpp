@@ -487,24 +487,14 @@ TH1 *unfoldedOutput_LCurve(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeB
 { 
   cout<<"Using Standard Unfolding method method"<<endl;
   //TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
-  //hResponse_->Draw("BOX");
   cout<<variable<<endl;
   TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeSize, TUnfold::kEConstraintArea);
   
-
-  /*
-    Return value: nError1+10000*nError2:
-
-    -->nError1: number of bins where the uncertainty is zero. 
-                these bins either are not used for the unfolding (if oneOverZeroError==0) or 1/uncertainty is set to oneOverZeroError.
-    -->nError2: return values>10000 are fatal errors, because the unfolding can not be done. 
-                The number nError2 corresponds to the number of truth bins which are not constrained by data points
-  */
   if(unfold.SetInput(hReco)>=10000) {
     std::cout<<"Unfolding result may be wrong\n";
   }
-      //========================================================================
-    // the unfolding is done here
+  //========================================================================
+  // the unfolding is done here
   //========================================================================
   // the unfolding is done here
   //

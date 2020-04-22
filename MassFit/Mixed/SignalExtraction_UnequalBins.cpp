@@ -151,8 +151,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
 
-    if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))       
-    {
+    //if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))       
+    //{
         TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
         //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
         TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
@@ -161,9 +161,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
             float chi = hQ_rebinned->GetBinCenter(i+1);
             SF[i] = fitResult->Eval(chi);
         }
-    }
-    else
-     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+    //}
+    //else
+     //for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
     
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
 

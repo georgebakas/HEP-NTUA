@@ -95,11 +95,16 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float r_yield_correction;
     TH1F *hRyieldMC = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     r_yield_correction = (hRyieldMC->GetBinContent(2)/ hRyieldMC->GetBinContent(1));
+    cout<<"----MC-----"<<endl;
+    cout<<"hRyieldMC->GetBinContent(2): "<<hRyieldMC->GetBinContent(2)<<endl;
+    cout<<"hRyieldMC->GetBinContent(0): "<<hRyieldMC->GetBinContent(1)<<endl;
+
     cout<<"-------------------------"<<endl;
+    cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
     cout<<"Ryield_data (0): "<<Ryield<<endl;
     cout<<"r_yield_correction: "<<r_yield_correction<<endl;
 
-    cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
+    
     cout<<"corrected Ryield: "<<r_yield_correction * Ryield<<endl;
 
     //open the file to get the Nbkg
@@ -147,8 +152,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
 
-    if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))       
-    {
+    //if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))       
+    //{
         TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
         //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
         TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
@@ -157,34 +162,37 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
             float chi = hQ_rebinned->GetBinCenter(i+1);
             SF[i] = fitResult->Eval(chi);
         }
-    }
-    else
-     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+    //}
+    //else
+     //for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
     
     
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
-
+    //cout<<"-----"<<endl;
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
     {   
         float oldContent = hQ_rebinned->GetBinContent(i+1);
         float oldError = hQ_rebinned->GetBinError(i+1);
         float newContent;
-        newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];       
+        newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];
+        cout<<newContent<<endl;
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
-        //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
                                         TMath::Power(NQCD_error*oldContent*Ryield,2));
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal
     }
-    
-   
+    /*
+    for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
+    {
+    	cout<<hQ_rebinned->GetBinContent(i+1)<<endl;
+    }*/
+
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
 
     //for reviewing get the MC signal
-    //!!!NEEDS TO CHANGE TO NOMINAL
     TFile *infSignalMC;
     infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
     //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data()));
@@ -260,12 +268,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     path = TString::Format("%s/FiducialMeasurement/EqualBinning/%s/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
     can->Print(path,"pdf");
     
-
+    
     TFile *outf;
     outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/%s/SignalHistograms.root",year.Data(),method.Data()), "UPDATE");
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();
+    
     
     
 }

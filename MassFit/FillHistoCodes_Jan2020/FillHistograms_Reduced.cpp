@@ -430,7 +430,7 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     jetBtagSub1DCSVbbb_->clear();
 
   xRecoAll.clear();
-  bool partonCuts, recoCuts, massCut, tTaggerCut, triggerSR, triggerCR;
+  bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
   bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;  
   bool btagCut, revertBtag, btag1;
   

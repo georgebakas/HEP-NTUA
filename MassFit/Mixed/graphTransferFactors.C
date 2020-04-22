@@ -51,9 +51,13 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 
 	hData[0] = (TH1F*)infDataLoose->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
 	hDataReduced[0] = (TH1F*)infDataReducedLoose->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
+	cout<<"hData_0btag_reduced: "<<hDataReduced[0]->Integral()<<endl;
+	cout<<"hData_0btag_extended: "<<hData[0]->Integral()<<endl;
 
 	hQCD[0] = (TH1F*)infQCDLoose->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
 	hQCDReduced[0] = (TH1F*)infQCDReducedLoose->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
+	cout<<"mcQCD_0btag_reduced: "<<hQCDReduced[0]->Integral()<<endl;
+	cout<<"mcQCD_0btag_extended: "<<hQCD[0]->Integral()<<endl;
 
 	tFactorData[0] = (hDataReduced[0]->GetEntries() / hData[0]->GetEntries());
 	tFactorDataError[0] = TMath::Sqrt((hDataReduced[0]->GetEntries()*(hData[0]->GetEntries() + hDataReduced[0]->GetEntries()))/ TMath::Power(hData[0]->GetEntries(),3));
@@ -71,9 +75,13 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 	{
 		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
 		hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
+		//cout<<"hData_2btag_reduced: "<<hDataReduced[i]->GetEntries()<<endl;
+		//cout<<"hData_2btag_extended: "<<hData[i]->GetEntries()<<endl;
 
 		hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
 		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
+		cout<<"mcQCD_2btag_reduced: "<<hQCDReduced[i]->Integral()<<endl;
+		cout<<"mcQCD_2btag_extended: "<<hQCD[i]->Integral()<<endl;
 
 		tFactorData[i] = (hDataReduced[i]->GetEntries() / hData[i]->GetEntries());
 		tFactorDataError[i] = TMath::Sqrt((hDataReduced[i]->GetEntries()*(hData[i]->GetEntries() + hDataReduced[i]->GetEntries()))/ TMath::Power(hData[i]->GetEntries(),3));
