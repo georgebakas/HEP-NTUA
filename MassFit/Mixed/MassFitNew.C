@@ -6,10 +6,10 @@ std::vector<TCanvas*> canvases;
 std::vector<TCanvas*> correlationCanvases;
 void draw(TString CAT, TString year, RooRealVar *x, RooDataHist &combData, RooSimultaneous &simPdf, RooCategory &sample)
 {
-	TCanvas *can = new TCanvas(TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()), 
+	TCanvas *can = new TCanvas(TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()),
 	                           TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()), 800, 704);
 	can->cd()->SetBottomMargin(0.32);
-	
+
 	RooPlot* frame2b = x->frame();
   frame2b->GetYaxis()->SetTitle("Events");
 	frame2b->GetYaxis()->SetTitleOffset(1.5);
@@ -22,10 +22,10 @@ void draw(TString CAT, TString year, RooRealVar *x, RooDataHist &combData, RooSi
 	simPdf.plotOn(frame2b, Slice(sample, CAT), Components(TString::Format("ttbar_pdf_%s", CAT.Data())), ProjWData(sample, combData), DrawOption("FL"), LineColor(kRed), LineWidth(0), FillColor(kRed-10), MoveToBack());
 	simPdf.plotOn(frame2b, Slice(sample, CAT), Components(TString::Format("bkg_pdf_%s", CAT.Data())), ProjWData(sample, combData), LineColor(kBlack), LineWidth(3), LineStyle(5));
 	frame2b->Draw();
-	
+
 	RooPlot* frame2bPull = x->frame();
 	frame2bPull->addPlotable(pull2b, "p");
-	
+
 	TLegend *leg = new TLegend(0.6, 0.68, 0.9, 0.8999);
 	leg->SetHeader("Hadronic t#bar{t} decay");
   leg->AddEntry(can->GetPrimitive(TString::Format("h_combData_Cut[sample==sample::%s]", CAT.Data())),"Data","E1LP");
@@ -35,7 +35,7 @@ void draw(TString CAT, TString year, RooRealVar *x, RooDataHist &combData, RooSi
   leg->AddEntry(can->GetPrimitive(TString::Format("model_%s_Norm[mTop]_Comp[bkg_pdf_%s]", CAT.Data(), CAT.Data())),"Other backgrounds","L");
 	leg->SetMargin(0.3);
   leg->Draw();
-	
+
 	TPad *pad2b = new TPad("pad2b","pad2b",0.,0.,1.,1.);
   pad2b->SetTopMargin(0.7);
   pad2b->SetFillColor(0);
@@ -55,7 +55,7 @@ void draw(TString CAT, TString year, RooRealVar *x, RooDataHist &combData, RooSi
   frame2bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
   frame2bPull->GetXaxis()->SetTitle("m^{t} (GeV)");
   frame2bPull->Draw();
-  
+
   gPad->RedrawAxis();
 	can->cd(1);
 	canvases.push_back(can);
@@ -72,61 +72,52 @@ void correlation(RooRealVar *x, RooRealVar *y, RooFitResult *res, TString titleX
   frame->GetYaxis()->SetTitle(titleY);
 	frame->GetYaxis()->SetTitleOffset(1.5);
   frame->Draw();
-	
+
 	correlationCanvases.push_back(can);
 }
 
 void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBIN= 5)
 {
   gROOT->ForceStyle();
-  
+
   RooMsgService::instance().setSilentMode(kTRUE);
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
-  
+
   //Take SR data from Medium WP
   TFile *inf = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
   //h2b->Rebin(2);
-  // -----------------------------------------  
+  // -----------------------------------------
   TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));
   TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_100.root",year.Data()));
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
-  
+
   RooRealVar *x = (RooRealVar*)wTemplatesSig->var("mTop");
   RooRealVar *yieldTT = (RooRealVar*)wTemplatesSig->var("YieldTT_2btag");
-  
+
   RooRealVar *kMassScale = (RooRealVar*)wTemplatesSig->var("kMassScale");
   RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
   kMassScale->setConstant(false);
   kMassResol->setConstant(false);
-    
+
   RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b","roohist_data_2b",*x,h2b);
 
   RooCategory sample("sample","sample");
   sample.defineType("2btag");
-  
+
   RooDataHist combData("combData","combData",*x,Index(sample),Import("2btag",*h2b));
-    
-  
+
+
   RooAbsPdf *pdf_bkg_2b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_2btag");
-  
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 
-  RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag"); 
-  RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag"); 
-  
-  /*
-  RooPlot *testFrame = x->frame();
-  pdf_signal_2b->plotOn(testFrame);
-  pdf_qcd_2b->plotOn(testFrame, LineColor(kGreen+2));
-  pdf_bkg_2b->plotOn(testFrame, LineColor(kBlack));
+  RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
+  //RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 
-  testFrame->Draw();
-  return; */
   //---- QCD correction factor ---------------------------
-  
+
   float sP, min, max;
   sP = 1e-3;
   min = -1;
@@ -137,27 +128,23 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   mBar->setConstant(true);
   kQCD2b_0->setConstant(false);
 
-  RooFormulaVar qcdCor_2b("qcdCor","(1+@0*@1)/(1+@1*@2)",RooArgList(*x,*kQCD2b_0,*mBar));
-  //RooFormulaVar qcdCor_2b("qcdCor_2b","(1+@0*@1)",RooArgList(*x,*kQCD2b_0));
+  //RooFormulaVar qcdCor_2b("qcdCor","(1+@0*@1)/(1+@1*@2)",RooArgList(*x,*kQCD2b_0,*mBar));
+  RooFormulaVar qcdCor_2b("qcdCor_2b","(1+@0*@1)",RooArgList(*x,*kQCD2b_0));
   //---- corrected QCD -----------------------------------
-  
+
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
-  
+
   RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,10e+3);
- 
-  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);  
-  
+
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);
+
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
 
-  RooRealVar *nFitSig0b = (RooRealVar*)wTemplatesSig->var("YieldTT_0btag");
-  nFitSig0b->setConstant(true); 
-  
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
-
 
   RooSimultaneous simPdf("simPdf","simPdf",sample);
   simPdf.addPdf(*model_2b,"2btag");
-    
+
   RooFitResult *res = simPdf.fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
 
   cout<<"Signal strength: r = "<<nFitSig2b->getVal()/yieldTT->getVal()<<endl;
@@ -177,15 +164,15 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   frameNtt->SetMaximum(2);
   frameNtt->Draw();
   */
-  
+
   RooPlot *frame2b = x->frame();
-  combData.plotOn(frame2b,Cut("sample==sample::2btag"),DrawOption("EP")); 
+  combData.plotOn(frame2b,Cut("sample==sample::2btag"),DrawOption("EP"));
   //simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),VisualizeError(*res,1),FillColor(kOrange),MoveToBack());
   simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),LineColor(kBlue),MoveToBack());
   RooHist *pull2b = frame2b->pullHist();
   simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+2),LineWidth(3),LineStyle(7));
   simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),DrawOption("FL"),LineColor(kRed),LineWidth(0),FillColor(kRed-10),MoveToBack());
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kBlack),LineWidth(3),LineStyle(5)); 
+  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kBlack),LineWidth(3),LineStyle(5));
 
   RooPlot *frame2bPull = x->frame();
   frame2bPull->addPlotable(pull2b,"p");
@@ -196,7 +183,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   frame2b->GetXaxis()->SetTitle("");
   frame2b->GetXaxis()->SetLabelSize(0.0);
   frame2b->Draw();
-  
+
   //can2b->GetListOfPrimitives()->Print();
   TLegend *leg = new TLegend(0.6,0.68,0.9,0.9);
   leg->SetHeader("Hadronic t#bar{t} decay");
@@ -226,7 +213,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   frame2bPull->GetYaxis()->SetTitle("(Data-Fit)/Error");
   frame2bPull->GetXaxis()->SetTitle("m^{t} (GeV)");
   frame2bPull->Draw();
-  
+
   gPad->RedrawAxis();
 
   //CMS_lumi(can2b,4,0);
@@ -256,4 +243,3 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
 	  correlationCanvases[i]->Print(TString::Format("%s/correlationPlots/%s.pdf", year.Data(), correlationCanvases[i]->GetName()), "pdf");
   }	*/
 }
-

@@ -65,7 +65,7 @@ void SignalExtraction_UnequalBins(TString year)
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        if(i ==3) SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
+        SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
     }
 }
 
@@ -75,12 +75,12 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     initFilesMapping();
     cout<<luminosity[year]<<endl;
 
-    gStyle->SetOptStat(0); 
-    //open the signal file: get D(x) and Q(x) for every variable    
+    gStyle->SetOptStat(0);
+    //open the signal file: get D(x) and Q(x) for every variable
     TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
     TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning_Loose.root", year.Data(), year.Data()));
     TFile *infQCDLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced_UnequalBinning_Loose.root",  year.Data()));
-    
+
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infDataLoose->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
@@ -90,7 +90,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor_HT300toInf_100.root",year.Data()));
     //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
-    
+
     float Ryield = hRyield->GetBinContent(1);
     float Ryield_error = hRyield->GetBinError(1);
 
@@ -115,27 +115,27 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     //now i need the rebin function for aaaaaall my hists so that I am conistent
     //I will include binning in the TemplateConstants.h
-    
+
     std::vector< std::vector <Float_t> > const BND = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
                                                    {0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1025,1100,1200,1300}, //ptjj 19
                                                    {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                   {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21   
-                                                   {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt1 21   
+                                                   {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
+                                                   {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt1 21
                                                    {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}, //jetY0
                                                    {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY0 25
 
 
 
     int nBins[BND.size()];
-    for (int i = 0; i<BND.size(); i++) 
+    for (int i = 0; i<BND.size(); i++)
     	nBins[i] = BND[i].size()-1;
 
     //get the respected integer from the mapping in the TemplateConstants.h
     int selVar = variableConstant[variable];
-    
+
     //use this template for the initialization of the BND source given as input for the rebinned histos
     float tempBND[nBins[selVar]+1];
-    std::copy(BND[selVar].begin(), BND[selVar].end(), tempBND); 
+    std::copy(BND[selVar].begin(), BND[selVar].end(), tempBND);
 
     //rebin all histograms with the same method
     TH1F *hD_rebinned, *hQ_rebinned, *hSub_rebinned;
@@ -147,11 +147,11 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //work on the elements for the QCD so that we have the right Q(x)
     //Ryield * Nbkg  * Q(x)
     cout<<variable<<endl;
-    
+
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
 
-    //if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))       
+    //if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))
     //{
         TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
         //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
@@ -164,15 +164,15 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //}
     //else
      //for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
-    
+
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
     //cout<<"--------"<<endl;
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
-    {   
+    {
         float oldContent = hQ_rebinned->GetBinContent(i+1);
         float oldError = hQ_rebinned->GetBinError(i+1);
         float newContent;
-        newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];       
+        newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         //cout<<newContent<<endl;
@@ -182,7 +182,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal
     }
-    
+
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
     cout<<hD_rebinned->Integral()<<endl;
@@ -209,13 +209,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     leg->AddEntry(hSMC, "MC", "lp");
 
     TCanvas *can = new TCanvas(TString::Format("can_%s",variable.Data()),TString::Format("can_%s",variable.Data()) , 800,600);
-    auto *closure_padRatio = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3); 
+    auto *closure_padRatio = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3);
     closure_padRatio->Draw();
     closure_padRatio->SetTopMargin(0.05);
     closure_padRatio->SetBottomMargin(0.3);
     closure_padRatio->SetGrid();
 
-    auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.3,1.,1.);  
+    auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.3,1.,1.);
     closure_pad1->Draw();
     closure_pad1->SetBottomMargin(0.005);
     closure_pad1->cd();
@@ -226,7 +226,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     hSignal->Scale(1/luminosity[year],"width");
     hSMC->Scale(1/luminosity[year], "width");
-    
+
     hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
     if(!variable.EqualTo("yJJ") && !variable.EqualTo("jetY0") && !variable.EqualTo("jetY1") ) gPad->SetLogy();
@@ -271,6 +271,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();
-    
-    
+
+
 }

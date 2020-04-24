@@ -31,7 +31,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data()));
   //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data()));
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
-
+  cout<<"CR Entries from data: "<<hData->GetEntries()<<endl;
   //because of contamination we need to substract the ttbar from the CR.
   //we do that by extracting the 0btag th1 using nominal or mtt mc
   TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_Loose.root",year.Data()));  //nominal
@@ -45,6 +45,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *fBkgJet = new RooRealVar("fBkgJet","fBkgJet",hDataJet->Integral()/hData->Integral());
   RooRealVar *fBkgEvt = new RooRealVar("fBkgEvt","fBkgEvt",hDataEvt->Integral()/hData->Integral());
   //---- QCD -----------------------------------
+
   RooRealVar bQCD0("qcd_b0","qcd_b0",qcdParams[year]["qcd_b0"],0,2.);
   RooRealVar bQCD1("qcd_b1","qcd_b1",qcdParams[year]["qcd_b1"],0,2.);
   RooRealVar bQCD2("qcd_b2","qcd_b2",qcdParams[year]["qcd_b2"],0,2.);
@@ -62,7 +63,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar sWqcd("qcd_sigmaW", "qcd_sigmaW", 10, 0, 20);
   RooGaussian qcd3("qcd_gausW", "qcd_gausW", *x, mWqcd, sWqcd);
 
-  RooRealVar fqcd1("qcd_f1","qcd_f1",0.5,0,1);
+  RooRealVar fqcd1("qcd_f1","qcd_f1",qcdParams[year]["qcd_f1"],0,1);
   RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
   RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
@@ -97,6 +98,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   else if (year.EqualTo("2018")) LUMI = 59740;
 
   for(int icat=0;icat<3;icat++) {
+    if (icat==1) continue;
+
   	if(icat ==0) //for CR use the Loose WP
   		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_Loose.root",year.Data()));
   	else //for 1 btag and SR use medium WP
@@ -107,7 +110,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
 
     //---- do the bkg templates -------------
     TH1F *hBkg = (TH1F*)infBkg->Get("hWt_"+VAR+TAG+"_expYield");
-
+    cout<<"icat "<<icat<<": "<<hBkg->Integral()<<endl;
     RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg);
 
     RooRealVar mW("bkg_meanW_"+CAT,"meanW_"+CAT,80,70,90);
