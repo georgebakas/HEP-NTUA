@@ -65,7 +65,7 @@ void SignalExtraction_UnequalBins(TString year)
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
+        if(i ==3) SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
     }
 }
 
@@ -166,7 +166,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
      //for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
     
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
-
+    //cout<<"--------"<<endl;
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
     {   
         float oldContent = hQ_rebinned->GetBinContent(i+1);
@@ -175,6 +175,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];       
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
+        //cout<<newContent<<endl;
         float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
                                         TMath::Power(NQCD_error*oldContent*Ryield,2));
         hQ_rebinned->SetBinContent(i+1, newContent);
@@ -182,10 +183,11 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         //now setThe content for the hSignal
     }
     
-   
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
-
+    cout<<hD_rebinned->Integral()<<endl;
+    cout<<hSub_rebinned->Integral()<<endl;
+    cout<<hQ_rebinned->Integral()<<endl;
     //for reviewing get the MC signal
     //!!!NEEDS TO CHANGE TO NOMINAL
     TFile *infSignalMC;

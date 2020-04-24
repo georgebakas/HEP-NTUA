@@ -175,7 +175,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         float oldError = hQ_rebinned->GetBinError(i+1);
         float newContent;
         newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];
-        cout<<newContent<<endl;
+        //cout<<newContent<<endl;
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
         float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
                                         TMath::Power(NQCD_error*oldContent*Ryield,2));
@@ -183,11 +183,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal
     }
-    /*
-    for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
-    {
-    	cout<<hQ_rebinned->GetBinContent(i+1)<<endl;
-    }*/
+
 
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);

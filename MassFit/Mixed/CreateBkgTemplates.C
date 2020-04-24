@@ -4,23 +4,23 @@ void CreateBkgTemplates(TString year, TString CUT = "")
 {
   initQCDParams();
   gROOT->ForceStyle();
-  
+
   RooMsgService::instance().setSilentMode(kTRUE);
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
-  
+
   TFile *infData, *infBkg;
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);
   kMassResol->setConstant(kTRUE);
-  
+
   TString VAR,TAG;
   float XMIN,XMAX;
 
   VAR = "mTop";
   XMIN = 50.;
-  XMAX = 300.; 
+  XMAX = 300.;
 
   RooWorkspace *w = new RooWorkspace("w","workspace");
 
@@ -28,8 +28,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *x = new RooRealVar("mTop","mTop",XMIN,XMAX);
   w->import(*x);
   //---- first do the data template ---------------
-  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data())); 
-  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data())); 
+  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data()));
+  //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data()));
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
 
   //because of contamination we need to substract the ttbar from the CR.
@@ -37,14 +37,11 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_Loose.root",year.Data()));  //nominal
   //TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data())); //mtt
   TH1F *hCR_MC = (TH1F*)infTTMCLoose->Get("hWt_mTop_0btag_expYield");
-  
-  //substract ttbar contribution
-  //hData->Add(hCR_MC,-1);
 
 
-  RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);  
+  RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);
   TH1F *hDataJet = (TH1F*)infDataLoose->Get("hWt_jetMassSoftDrop_0btag");
-  TH1F *hDataEvt = (TH1F*)infDataLoose->Get("hWt_mJJ_0btag"); 
+  TH1F *hDataEvt = (TH1F*)infDataLoose->Get("hWt_mJJ_0btag");
   RooRealVar *fBkgJet = new RooRealVar("fBkgJet","fBkgJet",hDataJet->Integral()/hData->Integral());
   RooRealVar *fBkgEvt = new RooRealVar("fBkgEvt","fBkgEvt",hDataEvt->Integral()/hData->Integral());
   //---- QCD -----------------------------------
@@ -54,7 +51,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar bQCD3("qcd_b3","qcd_b3",qcdParams[year]["qcd_b3"],0,2.);
   RooRealVar bQCD4("qcd_b4","qcd_b4",qcdParams[year]["qcd_b4"],0,2.);
   RooBernstein qcd1("qcd_brn","qcd_brn",*x,RooArgList(bQCD0,bQCD1,bQCD2,bQCD3,bQCD4));
-  
+
 
   RooRealVar mQCD("qcd_mean" ,"qcd_mean",qcdParams[year]["qcd_mean"],130,300);
   RooRealVar sQCD("qcd_sigma","qcd_sigma",qcdParams[year]["qcd_sigma"],10,200);
@@ -69,11 +66,11 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
   RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
-  
+
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);
 
-  RooFitResult *res = qcd->fitTo(*roohData,RooFit::Save()); 
+  RooFitResult *res = qcd->fitTo(*roohData,RooFit::Save());
   res->Print();
   RooPlot *frameQCD = x->frame();
   roohData->plotOn(frameQCD);
@@ -101,17 +98,17 @@ void CreateBkgTemplates(TString year, TString CUT = "")
 
   for(int icat=0;icat<3;icat++) {
   	if(icat ==0) //for CR use the Loose WP
-  		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_Loose.root",year.Data()));	
+  		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_Loose.root",year.Data()));
   	else //for 1 btag and SR use medium WP
   		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
-    
+
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
-    
+
     //---- do the bkg templates -------------
     TH1F *hBkg = (TH1F*)infBkg->Get("hWt_"+VAR+TAG+"_expYield");
-  
-    RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg); 
+
+    RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg);
 
     RooRealVar mW("bkg_meanW_"+CAT,"meanW_"+CAT,80,70,90);
     RooRealVar sW("bkg_sigmaW_"+CAT,"sigmaW_"+CAT,5,0,15);
@@ -128,24 +125,24 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     RooFormulaVar sBkgTopShift("bkg_sigmaTopShifted_"+CAT,"@0*@1",RooArgList(sBkgTop,*(kMassResol)));
 
     RooGaussian bkgTop("bkg_pdfTop_"+CAT,"bkg_pdfTop_"+CAT,*x,mBkgTopShift,sBkgTopShift);
-   
+
     RooRealVar bBkg0("bkg_b0_"+CAT,"bkg_b0_"+CAT,0.5,0,1);
     RooRealVar bBkg1("bkg_b1_"+CAT,"bkg_b1_"+CAT,0.5,0,1);
-    RooRealVar bBkg2("bkg_b2_"+CAT,"bkg_b2_"+CAT,0.5,0,1); 
+    RooRealVar bBkg2("bkg_b2_"+CAT,"bkg_b2_"+CAT,0.5,0,1);
     RooRealVar bBkg3("bkg_b3_"+CAT,"bkg_b3_"+CAT,0.5,0,1);
     RooRealVar bBkg4("bkg_b4_"+CAT,"bkg_b4_"+CAT,0.5,0,1);
-    RooRealVar bBkg5("bkg_b5_"+CAT,"bkg_b5_"+CAT,0.5,0,1); 
+    RooRealVar bBkg5("bkg_b5_"+CAT,"bkg_b5_"+CAT,0.5,0,1);
     RooRealVar bBkg6("bkg_b6_"+CAT,"bkg_b6_"+CAT,0.5,0,1);
     RooRealVar bBkg7("bkg_b7_"+CAT,"bkg_b7_"+CAT,0.5,0,1);
     RooRealVar bBkg8("bkg_b8_"+CAT,"bkg_b8_"+CAT,0.5,0,1);
 
-    RooBernstein bkgComb("bkg_pdfComb_"+CAT,"bkg_pdfComb_"+CAT,*x,RooArgList(bBkg0,bBkg1,bBkg2)); 
+    RooBernstein bkgComb("bkg_pdfComb_"+CAT,"bkg_pdfComb_"+CAT,*x,RooArgList(bBkg0,bBkg1,bBkg2));
 
     RooRealVar fbkg1("bkg_f1_"+CAT,"bkg_f1_"+CAT,0.9,0.01,1);
     RooRealVar fbkg2("bkg_f2_"+CAT,"bkg_f2_"+CAT,0.1,0.01,1);
 
     RooAddPdf *bkg = new RooAddPdf("bkg_pdf_"+CAT,"bkg_pdf_"+CAT,RooArgList(bkgTop,pdfW,bkgComb),RooArgList(fbkg1,fbkg2));
-    res = bkg->fitTo(*roohBkg,RooFit::Save());  
+    res = bkg->fitTo(*roohBkg,RooFit::Save());
     res->Print();
 
     TCanvas *canBkg = new TCanvas("Template_Bkg_"+CUT+"_"+CAT,"Template_Bkg_"+CUT+"_"+CAT,900,600);
@@ -164,12 +161,11 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     parsBkg->setAttribAll("Constant",true);
 
     w->import(*bkg);
-  }  
+  }
 
   w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));
 
 
 
 
-}                            
-
+}
