@@ -40,14 +40,14 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
    std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
                                                          {0,60,150,300,450,600,750,1000,1300}, //ptjj
                                                          {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                         {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
+                                                         {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
                                                          {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
                                                          {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
                                                          {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
     int NBINS[BND_gen.size()];
-  	for (int i = 0; i<BND_gen.size(); i++)  
-  		NBINS[i] = BND_gen[i].size()-1;	                                                        
-	
+  	for (int i = 0; i<BND_gen.size(); i++)
+  		NBINS[i] = BND_gen[i].size()-1;
+
 	TString phaseSpace = "Particle";
 	if(isParton) phaseSpace = "Parton";
 
@@ -118,10 +118,10 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	else
 		{
 			hErrorAfterStd[ivar]->Divide(hErrorBeforeStd[ivar]);
-    		hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);	
+    		hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);
             hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
 		}
-    	
+/*
     	canStd[ivar] = new TCanvas(TString::Format("canStd_%s", variable[ivar].Data()), TString::Format("canStd_%s", variable[ivar].Data()), 800, 600);
     	canStd[ivar]->cd();
     	hErrorAfterStd[ivar]->Draw();
@@ -142,29 +142,33 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
 
         canLCurve[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorProp_%sLCurveMethod.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
                                              variable[ivar].Data()), "pdf");
-
+*/
     	canCombined[ivar] = new TCanvas(TString::Format("canRhoComb_%s", variable[ivar].Data()), TString::Format("canRhoComb_%s", variable[ivar].Data()), 800, 600);
     	legComb[ivar] = new TLegend(0.65,0.7,0.9,0.9);
     	canCombined[ivar]->cd();
     	legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "lep");
     	legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "lep");
-        legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "lep");
+      legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "lep");
     	hErrorAfterRho[ivar]->Draw();
     	hErrorAfterStd[ivar]->Draw("same");
-        hErrorAfterLCurve[ivar]->Draw("same");
-    	legComb[ivar]->Draw();
+    hErrorAfterLCurve[ivar]->Draw("same");
+    //cout<<"-----"<<variable[ivar]<<"-----"<<endl;
+    //cout<<hErrorAfterLCurve[ivar]->GetNbinsX()<<endl;
+    //cout<<hErrorAfterRho[ivar]->GetNbinsX()<<endl;
+    //cout<<hErrorAfterStd[ivar]->GetNbinsX()<<endl;
+    legComb[ivar]->Draw();
 
-    	canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombined_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
+    canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombined_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
     										 variable[ivar].Data()), "pdf");
-
-    	globalCorrGraph[ivar] = (TGraph*)globalCorrFile->Get(TString::Format("globalCorrGraph_%s",variable[ivar].Data()));
+ /*
+    globalCorrGraph[ivar] = (TGraph*)globalCorrFile->Get(TString::Format("globalCorrGraph_%s",variable[ivar].Data()));
  		canGr[ivar] = new TCanvas (TString::Format("globalCorrGraph_%s",variable[ivar].Data()), TString::Format("globalCorrGraph_%s",variable[ivar].Data()),
                                  800,600);
  		canGr[ivar]->cd();
   		globalCorrGraph[ivar]->Draw();
   		canGr[ivar]->Print(TString::Format("%s/%sMeasurements/%s/GlobalCorrelationGraph_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
     										 variable[ivar].Data()), "pdf");
-
+*/
     }
 
 }

@@ -272,5 +272,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();
 
+    cout<<variable.Data()<<endl;
+    cout<<hSignal_noScale->Integral()<<endl;
+
 
 }
