@@ -55,18 +55,19 @@ void trainMVABoosted_bins()
   }
 
 
-  const int NVAR = 5;
+  const int NVAR = 10;
   TString VAR[NVAR] = {
-    "jetTau4",
     "jetTau3",
     "jetTau2",
     "jetTau1",
-	  //"ecfB1N2",
-	  //"ecfB1N3",
-	 //"ecfB2N2",
-	//"ecfB2N3",
     "jetMassSub0",
-    "jetMassSub1"
+    "jetMassSub1",
+    "ecfB1N2",
+    "ecfB1N3",
+    "ecfB2N2",
+    "ecfB2N3",
+    "JetPtOverSumPt"
+
   };
   char TYPE[NVAR] = {
     'F','F','F','F','F','F','F','F','F','F'
