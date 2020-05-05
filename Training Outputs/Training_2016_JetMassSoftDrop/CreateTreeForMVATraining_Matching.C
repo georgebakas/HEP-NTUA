@@ -117,7 +117,7 @@ void CreateTreeForMVATraining_Matching(TString TREENAME, bool matching = false)
     if (nJets < 2) continue;
     if (nLeptons > 0) continue;
     if ((*pt)[1] < 400) continue;
-    if ((*mass[0]) < 50 && (*mass[0]) > 300 && (*mass[1]) < 50 && (*mass[2]) > 300) continue;
+    if ((*mass)[0] < 50 && (*mass)[0] > 300 && (*mass)[1] < 50 && (*mass)[1] > 300) continue;
 
     float sumPt =0;
     for(int i =0; i<nJets; i++)
