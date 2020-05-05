@@ -15,7 +15,7 @@ using std::endl;
 std::vector<TString> listOfFiles; 
 std::vector<float> XSEC;
 std::vector<TString> histoNames;
-float LUMI = 35922;
+float LUMI = 35920;
 TString eosPath; 
 float deepCSVFloat = 0.6321;
 
