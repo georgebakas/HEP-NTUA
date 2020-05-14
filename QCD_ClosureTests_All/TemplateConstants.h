@@ -17,7 +17,8 @@ void initFilesMapping()
 	
 
 	map<TString, TString> filesTT2016 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
+	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                               	    {"Nominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
 																		 
 	map<TString, TString> filesTT2017 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};

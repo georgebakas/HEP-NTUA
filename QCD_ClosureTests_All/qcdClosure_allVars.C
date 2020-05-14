@@ -28,8 +28,9 @@ void initFileNames()
   if(isSignal)
   {
 	eosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/Signal/",globalYear.Data()); 
-	listOfFiles.push_back(filesTT[globalYear]["700-1000"]); //files[year]["data"]
-	listOfFiles.push_back(filesTT[globalYear]["1000-Inf"]);
+	//listOfFiles.push_back(filesTT[globalYear]["700-1000"]); //files[year]["data"]
+	//listOfFiles.push_back(filesTT[globalYear]["1000-Inf"]);
+	listOfFiles.push_back(filesTT[globalYear]["Nominal"]);
   }
   else
   {
@@ -48,8 +49,10 @@ void initXsections()
 {
   if(isSignal)
   {
-	XSEC.push_back(69.64);
-	XSEC.push_back(16.74);
+	//XSEC.push_back(69.64);
+	//XSEC.push_back(16.74);
+	XSEC.push_back(832.);
+
   }
   else
   {
@@ -216,7 +219,7 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false, bool isLoose 
   trIN->SetBranchAddress("yJJ"   		  ,&yJJ);
   trIN->SetBranchAddress("ptJJ"   		  ,&ptJJ);
   trIN->SetBranchAddress("jetBtagSub0"	  ,&jetBtagSub0);
-  trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
+  //trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
   trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   trIN->SetBranchAddress("mva"	  		  ,&mva);
   trIN->SetBranchAddress("category"	  	  ,&category);
@@ -281,7 +284,7 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false, bool isLoose 
   std::vector<float> *deepAK8_ = new std::vector<float>(0);
   std::vector<float> *jetTtag_ = new std::vector<float>(0);
   std::vector<float> *jetBtagSub0_ = new std::vector<float>(0);
-  std::vector<float> *jetBtagSub1_ = new std::vector<float>(0);
+  //std::vector<float> *jetBtagSub1_ = new std::vector<float>(0);
 
   std::vector<float> *partonPt_ = new std::vector<float>(0);
   std::vector<float> *partonEta_ = new std::vector<float>(0);
@@ -312,7 +315,7 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false, bool isLoose 
     pt_->clear();
     phi_->clear();
     jetBtagSub0_->clear();
-    jetBtagSub1_->clear();
+    //jetBtagSub1_->clear();
     jetTtag_->clear();
     deepAK8_->clear();
 
@@ -384,7 +387,7 @@ void qcdClosure_allVars(TString year = "2016", bool isSig = false, bool isLoose 
 				y_->push_back((*jetY)[(*partonMatchIdx)[indexMin]]);
 				phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
 				jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
-				jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
+				//jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
 				jetTtag_->push_back((*jetTtag)[(*partonMatchIdx)[indexMin]]);
 				deepAK8_->push_back((*deepAK8)[(*partonMatchIdx)[indexMin]]);
 				
