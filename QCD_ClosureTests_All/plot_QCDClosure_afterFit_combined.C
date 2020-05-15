@@ -71,18 +71,19 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
   hSig_CRExpYield = (TH1F*)infTTLoose->Get(TString::Format("CR_tTagger_%s_expYield",recoVar.Data()));
   hSig_CRExpYield->SetLineColor(kBlue);
   hSig_CRExpYield->SetTitle("TT_{CR} Exp.Yield");
-  /*
+  
   if(recoVar.EqualTo("jetMassSoftDrop0") || recoVar.EqualTo("jetMassSoftDrop1"))
   {
     hBkg_CR->Rebin(2);
     hBkg_SR->Rebin(2);
     hBkg_CRExpYield->Rebin(2);
     hSig_CRExpYield->Rebin(2);
-  }*/
+  }
   
   TFile *fitFile; 
   //get the fit result 
-  if(recoVar.EqualTo("jetMassSoftDrop0")) fitFile = TFile::Open(TString::Format("fitResults_%s_jetMassSoftDrop.root",year.Data()));
+  
+  if(recoVar.EqualTo("jetMassSoftDrop0") && !year.EqualTo("2016")) fitFile = TFile::Open(TString::Format("fitResults_%s_jetMassSoftDrop.root",year.Data()));
   else fitFile = TFile::Open(TString::Format("fitResults_%s.root",year.Data()));
   TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
 
@@ -90,7 +91,8 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
   {
     int NBINS = hBkg_CR->GetNbinsX();
     float SF;
-    if(/*!recoVar.EqualTo("jetMassSoftDrop0") && */!recoVar.EqualTo("jetMassSoftDrop1"))
+    //if(!recoVar.EqualTo("jetMassSoftDrop0") && !recoVar.EqualTo("jetMassSoftDrop1"))
+    if(false)
     {
       for(int ibin=1; ibin<= NBINS; ibin++)
       {
@@ -116,7 +118,9 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
 
   //this is closure test
   reas = "QCD Closure";
-  ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true, useScaleFactor, fitResult);
+  TF1 *tempFR2;
+  //ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true, useScaleFactor, fitResult);
+  ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, true, useScaleFactor, tempFR2);
 
 }
 
@@ -226,6 +230,6 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
     hRatio->Draw();
     //fitResult->Draw("same");
   } 
-  if(isClosure) c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
-  else  c1->Print(TString::Format("../TopTaggerEfficiencies/plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  if(isClosure) c1->Print(TString::Format("./plotsCombined_LooseCR_MediumSR/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+  else  c1->Print(TString::Format("./plotsCombined_LooseCR_MediumSR/%s/ttContamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }

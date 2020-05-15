@@ -143,15 +143,15 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
         canLCurve[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorProp_%sLCurveMethod.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
                                              variable[ivar].Data()), "pdf");
 */
-    	canCombined[ivar] = new TCanvas(TString::Format("canRhoComb_%s", variable[ivar].Data()), TString::Format("canRhoComb_%s", variable[ivar].Data()), 800, 600);
-    	legComb[ivar] = new TLegend(0.65,0.7,0.9,0.9);
-    	canCombined[ivar]->cd();
-    	legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "lep");
-    	legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "lep");
-      legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "lep");
-    	hErrorAfterRho[ivar]->Draw();
-    	hErrorAfterStd[ivar]->Draw("same");
-    hErrorAfterLCurve[ivar]->Draw("same");
+    canCombined[ivar] = new TCanvas(TString::Format("canRhoComb_%s", variable[ivar].Data()), TString::Format("canRhoComb_%s", variable[ivar].Data()), 800, 600);
+    legComb[ivar] = new TLegend(0.65,0.7,0.9,0.9);
+    canCombined[ivar]->cd();
+    legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "lep");
+    legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "lep");
+    legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "lep");
+    hErrorAfterRho[ivar]->Draw("hist");
+    hErrorAfterStd[ivar]->Draw("hist same");
+    hErrorAfterLCurve[ivar]->Draw("hist same");
     //cout<<"-----"<<variable[ivar]<<"-----"<<endl;
     //cout<<hErrorAfterLCurve[ivar]->GetNbinsX()<<endl;
     //cout<<hErrorAfterRho[ivar]->GetNbinsX()<<endl;

@@ -25,7 +25,7 @@ void compare16_17_18(bool isEqual, bool isNominal)
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
   	plotEfficiencyResponse(varReco[ivar], varParton[ivar], varParticle[ivar], isEqual, isNominal);
-    //break;
+    xmin
   }
 }
 
@@ -47,12 +47,12 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
    TString nominal = "";
    if(isNominal) nominal = "NominalMC";
-   TEfficiency *eff16[2];
+   //TEfficiency *eff16[2];
    
    eff[0] = TFile::Open(TString::Format("./2016/%s/ResponsesEfficiency%s_2016.root",binning.Data(), nominal.Data())); 
    eff[1] = TFile::Open(TString::Format("./2017/%s/ResponsesEfficiency%s_2017.root",binning.Data(), nominal.Data()));
    eff[2] = TFile::Open(TString::Format("./2018/%s/ResponsesEfficiency%s_2018.root",binning.Data(), nominal.Data()));
-   /*
+   
    TFile *oldInf[2];
    oldInf[0] = TFile::Open("PartonEfficiencyAll_July19.root");
    oldInf[1] = TFile::Open("ParticleEfficiencyAll_July19.root");
@@ -180,12 +180,12 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 		graphAcc->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 		gPad->Update(); 
 
-	   //can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    }
 
-   */
-   TString years[] = {"2016", "2017", "2018"};
-   TString phaseSpace[] = {"Parton", "Particle"};
+ 
+   //TString years[] = {"2016", "2017", "2018"};
+   //TString phaseSpace[] = {"Parton", "Particle"};
    TH2F *hResponses[3][2]; //3 is for years , 16-0, 17-1, 18-2 and 2 is for parton particle: parton-0, particle 1
    TCanvas *canResponse[3][2];
    for(int iy = 0; iy<sizeof(years)/sizeof(years[0]); iy++)
