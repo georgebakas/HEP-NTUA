@@ -147,6 +147,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig_Init[ivar] = (TH1F*)signalFile->Get(TString::Format("hWt_%s_2btag_expYield",variable[ivar].Data()));
     hSig[ivar] = getRebinned(hSig_Init[ivar], tempBND, NBINS[ivar]);
+    
     leg[ivar] = new TLegend(0.65,0.7,0.9,0.9);
 
     //set the new content and get acceptance
@@ -157,14 +158,18 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
       float acc = acceptance->GetEfficiency(j);
       hSig[ivar]->SetBinContent(j, acc*hSig[ivar]->GetBinContent(j));
       //handle errors as well--> asymmetric error from acceptance
-      //cout<<"hSig "<<j<<": "<<hSig[ivar]->GetBinContent(j)<<endl;
-      //cout<<"hSig Error "<<j<<": "<<hSig[ivar]->GetBinError(j)<<endl;
+      //cout<<"hSig "<<j<<": "<<hSig[ivar]->GetBinContent(j)<< "hSig Error: "<<hSig[ivar]->GetBinError(j)<<endl;
+      cout<<"hSig Error "<<j<<": "<<hSig[ivar]->GetBinError(j)<<endl;
+
       float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
+      //cout<<"acceptance: "<<acc<<endl;
       if(accError > 0)
-	      hSig[ivar]->SetBinError(j, accError*hSig[ivar]->GetBinError(j));
+      	  //error propagation
+      	hSig[ivar]->SetBinError(j,TMath::Sqrt(TMath::Power(accError*hSig[ivar]->GetBinContent(j),2) + TMath::Power(hSig[ivar]->GetBinError(j)*acc,2)));
 	  else
 	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
     }
+    //break;
 
     TString tempVar;
     if(isParton)
@@ -183,7 +188,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     if(unfoldMethod ==1)
     	hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     else if(unfoldMethod ==2)
-      hUnf[ivar] = unfoldedOutput_LCurve(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
+    	hUnf[ivar] = unfoldedOutput_LCurve(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     else
     	hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     //continue;
@@ -196,9 +201,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 
-    TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
-
      //here get the errors:
+    
 
     hErrorBefore[ivar] = (TH1F*)hSig[ivar]->Clone(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     hErrorAfter[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
@@ -208,12 +212,17 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     for (int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       hErrorAfter[ivar]->SetBinContent(i,hUnf[ivar]->GetBinError(i));
-      //cout<<"Error for bin "<<i<<": "<<hErrorAfter[ivar]->GetBinError(i)<<endl;
+      cout<<"Error after for bin "<<i<<": "<<hErrorAfter[ivar]->GetBinError(i)<<endl;
     }
     for(int j=1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
       hErrorBefore[ivar]->SetBinContent(j,hSig[ivar]->GetBinError(j));
+      cout<<"Error before for bin "<<j<<": "<<hErrorBefore[ivar]->GetBinError(j)<<endl;
     }
+    
+    break;
+    TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+
     if(!variable[ivar].EqualTo("yJJ"))hErrorBefore[ivar]->Rebin(2);
     hErrorBefore[ivar]->SetLineColor(kBlue);
     hErrorBefore[ivar]->SetMarkerColor(kBlue);
@@ -224,8 +233,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
 
     canError[ivar] = new TCanvas(TString::Format("canError_%s",variable[ivar].Data()),TString::Format("canError_%s",variable[ivar].Data()) , 800,600);
     canError[ivar]->cd();
-    hErrorAfter[ivar]->Draw();
-    hErrorBefore[ivar]->Draw("same");
+    hErrorAfter[ivar]->Draw("hist");
+    hErrorBefore[ivar]->Draw("hist same");
 
 
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
@@ -241,7 +250,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
 	      //cout<<"new: "<<hUnf[ivar]->GetBinContent(i)<<endl;
 	      //handle errors as well--> asymmetric error from efficiency
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
-	      hUnf[ivar]->SetBinError(i, hUnf[ivar]->GetBinError(i)/effError);
+	      hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
   	  }
     }
 
@@ -323,7 +332,6 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     can[ivar]->Print(TString::Format("%s/%sMeasurements/MC/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-	
   }
 
 }

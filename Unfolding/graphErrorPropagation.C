@@ -90,9 +90,9 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	hErrorAfterStd[ivar] = (TH1F*)infStd->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     	hErrorAfterRho[ivar] = (TH1F*)infRho->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
         hErrorAfterLCurve[ivar] = (TH1F*)infLCurve->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
-    	hErrorAfterStd[ivar]->GetYaxis()->SetTitle("#frac{Err.After}{Err.Before}");
-    	hErrorAfterRho[ivar]->GetYaxis()->SetTitle("#frac{Err.After}{Err.Before}");
-        hErrorAfterLCurve[ivar]->GetYaxis()->SetTitle("#frac{Err.After}{Err.Before}");
+    	hErrorAfterStd[ivar]->GetYaxis()->SetTitle("Error After");
+    	hErrorAfterRho[ivar]->GetYaxis()->SetTitle("Error After");
+        hErrorAfterLCurve[ivar]->GetYaxis()->SetTitle("Error After");
     	hErrorAfterRho[ivar]->SetLineColor(kBlue);
     	hErrorAfterRho[ivar]->SetMarkerColor(kBlue);
     	hErrorAfterRho[ivar]->SetMarkerStyle(23);
@@ -100,27 +100,28 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	hErrorAfterStd[ivar]->SetMarkerColor(kRed);
     	hErrorAfterStd[ivar]->SetMarkerStyle(20);
 
-        hErrorAfterLCurve[ivar]->SetLineColor(kGreen+3);
-        hErrorAfterLCurve[ivar]->SetMarkerColor(kGreen+3);
+        hErrorAfterLCurve[ivar]->SetLineColor(kGreen);
+        hErrorAfterLCurve[ivar]->SetMarkerColor(kGreen);
         hErrorAfterLCurve[ivar]->SetMarkerStyle(21);
 
-
+        
     	if(!variable[ivar].EqualTo("yJJ"))
     	{
     		hErrorBeforeStdRebinned[ivar]=getRebinned(hErrorBeforeStd[ivar], tempBND, NBINS[ivar]);
     		hErrorBeforeRhoRebinned[ivar]=getRebinned(hErrorBeforeRho[ivar], tempBND, NBINS[ivar]);
             hErrorBeforeLCurveRebinned[ivar]=getRebinned(hErrorBeforeLCurve[ivar], tempBND, NBINS[ivar]);
 
-    		hErrorAfterStd[ivar]->Divide(hErrorBeforeStdRebinned[ivar]);
-    		hErrorAfterRho[ivar]->Divide(hErrorBeforeRhoRebinned[ivar]);
-            hErrorAfterLCurve[ivar]->Divide(hErrorBeforeLCurveRebinned[ivar]);
+    		//hErrorAfterStd[ivar]->Divide(hErrorBeforeStdRebinned[ivar]);
+    		//hErrorAfterRho[ivar]->Divide(hErrorBeforeRhoRebinned[ivar]);
+            //hErrorAfterLCurve[ivar]->Divide(hErrorBeforeLCurveRebinned[ivar]);
     	}
     	else
 		{
-			hErrorAfterStd[ivar]->Divide(hErrorBeforeStd[ivar]);
-    		hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);
-            hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
+			//hErrorAfterStd[ivar]->Divide(hErrorBeforeStd[ivar]);
+    		//hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);
+            //hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
 		}
+        
 /*
     	canStd[ivar] = new TCanvas(TString::Format("canStd_%s", variable[ivar].Data()), TString::Format("canStd_%s", variable[ivar].Data()), 800, 600);
     	canStd[ivar]->cd();
@@ -146,12 +147,13 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     canCombined[ivar] = new TCanvas(TString::Format("canRhoComb_%s", variable[ivar].Data()), TString::Format("canRhoComb_%s", variable[ivar].Data()), 800, 600);
     legComb[ivar] = new TLegend(0.65,0.7,0.9,0.9);
     canCombined[ivar]->cd();
-    legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "lep");
-    legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "lep");
-    legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "lep");
-    hErrorAfterRho[ivar]->Draw("hist");
-    hErrorAfterStd[ivar]->Draw("hist same");
+    legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "l");
+    legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "l");
+    legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "l");
+    hErrorAfterStd[ivar]->Draw("hist ");
+    hErrorAfterRho[ivar]->Draw("hist same");
     hErrorAfterLCurve[ivar]->Draw("hist same");
+    
     //cout<<"-----"<<variable[ivar]<<"-----"<<endl;
     //cout<<hErrorAfterLCurve[ivar]->GetNbinsX()<<endl;
     //cout<<hErrorAfterRho[ivar]->GetNbinsX()<<endl;
