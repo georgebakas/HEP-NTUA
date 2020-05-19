@@ -69,7 +69,7 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     TH1F *hErrorAfterStd[NVAR], *hErrorAfterRho[NVAR], *hErrorAfterLCurve[NVAR];
 
     TGraph *globalCorrGraph[NVAR];
-    TFile *globalCorrFile = TFile::Open(TString::Format("%s/%sMeasurements/%s/OutputFileRhoGraphs.root",year.Data(), phaseSpace.Data(), dataMC.Data()));
+    //TFile *globalCorrFile = TFile::Open(TString::Format("%s/%sMeasurements/%s/OutputFileRhoGraphs.root",year.Data(), phaseSpace.Data(), dataMC.Data()));
 
     TCanvas *canStd[NVAR], *canRho[NVAR], *canGr[NVAR], *canCombined[NVAR], *canLCurve[NVAR];
     TLegend *legComb[NVAR];
@@ -83,6 +83,7 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	hErrorBeforeStd[ivar] = (TH1F*)infStd->Get(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     	hErrorBeforeStd[ivar]->SetName(TString::Format("hErrorBeforeStd_%s", variable[ivar].Data()));
     	hErrorBeforeRho[ivar] = (TH1F*)infRho->Get(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+    	cout<<hErrorBeforeRho[ivar]->GetNbinsX()<<endl;
     	hErrorBeforeRho[ivar]->SetName(TString::Format("hErrorBeforeRho_%s", variable[ivar].Data()));
         hErrorBeforeLCurve[ivar] = (TH1F*)infLCurve->Get(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
         hErrorBeforeLCurve[ivar]->SetName(TString::Format("hErrorBeforeLCurve_%s", variable[ivar].Data()));
@@ -90,9 +91,12 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     	hErrorAfterStd[ivar] = (TH1F*)infStd->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     	hErrorAfterRho[ivar] = (TH1F*)infRho->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
         hErrorAfterLCurve[ivar] = (TH1F*)infLCurve->Get(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
-    	hErrorAfterStd[ivar]->GetYaxis()->SetTitle("Error After");
-    	hErrorAfterRho[ivar]->GetYaxis()->SetTitle("Error After");
-        hErrorAfterLCurve[ivar]->GetYaxis()->SetTitle("Error After");
+    	hErrorAfterStd[ivar]->GetYaxis()->SetTitle("#frac{Error After}{Error Before}");
+    	hErrorAfterRho[ivar]->GetYaxis()->SetTitle("#frac{Error After}{Error Before}");
+    	hErrorAfterLCurve[ivar]->GetYaxis()->SetTitle("#frac{Error After}{Error Before}");
+    	//hErrorAfterStd[ivar]->GetYaxis()->SetTitle("Error After");
+    	//hErrorAfterRho[ivar]->GetYaxis()->SetTitle("Error After");
+        //hErrorAfterLCurve[ivar]->GetYaxis()->SetTitle("Error After");
     	hErrorAfterRho[ivar]->SetLineColor(kBlue);
     	hErrorAfterRho[ivar]->SetMarkerColor(kBlue);
     	hErrorAfterRho[ivar]->SetMarkerStyle(23);
@@ -111,15 +115,15 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     		hErrorBeforeRhoRebinned[ivar]=getRebinned(hErrorBeforeRho[ivar], tempBND, NBINS[ivar]);
             hErrorBeforeLCurveRebinned[ivar]=getRebinned(hErrorBeforeLCurve[ivar], tempBND, NBINS[ivar]);
 
-    		//hErrorAfterStd[ivar]->Divide(hErrorBeforeStdRebinned[ivar]);
-    		//hErrorAfterRho[ivar]->Divide(hErrorBeforeRhoRebinned[ivar]);
-            //hErrorAfterLCurve[ivar]->Divide(hErrorBeforeLCurveRebinned[ivar]);
+    		hErrorAfterStd[ivar]->Divide(hErrorBeforeStdRebinned[ivar]);
+    		hErrorAfterRho[ivar]->Divide(hErrorBeforeRhoRebinned[ivar]);
+            hErrorAfterLCurve[ivar]->Divide(hErrorBeforeLCurveRebinned[ivar]);
     	}
     	else
 		{
-			//hErrorAfterStd[ivar]->Divide(hErrorBeforeStd[ivar]);
-    		//hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);
-            //hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
+			hErrorAfterStd[ivar]->Divide(hErrorBeforeStd[ivar]);
+    		hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);
+            hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
 		}
         
 /*
@@ -150,9 +154,11 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "l");
     legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "l");
     legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "l");
+    hErrorAfterStd[ivar]->GetYaxis()->SetRangeUser(0.5,1.5);
     hErrorAfterStd[ivar]->Draw("hist ");
     hErrorAfterRho[ivar]->Draw("hist same");
     hErrorAfterLCurve[ivar]->Draw("hist same");
+    hErrorAfterStd[ivar]->GetYaxis()->SetRangeUser(0.5,1.5);
     
     //cout<<"-----"<<variable[ivar]<<"-----"<<endl;
     //cout<<hErrorAfterLCurve[ivar]->GetNbinsX()<<endl;
@@ -160,7 +166,7 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     //cout<<hErrorAfterStd[ivar]->GetNbinsX()<<endl;
     legComb[ivar]->Draw();
 
-    canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombined_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
+    canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombinedRatio_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
     										 variable[ivar].Data()), "pdf");
  /*
     globalCorrGraph[ivar] = (TGraph*)globalCorrFile->Get(TString::Format("globalCorrGraph_%s",variable[ivar].Data()));
