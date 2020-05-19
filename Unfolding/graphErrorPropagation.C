@@ -154,11 +154,11 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     legComb[ivar]->AddEntry(hErrorAfterRho[ivar],"Global Corr.", "l");
     legComb[ivar]->AddEntry(hErrorAfterStd[ivar],"Simple Matrix Inv.", "l");
     legComb[ivar]->AddEntry(hErrorAfterLCurve[ivar],"Scan LCurve", "l");
-    hErrorAfterStd[ivar]->GetYaxis()->SetRangeUser(0.5,1.5);
+    hErrorAfterStd[ivar]->GetYaxis()->SetRangeUser(hErrorAfterRho[ivar]->GetMinimum()-0.4,hErrorAfterLCurve[ivar]->GetMaximum()+0.5);
     hErrorAfterStd[ivar]->Draw("hist ");
     hErrorAfterRho[ivar]->Draw("hist same");
     hErrorAfterLCurve[ivar]->Draw("hist same");
-    hErrorAfterStd[ivar]->GetYaxis()->SetRangeUser(0.5,1.5);
+    
     
     //cout<<"-----"<<variable[ivar]<<"-----"<<endl;
     //cout<<hErrorAfterLCurve[ivar]->GetNbinsX()<<endl;
