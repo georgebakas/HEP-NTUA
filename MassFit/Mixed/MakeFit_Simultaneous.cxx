@@ -1,4 +1,4 @@
-#include "TemplateConstants.h"
+	#include "TemplateConstants.h"
 
 using namespace RooFit;
 
@@ -116,7 +116,7 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooRealVar *kMassScale = (RooRealVar*)wTemplatesSig->var("kMassScale");
 	RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
 	kMassScale->setConstant(false);
-  	kMassResol->setConstant(false);
+  kMassResol->setConstant(false);
 
 	RooDataHist *roohist_data_0b = new RooDataHist("roohist_data_0b", "roohist_data_0b", *x, h0b);
 	RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b", "roohist_data_2b", *x, h2b);
@@ -153,12 +153,17 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b", "nFitSig0b", h0b_TT->Integral(), 0.6*h0b_TT->Integral(), 1.4*h0b_TT->Integral());
 	RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b", "nFitSig2b", h2b_TT->Integral(), 0.6*h2b_TT->Integral(), 1.4*h2b_TT->Integral());
 	//RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", floatConstants[TString::Format("bTagEff%s",year.Data())],0.1,1);
-  RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff",0.4,1.);
-    //if(setConstant) btagEff->setConstant(true);
+  RooRealVar *btagEff_0   = new RooRealVar("btagEff_0", "btagEff_0",floatConstants[TString::Format("bTagEff%s",year.Data())],0.4,1);
+	RooRealVar *btagEff_2   = new RooRealVar("btagEff_2", "btagEff_2",floatConstants[TString::Format("bTagEff%s",year.Data())],0.4,1);
+	if(setConstant)
+	{
+		btagEff_0->setConstant(false);
+		btagEff_2->setConstant(true);
+	}
 
 
-	RooFormulaVar nSig0b("nSig_0b", "(1-@0)*(1-@0)*@1", RooArgList(*btagEff, *nFitSig));
-	RooFormulaVar nSig2b("nSig_2b", "@0*@0*@1", RooArgList(*btagEff, *nFitSig));
+	RooFormulaVar nSig0b("nSig_0b", "(1-@0)*(1-@0)*@1", RooArgList(*btagEff_0, *nFitSig));
+	RooFormulaVar nSig2b("nSig_2b", "@0*@0*@1", RooArgList(*btagEff_2, *nFitSig));
 
 	RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 	RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
