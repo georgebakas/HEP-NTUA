@@ -264,7 +264,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TString method = "simpleMassFit";
     path = TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
     can->Print(path,"pdf");
-    
+
 
     TFile *outf;
     outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/SignalHistograms.root",year.Data(),method.Data()), "UPDATE");
