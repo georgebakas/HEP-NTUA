@@ -227,7 +227,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
   gStyle->SetOptStat(0);
   const int NVAR =11;
-  const int N_MJJ = 20;
+  const int N_MJJ = 18;
   const int N_PTJJ = 18;
   const int N_YJJ = 8;
   const int N_PT = 20;

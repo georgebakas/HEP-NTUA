@@ -116,7 +116,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //now i need the rebin function for aaaaaall my hists so that I am conistent
     //I will include binning in the TemplateConstants.h
 
-    std::vector< std::vector <Float_t> > const BND = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3200,3600, 4000,4500, 5000}, //mjj 21
+    std::vector< std::vector <Float_t> > const BND = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3500,4200, 5000}, //mjj 19
                                                    {0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1025,1100,1200,1300}, //ptjj 19
                                                    {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
                                                    {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
