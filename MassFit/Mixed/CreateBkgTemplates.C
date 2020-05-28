@@ -28,17 +28,32 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *x = new RooRealVar("mTop","mTop",XMIN,XMAX);
   w->import(*x);
   //---- first do the data template ---------------
-  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100_Loose.root", year.Data(),year.Data()));
+  TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(),year.Data()));
   //TFile *infDataLoose = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_Loose.root",year.Data()));
   TH1F *hData = (TH1F*)infDataLoose->Get("hWt_mTop_0btag_expYield");
   cout<<"CR Entries from data: "<<hData->GetEntries()<<endl;
   //because of contamination we need to substract the ttbar from the CR.
   //we do that by extracting the 0btag th1 using nominal or mtt mc
-  TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_Loose.root",year.Data()));  //nominal
+  TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data()));  //nominal
   //TFile *infTTMCLoose = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data())); //mtt
   TH1F *hCR_MC = (TH1F*)infTTMCLoose->Get("hWt_mTop_0btag_expYield");
 
+  TFile *infBkg_temp = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
+  TH1F *hCR_MCSubdominant = (TH1F*)infBkg_temp->Get("hWt_mTop_0btag_expYield");
+  TH1F *hDataBefore = (TH1F*)hData->Clone("test");
 
+  //hDataBefore->SetLineColor(kRed);
+  //hData->Add(hCR_MC,-1);
+  //hData->Add(hCR_MCSubdominant,-1);
+  /*
+  hData->Draw();
+  hDataBefore->Draw("same");
+  hCR_MCSubdominant->SetLineColor(kGreen);
+  hCR_MC->SetLineColor(kMagenta);
+  hCR_MC->Draw("same");
+  hCR_MCSubdominant->Draw("same");
+  return;
+  */
   RooDataHist *roohData = new RooDataHist("roohistData","roohistData",RooArgList(*x),hData);
   TH1F *hDataJet = (TH1F*)infDataLoose->Get("hWt_jetMassSoftDrop_0btag");
   TH1F *hDataEvt = (TH1F*)infDataLoose->Get("hWt_mJJ_0btag");
@@ -59,14 +74,14 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooGaussian qcd2("qcd_gaus" ,"qcd_gaus",*x,mQCD,sQCD);
 
 
-  RooRealVar mWqcd("qcd_meanW", "qcd_meanW", 75, 60, 90);
-  RooRealVar sWqcd("qcd_sigmaW", "qcd_sigmaW", 10, 0, 20);
+  RooRealVar mWqcd("qcd_meanW", "qcd_meanW", 77, 70, 90);
+  RooRealVar sWqcd("qcd_sigmaW", "qcd_sigmaW", 20, 0, 40);
   RooGaussian qcd3("qcd_gausW", "qcd_gausW", *x, mWqcd, sWqcd);
 
   RooRealVar fqcd1("qcd_f1","qcd_f1",qcdParams[year]["qcd_f1"],0,1);
   RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
-  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
+  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2,qcd3), RooArgList(fqcd1,fqcd2));
 
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);
@@ -78,7 +93,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   qcd->plotOn(frameQCD);
   qcd->plotOn(frameQCD,RooFit::Components("qcd_brn"),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
   qcd->plotOn(frameQCD,RooFit::Components("qcd_gaus"),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
-  //qcd->plotOn(frameQCD,RooFit::Components("qcd_gausW"),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
+  qcd->plotOn(frameQCD,RooFit::Components("qcd_gausW"),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
   frameQCD->GetXaxis()->SetTitle("m_{t} (GeV)");
   frameQCD->Draw();
   gPad->Update();
@@ -101,7 +116,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     if (icat==1) continue;
 
   	if(icat ==0) //for CR use the Loose WP
-  		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_Loose.root",year.Data()));
+  		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
   	else //for 1 btag and SR use medium WP
   		infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
 

@@ -49,7 +49,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   for(int icat=0;icat<3;icat++) {
   	//for CR use Loose WP files
   	//if(icat ==0 )infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_Loose.root",year.Data())); //mtt
-    if(icat ==0)infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_Loose.root",year.Data()));  //nominal
+    if(icat ==0)infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data()));  //nominal
   	//for SR use Medium WP files
   	//else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt files
     else infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data())); //nominal

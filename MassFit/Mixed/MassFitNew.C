@@ -119,10 +119,10 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   //---- QCD correction factor ---------------------------
 
   float sP, min, max;
-  sP = 1e-3;
+  //sP = 1e-3;
   min = -1;
   max = 10;
-
+  sP = 0.0025;
   RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", sP);//, min, max);
   RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
   mBar->setConstant(true);
