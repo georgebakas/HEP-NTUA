@@ -54,15 +54,15 @@ void Contamination(TString year, bool isLoose = true)
     //hData->Draw();
 
     c1[ivar] = new TCanvas(TString::Format("can_%s",recoVar.Data()), TString::Format("can_%s",recoVar.Data()), 800,700);
-    closure_pad2[ivar] = new TPad(TString::Format("cp2_%s",recoVar.Data()),TString::Format("cp2_%s",recoVar.Data()),0.,0.,1.,0.4); 
+    closure_pad2[ivar] = new TPad(TString::Format("cp2_%s",recoVar.Data()),TString::Format("cp2_%s",recoVar.Data()),0.,0.,1.,0.6); 
     closure_pad2[ivar]->Draw();
     closure_pad2[ivar]->SetTopMargin(0.05);
     closure_pad2[ivar]->SetBottomMargin(0.2);
     closure_pad2[ivar]->SetGrid();
 
-    closure_pad1[ivar] = new TPad(TString::Format("cp1_%s",recoVar.Data()),TString::Format("cp1_%s",recoVar.Data()),0.,0.4,1.,1.);  
+    closure_pad1[ivar] = new TPad(TString::Format("cp1_%s",recoVar.Data()),TString::Format("cp1_%s",recoVar.Data()),0.,0.6,1.,1.);  
     closure_pad1[ivar]->Draw();
-    closure_pad1[ivar]->SetBottomMargin(0.0);
+    closure_pad1[ivar]->SetBottomMargin(0.01);
     closure_pad1[ivar]->cd();
 
     hCR_QCD[ivar]->GetYaxis()->SetTitleSize(20);
@@ -157,7 +157,7 @@ void Contamination(TString year, bool isLoose = true)
       hRatio[ivar][i]->GetYaxis()->SetLabelSize(15);
       hRatio[ivar][i]->GetXaxis()->SetTitleSize(0.06);
       hRatio[ivar][i]->GetYaxis()->SetRangeUser(-0.001,0.2);
-      hRatio[ivar][i]->GetXaxis()->SetLabelSize(0.06);
+      hRatio[ivar][i]->GetXaxis()->SetLabelSize(0.04);
     }
 
     //hRatio[ivar][0]->Draw();
@@ -166,7 +166,7 @@ void Contamination(TString year, bool isLoose = true)
     hRatio[ivar][2]->Draw("hist same");
     //break;
 
-    //c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/%s/contamination_%s.pdf",year.Data(),dirLoose.Data(),recoVar.Data()),"pdf");
+    c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/%s/contamination_%s.pdf",year.Data(),dirLoose.Data(),recoVar.Data()),"pdf");
 
   }
   

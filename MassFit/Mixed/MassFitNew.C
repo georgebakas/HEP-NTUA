@@ -148,6 +148,8 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooFitResult *res = simPdf.fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
 
   cout<<"Signal strength: r = "<<nFitSig2b->getVal()/yieldTT->getVal()<<endl;
+	//error propagation:
+	cout<<"Error Signal Strength: "<<endl;
 
   res->Print();
 
