@@ -1,4 +1,4 @@
-#include "TemplateConstants.h"
+	#include "TemplateConstants.h"
 
 using namespace RooFit;
 
@@ -86,24 +86,23 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 
 	initFilesMapping();
 
-	TFile *file = TFile::Open(files[year]["data"]);
-	TH1F* h0b = (TH1F*) file->Get("hWt_mTop_0btag_expYield");
-	TH1F* h1b = (TH1F*) file->Get("hWt_mTop_1btag_expYield");
-	TH1F* h2b = (TH1F*) file->Get("hWt_mTop_2btag_expYield");
+	TFile *file0 = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
+	TFile *file2 = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
+	TH1F* h0b = (TH1F*) file0->Get("hWt_mTop_0btag_expYield");
+	TH1F* h2b = (TH1F*) file2->Get("hWt_mTop_2btag_expYield");
 	//h0b->Rebin(2);
-	//h1b->Rebin(2);
 	//h2b->Rebin(2);
 
-	TFile *fileMC = TFile::Open(files[year]["mcSig"]);
-	TH1F* h0b_TT = (TH1F*)fileMC->Get("hWt_mTop_0btag_expYield");
-	TH1F* h1b_TT = (TH1F*)fileMC->Get("hWt_mTop_1btag_expYield");
-	TH1F* h2b_TT = (TH1F*)fileMC->Get("hWt_mTop_2btag_expYield");
-	float Ntt_expected = h2b_TT->Integral() + h1b_TT->Integral() + h0b_TT->Integral();
+	//TFile *fileMC0 = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root", year.Data()));
+	//TFile *fileMC2 = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root", year.Data()));
+	TFile *fileMC2 = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root", year.Data()));
+	TH1F* h0b_TT = (TH1F*)fileMC2->Get("hWt_mTop_0btag_expYield");
+	TH1F* h2b_TT = (TH1F*)fileMC2->Get("hWt_mTop_2btag_expYield");
+	float Ntt_expected = h2b_TT->Integral() + h0b_TT->Integral();
 
-	TFile *fileSub = TFile::Open(files[year]["mcSub"]);
-	TH1F* h0b_Bkg = (TH1F*)fileSub->Get("hWt_mTop_0btag_expYield");
-	TH1F* h1b_Bkg = (TH1F*)fileSub->Get("hWt_mTop_1btag_expYield");
-	TH1F* h2b_Bkg = (TH1F*)fileSub->Get("hWt_mTop_2btag_expYield");
+	TFile *fileSub2 = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root", year.Data()));
+	TH1F* h0b_Bkg = (TH1F*)fileSub2->Get("hWt_mTop_0btag_expYield");
+	TH1F* h2b_Bkg = (TH1F*)fileSub2->Get("hWt_mTop_2btag_expYield");
 
 	TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));
 	TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_100.root", year.Data()));
@@ -115,101 +114,81 @@ void MakeFit_Simultaneous(TString year = "2016", bool setConstant = false)
 	RooRealVar *kMassScale = (RooRealVar*)wTemplatesSig->var("kMassScale");
 	RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
 	kMassScale->setConstant(false);
-  	kMassResol->setConstant(false);
-		/* if any W shift
-  	RooRealVar *kMassScaleW = (RooRealVar*)wTemplatesSig->var("kMassScaleW");
-	RooRealVar *kMassResolW = (RooRealVar*)wTemplatesSig->var("kMassResolW");
-	kMassScaleW->setConstant(false);
-  	kMassResolW->setConstant(false);*/
+  kMassResol->setConstant(false);
 
 	RooDataHist *roohist_data_0b = new RooDataHist("roohist_data_0b", "roohist_data_0b", *x, h0b);
 	RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b", "roohist_data_2b", *x, h2b);
-	RooDataHist *roohist_data_1b = new RooDataHist("roohist_data_1b", "roohist_data_1b", *x, h1b);
 
 	RooCategory sample("sample","sample");
 	sample.defineType("0btag");
-	sample.defineType("1btag");
   sample.defineType("2btag");
 
-  RooDataHist combData("combData","combData",*x, Index(sample),Import("0btag",*h0b),Import("1btag",*h1b),Import("2btag",*h2b));
+  RooDataHist combData("combData","combData",*x, Index(sample),Import("0btag",*h0b),Import("2btag",*h2b));
 
 	//Subdominant bkgs
 	RooAbsPdf *pdf_bkg_0b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_0btag");
 	RooAbsPdf *pdf_bkg_2b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_2btag");
-	RooAbsPdf *pdf_bkg_1b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_1btag");
 
-	//CR
+	//QCD
 	RooAbsPdf *pdf_qcd_0b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
-	RooAbsPdf *pdf_qcd_1b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 	RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 
 	//QCD correction factor
-	RooRealVar *kQCD1b = new RooRealVar("kQCD_1b", "kQCD_1b", 1e-3, -1, 1);
-	RooRealVar *kQCD2b = new RooRealVar("kQCD_2b", "kQCD_2b", 1e-3, -1, 1);
-	kQCD1b->setConstant(false);
+	RooRealVar *kQCD2b = new RooRealVar("kQCD_2b", "kQCD_2b", 10e-4,-1,1);
 	kQCD2b->setConstant(false);
-	RooFormulaVar qcdCor_1b("qcdCor_1b", "1+@0*@1", RooArgList(*x, *kQCD1b));
 	RooFormulaVar qcdCor_2b("qcdCor_2b", "1+@0*@1", RooArgList(*x, *kQCD2b));
 
 	//corected QCD
-	RooEffProd pdf_qcdCor_1b("qcdCor_pdf_1b", "qcdCor_pdf_1b", *pdf_qcd_1b, qcdCor_1b);
 	RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b", "qcdCor_pdf_2b", *pdf_qcd_2b, qcdCor_2b);
 
 	RooRealVar *nFitBkg0b = new RooRealVar("nFitBkg_0b", "nFitBkg_0b", h0b_Bkg->Integral(),0.9*h0b_Bkg->Integral(),1.1*h0b_Bkg->Integral());
-	RooRealVar *nFitBkg1b = new RooRealVar("nFitBkg_1b", "nFitBkg_1b", h1b_Bkg->Integral(),0.9*h1b_Bkg->Integral(),1.1*h1b_Bkg->Integral());
 	RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b", "nFitBkg_2b", h2b_Bkg->Integral(),0.9*h2b_Bkg->Integral(),1.1*h2b_Bkg->Integral());
 
 	RooRealVar *nFitQCD0b = new RooRealVar("nFitQCD_0b", "nFitQCD_0b", 90000, 0, 1.2e+6);
-	RooRealVar *nFitQCD1b = new RooRealVar("nFitQCD_1b", "nFitQCD_1b", 35000, 0, 1e+5);
 	RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b", "nFitQCD_2b", 3000, 0, 1e+5);
 
 	RooRealVar *nFitSig = new RooRealVar("nFitSig", "nFitSig", Ntt_expected, 0.5*Ntt_expected, 1.5*Ntt_expected);
 	RooRealVar *nFitSig0b = new RooRealVar("nFitSig0b", "nFitSig0b", h0b_TT->Integral(), 0.6*h0b_TT->Integral(), 1.4*h0b_TT->Integral());
-	RooRealVar *nFitSig1b = new RooRealVar("nFitSig1b", "nFitSig1b", h1b_TT->Integral(), 0.6*h1b_TT->Integral(), 1.4*h1b_TT->Integral());
 	RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b", "nFitSig2b", h2b_TT->Integral(), 0.6*h2b_TT->Integral(), 1.4*h2b_TT->Integral());
-	RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", floatConstants[TString::Format("bTagEff%s",year.Data())],0.1,1);
-    //RooRealVar *btagEff   = new RooRealVar("btagEff", "btagEff", efficiency_b,0.4,0.8);
-  if(setConstant) btagEff->setConstant(true);
+	RooRealVar *btagEff  	  = new RooRealVar("btagEff", "btagEff", floatConstants[TString::Format("bTagEff%s",year.Data())],0.1,1);
+	if(setConstant)
+			btagEff->setConstant(true);
+
 
 
 	RooFormulaVar nSig0b("nSig_0b", "(1-@0)*(1-@0)*@1", RooArgList(*btagEff, *nFitSig));
 	RooFormulaVar nSig2b("nSig_2b", "@0*@0*@1", RooArgList(*btagEff, *nFitSig));
-	RooFormulaVar nSig1b("nSig_1b", "2*(1-@0)*@0*@1", RooArgList(*btagEff, *nFitSig));
 
 	RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
-	RooAbsPdf *pdf_signal_1b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_1btag");
 	RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
 
 	RooAddPdf *model_0b = new RooAddPdf("model_0btag", "model_0btag", RooArgList(*pdf_signal_0b, *pdf_qcd_0b, *pdf_bkg_0b), RooArgList(nSig0b, *nFitQCD0b, *nFitBkg0b));
-	RooAddPdf *model_1b = new RooAddPdf("model_1btag", "model_1btag", RooArgList(*pdf_signal_1b, pdf_qcdCor_1b, *pdf_bkg_1b), RooArgList(nSig1b, *nFitQCD1b, *nFitBkg1b));
 	RooAddPdf *model_2b = new RooAddPdf("model_2btag", "model_2btag", RooArgList(*pdf_signal_2b, pdf_qcdCor_2b, *pdf_bkg_2b), RooArgList(nSig2b, *nFitQCD2b, *nFitBkg2b));
 
 	RooSimultaneous simPdf("simPdf", "simPdf", sample);
 	simPdf.addPdf(*model_0b, "0btag");
-	simPdf.addPdf(*model_1b, "1btag");
 	simPdf.addPdf(*model_2b, "2btag");
 
 	RooFitResult *res = simPdf.fitTo(combData, Save(), Extended(kTRUE));
 	res->Print();
 
-	std::cout<<"N0_observed = "<<nSig0b.getVal()<<", N2_observed = "<<nSig2b.getVal()<<endl;//<<", N1_observed = "<<nSig1b.getVal()<<std::endl;
-	float Ntt_observed = nSig0b.getVal() + nSig1b.getVal() + nSig2b.getVal();
+	std::cout<<"N0_observed = "<<nSig0b.getVal()<<", N2_observed = "<<nSig2b.getVal()<<std::endl;
+	float Ntt_observed = nSig0b.getVal() + nSig2b.getVal();
 
 	std::cout<<"Ntt expected: "<<Ntt_expected<<std::endl;
 	std::cout<<"Ntt observed: "<<Ntt_observed<<std::endl;
-	std::cout<<"Ntt 2btag observed: "<<nSig2b.getVal()<<endl;
-	std::cout<<"Ntt 2btag expected: "<<h2b_TT->Integral()<<endl;
-	std::cout<<"2 btag r: "<<nSig2b.getVal()/h2b_TT->Integral()<<endl;
+	//std::cout<<"Ntt observed 0btag: "<<h0b_TT->Integral();
 	std::cout<<"Signal strength r: "<<Ntt_observed/Ntt_expected<<std::endl;
+	std::cout<<"Singal strength r in 2btag: "<<nSig2b.getVal()/h2b_TT->Integral()<<endl;
+	std::cout<<"Singal strength r in 0btag: "<<nSig0b.getVal()/h0b_TT->Integral()<<endl;
 
 	TString CAT = "2btag";
 	draw("2btag", year, x, combData, simPdf, sample);
-	draw("1btag", year, x, combData, simPdf, sample);
 	draw("0btag", year, x, combData, simPdf, sample);
 
 	for(int i=0; i< canvases.size(); i++)
 	{
-		//canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_3regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
+		canvases[i]->Print(TString::Format("%s/plots/SimultaneousFit_2regions/%s.pdf", year.Data(), canvases[i]->GetName()), "pdf");
 	}
 	/*
 	correlation(nFitSig, btagEff, res, "t#bar{t} events", "btag efficiency");

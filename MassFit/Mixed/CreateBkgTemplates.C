@@ -43,8 +43,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   TH1F *hDataBefore = (TH1F*)hData->Clone("test");
 
   //hDataBefore->SetLineColor(kRed);
-  //hData->Add(hCR_MC,-1);
-  //hData->Add(hCR_MCSubdominant,-1);
+  hData->Add(hCR_MC,-1);
+  hData->Add(hCR_MCSubdominant,-1);
   /*
   hData->Draw();
   hDataBefore->Draw("same");
@@ -81,7 +81,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar fqcd1("qcd_f1","qcd_f1",qcdParams[year]["qcd_f1"],0,1);
   RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
-  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2,qcd3), RooArgList(fqcd1,fqcd2));
+  RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
 
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);
@@ -93,7 +93,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   qcd->plotOn(frameQCD);
   qcd->plotOn(frameQCD,RooFit::Components("qcd_brn"),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
   qcd->plotOn(frameQCD,RooFit::Components("qcd_gaus"),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
-  qcd->plotOn(frameQCD,RooFit::Components("qcd_gausW"),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
+  //qcd->plotOn(frameQCD,RooFit::Components("qcd_gausW"),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
   frameQCD->GetXaxis()->SetTitle("m_{t} (GeV)");
   frameQCD->Draw();
   gPad->Update();

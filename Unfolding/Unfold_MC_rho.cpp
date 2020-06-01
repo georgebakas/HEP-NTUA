@@ -210,7 +210,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 
      //here get the errors:
-    
+
 
     hErrorBefore[ivar] = (TH1F*)hSig[ivar]->Clone(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     hErrorAfter[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
@@ -228,7 +228,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
       hErrorBefore[ivar]->SetBinContent(j,hSig[ivar]->GetBinError(j));
       //cout<<"Error before for bin "<<j<<": "<<hErrorBefore[ivar]->GetBinError(j)<<endl;
     }
-    
+
     //break;
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
 
@@ -334,7 +334,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
    // cout<<"------"<<endl;
    // cout<<"theory: "<<hTheory_2[ivar]->Integral()<<endl;
     //cout<<"theory from eff: "<<hTheory[ivar]->Integral()<<endl;
-    
+
     outf->cd();
     hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
   	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
@@ -477,11 +477,11 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
   rhoLogTau->Draw();
   knots->Draw("*");
   bestRhoLogTau->SetMarkerColor(kRed);
-  bestRhoLogTau->Draw("*"); 
+  bestRhoLogTau->Draw("*");
 
   c1->Print(TString::Format("%s/%sMeasurements/MC/GlobalCorrelationGraph_%s.pdf",year.Data(), varParton.Data(), variable.Data()),"pdf");
 
-  TH1F *histMunfold = (TH1F*)unfold.GetOutput(TString::Format("UnfoldedOutput_%s",variable.Data())); //, 0, 0, 0, kFALSE); 
+  TH1F *histMunfold = (TH1F*)unfold.GetOutput(TString::Format("UnfoldedOutput_%s",variable.Data())); //, 0, 0, 0, kFALSE);
   return histMunfold;
 
 

@@ -6,19 +6,13 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  //TFile *infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data()));
-  TFile *infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data()));
+  TFile *infMC;
   float normMC;
   float XSEC(832.);
   float LUMI(0);
   if (year.EqualTo("2016")) LUMI = 35920;
   else if (year.EqualTo("2017")) LUMI = 41530;
   else if (year.EqualTo("2018")) LUMI = 59740;
-
-
-  std::vector<float> XSECMTT;
-  XSECMTT.push_back(69.64);
-  XSECMTT.push_back(16.74);
 
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
@@ -29,7 +23,6 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooRealVar *AccTT;
   TH1F *hMC;
   RooDataHist *roohMC;
-  RooAddPdf *signal;
 
   TString VAR,TAG;
   float XMIN,XMAX;
@@ -44,28 +37,33 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooRealVar *x = new RooRealVar("mTop","mTop",XMIN,XMAX);
   w->import(*x);
 
+  /*
   RooRealVar mW("meanW","meanW",80,70,90);
   RooRealVar sW("sigmaW","sigmaW",5,0,15);
   RooFormulaVar mWShift("meanWShifted","@0*@1",RooArgList(mW,*(kMassScale)));
   RooFormulaVar sWShift("sigmaWShifted","@0*@1",RooArgList(sW,*(kMassResol)));
 
   RooGaussian pdfW("pdfW","pdfW",*x,mWShift,sWShift);
+  */
 
   for(int icat=0;icat<3;icat++) {
+
+  	//else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt files
+    infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data())); //nominal
+    //infMC = TFile::Open(TString::Format("%s/output_2016_mcSig_02_extended.root",year.Data()));
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
-    if (icat==0) {
-      mW.setConstant(false);
-      sW.setConstant(false);
-    }
-    else {
-      mW.setConstant(false);
-      sW.setConstant(false);
-    }
+
     cout<<TAG<<endl;
     //---- then do the signal templates -------------
     hMC = (TH1F*)infMC->Get("hWt_"+VAR+TAG);
     TH1F *hMC_yield = (TH1F*)infMC->Get("hWt_"+VAR+TAG+"_expYield");
+    double error(0.0);
+    float signal_yield, signal_error;
+    signal_yield =  hMC_yield->IntegralAndError(1,hMC_yield->GetNbinsX(),error);
+    signal_error =  error;
+    cout<<"Yield "<<CAT<<": "<<signal_yield<<" +/- "<<signal_error<<endl;
+    cout<<"Entries: "<<hMC_yield->GetEntries()<<endl;
 
     TCanvas *canS;
     RooRealVar *fSigJet,*fSigEvt;
@@ -75,18 +73,11 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     fSigJet = new RooRealVar("fSigJet_"+CAT,"fSigJet_"+CAT,hSigJet->Integral()/hSig->Integral());
     fSigEvt = new RooRealVar("fSigEvt_"+CAT,"fSigEvt_"+CAT,hSigEvt->Integral()/hSig->Integral());
 
-    double error(0.0);
-    float signal_yield, signal_error;
-    signal_yield =  hMC_yield->IntegralAndError(1,hMC_yield->GetNbinsX(),error);
-    signal_error =  error;
-
     YieldTT = new RooRealVar("YieldTT_"+CAT,"YieldTT_"+CAT,signal_yield);
     YieldTT->setError(signal_error);
 
     AccTT = new RooRealVar("AccTT_"+CAT,"AccTT_"+CAT,signal_yield/(XSEC*LUMI));
     AccTT->setError(signal_error/(XSEC*LUMI));
-
-    cout<<"Yield "<<CAT<<": "<<signal_yield<<" +/- "<<signal_error<<endl;
 
     roohMC = new RooDataHist("roohistTT_"+CAT,"roohistTT_"+CAT,RooArgList(*x),hMC_yield);
     RooRealVar mTop("ttbar_meanTop_"+CAT,"ttbar_meanTop_"+CAT,172,150,180);
@@ -99,11 +90,13 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
     RooRealVar mW("ttbar_meanW_"+CAT,"ttbar_meanW_"+CAT,90,70,100);
     RooRealVar sW("ttbar_sigmaW_"+CAT,"ttbar_sigmaW_"+CAT,5,5,10);
+    mW.setConstant(false);
+    sW.setConstant(false);
 
-    //RooFormulaVar mWShift("ttbar_meanWShifted_"+CAT,"@0*@1",RooArgList(mW,*(kMassScale)));
-    //RooFormulaVar sWShift("ttbar_sigmaWShifted_"+CAT,"@0*@1",RooArgList(sW,*(kMassResol)));
+    RooFormulaVar mWShift("ttbar_meanWShifted_"+CAT,"@0*@1",RooArgList(mW,*(kMassScale)));
+    RooFormulaVar sWShift("ttbar_sigmaWShifted_"+CAT,"@0*@1",RooArgList(sW,*(kMassResol)));
 
-    RooGaussian sigW("ttbar_pdfW_"+CAT,"ttbar_pdfW_"+CAT,*x,mW,sW   );
+    RooGaussian sigW("ttbar_pdfW_"+CAT,"ttbar_pdfW_"+CAT,*x,mWShift,sWShift);
 
     RooRealVar bSig0("ttbar_b0_"+CAT,"ttbar_b0_"+CAT,0.5,0,1);
     RooRealVar bSig1("ttbar_b1_"+CAT,"ttbar_b1_"+CAT,0.5,0,1);
@@ -123,7 +116,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
     RooRealVar fsig1("ttbar_f1_"+CAT,"ttbar_f1_"+CAT,0,0,1);
     RooRealVar fsig2("ttbar_f2_"+CAT,"ttbar_f2_"+CAT,0.1,0.01,1);
-    RooRealVar fsig3("ttbar_f3_"+CAT,"ttbar_f3_"+CAT,0.1,0.01,1);
+    RooRealVar fsig3("ttbar_f3_"+CAT,"ttbar_f3_"+CAT,0.1,0.,1);
 
     RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb,g1),RooArgList(fsig1,fsig2,fsig3));
     cout<<"ttbar_pdf_"+CAT<<endl;
