@@ -108,7 +108,15 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //Subdominant bkgs files
     TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
+    TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //here I will import correction factors for QCD if needed...
+
+    TFile *infSignalMC;
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data()));
+    //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root", year.Data()));
+    TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
+    TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
+
 
     //now i need the rebin function for aaaaaall my hists so that I am conistent
     //I will include binning in the TemplateConstants.h
@@ -134,9 +142,37 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     //rebin all histograms with the same method
     TH1F *hD_rebinned, *hQ_rebinned, *hSub_rebinned;
+    TH1F *hQ_copy = (TH1F*)hQ->Clone(TString::Format("hD_copy_%s", variable.Data()));
+    cout<<hQ_copy->GetNbinsX()<<endl;
+    //before remove subdominat and ttbar contribution from Data 0btag
+    hQ->Add(hSub_0, -1);
+    hQ->Add(hSMC_0, -1);
+
+    /*
+    cout<<"hData 0:"<<hQ->Integral()<<endl;
+    cout<<"hD_copy 0:"<<hQ_copy->Integral()<<endl;
+    cout<<"hSub 0:"<<hSub_0->Integral()<<endl;
+    cout<<"httbar 0:"<<hSMC_0->Integral()<<endl;
+
+    TCanvas *c1 = new TCanvas(TString::Format("c_copy_%s", variable.Data()), TString::Format("c_copy_%s", variable.Data()), 800, 600);
+    hQ->Scale(1./hQ->Integral());
+    hQ_copy->Scale(1./hQ_copy->Integral());
+
+    hQ->Draw("hist");
+    hQ->SetLineColor(kRed);
+    hQ_copy->SetLineColor(kBlue);
+    hQ_copy->Draw("hist same");
+    */
+
+    /* DO NOT REBIN!!!!!
     hD_rebinned = getRebinned(hD, tempBND, nBins[selVar]);
     hQ_rebinned = getRebinned(hQ, tempBND, nBins[selVar]);
     hSub_rebinned = getRebinned(hSub, tempBND, nBins[selVar]);
+
+    */
+    hD_rebinned = (TH1F*)hD->Clone();
+    hQ_rebinned = (TH1F*)hQ->Clone();
+    hSub_rebinned = (TH1F*)hSub->Clone();
 
     TH1F *hSignal = (TH1F*)hD_rebinned->Clone(TString::Format("hSignal_%s",variable.Data()));
     //work on the elements for the QCD so that we have the right Q(x)
@@ -146,9 +182,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
 
-    //if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))
-    //{
-        TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
+    if(variable.EqualTo("jetPt0") || (variable.EqualTo("jetPt1") && !year.EqualTo("2016")))
+    {
+        TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s_reduced.root",year.Data()));
         //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
         TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
         for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
@@ -156,9 +192,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
             float chi = hQ_rebinned->GetBinCenter(i+1);
             SF[i] = fitResult->Eval(chi);
         }
-    //}
-    //else
-     //for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+    }
+    else
+     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
 
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
     //cout<<"--------"<<endl;
@@ -183,16 +219,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<hD_rebinned->Integral()<<endl;
     cout<<hSub_rebinned->Integral()<<endl;
     cout<<hQ_rebinned->Integral()<<endl;
-    //for reviewing get the MC signal
-    //!!!NEEDS TO CHANGE TO NOMINAL
-    TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data()));
-    //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root", year.Data()));
-    TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
 
 
-    //cout<<"Entries: "<<hSMC->GetEntries()<<endl;
-    //cout<<"Integral: "<<hSMC->Integral()<<endl;
     cout<<"-------"<<endl;
     hSignal->SetLineColor(kBlue);
     hSMC->SetLineColor(kRed);
@@ -257,12 +285,12 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     TString path;
     TString method = "simpleMassFit";
-    path = TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
+    path = TString::Format("%s/FiducialMeasurement/UnequalBinning/fiducial_%s.pdf",year.Data(),variable.Data());
     can->Print(path,"pdf");
 
 
     TFile *outf;
-    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/%s/SignalHistograms.root",year.Data(),method.Data()), "UPDATE");
+    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms.root",year.Data()), "UPDATE");
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();

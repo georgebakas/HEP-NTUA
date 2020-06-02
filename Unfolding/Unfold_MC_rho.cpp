@@ -88,7 +88,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root",
+  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root",
   								  year.Data()));
   //TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root",
   //								  year.Data()));

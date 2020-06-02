@@ -37,7 +37,7 @@ void initXsections()
   		//XSEC.push_back(61.08);
   	 	XSEC.push_back(0.);
        	XSEC.push_back(20.09);
-  	} 
+  	}
   	else if(globalYear.EqualTo("2018"))
   	{
   		//XSEC.push_back(114.66);
@@ -63,7 +63,7 @@ void initHistoNames()
 {
   if(!globalIsNominalMC)
   {
-	  histoNames.push_back("Signal_histo_Mtt_700_1000"); 
+	  histoNames.push_back("Signal_histo_Mtt_700_1000");
 	  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
 
 	  fileNames.push_back("700-1000");
@@ -102,24 +102,24 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   cout<<LUMI<<endl;
- 
+
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
 													{0,60,150,300,450,600,750,1000,1300}, //ptjj
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0     
+		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
 													{400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
 													{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
                                                     {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-  
+
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3500,4200, 5000}, //mjj 19
 													{0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1100,1300}, //ptjj 17
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-		   	                                        {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21   
-													{400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1100,1300,1500}, //jetPt1 18   
+		   	                                        {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
+													{400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1100,1300,1500}, //jetPt1 18
 													{0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}, //jetY0
                                                     {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY0 25
 
-  
+
   float triggerFloat;
   if(year.EqualTo("2016")) triggerFloat = 2;
   else triggerFloat = 5;
@@ -128,11 +128,11 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   const int NVAR = 7;
   for (int i = 0; i<BND_reco.size(); i++) NBINS[i] = BND_reco[i].size()-1;
 
-  int NBINSParton[BND_reco.size()];	
+  int NBINSParton[BND_reco.size()];
   for(int i =0; i<BND_reco.size(); i++) NBINSParton[i] = BND_gen[i].size()-1;
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"}; 
-  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"}; 
-  TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"}; 
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"};
+  TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"};
+  TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"};
 
   std::vector<float> weights;
   TH1F *hParton[fileNames.size()][NVAR], *hParticle[fileNames.size()][NVAR], *hReco[fileNames.size()][NVAR];
@@ -149,7 +149,7 @@ for(int f=0; f<fileNames.size(); f++)
     cout<<XSEC[f]<<endl;
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR; ivar++)
-  	{	
+  	{
 
   		//for the hists used for acceptance I need binning as reco m
   		//for the hists used for efficiency I need binning as parton/particle n = 2m
@@ -160,7 +160,7 @@ for(int f=0; f<fileNames.size(); f++)
          int sizeBinsPartonParticle = NBINSParton[ivar];
          float tempBNDPartonParticle[NBINSParton[ivar]+1];
          std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDPartonParticle);
-  		 
+
   		 //denominators for parton efficiency (hParton vs parton), particle eff (hParticle vs particle) and acceptance (same for both hReco vs reco)
   		 //this is events pass parton cuts vs parton quantity --> BND_gen
   		 hParton[f][ivar] = new TH1F(TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), TString::Format("hParton_%s_%s", histoNames[f].Data(),varParton[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
@@ -168,7 +168,7 @@ for(int f=0; f<fileNames.size(); f++)
          hReco[f][ivar] = new TH1F(TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
          //this is events pass particle cuts only used as denominator for particle eff vs particle -->BND
          hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
-         
+
          hParton[f][ivar]->Sumw2();
          hReco[f][ivar]->Sumw2();
          hParticle[f][ivar]->Sumw2();
@@ -185,9 +185,9 @@ for(int f=0; f<fileNames.size(); f++)
          //response matrices
          //x-axis: parton or particle and y-axis: reco (detector level)
          //x-axis will have fewer bins than y-axis
-         hPartonResponse[f][ivar] = new TH2F(TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), 
+         hPartonResponse[f][ivar] = new TH2F(TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hPartonResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()),
          	sizeBinsPartonParticle, tempBNDPartonParticle,sizeBins, tempBND);
-         hParticleResponse[f][ivar] = new TH2F(TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), 
+         hParticleResponse[f][ivar] = new TH2F(TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hParticleResponse%s_%s", histoNames[f].Data(),varReco[ivar].Data()),
          	sizeBinsPartonParticle, tempBNDPartonParticle,sizeBins, tempBND);
 
     }
@@ -204,14 +204,14 @@ for(int f=0; f<fileNames.size(); f++)
     //parton
     std::vector<float> *partonPt(0), *partonPhi(0), *partonMass(0),*partonMatchDR(0), *partonY(0);
     float yTTbarParton(0), ptTTbarParton(0), mTTbarParton(0);
-    
-    //float yTopParton[2], ptTopParton[2]; 
+
+    //float yTopParton[2], ptTopParton[2];
     std::vector<int> *addedIndexes = new std::vector<int>(0);
     vector<int> *partonId(0), *partonMatchIdx(0);
 
     std::vector<float> *jetBtagSub0DCSVbb(0), *jetBtagSub1DCSVbb(0);
     std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
-	
+
     //particle
     std::vector<float> *genjetPt(0), *genjetY(0), *genjetEta(0), *genSoftDropMass(0), *genjetMassSoftDrop(0);
     std::vector<int> *nSubGenJets(0);
@@ -220,9 +220,9 @@ for(int f=0; f<fileNames.size(); f++)
 
     cout<<"Working in file: "<<files[year.Data()][fileNames[f].Data()]<<endl;
     TFile *file = TFile::Open(eospath[year.Data()]+files[year.Data()][fileNames[f].Data()]);
-    
-    TTree *trIN = (TTree*)file->Get("boosted/events"); 
-    	
+
+    TTree *trIN = (TTree*)file->Get("boosted/events");
+
 	//------- input tree --------------
     trIN->SetBranchAddress("nJets"          ,&nJets);
     trIN->SetBranchAddress("nLeptons"       ,&nLeptons);
@@ -264,7 +264,7 @@ for(int f=0; f<fileNames.size(); f++)
 	trIN->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
 	trIN->SetBranchAddress("partonPhi"      ,&partonPhi);
 	trIN->SetBranchAddress("partonY"        ,&partonY);
-    
+
     //particle
     trIN->SetBranchAddress("mJJGen"			,&mJJGen);
     trIN->SetBranchAddress("ptJJGen"		,&ptJJGen);
@@ -275,11 +275,11 @@ for(int f=0; f<fileNames.size(); f++)
     trIN->SetBranchAddress("nJetsGen"		,&nJetsGen);
     trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
 
-	
+
     float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
 	float weight = XSEC[f]/norm;
 	weights.push_back(weight);
-    
+
 	//for parton matching
 	std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
 	std::vector<float> *jetMatchedDr = new std::vector<float>(0);
@@ -297,12 +297,12 @@ for(int f=0; f<fileNames.size(); f++)
 	std::vector<float> *partonMass_ = new std::vector<float>(0);
 	std::vector<float> *partonPhi_ = new std::vector<float>(0);
 	std::vector<float> *partonY_ = new std::vector<float>(0);
-	
+
 	std::vector<float> *jetBtagSub0DCSVbb_ = new std::vector<float>(0);
 	std::vector<float> *jetBtagSub1DCSVbb_ = new std::vector<float>(0);
 	std::vector<float> *jetBtagSub0DCSVbbb_ = new std::vector<float>(0);
 	std::vector<float> *jetBtagSub1DCSVbbb_ = new std::vector<float>(0);
-	
+
 	float jetDr_(0);
 
     int decade(0);
@@ -313,11 +313,11 @@ for(int f=0; f<fileNames.size(); f++)
 	std::vector<float> xPartonAll(0);
 	std::vector<float> xParticleAll(0);
 
-    for(int iev=0;iev<NN;iev++) 
+    for(int iev=0;iev<NN;iev++)
     {
 		double progress = 10.0*iev/(1.0*NN);
-      int k = TMath::FloorNint(progress); 
-      if (k > decade) 
+      int k = TMath::FloorNint(progress);
+      if (k > decade)
         cout<<10*k<<" %"<<endl;
       decade = k;
       trIN->GetEntry(iev);
@@ -330,18 +330,18 @@ for(int f=0; f<fileNames.size(); f++)
         jetBtagSub0_->clear();
         jetBtagSub1_->clear();
         jetTtag_->clear();
-		
+
        partonPt_->clear();
        partonMass_->clear();
        partonPhi_->clear();
        partonEta_->clear();
        partonY_->clear();
-	  
+
 	   jetBtagSub0DCSVbb_->clear();
 	   jetBtagSub1DCSVbb_->clear();
 	   jetBtagSub0DCSVbbb_->clear();
 	   jetBtagSub1DCSVbbb_->clear();
-	   
+
 	   xPartonAll.clear();
 	   xRecoAll.clear();
 	   xParticleAll.clear();
@@ -367,10 +367,10 @@ for(int f=0; f<fileNames.size(); f++)
 			   //if we actually selected something
 			   if(jetMatchedIndexes->size() > 0)
 			   {
-				
+
 					float dRmin = (*jetMatchedDr)[0];
 					int indexMin = (*jetMatchedIndexes)[0];
-					
+
 					//cout<<"dRmin[0]: "<<dRmin<<endl;
 					for(int k=1; k<jetMatchedIndexes->size(); k++)
 					{
@@ -398,7 +398,7 @@ for(int f=0; f<fileNames.size(); f++)
 						jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
 						//jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
 						jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
-						
+
 						jetBtagSub0DCSVbb_->push_back((*jetBtagSub0DCSVbb)[(*partonMatchIdx)[indexMin]]);
 						jetBtagSub1DCSVbb_->push_back((*jetBtagSub1DCSVbb)[(*partonMatchIdx)[indexMin]]);
 						jetBtagSub0DCSVbbb_->push_back((*jetBtagSub0DCSVbbb)[(*partonMatchIdx)[indexMin]]);
@@ -409,14 +409,14 @@ for(int f=0; f<fileNames.size(); f++)
 						partonPhi_->push_back((*partonPhi)[indexMin]);
 						partonEta_->push_back((*partonEta)[indexMin]);
 						partonY_->push_back((*partonY)[indexMin]);
-						
-						
+
+
 						//cout<<(*partonMatchIdx)[indexMin]<<endl;
 						//cout<<"------------"<<endl;
 					}
-					  
+
 			   }
-			   
+
 			}
 	if(isMatched > 1)
     {
@@ -435,67 +435,67 @@ for(int f=0; f<fileNames.size(); f++)
 		xRecoAll.push_back((*pt_)[leadingPt]);
 		xRecoAll.push_back((*pt_)[subleadingPt]);
 		xRecoAll.push_back(fabs((*y_)[leadingPt]));
-		xRecoAll.push_back(fabs((*y_)[subleadingPt])); 
-				
+		xRecoAll.push_back(fabs((*y_)[subleadingPt]));
+
 		xPartonAll.push_back(mTTbarParton);
 		xPartonAll.push_back(ptTTbarParton);
 		xPartonAll.push_back(yTTbarParton);
 		xPartonAll.push_back((*partonPt_)[leadingPt]);
 		xPartonAll.push_back((*partonPt_)[subleadingPt]);
 		xPartonAll.push_back(fabs((*partonY_)[leadingPt]));
-		xPartonAll.push_back(fabs((*partonY_)[subleadingPt])); 
+		xPartonAll.push_back(fabs((*partonY_)[subleadingPt]));
 
 		xParticleAll.push_back(mJJGen);
 		xParticleAll.push_back(ptJJGen);
 		xParticleAll.push_back(yJJGen);
 		xParticleAll.push_back((*genjetPt)[leadingPt]);
-		xParticleAll.push_back((*genjetPt)[subleadingPt]);	
+		xParticleAll.push_back((*genjetPt)[subleadingPt]);
 		xParticleAll.push_back(fabs((*genjetY)[leadingPt]));
-		xParticleAll.push_back(fabs((*genjetY)[subleadingPt]));	
-      	
-	  		
+		xParticleAll.push_back(fabs((*genjetY)[subleadingPt]));
 
-		
+
+
+
 	  //---------------------------end of MATCHING---------------------------------------------------------
-	  bool recoCuts, partonCuts, particleCuts; 
+	  bool recoCuts, partonCuts, particleCuts;
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
 	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
 	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) <2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
-	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
+	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
-			
-      bool btagCut;			
+
+      bool btagCut;
 	  btagCut = deepCSV;
-	   
+
 	  //qcout<<"----------"<<endl;
-	  
+
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
-		  if(recoCuts && btagCut && tTaggerCut) 
+		  if(recoCuts && btagCut && tTaggerCut)
 		  {
 		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-				  hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);				
+				  hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
 			  }
-		  } 
+		  }
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
-		  //fill also response matrix 
+		  //fill also response matrix
 	   if(partonCuts && recoCuts && tTaggerCut && btagCut)
 		  {
 			  	for(int ivar = 0; ivar < NVAR; ivar++)
-	  			{			  	  
+	  			{
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
            //if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar]<<endl;
 				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
-			  	
-	    }//----- end of selection cuts parton and reco 
 
-	      //3. Events pass reco and particle 
+	    }//----- end of selection cuts parton and reco
+
+	      //3. Events pass reco and particle
 	      if(particleCuts && recoCuts && tTaggerCut && btagCut)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
@@ -506,44 +506,44 @@ for(int f=0; f<fileNames.size(); f++)
 	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar], genEvtWeight*weights[f]*LUMI);
 	      	}
 	      }
-	      if(particleCuts) 
+	      if(particleCuts)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
 	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);
 	      	}
 	      }
-	  
-	 }//----- end of is matched 	
+
+	 }//----- end of is matched
   }//---end the event for
 
-	
+
 	//--------------------------------------------START OF EVENT COUNTER LOOP -------------------------------------------------------------------
 
-  //now another for that fills the denominators for the parton efficiencies 
+  //now another for that fills the denominators for the parton efficiencies
   //loop over other tree -> eventCounter
   TTree *trCnt = (TTree*)file->Get("eventCounter/events");
   float ptTTbarPartonCnt(0), mTTbarPartonCnt(0), yTTbarPartonCnt(0);
-  float partonPtCnt[2], partonEtaCnt[2],partonYCnt[2]; 	
+  float partonPtCnt[2], partonEtaCnt[2],partonYCnt[2];
   float genEvtWeightCnt;
-  //tree for eventCounter		
+  //tree for eventCounter
   trCnt->SetBranchAddress("ptTopParton"    ,&partonPtCnt);
   trCnt->SetBranchAddress("etaTopParton"   ,&partonEtaCnt);
   trCnt->SetBranchAddress("yTopParton"     ,&partonYCnt);
   trCnt->SetBranchAddress("mTTbarParton"   ,&mTTbarPartonCnt);
   trCnt->SetBranchAddress("yTTbarParton"   ,&yTTbarPartonCnt);
   trCnt->SetBranchAddress("ptTTbarParton"  ,&ptTTbarPartonCnt);
-  trCnt->SetBranchAddress("genEvtWeight"   ,&genEvtWeightCnt);   
+  trCnt->SetBranchAddress("genEvtWeight"   ,&genEvtWeightCnt);
   int NNCnt = trCnt->GetEntries();
-  
+
   for(int iev = 0; iev < NNCnt; iev++)
   {
 	  trCnt->GetEntry(iev);
-	  
+
 	  std::vector<float> xPartonAllCnt(0);
 	  xPartonAllCnt.clear();
 	  bool partonCuts = fabs(partonEtaCnt[0]) < 2.4 && fabs(partonEtaCnt[1]) <2.4 && partonPtCnt[0] > 400 && partonPtCnt[1] > 400 && mTTbarPartonCnt > 1000;
-	  
+
 	  xPartonAllCnt.push_back(mTTbarPartonCnt);
 	  xPartonAllCnt.push_back(ptTTbarPartonCnt);
 	  xPartonAllCnt.push_back(yTTbarPartonCnt);
@@ -575,8 +575,8 @@ for(int f=0; f<fileNames.size(); f++)
 
   //--------------------------------------------END OF EVENT COUNTER LOOP ------------------------------------------------------------------
 }//----end of file loop
-  
-  
+
+
   for(int ivar =0; ivar<NVAR; ivar++)
   {
 	//for every slice
@@ -591,7 +591,7 @@ for(int f=0; f<fileNames.size(); f++)
       hRecoParton[j][ivar]->Scale(weights[j]*LUMI);
       hPartonReco[j][ivar]->Scale(weights[j]*LUMI);
     }
-    
+
     for(int j=1; j<fileNames.size(); j++)
 	{
 	  //Add them to get the whole phase space
@@ -608,9 +608,9 @@ for(int f=0; f<fileNames.size(); f++)
       hParticleResponse[0][ivar]->Add(hParticleResponse[j][ivar]);
 
 	}
-  
+
   hParton[0][ivar]->Scale(weights[0]*LUMI);
-  for(int f=1; f<fileNames.size(); f++) 
+  for(int f=1; f<fileNames.size(); f++)
   {
     hParton[f][ivar]->Scale(weights[f]*LUMI);
 	  hParton[0][ivar]->Add(hParton[f][ivar]);
@@ -619,7 +619,7 @@ for(int f=0; f<fileNames.size(); f++)
   }
   TEfficiency *efficiency_parton[NVAR], *acceptance_parton[NVAR];
   TEfficiency *efficiency_particle[NVAR], *acceptance_particle[NVAR];
- 
+
   //efficiency for parton quantity and for topTagger (new)
 
 
@@ -634,7 +634,7 @@ for(int f=0; f<fileNames.size(); f++)
   efficiency_parton[ivar]->SetStatisticOption(TEfficiency::kFNormal);
   efficiency_parton[ivar]->SetUseWeightedEvents();
   efficiency_parton[ivar]->SetLineColor(kRed);
-	  
+
   acceptance_parton[ivar]  = new TEfficiency(*hRecoParton[0][ivar], *hReco[0][ivar]);
   if (ivar ==0 ||ivar ==1 || ivar ==3 || ivar ==4)  acceptance_parton[ivar]->SetTitle(TString::Format("AcceptanceParton_%s; %s(GeV);Acceptance Parton",varReco[ivar].Data(),varReco[ivar].Data()));
   else acceptance_parton[ivar]->SetTitle(TString::Format("AcceptanceParton_%s; %s;Acceptance Parton",varReco[ivar].Data(), varReco[ivar].Data()));
@@ -651,7 +651,7 @@ for(int f=0; f<fileNames.size(); f++)
   efficiency_particle[ivar]->SetStatisticOption(TEfficiency::kFNormal);
   efficiency_particle[ivar]->SetUseWeightedEvents();
   efficiency_particle[ivar]->SetLineColor(kRed);
-	  
+
   acceptance_particle[ivar]  = new TEfficiency(*hRecoParticle[0][ivar], *hReco[0][ivar]);
   if (ivar ==0 ||ivar ==1 || ivar ==3 || ivar ==4)  acceptance_particle[ivar]->SetTitle(TString::Format("AcceptanceParticle_%s; %s(GeV);Acceptance particle",varReco[ivar].Data(),varReco[ivar].Data()));
   else acceptance_particle[ivar]->SetTitle(TString::Format("AcceptanceParticle_%s; %s;Acceptance particle",varReco[ivar].Data(), varReco[ivar].Data()));
@@ -663,7 +663,7 @@ for(int f=0; f<fileNames.size(); f++)
   }
   //WARNING !!!
   //for purity and stability: when we have unequal binning we cannot find purity and stability but only when we have a
-  //square matrx 
+  //square matrx
 
 
   TFile *outFile;

@@ -111,10 +111,15 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //Subdominant bkgs files
     TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_reduced.root", year.Data()));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
-    //here I will import correction factors for QCD if needed...
+    TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
-    //now i need the rebin function for aaaaaall my hists so that I am conistent
-    //I will include binning in the TemplateConstants.h
+
+    //for reviewing get the MC signal
+    TFile *infSignalMC;
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
+    //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data()));
+    TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
+    TH1F *hSMC_0 = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
     std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
                                              {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
@@ -137,6 +142,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     //rebin all histograms with the same method
     TH1F *hD_rebinned, *hQ_rebinned, *hSub_rebinned;
+    //before remove subdominat and ttbar contribution from Data 0btag
+    hQ->Add(hSub_0, -1);
+    hQ->Add(hSMC_0, -1);
+
     hD_rebinned = getRebinned(hD, tempBND, nBins[selVar]);
     hQ_rebinned = getRebinned(hQ, tempBND, nBins[selVar]);
     hSub_rebinned = getRebinned(hSub, tempBND, nBins[selVar]);
@@ -149,21 +158,19 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
 
-    //if(variable.EqualTo("jetPt0") || variable.EqualTo("jetPt1") || variable.EqualTo("mJJ") || variable.EqualTo("ptJJ"))
-    //{
-        TFile *fitFile =  TFile::Open(TString::Format("../../QCD_ClosureTests_All/fitResults_%s.root",year.Data()));
-        //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
-        TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
-        for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
-        {
-            float chi = hQ_rebinned->GetBinCenter(i+1);
-            SF[i] = fitResult->Eval(chi);
-        }
-    //}
-    //else
-     //for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
-
-
+    if(variable.EqualTo("jetPt0") || (variable.EqualTo("jetPt1") && !year.EqualTo("2016")))
+    {
+      TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s_reduced.root",year.Data()));
+      //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
+      TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
+      for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
+      {
+          float chi = hQ_rebinned->GetBinCenter(i+1);
+          SF[i] = fitResult->Eval(chi);
+      }
+    }
+    else
+     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
     //cout<<"-----"<<endl;
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
@@ -184,12 +191,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
-
-    //for reviewing get the MC signal
-    TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced.root", year.Data()));
-    //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced.root", year.Data()));
-    TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
 
 
     //cout<<"Entries: "<<hSMC->GetEntries()<<endl;
@@ -258,12 +259,12 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     TString path;
     TString method = "simpleMassFit";
-    path = TString::Format("%s/FiducialMeasurement/EqualBinning/%s/fiducial_%s.pdf",year.Data(),method.Data(),variable.Data());
+    path = TString::Format("%s/FiducialMeasurement/EqualBinning/fiducial_%s.pdf",year.Data(),variable.Data());
     can->Print(path,"pdf");
 
 
     TFile *outf;
-    outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/%s/SignalHistograms.root",year.Data(),method.Data()), "UPDATE");
+    outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms.root",year.Data()), "UPDATE");
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();

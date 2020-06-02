@@ -88,7 +88,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/FiducialMeasurement/UnequalBinning/simpleMassFit/SignalHistograms.root",
+  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms.root",
                     year.Data()));
   //TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root",
   //								  year.Data()));
