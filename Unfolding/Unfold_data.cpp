@@ -84,7 +84,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
                                                          {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
                                                          {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
                                                          {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-
+                                                         //in paper //{0.0,0.4,0.8,1.2,1.6,2.0,2.4}, //jetY0
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
@@ -148,12 +148,9 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDGen);
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig_Init[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));
-    /*
-    for(int j=1; j<hSig_Init[ivar]->GetNbinsX(); j++)
-    {
-    	cout<<"hSig_Init "<<j<<": "<<hSig_Init[ivar]->GetBinContent(j)<< " hSig_Init Error: "<<hSig_Init[ivar]->GetBinError(j)<<endl;
-    }*/
-    hSig[ivar] = getRebinned(hSig_Init[ivar], tempBND, NBINS[ivar]);
+
+    //hSig[ivar] = getRebinned(hSig_Init[ivar], tempBND, NBINS[ivar]);
+    hSig[ivar] = (TH1F*)hSig_Init[ivar]->Clone(TString::Format("hSig_%s", variable[ivar].Data()));
 
     //hSig[ivar] = (TH1F*)gfile->Get("2btag_mJJ_nominal");
     //hSig[ivar]->Scale(832 * 35920);
@@ -211,8 +208,6 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 
      //here get the errors:
-
-
     hErrorBefore[ivar] = (TH1F*)hSig[ivar]->Clone(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     hErrorAfter[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     hErrorBefore[ivar]->Clear();
@@ -264,6 +259,9 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   	  }
     }
 
+
+
+    //draw the unfolded and extrapolated with the mc result
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
     can[ivar]->cd();
     auto *closure_padRatio = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3);
@@ -281,6 +279,11 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hTheory_2[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data()));
     hTheory[ivar] = (TH1F*)efficiency->GetCopyTotalHisto();
 
+    if(variable[ivar].EqualTo("jetY0") || variable[ivar].EqualTo("jetY1"))
+    {
+      hTheory[ivar]->Rebin(2);
+      hUnf[ivar]->Rebin(2);
+    }
 
     //hTheory_2[ivar]->SetLineColor(kGreen+2);
     hTheory[ivar]->Scale(1/luminosity[year], "width");
