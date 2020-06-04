@@ -197,12 +197,13 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     	hUnf[ivar] = unfoldedOutput_LCurve(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     else
     	hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
-    //continue;
-    TString axisTitle = variable[ivar];
+
     if(variable[ivar].EqualTo("yJJ"))
-    	hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
+      hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
+    else if(variable[ivar].Contains("jetY"))
+    	hUnf[ivar]->GetXaxis()->SetTitle("|"+variable[ivar]+"|");
     else
-    	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s [GeV]", variable[ivar].Data()));
+    	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", variable[ivar].Data()));
 
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
@@ -217,15 +218,12 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     {
       hErrorAfter[ivar]->SetBinContent(i,hUnf[ivar]->GetBinError(i));
       cout<<"hUnf after: "<<hUnf[ivar]->GetBinContent(i)<<endl;
-      //cout<<"Error after for bin "<<i<<": "<<hErrorAfter[ivar]->GetBinError(i)<<endl;
     }
     for(int j=1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
       hErrorBefore[ivar]->SetBinContent(j,hSig[ivar]->GetBinError(j));
-      //cout<<"Error before for bin "<<j<<": "<<hErrorBefore[ivar]->GetBinError(j)<<endl;
     }
 
-    //break;
     TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
 
     if(!variable[ivar].EqualTo("yJJ"))hErrorBefore[ivar]->Rebin(2);
@@ -251,15 +249,11 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
         float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
 	      hUnf[ivar]->SetBinContent(i, newContent);
-          //cout<<"old: "<<oldContent<<endl;
-	      //cout<<"new: "<<hUnf[ivar]->GetBinContent(i)<<endl;
-	      //handle errors as well--> asymmetric error from efficiency
+
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
 	      hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
   	  }
     }
-
-
 
     //draw the unfolded and extrapolated with the mc result
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
@@ -285,7 +279,6 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       hUnf[ivar]->Rebin(2);
     }
 
-    //hTheory_2[ivar]->SetLineColor(kGreen+2);
     hTheory[ivar]->Scale(1/luminosity[year], "width");
     hUnf[ivar]->Scale(1/luminosity[year], "width");
 
@@ -293,8 +286,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hTheory[ivar]->SetLineColor(kRed);
     hUnf[ivar]->SetMarkerStyle(20);
     hUnf[ivar]->SetMarkerColor(kBlue);
-    hUnf[ivar]->SetTitle(TString::Format("Unfolded vs Theory %s", variable[ivar].Data()));
-    hTheory[ivar]->SetTitle(TString::Format("Unfolded vs Theory %s", variable[ivar].Data()));
+    hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(),year.Data()));
+    hTheory[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(), year.Data()));
 
     hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
     hTheory[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
@@ -309,7 +302,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   	hUnf[ivar]->Draw("same");
   	leg[ivar]->Draw();
 
-  	if(!variable[ivar].EqualTo("yJJ") && !variable[ivar].EqualTo("jetY0") && !variable[ivar].EqualTo("jetY1")) gPad->SetLogy();
+  	if(!variable[ivar].Contains("jetY")) gPad->SetLogy();
 
   	closure_padRatio->cd();
   	hUnfTemp[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_%s", variable[ivar].Data()));
@@ -326,6 +319,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfTemp[ivar]->GetYaxis()->SetLabelFont(43);
     hUnfTemp[ivar]->GetYaxis()->SetLabelSize(15);
     hUnfTemp[ivar]->GetXaxis()->SetTitleSize(0.09);
+    hUnfTemp[ivar]->GetYaxis()->SetRangeUser(0,2);
 
     hUnfTemp[ivar]->SetLineColor(kRed);
     hUnfTemp[ivar]->SetMarkerStyle(20);
@@ -333,19 +327,12 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfTemp[ivar]->Draw();
     hUnfTemp[ivar]->GetXaxis()->SetLabelSize(0.09);
 
-
-    //hTheory_2[ivar]->Draw("same");
-   // cout<<"------"<<endl;
-   // cout<<"theory: "<<hTheory_2[ivar]->Integral()<<endl;
-    //cout<<"theory from eff: "<<hTheory[ivar]->Integral()<<endl;
-
     outf->cd();
     hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
   	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
   	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    //break;
   }
 
 }
@@ -370,8 +357,8 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
   if(unfold.SetInput(hReco)>=10000) {
     std::cout<<"Unfolding result may be wrong\n";
   }
-      //========================================================================
-	  // the unfolding is done here
+  //========================================================================
+	// the unfolding is done here
   //========================================================================
   // the unfolding is done here
 
@@ -450,7 +437,6 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
   // correlation coefficients may be probed for all distributions
   // or only for selected distributions
   // underflow/overflow bins may be included/excluded
-  //
   const char *SCAN_DISTRIBUTION = "partonBinning";
   const char *SCAN_AXISSTEERING = 0;
 
@@ -469,7 +455,7 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
   Double_t *tAll=new Double_t[nScan],*rhoAll=new Double_t[nScan];
   for(Int_t i=0;i<nScan;i++) {
      rhoLogTau->GetKnot(i,tAll[i],rhoAll[i]);
-  }
+   }
   TGraph *knots=new TGraph(nScan,tAll,rhoAll);
   cout<<"chi**2="<<unfold.GetChi2A()<<"+"<<unfold.GetChi2L()
       <<" / "<<unfold.GetNdf()<<"\n";
@@ -488,7 +474,6 @@ TH1 *unfoldedOutputRho(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins,
   TH1F *histMunfold = (TH1F*)unfold.GetOutput(TString::Format("UnfoldedOutput_%s",variable.Data())); //, 0, 0, 0, kFALSE);
   return histMunfold;
 
-
 }
 
 
@@ -505,8 +490,6 @@ TH1 *unfoldedOutput_LCurve(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeB
   //========================================================================
   // the unfolding is done here
   //========================================================================
-  // the unfolding is done here
-  //
   // scan L curve and find best point
   Int_t nScan=30;
   // use automatic L-curve scan: start with taumin=taumax=0.0
@@ -520,8 +503,6 @@ TH1 *unfoldedOutput_LCurve(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeB
   // finally, the unfolding is done for the best choice of tau
   iBest=unfold.ScanLcurve(nScan,tauMin,tauMax,&lCurve,&logTauX,&logTauY);
   std::cout<<"tau="<<unfold.GetTau()<<endl;
-  //unfold.DoUnfold(unfold.GetTau());
-  //TH1 *histMunfold=unfold.GetOutput("Unfolded");
 
   //set up a bin map, excluding underflow and overflow bins
   // the binMap relates the the output of the unfolding to the final

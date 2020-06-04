@@ -200,11 +200,12 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     else
     	hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     //continue;
-    TString axisTitle = variable[ivar];
     if(variable[ivar].EqualTo("yJJ"))
-    	hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
+      hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
+    else if(variable[ivar].Contains("jetY"))
+    	hUnf[ivar]->GetXaxis()->SetTitle("|"+variable[ivar]+"|");
     else
-    	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s [GeV]", variable[ivar].Data()));
+    	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", variable[ivar].Data()));
 
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
@@ -289,8 +290,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     hTheory[ivar]->SetLineColor(kRed);
     hUnf[ivar]->SetMarkerStyle(20);
     hUnf[ivar]->SetMarkerColor(kBlue);
-    hUnf[ivar]->SetTitle(TString::Format("Unfolded vs Theory %s", variable[ivar].Data()));
-    hTheory[ivar]->SetTitle(TString::Format("Unfolded vs Theory %s", variable[ivar].Data()));
+    hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(),year.Data()));
+    hTheory[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(),year.Data()));
 
     hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
     hTheory[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
@@ -305,7 +306,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   	hUnf[ivar]->Draw("same");
   	leg[ivar]->Draw();
 
-  	if(!variable[ivar].EqualTo("yJJ") && !variable[ivar].EqualTo("jetY0") && !variable[ivar].EqualTo("jetY1")) gPad->SetLogy();
+  	if(!variable[ivar].EqualTo("jetY0") && !variable[ivar].EqualTo("jetY1")) gPad->SetLogy();
 
   	closure_padRatio->cd();
   	hUnfTemp[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_%s", variable[ivar].Data()));
@@ -322,6 +323,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     hUnfTemp[ivar]->GetYaxis()->SetLabelFont(43);
     hUnfTemp[ivar]->GetYaxis()->SetLabelSize(15);
     hUnfTemp[ivar]->GetXaxis()->SetTitleSize(0.09);
+    hUnfTemp[ivar]->GetYaxis()->SetRangeUser(0,3);
 
     hUnfTemp[ivar]->SetLineColor(kRed);
     hUnfTemp[ivar]->SetMarkerStyle(20);
