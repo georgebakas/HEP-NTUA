@@ -95,8 +95,6 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
-  //3. This file is the theoretical parton/particle file that we use for comparison
-  TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplatesNominalMC.root", year.Data()));
 
 
   //whether parton or particle, from the choice of the user
@@ -122,7 +120,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   TH1 *hUnf[BND_reco.size()];
 
   //theoretical Histogram
-  TH1F *hTheory[BND_reco.size()], *hTheory_2[BND_reco.size()];
+  TH1F *hTheory[BND_reco.size()];
   TH1F *hErrorBefore[BND_reco.size()], *hErrorAfter[BND_reco.size()];
 
 
@@ -169,21 +167,18 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
       float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
       cout<<"acceptance: "<<acc<<endl;
+    	//error propagation
       if(accError > 0)
-      	  //error propagation
-      	hSig[ivar]->SetBinError(j,TMath::Sqrt(TMath::Power(accError*hSig[ivar]->GetBinContent(j),2) + TMath::Power(hSig[ivar]->GetBinError(j)*acc,2)));
-	  else
-	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
+        hSig[ivar]->SetBinError(j,TMath::Sqrt(TMath::Power(accError*hSig[ivar]->GetBinContent(j),2) + TMath::Power(hSig[ivar]->GetBinError(j)*acc,2)));
+  	  else
+  	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
     }
-    //break;
 
     TString tempVar;
     if(isParton)
       tempVar = variableParton[ivar];
     else
       tempVar = variableGen[ivar];
-
-
     //get response matrix
     hResponse[ivar] = (TH2F*)effAccInf->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
 
@@ -269,8 +264,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     closure_pad1->SetBottomMargin(0.005);
     closure_pad1->cd();
 
-    //theory histogram:
-    hTheory_2[ivar] = (TH1F*)infTheory->Get(TString::Format("h%s_%s", varParton.Data(), variable[ivar].Data()));
+    //theory histogram
     hTheory[ivar] = (TH1F*)efficiency->GetCopyTotalHisto();
 
     if(variable[ivar].EqualTo("jetY0") || variable[ivar].EqualTo("jetY1"))
