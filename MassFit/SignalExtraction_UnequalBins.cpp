@@ -144,9 +144,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hD_rebinned, *hQ_rebinned, *hSub_rebinned;
     TH1F *hQ_copy = (TH1F*)hQ->Clone(TString::Format("hD_copy_%s", variable.Data()));
     cout<<hQ_copy->GetNbinsX()<<endl;
-    //before remove subdominat and ttbar contribution from Data 0btag
-    hQ->Add(hSub_0, -1);
-    hQ->Add(hSMC_0, -1);
+    //before remove subdominat and ttbar contribution from Data 0btag (IS IT NEEDED???)
+    //hQ->Add(hSub_0, -1);
+    //hQ->Add(hSMC_0, -1);
 
     /*
     cout<<"hData 0:"<<hQ->Integral()<<endl;
@@ -290,7 +290,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
 
     TFile *outf;
-    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms.root",year.Data()), "UPDATE");
+    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "UPDATE");
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();

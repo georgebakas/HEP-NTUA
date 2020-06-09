@@ -88,10 +88,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms.root",
-                    year.Data()));
-  //TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root",
-  //								  year.Data()));
+  TFile *signalFile;
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
@@ -119,6 +116,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   TUnfold *unf[BND_reco.size()];
   TH1 *hUnf[BND_reco.size()];
 
+
   //theoretical Histogram
   TH1F *hTheory[BND_reco.size()];
   TH1F *hErrorBefore[BND_reco.size()], *hErrorAfter[BND_reco.size()];
@@ -127,6 +125,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()], *canError[BND_reco.size()];
   TLegend *leg[BND_reco.size()];
   TH1F *hUnfTemp[BND_reco.size()], *hTheoryTemp[BND_reco.size()];
+  TH1F *hUnfFinal[BND_reco.size()], *hTheoryFinal[BND_reco.size()];
 
   TString unfMethodStr = "";
   if(unfoldMethod ==2) unfMethodStr = "_LCurveMethod";
@@ -137,6 +136,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
+    signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",
+                      year.Data(), variable[ivar].Data()));
 
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
@@ -147,33 +148,39 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig_Init[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));
 
-    //hSig[ivar] = getRebinned(hSig_Init[ivar], tempBND, NBINS[ivar]);
-    hSig[ivar] = (TH1F*)hSig_Init[ivar]->Clone(TString::Format("hSig_%s", variable[ivar].Data()));
 
-    //hSig[ivar] = (TH1F*)gfile->Get("2btag_mJJ_nominal");
-    //hSig[ivar]->Scale(832 * 35920);
+    hSig[ivar] = (TH1F*)hSig_Init[ivar]->Clone(TString::Format("hSig_%s", variable[ivar].Data()));
     leg[ivar] = new TLegend(0.65,0.7,0.9,0.9);
 
     //set the new content and get acceptance
     TEfficiency *acceptance =  (TEfficiency*)effAccInf->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+    cout<<"The variable is: "<<variable[ivar]<<endl;
 
     for(int j =1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
       float acc = acceptance->GetEfficiency(j);
       hSig[ivar]->SetBinContent(j, acc*hSig[ivar]->GetBinContent(j));
       //handle errors as well--> asymmetric error from acceptance
-      //cout<<"hSig "<<j<<": "<<hSig[ivar]->GetBinContent(j)<< "hSig Error: "<<hSig[ivar]->GetBinError(j)<<endl;
-      //cout<<"hSig Error "<<j<<": "<<hSig[ivar]->GetBinError(j)<<endl;
-
       float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
-      cout<<"acceptance: "<<acc<<endl;
     	//error propagation
       if(accError > 0)
         hSig[ivar]->SetBinError(j,TMath::Sqrt(TMath::Power(accError*hSig[ivar]->GetBinContent(j),2) + TMath::Power(hSig[ivar]->GetBinError(j)*acc,2)));
   	  else
   	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
-    }
 
+    }
+    //hSig[ivar]->Clear();
+    //jetPt0 for giannis.
+    /*
+    float temps[20] = {16.648, 53.2848,145.973, 244.629,419.598,502.707, 451.793, 339.124, 269.225, 152.247, 106.633, 56.273, 47.4991, 35.6299, 32.4103,16.4189,9.65848,8.625, 8.10593,2.34321};
+    float tempsErr[20] = {3.51006,7.25984,12.158, 15.4847,22.3117,25.8852,25.2665,21.4159,19.884,15.7575, 12.3928, 9.43074,8.64378, 7.59874, 6.92505, 5.06293, 3.64715,2.89834,3.09721, 1.74377};
+    for(int j = 1; j<hSig[ivar]->GetNbinsX()+1; j++)
+    {
+      //cout<<"j: "<<j<<", data: "<<temps[j]<<", input error: "<<tempsErr[j]<<endl;
+      hSig[ivar]->SetBinContent(j,temps[j-1]);
+      hSig[ivar]->SetBinError(j, tempsErr[j-1]);
+    }
+    */
     TString tempVar;
     if(isParton)
       tempVar = variableParton[ivar];
@@ -212,7 +219,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     for (int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       hErrorAfter[ivar]->SetBinContent(i,hUnf[ivar]->GetBinError(i));
-      cout<<"hUnf after: "<<hUnf[ivar]->GetBinContent(i)<<endl;
+      cout<<"hUnf after: "<<hUnf[ivar]->GetBinContent(i)<<" with error: "<<hUnf[ivar]->GetBinError(i)<<endl;
     }
     for(int j=1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
@@ -240,13 +247,18 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       float eff = efficiency->GetEfficiency(i);
       if(eff >0)
       {
-	      cout<<"i= "<<i<<" eff="<<eff<<endl;
         float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
-	      hUnf[ivar]->SetBinContent(i, newContent);
+
 
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
-	      hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
+        float sqrt1 = TMath::Power((1/eff)*hUnf[ivar]->GetBinError(i),2);
+        float sqrt2 = TMath::Power((hUnf[ivar]->GetBinContent(i)*effError),2)/TMath::Power(eff,4);
+        hUnf[ivar]->SetBinContent(i, newContent);
+        hUnf[ivar]->SetBinError(i, TMath::Sqrt(sqrt1+sqrt2));
+        //hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
+        cout<<"i= "<<i<<" hUnf: "<<hUnf[ivar]->GetBinContent(i)<<" ± "<<hUnf[ivar]->GetBinError(i)<<endl;
+
   	  }
     }
 
@@ -273,6 +285,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       hUnf[ivar]->Rebin(2);
     }
 
+    hUnfFinal[ivar]= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s", variable[ivar].Data()));
+    hTheoryFinal[ivar]= (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
     hTheory[ivar]->Scale(1/luminosity[year], "width");
     hUnf[ivar]->Scale(1/luminosity[year], "width");
 
@@ -323,7 +337,9 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
     outf->cd();
     hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+    hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
   	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+    hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
   	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
@@ -338,8 +354,6 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 	//hResponse_->Draw("BOX");
   cout<<variable<<endl;
   TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeNone, TUnfold::kEConstraintArea);
-
-
   /*
     Return value: nError1+10000*nError2:
 
@@ -354,10 +368,7 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
   //========================================================================
 	// the unfolding is done here
   //========================================================================
-  // the unfolding is done here
-
   unfold.DoUnfold(10E-9);
-  //TH1 *histMunfold=unfold.GetOutput("Unfolded");
 
   //set up a bin map, excluding underflow and overflow bins
   // the binMap relates the the output of the unfolding to the final

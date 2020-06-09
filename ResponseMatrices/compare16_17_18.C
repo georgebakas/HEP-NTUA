@@ -25,7 +25,6 @@ void compare16_17_18(bool isEqual, bool isNominal)
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
   	plotEfficiencyResponse(varReco[ivar], varParton[ivar], varParticle[ivar], isEqual, isNominal);
-    xmin
   }
 }
 
@@ -139,7 +138,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
    for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
    {  
-	   can_eff[i] = new TCanvas(TString::Format("Efficiency can_%s",phaseSpace[i].Data()), TString::Format("Efficiency can_%s",phaseSpace[i].Data()), 700, 600);
+	   can_eff[i] = new TCanvas(TString::Format("Efficiency can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Efficiency can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   eff18[i]->SetTitle(TString::Format("%s Efficiency '16,'17,'18 %s;%s (GeV);Efficiency",phaseSpace[i].Data(), nominal.Data(),recoVar.Data())); 
 	   eff18[i]->Draw();
 	   eff17[i]->Draw("same");
@@ -166,7 +165,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
       //else gPad->Range(xmin,0,xmax,0.4);
 	   can_eff[i]->Print(TString::Format("plots%s/%s/%s/Efficiency%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
 	   
-	   can_acc[i] = new TCanvas(TString::Format("Acceptance can_%s",phaseSpace[i].Data()), TString::Format("Acceptance can_%s",phaseSpace[i].Data()), 700, 600);
+	   can_acc[i] = new TCanvas(TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   acc18[i]->SetTitle(TString::Format("%s Acceptance '16,'17,'18 %s;%s (GeV);Acceptance",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));  
 	   acc18[i]->Draw();
 	   acc17[i]->Draw("same");

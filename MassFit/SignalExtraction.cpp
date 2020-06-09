@@ -264,7 +264,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
 
     TFile *outf;
-    outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms.root",year.Data()), "UPDATE");
+    outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();

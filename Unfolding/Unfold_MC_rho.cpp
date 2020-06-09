@@ -88,10 +88,13 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
-  TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root",
-  								  year.Data()));
+  TFile *signalFile;
+
   //TFile *signalFile = TFile::Open(TString::Format("../MassFit/Mixed/%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root",
   //								  year.Data()));
+  //i also have the files in the same files with the data:
+  //TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms.root",
+                    //year.Data()));
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
   TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
@@ -129,6 +132,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   TCanvas *can[BND_reco.size()], *can_rho[BND_reco.size()], *canError[BND_reco.size()];
   TLegend *leg[BND_reco.size()];
   TH1F *hUnfTemp[BND_reco.size()], *hTheoryTemp[BND_reco.size()];
+  TH1F *hUnfFinal[BND_reco.size()], *hTheoryFinal[BND_reco.size()];
+
 
   TString unfMethodStr = "";
   if(unfoldMethod ==2) unfMethodStr = "_LCurveMethod";
@@ -140,6 +145,9 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
 
+    signalFile = TFile::Open(TString::Format("../MassFit/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root",
+                     year.Data(), variable[ivar].Data()));
+
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
     std::copy(BND_reco[ivar].begin(), BND_reco[ivar].end(), tempBND);
@@ -148,11 +156,15 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDGen);
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig_Init[ivar] = (TH1F*)signalFile->Get(TString::Format("hWt_%s_2btag_expYield",variable[ivar].Data()));
+    //could also use this from data file because I also store the MC output:
+    //hSig_Init[ivar] = (TH1F*)signalFile->Get(TString::Format("hSMC_%s",variable[ivar].Data()));
+
     for(int j=1; j<hSig_Init[ivar]->GetNbinsX(); j++)
     {
     	cout<<"hSig_Init "<<j<<": "<<hSig_Init[ivar]->GetBinContent(j)<< " hSig_Init Error: "<<hSig_Init[ivar]->GetBinError(j)<<endl;
     }
-    hSig[ivar] = getRebinned(hSig_Init[ivar], tempBND, NBINS[ivar]);
+    //hSig[ivar] = getRebinned(hSig_Init[ivar], tempBND, NBINS[ivar]);
+    hSig[ivar] = (TH1F*)hSig_Init[ivar]->Clone(TString::Format("hSig_%s", variable[ivar].Data()));
 
     //hSig[ivar] = (TH1F*)gfile->Get("2btag_mJJ_nominal");
     //hSig[ivar]->Scale(832 * 35920);
@@ -283,6 +295,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
 
 
     //hTheory_2[ivar]->SetLineColor(kGreen+2);
+    hUnfFinal[ivar]= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s", variable[ivar].Data()));
+    hTheoryFinal[ivar]= (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
     hTheory[ivar]->Scale(1/luminosity[year], "width");
     hUnf[ivar]->Scale(1/luminosity[year], "width");
 
@@ -339,7 +353,9 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
 
     outf->cd();
     hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+    hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal%s", variable[ivar].Data()));
   	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+    hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
   	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     can[ivar]->Print(TString::Format("%s/%sMeasurements/MC/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
