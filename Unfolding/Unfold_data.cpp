@@ -63,7 +63,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod=3)
+void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod=1)
 {
   year = inYear;
   initFilesMapping();
@@ -158,6 +158,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
     for(int j =1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
+      cout<<"bin: "<<j<<" Input: "<<hSig[ivar]->GetBinContent(j)<<" ±"<<hSig[ivar]->GetBinError(j)<<endl;
       float acc = acceptance->GetEfficiency(j);
       hSig[ivar]->SetBinContent(j, acc*hSig[ivar]->GetBinContent(j));
       //handle errors as well--> asymmetric error from acceptance
@@ -168,6 +169,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   	  else
   	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
 
+      //cout<<"bin: "<<j<<" Input*acc: "<<hSig[ivar]->GetBinContent(j)<<" ±"<< hSig[ivar]->GetBinError(j)<<endl;
     }
     //hSig[ivar]->Clear();
     //jetPt0 for giannis.
@@ -179,8 +181,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       //cout<<"j: "<<j<<", data: "<<temps[j]<<", input error: "<<tempsErr[j]<<endl;
       hSig[ivar]->SetBinContent(j,temps[j-1]);
       hSig[ivar]->SetBinError(j, tempsErr[j-1]);
-    }
-    */
+    }*/
+
     TString tempVar;
     if(isParton)
       tempVar = variableParton[ivar];
@@ -189,6 +191,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     //get response matrix
     hResponse[ivar] = (TH2F*)effAccInf->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
 
+    cout<<"Response matrix integral: "<<hResponse[ivar]->Integral()<<endl;
     //this will be used to unfold result
     cout<<"entering unfolding method!"<<endl;
 
@@ -250,7 +253,6 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
         float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
 
-
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
         float sqrt1 = TMath::Power((1/eff)*hUnf[ivar]->GetBinError(i),2);
         float sqrt2 = TMath::Power((hUnf[ivar]->GetBinContent(i)*effError),2)/TMath::Power(eff,4);
@@ -258,10 +260,10 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
         hUnf[ivar]->SetBinError(i, TMath::Sqrt(sqrt1+sqrt2));
         //hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
         cout<<"i= "<<i<<" hUnf: "<<hUnf[ivar]->GetBinContent(i)<<" ± "<<hUnf[ivar]->GetBinError(i)<<endl;
-
+        //cout<<"bin center "<<hUnf[ivar]->GetBinCenter(i)<<endl;
   	  }
     }
-
+  //break;
     //draw the unfolded and extrapolated with the mc result
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
     can[ivar]->cd();
@@ -349,11 +351,11 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
 TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable)
 {
-  cout<<"Using Standard Unfolding method method"<<endl;
+  cout<<"Using Standard Unfolding method"<<endl;
 	//TCanvas *can_response = new TCanvas("can_response", "can_response", 800,600);
 	//hResponse_->Draw("BOX");
   cout<<variable<<endl;
-  TUnfold unfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeNone, TUnfold::kEConstraintArea);
+  TUnfold *unfold = new TUnfold(hResponse_,TUnfold::kHistMapOutputHoriz, TUnfold::kRegModeNone, TUnfold::kEConstraintArea);
   /*
     Return value: nError1+10000*nError2:
 
@@ -362,13 +364,13 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
     -->nError2: return values>10000 are fatal errors, because the unfolding can not be done.
                 The number nError2 corresponds to the number of truth bins which are not constrained by data points
   */
-  if(unfold.SetInput(hReco)>=10000) {
+  if(unfold->SetInput(hReco)>=10000) {
     std::cout<<"Unfolding result may be wrong\n";
   }
   //========================================================================
 	// the unfolding is done here
   //========================================================================
-  unfold.DoUnfold(10E-9);
+  unfold->DoUnfold(10E-9);
 
   //set up a bin map, excluding underflow and overflow bins
   // the binMap relates the the output of the unfolding to the final
@@ -380,8 +382,9 @@ TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TS
 
   TH1F *histMunfold = new TH1F (TString::Format("UnfoldedOutput_%s",variable.Data()),TString::Format("UnfoldedOutput_%s",variable.Data()),
                                sizeBins, BND);
-  unfold.GetOutput(histMunfold, binMap);
+  unfold->GetOutput(histMunfold, binMap);
   return histMunfold;
+
 
 }
 

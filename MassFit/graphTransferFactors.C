@@ -13,7 +13,20 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false, TString variable = "jetPt0");
+
 void graphTransferFactors(TString year = "2016", bool bEnriched = false)
+{
+  const int NVAR = 8;
+  TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "mTop"};
+  for(int ivar =0; ivar<sizeof(vars)/sizeof(vars[0]); ivar++)
+  {
+    graphTransferFactorsSpecific(year, bEnriched, vars[ivar]);
+  }
+}
+
+
+void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false, TString variable = "jetPt0")
 {
   gStyle->SetOptStat(0);
   TH1F *hfData;
@@ -34,7 +47,7 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 	TH1F *hData[2], *hDataReduced[2];
 	TH1F *hQCD[2], *hQCDReduced[2];
 	hfData = new TH1F(TString::Format("hTransf_%s",year.Data()), TString::Format("hTransf_%s",year.Data()),2,0,2);
-    hfQCD  = new TH1F(TString::Format("hTransfClosure_%s",year.Data()), TString::Format("hTransfClosure_%s",year.Data()),2,0,2);
+  hfQCD  = new TH1F(TString::Format("hTransfClosure_%s",year.Data()), TString::Format("hTransfClosure_%s",year.Data()),2,0,2);
 
 	//TString histoNames[3] = {"SR", "1Btag", "CR"};
 	float tFactorData[2], tFactorQCD[2], tFactorQCDError[2], tFactorDataError[2];
@@ -42,17 +55,19 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 
     float x[2] = {0,2};
 
-	hData[0] = (TH1F*)infData->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
-	hDataReduced[0] = (TH1F*)infDataReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
-	cout<<"hData_0btag_reduced: "<<hDataReduced[0]->Integral()<<endl;
+	hData[0] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
+	hDataReduced[0] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
+  double temp;
+  cout<<"hData_0btag_reduced: "<<hDataReduced[0]->Integral()<<endl;
+	cout<<"hData_0btag_reduced integral and error: "<<hDataReduced[0]->IntegralAndError(1, hData[0]->GetNbinsX(),temp)<<endl;
 	cout<<"hData_0btag_extended: "<<hData[0]->Integral()<<endl;
 
-	hQCD[0] = (TH1F*)infQCD->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
-	hQCDReduced[0] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",0));
+	hQCD[0] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
+	hQCDReduced[0] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
 	cout<<"mcQCD_0btag_reduced: "<<hQCDReduced[0]->Integral()<<endl;
 	cout<<"mcQCD_0btag_extended: "<<hQCD[0]->Integral()<<endl;
 
-	tFactorData[0] = (hDataReduced[0]->GetEntries() / hData[0]->GetEntries());
+	tFactorData[0] = (hDataReduced[0]->Integral() / hData[0]->Integral());
 	tFactorDataError[0] = TMath::Sqrt((hDataReduced[0]->GetEntries()*(hData[0]->GetEntries() + hDataReduced[0]->GetEntries()))/ TMath::Power(hData[0]->GetEntries(),3));
 	tFactorQCD[0] = (hQCDReduced[0]->Integral() / hQCD[0]->Integral());
 	//cout<<tFactorData[i]<<endl;
@@ -66,17 +81,17 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 
 	for(int i =1; i<2; i++)
 	{
-		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
-		hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
+		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+		hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
 		//cout<<"hData_2btag_reduced: "<<hDataReduced[i]->GetEntries()<<endl;
 		//cout<<"hData_2btag_extended: "<<hData[i]->GetEntries()<<endl;
 
-		hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
-		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_mTop_%dbtag_expYield",i+1));
+		hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
 		cout<<"mcQCD_2btag_reduced: "<<hQCDReduced[i]->Integral()<<endl;
 		cout<<"mcQCD_2btag_extended: "<<hQCD[i]->Integral()<<endl;
 
-		tFactorData[i] = (hDataReduced[i]->GetEntries() / hData[i]->GetEntries());
+		tFactorData[i] = (hDataReduced[i]->Integral() / hData[i]->Integral());
 		tFactorDataError[i] = TMath::Sqrt((hDataReduced[i]->GetEntries()*(hData[i]->GetEntries() + hDataReduced[i]->GetEntries()))/ TMath::Power(hData[i]->GetEntries(),3));
 		tFactorQCD[i] = (hQCDReduced[i]->Integral() / hQCD[i]->Integral());
 		//cout<<tFactorData[i]<<endl;
@@ -112,30 +127,30 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
   	  //int year = 2016+i;
   	  //TString year = "2016";
   	  //now plot them Data
-  	  outF = new TFile(TString::Format("%s/TransferFactor%s.root",year.Data(), bEnr.Data()), "RECREATE");
-  	  hfData->SetTitle(TString::Format("R_{yield} transfer factor %s", year.Data()));
-	  hfData->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
+  	  outF = new TFile(TString::Format("%s/Ryield/TransferFactor%s_%s.root",year.Data(), bEnr.Data(), variable.Data()), "RECREATE");
+  	  hfData->SetTitle(TString::Format("R_{yield} transfer factor %s %s", year.Data(),variable.Data()));
+	     hfData->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
       hfData->SetMarkerStyle(marker[i]);
 	  hfData->SetMarkerColor(col[i]);
 	  hfData->SetLineColor(col[i]);
 	  hfData->GetYaxis()->SetTitleOffset(1.25);
       hfData->GetYaxis()->SetRangeUser(0.1,0.8);
-	  can = new TCanvas(TString::Format("can_%s", year.Data()),TString::Format("can_%s", year.Data()),800,600);
+	  can = new TCanvas(TString::Format("can_%s_%s", year.Data(),variable.Data()),TString::Format("can_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfData->Draw("hist e");
-	  can->Print(TString::Format("%s/Ryield/TransferFactor%s.pdf",year.Data(), bEnr.Data()),"pdf");
+	  can->Print(TString::Format("%s/Ryield/TransferFactor%s_%s.pdf",year.Data(), bEnr.Data(),variable.Data()),"pdf");
 
 	  hfData->Write("dataTransferFactor");
 	  //now plot them QCD
-  	  hfQCD->SetTitle(TString::Format("R_{yield} transfer factor %s (Closure Test)", year.Data()));
+  	  hfQCD->SetTitle(TString::Format("R_{yield} transfer factor %s %s(Closure Test)", year.Data(),variable.Data()));
 	  hfQCD->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
       hfQCD->SetMarkerStyle(marker[i]);
 	  hfQCD->SetMarkerColor(col[i]);
 	  hfQCD->SetLineColor(col[i]);
 	  hfQCD->GetYaxis()->SetTitleOffset(1.25);
       hfQCD->GetYaxis()->SetRangeUser(0.1,0.5);
-	  canQCD = new TCanvas(TString::Format("canQCD_%s", year.Data()),TString::Format("canQCD_%s", year.Data()),800,600);
+	  canQCD = new TCanvas(TString::Format("canQCD_%s_%s", year.Data(),variable.Data()),TString::Format("canQCD_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfQCD->Draw("hist e");
-	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral%s.pdf",year.Data(), bEnr.Data()),"pdf");
+	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral%s_%s.pdf",year.Data(), bEnr.Data(),variable.Data()),"pdf");
 
 	  hfQCD->Write("ClosureTest_TransferFactor");
 

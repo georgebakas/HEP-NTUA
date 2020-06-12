@@ -66,6 +66,7 @@ void SignalExtraction_UnequalBins(TString year)
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
         SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
+        //break;
     }
 }
 
@@ -84,7 +85,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //hQ has to be scaled to integral, because we need the shape
 
     //open the file to get the Ryield
-    TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor_HT300toInf_100.root",year.Data()));
+    TFile *infRyield = TFile::Open(TString::Format("%s/Ryield/TransferFactor_HT300toInf_100_%s.root",year.Data(),variable.Data()));
     //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
 
@@ -181,7 +182,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
-
+    cout<<variable.Data()<<endl;
     if(variable.EqualTo("jetPt0") || (variable.EqualTo("jetPt1") && !year.EqualTo("2016")))
     {
         TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s_reduced.root",year.Data()));
@@ -197,23 +198,27 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
      for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
 
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
-    //cout<<"--------"<<endl;
+    cout<<"--------"<<endl;
+    cout<<"NQCD: "<<NQCD<<endl;
+    cout<<"---"<<endl;
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
     {
         float oldContent = hQ_rebinned->GetBinContent(i+1);
         float oldError = hQ_rebinned->GetBinError(i+1);
         float newContent;
+        //cout<<"old content: "<<oldContent * SF[i]<<endl;
+        cout<<oldContent * SF[i] * Ryield * r_yield_correction * NQCD<<endl;
         newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];
-        //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
+        //cout<<Ryield * r_yield_correction * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
-        //cout<<newContent<<endl;
+        //cout<<"i: "<<i+1<<", with content: "<<newContent<<endl;
         float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
                                         TMath::Power(NQCD_error*oldContent*Ryield,2));
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal
     }
-
+    cout<<"-----"<<endl;
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
     cout<<hD_rebinned->Integral()<<endl;
@@ -290,7 +295,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
 
     TFile *outf;
-    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "UPDATE");
+    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
     hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
     hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
     outf->Close();

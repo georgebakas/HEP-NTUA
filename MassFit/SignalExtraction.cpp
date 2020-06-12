@@ -83,7 +83,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //hQ has to be scaled to integral, because we need the shape
 
     //open the file to get the Ryield
-    TFile *infRyield = TFile::Open(TString::Format("%s/TransferFactor_HT300toInf_100.root",year.Data()));
+    TFile *infRyield = TFile::Open(TString::Format("%s/Ryield/TransferFactor_HT300toInf_100_%s.root",year.Data(), variable.Data()));
     //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
     float Ryield = hRyield->GetBinContent(1);
