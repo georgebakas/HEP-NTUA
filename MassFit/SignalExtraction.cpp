@@ -89,9 +89,14 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float Ryield = hRyield->GetBinContent(1);
     float Ryield_error = hRyield->GetBinError(1);
 
+
     float r_yield_correction;
     TH1F *hRyieldMC = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     r_yield_correction = (hRyieldMC->GetBinContent(2)/ hRyieldMC->GetBinContent(1));
+    //float r_yield_correction_error = TMath::Sqrt(TMath::Power(hRyieldMC->GetBinError(2)/hRyieldMC->GetBinContent(1),2)
+    //                                + TMath::Power((hRyieldMC->GetBinContent(2)*hRyieldMC->GetBinError(2))/TMath::Power(hRyieldMC->GetBinContent(1),2),2));
+
+    float r_yield_correction_error = 0.104911;
     cout<<"----MC-----"<<endl;
     cout<<"hRyieldMC->GetBinContent(2): "<<hRyieldMC->GetBinContent(2)<<endl;
     cout<<"hRyieldMC->GetBinContent(0): "<<hRyieldMC->GetBinContent(1)<<endl;
@@ -181,8 +186,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];
         //cout<<newContent<<endl;
         //cout<<Ryield * NQCD * oldContent * SF[i]<<endl;
-        float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
-                                        TMath::Power(NQCD_error*oldContent*Ryield,2));
+        float newError   = TMath::Sqrt(TMath::Power(NQCD*r_yield_correction*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*r_yield_correction*Ryield,2)+
+                                        TMath::Power(NQCD_error*oldContent*r_yield_correction*Ryield,2) + TMath::Power(r_yield_correction_error*NQCD*oldContent*Ryield,2));
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
         //now setThe content for the hSignal

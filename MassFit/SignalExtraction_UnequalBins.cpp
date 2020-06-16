@@ -63,7 +63,7 @@ void SignalExtraction_UnequalBins(TString year)
 {
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
-    for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
+    for(int i=0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
         SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
         //break;
@@ -95,13 +95,19 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float r_yield_correction;
     TH1F *hRyieldMC = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     r_yield_correction = (hRyieldMC->GetBinContent(2)/ hRyieldMC->GetBinContent(1));
+    //float r_yield_correction_error = TMath::Sqrt(TMath::Power(hRyieldMC->GetBinError(2)/hRyieldMC->GetBinContent(1),2)
+    //                                  + TMath::Power((hRyieldMC->GetBinContent(2)*hRyieldMC->GetBinError(2))/TMath::Power(hRyieldMC->GetBinContent(1),2),2));
+
+    float r_yield_correction_error = 0.104911;
     cout<<"-------------------------"<<endl;
-    cout<<"Ryield_data (0): "<<Ryield<<endl;
-    cout<<"r_yield_correction: "<<r_yield_correction<<endl;
+    cout<<"Ryield_data (0): "<<Ryield<<" ± "<<Ryield_error<<endl;
+    cout<<"r_yield_correction: "<<r_yield_correction<<" ± "<<r_yield_correction_error<<endl;
 
-    cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
-    cout<<"corrected Ryield: "<<r_yield_correction * Ryield<<endl;
-
+    float corrected_rYield = r_yield_correction * Ryield;
+    float corrected_error = TMath::Sqrt(TMath::Power(r_yield_correction*Ryield_error,2) + TMath::Power(r_yield_correction_error*Ryield,2));
+    //cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
+    cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
+    //return;
     //open the file to get the Nbkg
     float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
@@ -206,16 +212,27 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         float oldContent = hQ_rebinned->GetBinContent(i+1);
         float oldError = hQ_rebinned->GetBinError(i+1);
         float newContent;
-        //cout<<"old content: "<<oldContent * SF[i]<<endl;
-        cout<<oldContent * SF[i] * Ryield * r_yield_correction * NQCD<<endl;
-        newContent = oldContent * Ryield * r_yield_correction * NQCD * SF[i];
+        //cout<<"i: "<<i+1<<" old content* SF: "<<oldContent* SF[i]<<endl; //* SF[i]<<endl;
+        //cout<<oldContent * SF[i] * corrected_rYield * NQCD<<" ± "<<endl;
+        newContent = oldContent * corrected_rYield * NQCD * SF[i];
         //cout<<Ryield * r_yield_correction * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         //cout<<"i: "<<i+1<<", with content: "<<newContent<<endl;
-        float newError   = TMath::Sqrt(TMath::Power(NQCD*oldContent*Ryield_error,2) + TMath::Power(NQCD*oldError*Ryield,2)+
-                                        TMath::Power(NQCD_error*oldContent*Ryield,2));
+        float newError   = TMath::Sqrt(TMath::Power(oldError*NQCD*corrected_rYield,2)+
+                                       TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
+                                       TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
+
+        /*cout<<"bin: "<<i+1<<endl;
+        cout<<"oldContent: "<<oldContent *SF[i]<<" ± "<<oldError<<endl;
+        cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
+        cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
+        double x1 = TMath::Power(oldContent */
+
+        //cout<<"-----"<<endl;
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
+        cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
+        //cout<<"NQCD_error: "<<NQCD_error<<endl;
         //now setThe content for the hSignal
     }
     cout<<"-----"<<endl;

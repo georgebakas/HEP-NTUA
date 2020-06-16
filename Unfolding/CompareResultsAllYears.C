@@ -144,6 +144,7 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
       hUnfolded_Clone[iy][ivar]->GetYaxis()->SetTitleOffset(1.55);
       hUnfolded_Clone[iy][ivar]->GetYaxis()->SetLabelFont(43);
       hUnfolded_Clone[iy][ivar]->GetYaxis()->SetLabelSize(15);
+      hUnfolded_Clone[iy][ivar]->GetXaxis()->SetLabelSize(0.09);
       hUnfolded_Clone[iy][ivar]->GetXaxis()->SetTitleSize(0.09);
       hUnfolded_Clone[iy][ivar]->GetYaxis()->SetRangeUser(0,2);
 
@@ -173,6 +174,7 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
       hUnfNorm_Clone[iy][ivar]->GetYaxis()->SetTitleOffset(1.55);
       hUnfNorm_Clone[iy][ivar]->GetYaxis()->SetLabelFont(43);
       hUnfNorm_Clone[iy][ivar]->GetYaxis()->SetLabelSize(15);
+      hUnfNorm_Clone[iy][ivar]->GetXaxis()->SetLabelSize(0.09);
       hUnfNorm_Clone[iy][ivar]->GetXaxis()->SetTitleSize(0.09);
       hUnfNorm_Clone[iy][ivar]->GetYaxis()->SetRangeUser(0,2);
 

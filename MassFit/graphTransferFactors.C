@@ -54,7 +54,7 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 	std::vector<TString> names = {"0btag", "2btag"};
 
     float x[2] = {0,2};
-
+/*
 	hData[0] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
 	hDataReduced[0] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
   double temp;
@@ -78,39 +78,65 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 	tFactorQCDError[0] = TMath::Sqrt(TMath::Power(intErrorReduced,2)/TMath::Power(hQCD[0]->Integral(),2) + TMath::Power(hQCDReduced[0]->Integral(),2)
 			*TMath::Power(intError,2)/TMath::Power(hQCD[0]->Integral(),4)  );
 
-
-	for(int i =1; i<2; i++)
+*/
+  cout<<variable<<endl;
+	for(int i =0; i<2; i++)
 	{
-		hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
-		hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
-		//cout<<"hData_2btag_reduced: "<<hDataReduced[i]->GetEntries()<<endl;
-		//cout<<"hData_2btag_extended: "<<hData[i]->GetEntries()<<endl;
+		if(i==0)
+    {
+      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+		  hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+      hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+  		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
 
-		hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
-		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
-		cout<<"mcQCD_2btag_reduced: "<<hQCDReduced[i]->Integral()<<endl;
-		cout<<"mcQCD_2btag_extended: "<<hQCD[i]->Integral()<<endl;
+    }
+    else
+    {
+      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+      hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+      hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+  		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+
+    }
 
 		tFactorData[i] = (hDataReduced[i]->Integral() / hData[i]->Integral());
-		tFactorDataError[i] = TMath::Sqrt((hDataReduced[i]->GetEntries()*(hData[i]->GetEntries() + hDataReduced[i]->GetEntries()))/ TMath::Power(hData[i]->GetEntries(),3));
-		tFactorQCD[i] = (hQCDReduced[i]->Integral() / hQCD[i]->Integral());
+    Double_t intErrorData, intErrorDataReduced;
+    Double_t integralData = hData[i]->IntegralAndError(1, hData[i]->GetNbinsX(), intErrorData);
+		Double_t integralDataReduced = hDataReduced[i]->IntegralAndError(1, hDataReduced[i]->GetNbinsX(), intErrorDataReduced);
+
+    tFactorDataError[i] = TMath::Sqrt(TMath::Power(intErrorDataReduced/integralData,2) + TMath::Power(integralDataReduced*intErrorData/TMath::Power(integralData,2),2) );
+
+    tFactorQCD[i] = (hQCDReduced[i]->Integral() / hQCD[i]->Integral());
 		//cout<<tFactorData[i]<<endl;
 		Double_t intError, intErrorReduced;
-		float integral = hQCD[i]->IntegralAndError(1, hQCD[i]->GetNbinsX(), intError);
-		float integralReduced = hQCDReduced[i]->IntegralAndError(1, hQCDReduced[i]->GetNbinsX(), intErrorReduced);
+		Double_t integral = hQCD[i]->IntegralAndError(1, hQCD[i]->GetNbinsX(), intError);
+		Double_t integralReduced = hQCDReduced[i]->IntegralAndError(1, hQCDReduced[i]->GetNbinsX(), intErrorReduced);
 
-		tFactorQCDError[i] = TMath::Sqrt(TMath::Power(intErrorReduced,2)/TMath::Power(hQCD[i]->Integral(),2) + TMath::Power(hQCDReduced[i]->Integral(),2)
-				*TMath::Power(intError,2)/TMath::Power(hQCD[i]->Integral(),4)  );
+    tFactorQCDError[i] = TMath::Sqrt(TMath::Power(intErrorReduced/integral,2) + TMath::Power(integralReduced*intError/TMath::Power(integral,2),2) );
+
+
+    if(i==0)
+    {
+      cout<<"data_0btag_reduced: "<<integralDataReduced<<" ± "<<intErrorDataReduced<<endl;
+		  cout<<"data_0btag_extended: "<<integralData<<" ± "<<intErrorData<<endl;
+      cout<<"mcQCD_0btag_reduced: "<<integralReduced<<" ± "<<intErrorReduced<<endl;
+		  cout<<"mcQCD_0btag_extended: "<<integral<<" ± "<<intError<<endl;
+    }
+    else
+    {
+      cout<<"mcQCD_2btag_reduced: "<<integralReduced<<" ± "<<intErrorReduced<<endl;
+		  cout<<"mcQCD_2btag_extended: "<<integral<<" ± "<<intError<<endl;
+    }
 	}
 	for(int i =0; i<2; i++)
 	{
 		hfData->SetBinContent(i+1, tFactorData[i]);
-     	hfData->SetBinError(i+1, tFactorDataError[i]);
-  	  	hfData->GetXaxis()->SetBinLabel(i+1,names[i].Data());
+    hfData->SetBinError(i+1, tFactorDataError[i]);
+  	hfData->GetXaxis()->SetBinLabel(i+1,names[i].Data());
 
-  	  	hfQCD->SetBinContent(i+1, tFactorQCD[i]);
-     	hfQCD->SetBinError(i+1, tFactorQCDError[i]);
-  	  	hfQCD->GetXaxis()->SetBinLabel(i+1,names[i].Data());
+  	hfQCD->SetBinContent(i+1, tFactorQCD[i]);
+    hfQCD->SetBinError(i+1, tFactorQCDError[i]);
+  	hfQCD->GetXaxis()->SetBinLabel(i+1,names[i].Data());
 	}
 
    //GetXaxis()->SetBinLabel(i+1,histoNames[i].Data());
