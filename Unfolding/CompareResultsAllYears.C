@@ -62,7 +62,7 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
 
   TPad *closure_padRatio[NVAR], *closure_padRatio_norm[NVAR];
   TPad *closure_pad1[NVAR], *closure_pad1_norm[NVAR];
-
+  TH1F *hTemp, *hTemp_Norm;
   for(int ivar =0; ivar<NVAR; ivar++)
   {
     cout<<variable[ivar]<<endl;
@@ -127,7 +127,12 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
 
       //for the double ratio:
       //divide with 2016 as reference
-      hUnfolded_Clone[iy][ivar]->Divide(hUnfolded_Clone[0][ivar]);
+      if(iy==0)
+      {
+          hTemp = (TH1F*)hUnfolded_Clone[0][ivar]->Clone("hTemp");
+          hTemp_Norm= (TH1F*)hUnfNorm_Clone[0][ivar]->Clone("hTemp_Norm");
+      }
+      hUnfolded_Clone[iy][ivar]->Divide(hTemp);
 
       hUnfolded[iy][ivar]->Draw("same");
     	leg[ivar]->Draw();
@@ -159,7 +164,7 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
       hUnfNorm[iy][ivar]->GetYaxis()->SetRangeUser(0,2);
       legNorm[ivar]->AddEntry(hUnfolded[iy][ivar], TString::Format("%s",years[iy].Data()), "lpe");
 
-      hUnfNorm_Clone[iy][ivar]->Divide(hUnfNorm_Clone[0][ivar]);
+      hUnfNorm_Clone[iy][ivar]->Divide(hTemp_Norm);
 
       closure_padRatio_norm[ivar]->SetTopMargin(0.05);
       closure_padRatio_norm[ivar]->SetBottomMargin(0.3);

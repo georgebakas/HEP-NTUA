@@ -90,7 +90,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile;
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
 
 
@@ -136,7 +136,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
-    signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",
+    signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/EqualBinning/SignalHistograms_%s.root",
                       year.Data(), variable[ivar].Data()));
 
     int sizeBins = NBINS[ivar];
