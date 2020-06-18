@@ -228,7 +228,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   gStyle->SetOptStat(0);
   const int NVAR =11;
   const int N_MJJ = 9;
-  const int N_PTJJ = 8;
+  const int N_PTJJ = 7;
   const int N_YJJ = 8;
   const int N_PT0 = 20;
   const int N_PT1 = 9;
@@ -245,7 +245,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT0, N_PT1 ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
 
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-													                          {0,60,150,300,450,600,750,1000,1300}, //ptjj
+													                          {0,60,150,300,450,600,800,1300}, //ptjj
 													                          {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
 		   	                                            {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
 													                          {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
