@@ -227,12 +227,12 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
   gStyle->SetOptStat(0);
   const int NVAR =11;
-  const int N_MJJ = 18;
-  const int N_PTJJ = 16;
+  const int N_MJJ = 9;
+  const int N_PTJJ = 7;
   const int N_YJJ = 8;
   const int N_PT0 = 20;
-  const int N_PT1 = 17;
-  const int N_JETY = 24;
+  const int N_PT1 = 9;
+  const int N_JETY = 12;
   const int N_JETMASS = 100;
   const int N_MVA = 100;
 
@@ -243,15 +243,14 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
 
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT0, N_PT1 ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
-  std::vector< std::vector <Float_t> > const BND = {{1000, 1100,1200,1300, 1400,1500, 1600,1700, 1800,1900, 2000,2200, 2400,2600, 2800,3000, 3500,4200, 5000}, //mjj 19
-                                                   {0,30,60,105,150,225,300,375,450,525,600,675,750,850,950,1100,1300}, //ptjj 17
-                                                   {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                   {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
-                                                   {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1100,1300,1500}, //jetPt1 18
-                                                   {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}, //jetY0
-                                                   {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4}}; //jetY0 25
 
-
+  std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
+													{0,60,150,300,450,650,900,1300}, //ptjj
+													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
+		   	                                        {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
+													{400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
+													{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
+                                                    {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1",
                "mva", "topTagger1", "mTop", "jetMassSoftDrop"};
