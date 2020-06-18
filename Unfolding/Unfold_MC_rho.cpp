@@ -85,7 +85,6 @@ std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1
                                                       {400,450,500,570,650,800,1100, 1500}, //jetPt1
                                                       {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
                                                       {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
