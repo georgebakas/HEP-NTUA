@@ -104,7 +104,7 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   cout<<LUMI<<endl;
 
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-													{0,60,150,300,450,650,900,1300}, //ptjj
+													{0,60,150,300,450,600,800,1300}, //ptjj
 													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
 		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
 													{400,450,500,570,650,800, 1100, 1500}, //jetPt1
