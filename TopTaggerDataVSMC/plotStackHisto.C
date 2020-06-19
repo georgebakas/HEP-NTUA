@@ -11,6 +11,7 @@
 using std::cin;
 using std::cout;
 using std::endl;
+#include "TemplateConstants.h"
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr);
 
@@ -42,15 +43,15 @@ void plotStackHisto(TString year)
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr)
 {
-
+  initFilesMapping(false);
   //now get the histograms
   TH1F *hData, *hTT, *hQCD, *hSub;
 
-  hData = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
-  hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
+  hData = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
   //hQCD = (TH1F*)infData->Get("hWt_mva_0btag_expYield");
-  hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
-  hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
+  hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
 
   //make them pretty :D
   hTT->SetLineColor(kRed-9);
@@ -75,10 +76,9 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hTT->Rebin(2);
   hSub->Rebin(2); */
 
-  /*hData->Scale(1/hData->Integral());
-  hTT->Scale(1/hTT->Integral());
-  hQCD->Scale(1/hQCD->Integral());
-  hSub->Scale(1/hSub->Integral()); */
+  hTT->Scale(signalStrenth[year]);
+  hQCD->Scale(signalStrenth[year]);
+  hSub->Scale(signalStrenth[year]);
 
   THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
   hs->Add(hQCD);
@@ -110,9 +110,10 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   leg->AddEntry(hSub, "Subdominant", "f");
   leg->Draw();
 
+
+
   hData->Draw("E");
   hs->Draw("same hist");
-
   hs->GetYaxis()->SetTitle("Number of Events");
 
   closure_pad2->cd();
@@ -134,6 +135,6 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetLabelSize(13);
 
   hNum->Draw();
-  //can->Print(TString::Format("%s/TopTaggerDatavsMC.pdf",year.Data()),"pdf");
+  can->Print(TString::Format("%s/plots/TopTaggerDatavsMC_%s_%s.pdf",year.Data(), variable.Data(), leadingStr.Data()),"pdf");
 
 }
