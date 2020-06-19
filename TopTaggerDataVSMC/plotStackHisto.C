@@ -12,12 +12,13 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void plotStackHisto(TString year = "2016")
+void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr);
+
+void plotStackHisto(TString year)
 {
   //get the files from the directory
   //data file
   TFile *infData = TFile::Open(TString::Format("%s/TopTaggerHisto_Data_%s_100.root", year.Data(), year.Data()));
-
   //tt nominal file:
   TFile *infTT = TFile::Open(TString::Format("%s/TopTaggerHisto_TT_NominalMC_100.root", year.Data()));
   //qcd mc file
@@ -25,15 +26,31 @@ void plotStackHisto(TString year = "2016")
   //subdominant file:
   TFile *infSub = TFile::Open(TString::Format("%s/TopTaggerHisto_SubdominantBkgs_100.root", year.Data()));
 
+  const int NVAR =11;
+  TString leadStr[] = {"leading", "subleading"};
+  TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
+                              "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt"};
+  for(int ivar = 0; ivar< NVAR; ivar++)
+  {
+    for(int ilead = 0; ilead<2; ilead++)
+    {
+      plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], leadStr[ilead]);
+    }
+  }
+}
+
+
+void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr)
+{
 
   //now get the histograms
   TH1F *hData, *hTT, *hQCD, *hSub;
 
-  hData = (TH1F*)infData->Get("hWt_mva_2btag_expYield");
-  hTT = (TH1F*)infTT->Get("hWt_mva_2btag_expYield");
+  hData = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
+  hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
   //hQCD = (TH1F*)infData->Get("hWt_mva_0btag_expYield");
-  hQCD = (TH1F*)infQCD->Get("hWt_mva_2btag_expYield");
-  hSub = (TH1F*)infSub->Get("hWt_mva_2btag_expYield");
+  hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
+  hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_%s", variable.Data(),leadingStr.Data()));
 
   //make them pretty :D
   hTT->SetLineColor(kRed-9);
@@ -52,10 +69,11 @@ void plotStackHisto(TString year = "2016")
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
 
+/*
   hData->Rebin(2);
   hQCD->Rebin(2);
   hTT->Rebin(2);
-  hSub->Rebin(2);
+  hSub->Rebin(2); */
 
   /*hData->Scale(1/hData->Integral());
   hTT->Scale(1/hTT->Integral());
@@ -67,16 +85,16 @@ void plotStackHisto(TString year = "2016")
   hs->Add(hSub);
   hs->Add(hTT);
 
-  TCanvas *can = new TCanvas("can_", "can_", 800, 600);
+  TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), 800, 600);
   TLegend *leg = new TLegend(0.65,0.7,0.9,0.9);
   can->cd();
-  TPad *closure_pad2 = new TPad("cp2","cp2",0.,0.,1.,0.3);
+  TPad *closure_pad2 = new TPad(TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),0.,0.,1.,0.3);
   closure_pad2->Draw();
   closure_pad2->SetTopMargin(0.05);
   closure_pad2->SetBottomMargin(0.25);
   closure_pad2->SetGrid();
 
-  TPad *closure_pad1 = new TPad("cp1","cp1",0.,0.3,1.,1.);
+  TPad *closure_pad1 = new TPad(TString::Format("cp1_%s_%s",variable.Data(),leadingStr.Data()),TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),0.,0.3,1.,1.);
   closure_pad1->Draw();
   closure_pad1->SetBottomMargin(0.01);
   closure_pad1->cd();
@@ -92,8 +110,9 @@ void plotStackHisto(TString year = "2016")
   leg->AddEntry(hSub, "Subdominant", "f");
   leg->Draw();
 
-  hs->Draw("hist");
-  hData->Draw("same E");
+  hData->Draw("E");
+  hs->Draw("same hist");
+
   hs->GetYaxis()->SetTitle("Number of Events");
 
   closure_pad2->cd();
@@ -104,7 +123,7 @@ void plotStackHisto(TString year = "2016")
   hNum->Divide(hDenom);
   hNum->SetTitle("");
   hNum->GetYaxis()->SetTitle("#frac{Data}{MC}");
-  hNum->GetXaxis()->SetTitle("TopTagger Output");
+  hNum->GetXaxis()->SetTitle(variable);
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
   hNum->GetYaxis()->SetTitleOffset(1.3);
@@ -115,6 +134,6 @@ void plotStackHisto(TString year = "2016")
   hNum->GetXaxis()->SetLabelSize(13);
 
   hNum->Draw();
-  can->Print(TString::Format("%s/TopTaggerDatavsMC.pdf",year.Data()),"pdf");
+  //can->Print(TString::Format("%s/TopTaggerDatavsMC.pdf",year.Data()),"pdf");
 
 }

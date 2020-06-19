@@ -666,14 +666,14 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
    //cout<<"------"<<endl;
    for(int ivar = 0; ivar <xRecoAll_Leading.size(); ivar ++)
    {
-   	
+
      xReco_leading = xRecoAll_Leading[ivar];
      xReco_subleading = xRecoAll_SubLeading[ivar];
      if(selection == 0) genEvtWeight =1;
      //Signal Region with tTagger
      if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
      {
-      
+
       hSR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight);
       hSR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight);
      }
@@ -687,7 +687,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
   }//----end of nJets
   } //---end of event loop
-  
+
   }//----end of fileSize loop
 
   TH1F *hCR_Leading_Clone[listOfFiles.size()][NVAR];
@@ -713,10 +713,10 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
          hSR_Leading_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
          hSR_SubLeading_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
 
-         hCR_Leading_Clone[j][ivar]->Scale(weights[j]); //this is CR
-         hCR_SubLeading_Clone[j][ivar]->Scale(weights[j]); //this is CR
-         hSR_Leading_Clone[j][ivar]->Scale(weights[j]); //this is Signal region
-         hSR_SubLeading_Clone[j][ivar]->Scale(weights[j]); //this is Signal region
+         hCR_Leading[j][ivar]->Scale(weights[j]); //this is CR
+         hCR_SubLeading[j][ivar]->Scale(weights[j]); //this is CR
+         hSR_Leading[j][ivar]->Scale(weights[j]); //this is Signal region
+         hSR_SubLeading[j][ivar]->Scale(weights[j]); //this is Signal region
         }
     }
 
