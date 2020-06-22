@@ -4,11 +4,11 @@ void Contamination(TString year)
   gStyle->SetOptStat(0);
 
   //data template
-  TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(),year.Data());
+  TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(),year.Data()));
   //qcd template
-  TFile *infQCDMC = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100.root", year.Data());
+  TFile *infQCDMC = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100.root", year.Data()));
   //ttbar
-  TFile *infTTMCL = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data());  //nominal
+  TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data()));  //nominal
   //TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt
   //subdominant bkgs
   TFile *infSubBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));  //nominal

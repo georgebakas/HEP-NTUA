@@ -72,27 +72,36 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
   if(recoVar.EqualTo("mTop") || recoVar.EqualTo("jetMassSoftDrop")) fitFile = TFile::Open(TString::Format("closureTest_fitResults_%s_extended.root",year.Data()));
   else fitFile = TFile::Open(TString::Format("closureTest_fitResults_%s_reduced.root",year.Data()));
   TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
+
+  TString reas = "QCDClosure";
+  TF1 *tempFR2;
+
   if(useScaleFactor)
   {
     int NBINS = hBkg_CR->GetNbinsX();
     float SF;
-    for(int ibin=1; ibin<= NBINS; ibin++)
+    if(((recoVar.Contains("jetPt") || recoVar.EqualTo("mJJ")) && !year.EqualTo("2016")) || (recoVar.EqualTo("jetPt0") && year.EqualTo("2016")))
     {
-      cout<<"----------"<<endl;
-      cout<<"before fit: "<<hBkg_SR->GetBinContent(ibin)/hBkg_CR->GetBinContent(ibin)<<endl;
-      float binContent = hBkg_CR->GetBinContent(ibin);
-      float chi = hBkg_CR->GetBinCenter(ibin);
-      SF = fitResult->Eval(chi);
-      //cout<<SF<<endl;
-      hBkg_CR->SetBinContent(ibin, binContent * SF);
-      cout<<"after fit: "<<hBkg_SR->GetBinContent(ibin)/hBkg_CR->GetBinContent(ibin)<<endl;
+      for(int ibin=1; ibin<= NBINS; ibin++)
+      {
+        cout<<"----------"<<endl;
+        cout<<"before fit: "<<hBkg_SR->GetBinContent(ibin)/hBkg_CR->GetBinContent(ibin)<<endl;
+        float binContent = hBkg_CR->GetBinContent(ibin);
+        float chi = hBkg_CR->GetBinCenter(ibin);
+        SF = fitResult->Eval(chi);
+        //cout<<SF<<endl;
+        hBkg_CR->SetBinContent(ibin, binContent * SF);
+        cout<<"after fit: "<<hBkg_SR->GetBinContent(ibin)/hBkg_CR->GetBinContent(ibin)<<endl;
+      }
     }
+
+    ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, useScaleFactor, fitResult);
+  }
+  else
+  {
+    if(((recoVar.Contains("jetPt") || recoVar.EqualTo("mJJ")) && !year.EqualTo("2016")) || (recoVar.EqualTo("jetPt0") && year.EqualTo("2016"))) ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, false, fitResult);
   }
 
-  //this is closure test
-  TString reas = "QCDClosure";
-  TF1 *tempFR2;
-  ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, useScaleFactor, fitResult);
 
 }
 

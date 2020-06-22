@@ -93,7 +93,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hRyieldMC = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     r_yield_correction = (hRyieldMC->GetBinContent(2)/ hRyieldMC->GetBinContent(1));
 
-    float r_yield_correction_error = 0.104911;
+    float r_yield_correction_error;
+    if(year.EqualTo("2016")) r_yield_correction_error = 0.104911;
+    else
+    {
+      r_yield_correction_error = TMath::Sqrt(TMath::Power(hRyieldMC->GetBinError(2)/hRyieldMC->GetBinContent(1),2) +
+                                             TMath::Power((hRyieldMC->GetBinContent(2)*hRyieldMC->GetBinError(2))/TMath::Power(hRyieldMC->GetBinContent(1),2),2));
+    }
     cout<<"-------------------------"<<endl;
     cout<<"Ryield_data (0): "<<Ryield<<" ± "<<Ryield_error<<endl;
     cout<<"r_yield_correction: "<<r_yield_correction<<" ± "<<r_yield_correction_error<<endl;
