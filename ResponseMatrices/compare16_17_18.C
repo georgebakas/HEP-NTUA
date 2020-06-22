@@ -211,9 +211,8 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
-   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrix%s_%s_New.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
+   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrix%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
    	}
-   	break;
    }
 
 
