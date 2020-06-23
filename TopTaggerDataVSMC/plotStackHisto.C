@@ -70,19 +70,20 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
 
-/*
-  hData->Rebin(2);
-  hQCD->Rebin(2);
-  hTT->Rebin(2);
-  hSub->Rebin(2); */
+  /*
+  hData->Scale(1/hData->Integral());
+  hSub->Scale(1/hSub->Integral());
+  hQCD->Scale(1/hQCD->Integral());
+  hTT->Scale(1/hTT->Integral());
+  */
 
   hTT->Scale(signalStrenth[year]);
   hQCD->Scale(signalStrenth[year]);
   hSub->Scale(signalStrenth[year]);
 
   THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
-  hs->Add(hQCD);
   hs->Add(hSub);
+  hs->Add(hQCD);
   hs->Add(hTT);
 
   TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), 800, 600);
@@ -108,6 +109,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   leg->AddEntry(hTT, "TTbar", "f");
   leg->AddEntry(hQCD, "QCD", "f");
   leg->AddEntry(hSub, "Subdominant", "f");
+
 
 
 

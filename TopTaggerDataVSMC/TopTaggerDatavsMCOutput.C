@@ -341,8 +341,6 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   std::vector<float> xRecoAll_SubLeading(0);
   //book the histograms
   //histograms for Signal/QCD in CR
-  TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
-                              "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt"};
   float xMin[NVAR] = {-1,0,0,0, 0,0,0,0, 0,0,0};
   float xMax[NVAR] = {1,0.3,0.4, 0.6,220, 120,0.5,5, 0.5,5,1};
 
