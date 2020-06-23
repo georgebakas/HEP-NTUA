@@ -115,9 +115,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<"r_yield_correction: "<<r_yield_correction<<" ± "<<r_yield_correction_error<<endl;
 
     float corrected_rYield = r_yield_correction * Ryield;
-    //float corrected_error =
-    float corrected_error;
-    corrected_error = ry_err_final;
+    float corrected_error = ry_err_final;
     //corrected_error = TMath::Sqrt(TMath::Power(r_yield_correction*Ryield_error,2) + TMath::Power(r_yield_correction_error*Ryield,2));
     //cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;

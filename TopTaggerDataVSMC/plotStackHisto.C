@@ -111,9 +111,6 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   leg->AddEntry(hSub, "Subdominant", "f");
 
 
-
-
-
   hData->Draw("E");
   hs->Draw("same hist");
   hs->GetYaxis()->SetTitle("Number of Events");

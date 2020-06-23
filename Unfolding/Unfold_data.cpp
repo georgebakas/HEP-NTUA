@@ -167,7 +167,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       //handle errors as well--> asymmetric error from acceptance
       float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
 
-
+      cout<<"bin: "<<j<<" hSig: "<<hSig[ivar]->GetBinContent(j)<<" ± "<<hSig[ivar]->GetBinError(j) <<endl;
       //cout<<"Input: "<<oldContent<<" ± "<<oldContentError<<endl;
       //cout<<"acceptance "<<acc<<" ± "<<accError<<endl;
 
@@ -178,7 +178,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   	  else
   	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
 
-      cout<<"bin: "<<j<<" hSig: "<<hSig[ivar]->GetBinContent(j)<<" ± "<<hSig[ivar]->GetBinError(j) <<endl;
+
 
     }
     //break;

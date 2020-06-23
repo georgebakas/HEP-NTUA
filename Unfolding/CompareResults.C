@@ -156,12 +156,12 @@ void CompareResults(TString year = "2016", bool isParton = true, int unfoldMetho
     hTOP18013[ivar]->GetYaxis()->SetTitle("#frac{Data}{Theory}");
     hUnfolded[ivar]->GetYaxis()->SetRangeUser(0,3);
     hTOP18013[ivar]->GetYaxis()->SetRangeUser(0,3);
-    //leg[ivar]->AddEntry(hUnfolded[ivar], "New Measurement", "lpe");
-    //leg[ivar]->AddEntry(hTOP18013[ivar], "TOP-18-013", "lpe");
+    leg[ivar]->AddEntry(hUnfolded[ivar], "New Measurement", "lpe");
+    leg[ivar]->AddEntry(hTOP18013[ivar], "TOP-18-013", "lpe");
 
-    //hUnfolded[ivar]->Draw("same");
-    //hTOP18013[ivar]->Draw("same");
-  	//leg[ivar]->Draw();
+    hUnfolded[ivar]->Draw("same");
+    hTOP18013[ivar]->Draw("same");
+  	leg[ivar]->Draw();
 
     //normalized plots:
     canNorm[ivar] = new TCanvas(TString::Format("canNorm_%s",variable[ivar].Data()),TString::Format("canNorm_%s",variable[ivar].Data()) , 800,600);
@@ -179,12 +179,12 @@ void CompareResults(TString year = "2016", bool isParton = true, int unfoldMetho
     hTOP18013Norm[ivar]->GetYaxis()->SetTitle("Norm #frac{Data}{Theory}");
     hUnfNorm[ivar]->GetYaxis()->SetRangeUser(0,3);
     hTOP18013Norm[ivar]->GetYaxis()->SetRangeUser(0,3);
-    //legNorm[ivar]->AddEntry(hUnfNorm[ivar], "New Measurement ", "lpe");
-    //legNorm[ivar]->AddEntry(hTOP18013Norm[ivar], "TOP-18-013", "lpe");
+    legNorm[ivar]->AddEntry(hUnfNorm[ivar], "New Measurement ", "lpe");
+    legNorm[ivar]->AddEntry(hTOP18013Norm[ivar], "TOP-18-013", "lpe");
 
     hUnfNorm[ivar]->Draw("same");
-    //hTOP18013Norm[ivar]->Draw("same");
-  	//legNorm[ivar]->Draw();
+    hTOP18013Norm[ivar]->Draw("same");
+  	legNorm[ivar]->Draw();
 
     can[ivar]->Print(TString::Format("ComparisonWithTOP-18-013/%s/%s/DiffCrossSection_%s%s.pdf", varParton.Data(),year.Data(), variable[ivar].Data(), unfMethodStr.Data()), "pdf");
     canNorm[ivar]->Print(TString::Format("ComparisonWithTOP-18-013/%s/%s/NormDiffCrossSection_%s%s.pdf",varParton.Data(), year.Data(), variable[ivar].Data(), unfMethodStr.Data()), "pdf");
