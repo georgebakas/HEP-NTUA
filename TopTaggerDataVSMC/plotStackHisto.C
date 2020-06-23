@@ -108,13 +108,14 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   leg->AddEntry(hTT, "TTbar", "f");
   leg->AddEntry(hQCD, "QCD", "f");
   leg->AddEntry(hSub, "Subdominant", "f");
-  leg->Draw();
+
 
 
 
   hData->Draw("E");
   hs->Draw("same hist");
   hs->GetYaxis()->SetTitle("Number of Events");
+  leg->Draw();
 
   closure_pad2->cd();
   TH1F *hDenom = (TH1F*)hQCD->Clone("hDenom");
