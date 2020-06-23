@@ -344,45 +344,14 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
                               "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt"};
   float xMin[NVAR] = {-1,0,0,0, 0,0,0,0, 0,0,0};
-  float xMax[NVAR] = {1,0.3,0.4, 0.6,220, 120,0.5,5, 0.5,5};
+  float xMax[NVAR] = {1,0.3,0.4, 0.6,220, 120,0.5,5, 0.5,5,1};
 
   for(int ivar =0; ivar< NVAR; ivar++)
   {
-  	if(ivar ==0)
-  	{
-    	hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, -1,1);
-    	hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, -1,1);
-    	hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, -1,1);
-    	hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, -1,1);
-	}
-	else if(ivar ==4 || ivar == 5)
-  	{
-  	  	hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,220);
-  	  	hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,220);
-  	  	hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,220);
-  	  	hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA,0,220);
-	}
-	else if(ivar ==10)
-  	{
-  		hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-   	 	hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-   	 	hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-   	 	hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-	}
-	else if(ivar >0 && ivar <4)
-  	{
-   	    hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-    	hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-    	hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-    	hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,1);
-	}
-	else
-	{
-   	 	hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, 0,5);
-    	hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA,0,5);
-    	hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA,0,5);
-    	hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA,0,5);
-	}
+    hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
+    hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
+    hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
+    hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
   }
   //for matching
 
@@ -574,7 +543,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
         subleadingPt = 0;
       }
      float JetPtOverSumPt[2];
-     float sumPt;
+     float sumPt=0;
      for(int ijet = 0; ijet<nJets; ijet++)
      {
        sumPt = sumPt + (*pt_)[ijet];
@@ -630,14 +599,13 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
 
     float JetPtOverSumPt[2];
-    float sumPt;
+    float sumPt = 0;
     for(int ijet = 0; ijet<nJets; ijet++)
     {
       sumPt = sumPt + (*jetPt)[ijet];
     }
 
     JetPtOverSumPt[0] = (*jetPt)[0]/sumPt;
-    cout<<JetPtOverSumPt[0]<<endl;
     JetPtOverSumPt[1] = (*jetPt)[1]/sumPt;
     xRecoAll_Leading.push_back((*jetTtag)[0]);
     xRecoAll_Leading.push_back((*jetTau3)[0]);
