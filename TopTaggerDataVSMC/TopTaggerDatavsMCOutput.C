@@ -225,7 +225,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   LUMI_CR = luminosityCR[year.Data()];
   initGlobals();
   gStyle->SetOptStat(0);
-  const int NVAR =11;
+  const int NVAR =12;
   const int N_MVA = 50;
 
   float selMvaCut=topTaggerCuts[year];
@@ -237,7 +237,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
   //jetMassSub0_[ijet]
 
-  TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
+  TString varReco[NVAR]   = {"mTop","topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
                               "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt"};
 
   int fileSize = listOfFiles.size();
@@ -341,8 +341,8 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   std::vector<float> xRecoAll_SubLeading(0);
   //book the histograms
   //histograms for Signal/QCD in CR
-  float xMin[NVAR] = {-1,0,0,0, 0,0,0,0, 0,0,0};
-  float xMax[NVAR] = {1,0.3,0.4, 0.6,220, 120,0.5,5, 0.5,5,1};
+  float xMin[NVAR] = {120,-1,0,0,0, 0,0,0,0, 0,0,0};
+  float xMax[NVAR] = {220,1,0.3,0.4, 0.6,220, 120,0.5,5, 0.5,5,1};
 
   for(int ivar =0; ivar< NVAR; ivar++)
   {
@@ -549,6 +549,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
      JetPtOverSumPt[leadingPt] = (*pt_)[leadingPt]/sumPt;
      JetPtOverSumPt[subleadingPt] = (*pt_)[subleadingPt]/sumPt;
 
+    xRecoAll_Leading.push_back((*mass_)[leadingPt]);
     xRecoAll_Leading.push_back((*jetTtag_)[leadingPt]);
     xRecoAll_Leading.push_back((*jetTau3_)[leadingPt]);
     xRecoAll_Leading.push_back((*jetTau2_)[leadingPt]);
@@ -561,6 +562,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     xRecoAll_Leading.push_back((*ecfB2N3_)[leadingPt]);
     xRecoAll_Leading.push_back(JetPtOverSumPt[leadingPt]);
 
+    xRecoAll_SubLeading.push_back((*mass_)[subleadingPt]);
     xRecoAll_SubLeading.push_back((*jetTtag_)[subleadingPt]);
     xRecoAll_SubLeading.push_back((*jetTau3_)[subleadingPt]);
     xRecoAll_SubLeading.push_back((*jetTau2_)[subleadingPt]);
@@ -605,6 +607,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
     JetPtOverSumPt[0] = (*jetPt)[0]/sumPt;
     JetPtOverSumPt[1] = (*jetPt)[1]/sumPt;
+    xRecoAll_Leading.push_back((*jetMassSoftDrop)[0]);
     xRecoAll_Leading.push_back((*jetTtag)[0]);
     xRecoAll_Leading.push_back((*jetTau3)[0]);
     xRecoAll_Leading.push_back((*jetTau2)[0]);
@@ -617,17 +620,18 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     xRecoAll_Leading.push_back((*ecfB2N3)[0]);
     xRecoAll_Leading.push_back(JetPtOverSumPt[0]);
 
-   xRecoAll_SubLeading.push_back((*jetTtag)[1]);
-   xRecoAll_SubLeading.push_back((*jetTau3)[1]);
-   xRecoAll_SubLeading.push_back((*jetTau2)[1]);
-   xRecoAll_SubLeading.push_back((*jetTau1)[1]);
-   xRecoAll_SubLeading.push_back((*jetMassSub0)[1]);
-   xRecoAll_SubLeading.push_back((*jetMassSub1)[1]);
-   xRecoAll_SubLeading.push_back((*ecfB1N2)[1]);
-   xRecoAll_SubLeading.push_back((*ecfB1N3)[1]);
-   xRecoAll_SubLeading.push_back((*ecfB2N2)[1]);
-   xRecoAll_SubLeading.push_back((*ecfB2N3)[1]);
-   xRecoAll_SubLeading.push_back(JetPtOverSumPt[1]);
+    xRecoAll_SubLeading.push_back((*jetMassSoftDrop)[1]);
+    xRecoAll_SubLeading.push_back((*jetTtag)[1]);
+    xRecoAll_SubLeading.push_back((*jetTau3)[1]);
+    xRecoAll_SubLeading.push_back((*jetTau2)[1]);
+    xRecoAll_SubLeading.push_back((*jetTau1)[1]);
+    xRecoAll_SubLeading.push_back((*jetMassSub0)[1]);
+    xRecoAll_SubLeading.push_back((*jetMassSub1)[1]);
+    xRecoAll_SubLeading.push_back((*ecfB1N2)[1]);
+    xRecoAll_SubLeading.push_back((*ecfB1N3)[1]);
+    xRecoAll_SubLeading.push_back((*ecfB2N2)[1]);
+    xRecoAll_SubLeading.push_back((*ecfB2N3)[1]);
+    xRecoAll_SubLeading.push_back(JetPtOverSumPt[1]);
 
 
   }//---end of else of isSignal

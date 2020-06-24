@@ -49,9 +49,12 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   hData = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
   hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
-  //hQCD = (TH1F*)infData->Get("hWt_mva_0btag_expYield");
+  //hQCD = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
   hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
   hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+
+  //scale ttbar with signal strength 
+  hTT->Scale(signalStrenth[year]);
 
   //make them pretty :D
   hTT->SetLineColor(kRed-9);
@@ -70,24 +73,17 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
 
-  /*
-  hData->Scale(1/hData->Integral());
-  hSub->Scale(1/hSub->Integral());
-  hQCD->Scale(1/hQCD->Integral());
-  hTT->Scale(1/hTT->Integral());
-  */
-
-  hTT->Scale(signalStrenth[year]);
-  hQCD->Scale(signalStrenth[year]);
-  hSub->Scale(signalStrenth[year]);
-
   THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
   hs->Add(hSub);
   hs->Add(hQCD);
   hs->Add(hTT);
 
   TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), 800, 600);
-  TLegend *leg = new TLegend(0.65,0.7,0.9,0.9);
+  TLegend *leg;
+  if(!variable.Contains("topTagger") && !variable.EqualTo("ecfB1N2"))
+    leg = new TLegend(0.7,0.7,0.9,0.9);
+  else
+    leg = new TLegend(0.10,0.7,0.25,0.9);
   can->cd();
   TPad *closure_pad2 = new TPad(TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),0.,0.,1.,0.3);
   closure_pad2->Draw();
@@ -110,12 +106,10 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   leg->AddEntry(hQCD, "QCD", "f");
   leg->AddEntry(hSub, "Subdominant", "f");
 
-
-  hData->Draw("E");
-  hs->Draw("same hist");
+  hs->Draw("hist");
+  hData->Draw("same E");
   hs->GetYaxis()->SetTitle("Number of Events");
   leg->Draw();
-
   closure_pad2->cd();
   TH1F *hDenom = (TH1F*)hQCD->Clone("hDenom");
   hDenom->Add(hSub);
@@ -123,6 +117,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   TH1F *hNum = (TH1F*)hData->Clone("hNum");
   hNum->Divide(hDenom);
   hNum->SetTitle("");
+  hNum->GetYaxis()->SetRangeUser(0,3);
   hNum->GetYaxis()->SetTitle("#frac{Data}{MC}");
   hNum->GetXaxis()->SetTitle(variable);
   hNum->GetYaxis()->SetTitleSize(20);
