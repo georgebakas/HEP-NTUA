@@ -85,8 +85,8 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
   //Take SR data from Medium WP
-  TFile *inf = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", year.Data(), year.Data()));
-  TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
+  TFile *inf = TFile::Open(TString::Format("%s/TopTaggerHisto_Data_%s_100.root", year.Data(), year.Data()));
+  TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag_leading");
   //h2b->Rebin(2);
   // -----------------------------------------
   TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));

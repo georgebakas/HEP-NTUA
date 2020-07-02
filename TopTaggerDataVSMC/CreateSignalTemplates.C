@@ -28,8 +28,8 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   float XMIN,XMAX;
 
   VAR = "mTop";
-  XMIN = 50.;
-  XMAX = 300.;
+  XMIN = 120.;
+  XMAX = 220.;
 
   RooWorkspace *w = new RooWorkspace("w","workspace");
 
@@ -47,17 +47,15 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   */
 
   for(int icat=0;icat<3;icat++) {
-
-  	//else infMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt files
-    infMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data())); //nominal
-    //infMC = TFile::Open(TString::Format("%s/output_2016_mcSig_02_extended.root",year.Data()));
+    if(icat ==1) continue;
+    infMC = TFile::Open(TString::Format("%s/TopTaggerHisto_TT_NominalMC_100.root",year.Data())); //nominal
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
 
-    cout<<TAG<<endl;
     //---- then do the signal templates -------------
     hMC = (TH1F*)infMC->Get("hWt_"+VAR+TAG);
-    TH1F *hMC_yield = (TH1F*)infMC->Get("hWt_"+VAR+TAG+"_expYield");
+    cout<<"hWt_"+VAR+TAG+"_leading_expYield"<<endl;
+    TH1F *hMC_yield = (TH1F*)infMC->Get("hWt_"+VAR+TAG+"_expYield_leading");
     double error(0.0);
     float signal_yield, signal_error;
     signal_yield =  hMC_yield->IntegralAndError(1,hMC_yield->GetNbinsX(),error);
@@ -66,12 +64,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     cout<<"Entries: "<<hMC_yield->GetEntries()<<endl;
 
     TCanvas *canS;
-    RooRealVar *fSigJet,*fSigEvt;
-    TH1F *hSig  = (TH1F*)infMC->Get("hWt_mTop"+TAG+"_expYield");
-    TH1F *hSigJet = (TH1F*)infMC->Get("hWt_jetMassSoftDrop"+TAG+"_expYield");
-    TH1F *hSigEvt = (TH1F*)infMC->Get("hWt_mJJ"+TAG+"_expYield");
-    fSigJet = new RooRealVar("fSigJet_"+CAT,"fSigJet_"+CAT,hSigJet->Integral()/hSig->Integral());
-    fSigEvt = new RooRealVar("fSigEvt_"+CAT,"fSigEvt_"+CAT,hSigEvt->Integral()/hSig->Integral());
+
 
     YieldTT = new RooRealVar("YieldTT_"+CAT,"YieldTT_"+CAT,signal_yield);
     YieldTT->setError(signal_error);
@@ -118,7 +111,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     RooRealVar fsig2("ttbar_f2_"+CAT,"ttbar_f2_"+CAT,0.1,0.01,1);
     RooRealVar fsig3("ttbar_f3_"+CAT,"ttbar_f3_"+CAT,0.1,0.,1);
 
-    RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb,g1),RooArgList(fsig1,fsig2,fsig3));
+    RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigComb),RooArgList(fsig1));
     cout<<"ttbar_pdf_"+CAT<<endl;
 
     canS = new TCanvas("Template_TT_"+CAT+"_"+CUT,"Template_TT_"+CAT+"_"+CUT,900,600);
@@ -130,9 +123,9 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     roohMC->plotOn(frameS);
     signal->plotOn(frameS);
     signal->plotOn(frameS,RooFit::Components("ttbar_pdfTop_"+CAT),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
-    signal->plotOn(frameS,RooFit::Components("ttbar_pdfW_"+CAT),RooFit::LineColor(kOrange),RooFit::LineWidth(2),RooFit::LineStyle(2));
+    //signal->plotOn(frameS,RooFit::Components("ttbar_pdfW_"+CAT),RooFit::LineColor(kOrange),RooFit::LineWidth(2),RooFit::LineStyle(2));
     signal->plotOn(frameS,RooFit::Components("ttbar_bkg_"+CAT),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
-    signal->plotOn(frameS,RooFit::Components("gaus_"+CAT),RooFit::LineColor(kMagenta+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
+    //signal->plotOn(frameS,RooFit::Components("gaus_"+CAT),RooFit::LineColor(kMagenta+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
     frameS->GetXaxis()->SetTitle("m_{t} (GeV)");
     frameS->Draw();
     gPad->Update();
@@ -144,8 +137,8 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     w->import(*signal);
     w->import(*YieldTT);
     w->import(*AccTT);
-    w->import(*fSigJet);
-    w->import(*fSigEvt);
+    //w->import(*fSigJet);
+    // w->import(*fSigEvt);
   }
 
   w->writeToFile(TString::Format("%s/templates_Sig_"+CUT+"100.root",year.Data()));
