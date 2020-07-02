@@ -610,7 +610,9 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
        {
         //selMvaCut
         if(tTaggerLeading > tightTopTaggerCut || tTaggerSubleading > tightTopTaggerCut)
+        {
           h_Denominator[f][ivar]->Fill(xReco, genEvtWeight);
+        }
 
         if((tTaggerLeading > tightTopTaggerCut && tTaggerSubleading > selMvaCut) ||
            (tTaggerSubleading > tightTopTaggerCut && tTaggerLeading > selMvaCut))
@@ -658,7 +660,7 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
 
         if(selection !=0)
         {
-         h_Denominator_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); // this h_Denominator: events pass SRB and tightTopTaggerCut for 1 jet and no other cut on other jet
+         h_Denominator_Clone[j][ivar]->Scale(weights[j]*LUMI); // this h_Denominator: events pass SRB and tightTopTaggerCut for 1 jet and no other cut on other jet
          h_Numerator_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is h_Numerator: events pass SRB and tight TopTagger + SR
 
          h_Denominator[j][ivar]->Scale(weights[j]); //this is h_Denominator
