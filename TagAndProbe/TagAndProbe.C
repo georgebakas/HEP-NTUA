@@ -532,8 +532,8 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
         leadingPt = 1;
         subleadingPt = 0;
       }
-    tTaggerLeading = (*jetTtag)[leadingPt];
-    tTaggerSubleading = (*jetTtag)[subleadingPt];
+    tTaggerLeading = (*jetTtag_)[leadingPt];
+    tTaggerSubleading = (*jetTtag_)[subleadingPt];
 
     xRecoAll.push_back(mJJ);
     xRecoAll.push_back(ptJJ);
