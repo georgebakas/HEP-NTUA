@@ -9,7 +9,8 @@ map<TString, int> variableConstant;
 TColor color;
 
 map<TString, float> luminosity;
-map<TString, float> floatConstants	;
+map<TString, float> floatConstants;
+map<TString, float> ttbarSigStrength;
 
 
 void initFilesMapping()
@@ -75,13 +76,10 @@ void initFilesMapping()
 	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
 	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
 	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
-	/*
-	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj
-	BND[variableConstant["ptJJ"]].push_back({0,60,150,300,450,600,750,950,1100,1300}); //ptjj
-	BND[variableConstant["yJJ"]].push_back({-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}); //yjj
-	BND[variableConstant["jetPt0"]].push_back({400,450,500,570,650,750,850,950,1100,1300,1500}); //jetPt0
-	BND[variableConstant["jetPt1"]].push_back({400,450,500,570,650,750,850,950,1100,1300,1500}); //jetPt1
-	BND[variableConstant["jetY0"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY0
-	BND[variableConstant["jetY1"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY1
-	*/
+
+	ttbarSigStrength.insert(pair<TString, float>("2016", 0.671244));
+	ttbarSigStrength.insert(pair<TString, float>("2017", 0.553099));
+	ttbarSigStrength.insert(pair<TString, float>("2018", 0.615816));
+
+
 }
