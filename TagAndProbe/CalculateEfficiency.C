@@ -36,6 +36,18 @@ void CalculateEfficiency(TString year = "2016")
   hQCD[0] = (TH1F*)infQCD->Get("hSRBTightAndProbe_jetPt0_expYield");
   hQCD[1] = (TH1F*)infQCD->Get("hSRBTightAndSR_jetPt0_expYield");
 
+  cout<<"hData Numerator: "<<hData[1]->Integral()<<endl;
+  cout<<"hData denominator: "<<hData[0]->Integral()<<endl;
+
+  cout<<"hSub Numerator: "<<hSub[1]->Integral()<<endl;
+  cout<<"hSub denominator: "<<hSub[0]->Integral()<<endl;
+
+  cout<<"hQCD Numerator: "<<hQCD[1]->Integral()<<endl;
+  cout<<"hQCD denominator: "<<hQCD[0]->Integral()<<endl;
+
+  cout<<"hTT Numerator: "<<hTT[1]->Integral()<<endl;
+  cout<<"hTT denominator: "<<hTT[0]->Integral()<<endl;
+
   //remove bkg contributions from data
   for(int i =0; i<2; i++)
   {
