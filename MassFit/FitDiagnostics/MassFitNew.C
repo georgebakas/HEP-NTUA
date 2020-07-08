@@ -145,7 +145,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooSimultaneous simPdf("simPdf","simPdf",sample);
   simPdf.addPdf(*model_2b,"2btag");
 
-  RooFitResult *res = simPdf.fitTo(nQCD_gen,RooFit::Save(),RooFit::Extended(kTRUE));
+  RooFitResult *res = simPdf.fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
 
 	//Signal strengh and error propagation:
 	float sigError = TMath::Sqrt(TMath::Power(nFitSig2b->getError()/yieldTT->getVal(),2) + TMath::Power(nFitSig2b->getVal()*nFitSig2b->getError()/TMath::Power(yieldTT->getVal(),2),2));
