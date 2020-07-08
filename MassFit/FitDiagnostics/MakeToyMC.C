@@ -37,7 +37,7 @@ void MakeToyMC(TString year="2016")
 
   float initialSignalStrength = 0.5;
   float step = 0.1;
-
+  //for 10 different R -values
   for (int i = 0; i <= 10; i++)
   {
 
@@ -85,7 +85,7 @@ void MakeToyMC(TString year="2016")
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b", "nFitSig2b", signalStrength * nTT_in, 100, 10e+4);
 
   RooAddPdf model("model_2b", "model_2b",
-                      RooArgList(*pdf_signal_2b, pdf_qcdCor_2b, *pdf_bkg_2b),
+                      RooArgList(*pdf_signal_2b, *pdf_qcd_2b, *pdf_bkg_2b),
                       RooArgList(*nFitSig2b, *nFitQCD2b, *nFitBkg2b));
 
   // generated yields for bkgs
@@ -107,8 +107,8 @@ void MakeToyMC(TString year="2016")
                                    TString::Format("ttbarErrorHisto_%.2f_%s", signalStrength, year.Data()),
                                    100, 80, 180);
 
-
-  for (int i = 0; i < 1; i++)
+  //generate 400 datasets, for each find the pull and put it in a histogram                              
+  for (int i = 0; i < 400; i++)
     {
       std::cout << "runNo: " << i << std::endl;
       ran.SetSeed(0);
@@ -119,7 +119,7 @@ void MakeToyMC(TString year="2016")
       nData_gen = nSub_gen + nQCD_gen + signalStrength * nTT_in;
 
       RooAddPdf pseudodata("pseudodata", "pseudodata",
-                           RooArgList(*pdf_signal_2b, pdf_qcdCor_2b, *pdf_bkg_2b),
+                           RooArgList(*pdf_signal_2b, *pdf_qcd_2b, *pdf_bkg_2b),
                            RooArgList(RooFit::RooConst(signalStrength * nTT_in),
                                       RooFit::RooConst(nQCD_gen),
                                       RooFit::RooConst(nSub_gen)));
@@ -129,15 +129,15 @@ void MakeToyMC(TString year="2016")
       RooDataHist *data = data_gen->binnedClone();
 
       RooFitResult *fit_result = model.fitTo(*data);//, RooFit::PrintLevel(-1)); //, RooFit::Save(), RooFit::Extended(kTRUE));
-      fit_result->Print();
+      //fit_result->Print();
 
-      /*RooPlot *frame = mTop.frame();
+      RooPlot *frame = mTop.frame();
       data_gen->plotOn(frame);
       pseudodata.plotOn(frame, RooFit::Components("ttbar_pdf"), RooFit::LineColor(kRed));
       pseudodata.plotOn(frame, RooFit::Components("qcd_pdf"), RooFit::LineColor(kGreen));
       pseudodata.plotOn(frame, RooFit::Components("sub_pdf"), RooFit::LineColor(kMagenta));
       frame->Draw();
-      dataHisto->Draw("SAME");*/
+      data->Draw("SAME");
 
       //TFile *f = new TFile("output.root", "RECREATE");
 
