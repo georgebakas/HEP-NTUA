@@ -388,7 +388,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
 
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=4;iev<NN;iev++)
-  {
+  { 
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
     if (k > decade)
@@ -426,16 +426,16 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
     jetBtagSub1DCSVbb_->clear();
     jetBtagSub0DCSVbbb_->clear();
     jetBtagSub1DCSVbbb_->clear();
-
+  
   xRecoAll_Leading.clear();
   xRecoAll_SubLeading.clear();
   bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
   bool deepCSV, revertBtagDeepCSV;
   bool btagCut, revertBtag;
   bool ptCutLeading[4], ptCutSubLeading[4];
-
   if (nJets >1)
   {
+
     //matching only if we have Signal ttbar MC
     if(selection == 1 || selection ==4)
     {
@@ -518,7 +518,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
-
+    
     ptCutLeading[0] = ((*pt_)[0] > 400) && ((*pt_)[0] < 600);
     ptCutLeading[1] = ((*pt_)[0] > 600) && ((*pt_)[0] < 800);
     ptCutLeading[2] = ((*pt_)[0] > 800) && ((*pt_)[0] < 1200);
@@ -529,21 +529,19 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
     ptCutSubLeading[2] = ((*pt_)[1] > 800) && ((*pt_)[1] < 1200);
     ptCutSubLeading[3] = ((*pt_)[1] > 1200);
 
-   // cout<<"right before the cut init"<<endl;
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
     massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
     tTaggerCut = true;
-    //2 btag category with deepCSV
+     //2 btag category with deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
            (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
    //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
-    if(isMatched > 1)
+   if(isMatched > 1)
     {
-     // cout<<"entered isMatched > 1"<<endl;
       int leadingPt = 0;
       int subleadingPt = 1;
       if ((*pt_)[0] < (*pt_)[1])
@@ -562,11 +560,14 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
      ptCutSubLeading[2] = ((*pt_)[subleadingPt] > 800) && ((*pt_)[subleadingPt] < 1200);
      ptCutSubLeading[3] = ((*pt_)[subleadingPt] > 1200);
 
-    xRecoAll_Leading.push_back((*jetTtag_)[leadingPt]);
-
-    xRecoAll_SubLeading.push_back((*jetTtag_)[subleadingPt]);
-
-  }//if is matched
+     xRecoAll_Leading.push_back((*jetTtag_)[leadingPt]);
+     xRecoAll_SubLeading.push_back((*jetTtag_)[subleadingPt]);
+    }//if is matched
+    else
+    {
+    	xRecoAll_Leading.push_back(-10);
+     	xRecoAll_SubLeading.push_back(-10);
+    }
   }//----end of selection ==1 so that we do this only when we deal with signal MC
 
   else //we are in QCD samples or Subdominant BKG or Data sample
@@ -612,7 +613,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
   revertBtag = revertBtagDeepCSV;
 
    //cout<<"------"<<endl;
-
+   
 
      xReco_leading = xRecoAll_Leading[0];
      xReco_subleading = xRecoAll_SubLeading[0];
