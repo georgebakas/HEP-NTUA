@@ -107,7 +107,7 @@ void MakeToyMC(TString year="2016")
                                    TString::Format("ttbarErrorHisto_%.2f_%s", signalStrength, year.Data()),
                                    100, 80, 180);
 
-  //generate 400 datasets, for each find the pull and put it in a histogram                              
+  //generate 400 datasets, for each find the pull and put it in a histogram
   for (int i = 0; i < 400; i++)
     {
       std::cout << "runNo: " << i << std::endl;
