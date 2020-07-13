@@ -133,7 +133,7 @@ void CalculateBTagSF()
      //I need jetPtSub0,1 and jetEtaSub0,1
     for(int ijet=0; ijet<nJets; ijet++)
     {
-      double ievDeepCSVWgtTemp =1;
+      double ievDeepCSVWgtJet =1;
       //jetFlavorSub0,1 [ijet]
       float pT[2], eta[2];
       int flavor[2];
@@ -145,7 +145,7 @@ void CalculateBTagSF()
       eta[1] = fabs((*jetEtaSub1)[ijet]);
 
 
-      dCSVScore[0] = (*jetBtagSub0DCSVbb)[ijet] + (*jetBtagSub0DCSVbbb)[ijet]; //sum of scores from
+      dCSVScore[0] = (*jetBtagSub0DCSVbb)[ijet] + (*jetBtagSub0DCSVbbb)[ijet];
       dCSVScore[1] = (*jetBtagSub1DCSVbb)[ijet] + (*jetBtagSub1DCSVbbb)[ijet];
 
 
@@ -154,20 +154,21 @@ void CalculateBTagSF()
 
       for(int isub =0; isub<2; isub++)
       {
-
         if(flavor[isub] == 5)
         {
-          ievDeepCSVWgtTemp = reader.eval(BTagEntry::FLAV_B, eta[isub], pT[isub], dCSVScore[isub]);
+          double ievDeepCSVWgtTemp = reader.eval(BTagEntry::FLAV_B, eta[isub], pT[isub], dCSVScore[isub]);
+          if(ievDeepCSVWgtTemp!=0) ievDeepCSVWgtJet *=ievDeepCSVWgtTemp;
         }
-      }
-      ievDeepCSVWgt *= ievDeepCSVWgtTemp;
-      cout<<ievDeepCSVWgt<<endl;
-    }
+      }//end of subjet loop
+      ievDeepCSVWgt *= ievDeepCSVWgtJet;
+
+    }//end of jet loop
+    cout<<"event: "<<iev<<" has weight: "<<ievDeepCSVWgt<<endl;
     //now fill the branch with the ievDeepCSVWgt
-    trIN_br->Fill();
+    //trIN_br->Fill();
 
   }//-----end of iev loop-----
-  trIN->Print();
+  //trIN->Print();
   //TDirectory *dir = new TDirectory("boosted/events", "boosted/events");
   //trIN->SetDirectory(dir);
   //trIN->Cd("boosted/events");

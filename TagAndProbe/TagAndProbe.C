@@ -350,8 +350,8 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
   }
 
   float xParton(0), xReco(0);
-  float tTaggerSubleading = 0;
-  float tTaggerLeading = 0;
+  float tTaggerTight = 0;
+  float tTaggerOther = 0;
   std::vector<float> xRecoAll(0);
   //book the histograms
   //histograms for Signal/QCD in CR
@@ -405,6 +405,8 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=4;iev<NN;iev++)
   {
+    tTaggerTight = 0;
+    tTaggerOther = 0;
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
     if (k > decade)
@@ -532,8 +534,23 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
         leadingPt = 1;
         subleadingPt = 0;
       }
-    tTaggerLeading = (*jetTtag_)[leadingPt];
-    tTaggerSubleading = (*jetTtag_)[subleadingPt];
+
+      TRandom *randJet = new TRandom();
+      int tightJet=0;
+      int otherJet=0;
+      if (randJet->Rndm() > 0.5)
+      {
+        tightJet = 1;
+        otherJet = 0;
+      }
+      else
+      {
+        tightJet = 0;
+        otherJet = 1;
+      }
+
+    tTaggerTight = (*jetTtag_)[tightJet];
+    tTaggerOther = (*jetTtag_)[otherJet];
 
     xRecoAll.push_back(mJJ);
     xRecoAll.push_back(ptJJ);
@@ -567,8 +584,22 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-    tTaggerLeading = (*jetTtag)[0];
-    tTaggerSubleading = (*jetTtag)[1];
+    TRandom *randJet = new TRandom();
+    int tightJet=0;
+    int otherJet=0;
+    if (randJet->Rndm() > 0.5)
+    {
+      tightJet = 1;
+      otherJet = 0;
+    }
+    else
+    {
+      tightJet = 0;
+      otherJet = 1;
+    }
+
+    tTaggerTight = (*jetTtag)[tightJet];
+    tTaggerOther = (*jetTtag)[otherJet];
     //2 btag category with csvv2 and deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
            (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
@@ -609,13 +640,12 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
        if(recoCuts && btagCut && massCut && triggerSR)
        {
         //selMvaCut
-        if(tTaggerLeading > tightTopTaggerCut || tTaggerSubleading > tightTopTaggerCut)
+        if(tTaggerTight > tightTopTaggerCut)
         {
           h_Denominator[f][ivar]->Fill(xReco, genEvtWeight);
         }
 
-        if((tTaggerLeading > tightTopTaggerCut && tTaggerSubleading > selMvaCut) ||
-           (tTaggerSubleading > tightTopTaggerCut && tTaggerLeading > selMvaCut))
+        if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
         {
           h_Numerator[f][ivar]->Fill(xReco, genEvtWeight);
         }
@@ -627,11 +657,10 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
       if(recoCuts && btagCut && massCut && triggerSR)
       {
        //selMvaCut
-       if(tTaggerLeading > tightTopTaggerCut || tTaggerSubleading > tightTopTaggerCut)
+       if(tTaggerTight > tightTopTaggerCut)
          h_Denominator[f][10]->Fill(xReco, genEvtWeight);
 
-       if((tTaggerLeading > tightTopTaggerCut && tTaggerSubleading > selMvaCut) ||
-          (tTaggerSubleading > tightTopTaggerCut && tTaggerLeading > selMvaCut))
+       if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
        {
          h_Numerator[f][10]->Fill(xReco, genEvtWeight);
        }
