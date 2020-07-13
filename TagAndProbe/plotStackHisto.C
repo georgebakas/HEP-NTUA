@@ -12,71 +12,75 @@ using std::cin;
 using std::cout;
 using std::endl;
 #include "TemplateConstants.h"
-bool useDataQCD;
 
-void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr);
+void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString regions);
 
-void plotStackHisto(TString year, bool useDataQCD1)
+void plotStackHisto(TString year)
 {
-  useDataQCD = useDataQCD1;
+
   //get the files from the directory
   //data file
-  TFile *infData = TFile::Open(TString::Format("%s/TopTaggerHisto_Data_%s_100.root", year.Data(), year.Data()));
+  TFile *infData = TFile::Open(TString::Format("%s/TagAndProbeHisto_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
   //tt nominal file:
-  TFile *infTT = TFile::Open(TString::Format("%s/TopTaggerHisto_TT_NominalMC_100.root", year.Data()));
+  TFile *infTT = TFile::Open(TString::Format("%s/TagAndProbeHisto_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data()));
   //qcd mc file
-  TFile *infQCD = TFile::Open(TString::Format("%s/TopTaggerHisto_QCD_HT300toInf_100.root", year.Data()));
+  TFile *infQCD = TFile::Open(TString::Format("%s/TagAndProbeHisto_QCD_HT300toInf_100_reduced_UnequalBinning.root", year.Data()));
   //subdominant file:
-  TFile *infSub = TFile::Open(TString::Format("%s/TopTaggerHisto_SubdominantBkgs_100.root", year.Data()));
+  TFile *infSub = TFile::Open(TString::Format("%s/TagAndProbeHisto_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
 
-  const int NVAR =11;
-  TString leadStr[] = {"leading", "subleading"};
-  TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
-                              "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt"};
+  const int NVAR =9;
+  TString regions[2] = {"hSRBTightAndSR_", "hSRBTightAndProbe_"};
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "mTop", "jetMassSoftDrop"};
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
-    for(int ilead = 0; ilead<2; ilead++)
+    for(int i = 0; i<2; i++)
     {
-      plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], leadStr[ilead]);
+      plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar],regions[i]);
     }
   }
 }
 
 
-void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr)
+void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString regions)
 {
   initFilesMapping(false);
   //now get the histograms
   TH1F *hData, *hTT, *hQCD, *hSub;
-
-  hData = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
-  hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  hData = (TH1F*)infData->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
+  hTT = (TH1F*)infTT->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
   //if use data, uncomment
-  TString qcdStr = "qcdMC";
-  if(useDataQCD)
-  {
-    qcdStr = "qcdData";
-    hQCD = (TH1F*)infData->Get(TString::Format("hWt_%s_0btag_expYield_%s", variable.Data(),leadingStr.Data()));
-    hQCD->Scale(1./hQCD->Integral());
-    hQCD->Scale(Nbkg2Constants[year]);
-  }
-  else
-    hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  hQCD = (TH1F*)infQCD->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
 
-  hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  hSub = (TH1F*)infSub->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
 
   //scale ttbar with signal strength
   hTT->Scale(signalStrenth[year]);
 
   //scale qcd with Data
   //we use a k-factor
+
   TH1F *hQCD_tempFromData = (TH1F*)hData->Clone("hQCD_tempFromData");
-  hQCD_tempFromData->Add(hTT, -1);
-  hQCD_tempFromData->Add(hSub, -1);
+  hQCD_tempFromData->Add(hTT,-1);
+  hQCD_tempFromData->Add(hSub,-1);
+
 
   float qcdScaleFactor = hQCD_tempFromData->Integral()/hQCD->Integral();
   cout<<"qcdScaleFactor: "<<qcdScaleFactor<<endl;
-  hQCD->Scale(qcdScaleFactor);
+  if(qcdScaleFactor > 0) hQCD->Scale(qcdScaleFactor);
+  // cout<<"--------"<<endl;
+  //cout<<regions<<endl;
+  if(variable.EqualTo("mTop") || variable.EqualTo("jetMassSoftDrop"))
+  {
+    //cout<<"hQCD_tempFromData->Integral(): "<<hQCD_tempFromData->Integral()<<endl;
+    // cout<<"hData->Integral(): "<<hData->Integral()<<endl;
+    // cout<<"hTT->Integral(): "<<hTT->Integral()<<endl;
+    // cout<<"hSub->Integral(): "<<hSub->Integral()<<endl;
+    // cout<<"hQCD->Integral(): "<<hQCD->Integral()<<endl;
+    hData->Rebin(2);
+    hTT->Rebin(2);
+    hQCD->Rebin(2);
+    hSub->Rebin(2);
+  }
 
   //make them pretty :D
   hTT->SetLineColor(kRed-9);
@@ -96,29 +100,21 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetMarkerColor(kBlack);
 
 
-  hData->Rebin(2);
-  hSub->Rebin(2);
-  hQCD->Rebin(2);
-  hTT->Rebin(2);
-  THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
+  THStack *hs = new THStack("Data vs MC", "Data vs MC;TagAndProbe;Number of Events");
   hs->Add(hSub);
   hs->Add(hQCD);
   hs->Add(hTT);
 
-  TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), 800, 600);
-  TLegend *leg;
-  if(!variable.Contains("topTagger") && !variable.EqualTo("ecfB1N2"))
-    leg = new TLegend(0.7,0.7,0.9,0.9);
-  else
-    leg = new TLegend(0.10,0.7,0.25,0.9);
+  TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),regions.Data()), TString::Format("can_%s_%s",variable.Data(),regions.Data()), 800, 600);
+  TLegend *leg = new TLegend(0.7,0.7,0.9,0.9);
   can->cd();
-  TPad *closure_pad2 = new TPad(TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),0.,0.,1.,0.3);
+  TPad *closure_pad2 = new TPad(TString::Format("cp2_%s_%s",variable.Data(),regions.Data()),TString::Format("cp2_%s_%s",variable.Data(),regions.Data()),0.,0.,1.,0.3);
   closure_pad2->Draw();
   closure_pad2->SetTopMargin(0.05);
   closure_pad2->SetBottomMargin(0.25);
   closure_pad2->SetGrid();
 
-  TPad *closure_pad1 = new TPad(TString::Format("cp1_%s_%s",variable.Data(),leadingStr.Data()),TString::Format("cp2_%s_%s",variable.Data(),leadingStr.Data()),0.,0.3,1.,1.);
+  TPad *closure_pad1 = new TPad(TString::Format("cp1_%s_%s",variable.Data(),regions.Data()),TString::Format("cp2_%s_%s",variable.Data(),regions.Data()),0.,0.3,1.,1.);
   closure_pad1->Draw();
   closure_pad1->SetBottomMargin(0.01);
   closure_pad1->cd();
@@ -159,6 +155,6 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetLabelSize(13);
 
   hNum->Draw();
-  can->Print(TString::Format("%s/plots/%s/TopTaggerDatavsMC_%s_%s.pdf",year.Data(), qcdStr.Data(), variable.Data(), leadingStr.Data()),"pdf");
+  //can->Print(TString::Format("%s/plots/TagAndProbe_%s%s.pdf",year.Data(),  regions.Data(), variable.Data()),"pdf");
 
 }
