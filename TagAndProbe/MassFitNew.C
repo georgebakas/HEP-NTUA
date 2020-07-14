@@ -80,7 +80,7 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
 {
   TString selectedRegion;
   if(selection.EqualTo("probe")) selectedRegion = "hSRBTightAndProbe";
-  else if (selection.EqualTo("SR")) selectedRegion = "hSRBTightAndSR"; 
+  else if (selection.EqualTo("SR")) selectedRegion = "hSRBTightAndSR";
   gROOT->ForceStyle();
 
   RooMsgService::instance().setSilentMode(kTRUE);
@@ -137,11 +137,11 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
 
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
 
-  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_","nFitBkg_",400,0,10e+3);
+  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_","nFitBkg_",100,0,500);
 
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_","nFitQCD_",10000,0,10e+4);
 
-  RooRealVar *nFitSig2b = new RooRealVar("nFitSig","nFitSig",2000,100,10e+4);
+  RooRealVar *nFitSig2b = new RooRealVar("nFitSig","nFitSig",3000,100,10e+5);
 
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,*pdf_qcd_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
 

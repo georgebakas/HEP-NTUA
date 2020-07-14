@@ -55,6 +55,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
 
+
   //scale ttbar with signal strength
   hTT->Scale(signalStrenth[year]);
 
@@ -90,14 +91,17 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hSub->Rebin(2);
   hQCD->Rebin(2);
   hTT->Rebin(2);
+
+
   THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
   hs->Add(hSub);
   hs->Add(hQCD);
   hs->Add(hTT);
 
+
   TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), 800, 600);
   TLegend *leg;
-  if(!variable.Contains("topTagger") && !variable.EqualTo("ecfB1N2"))
+  if(!variable.Contains("topTagger") && !variable.EqualTo("ecfB1N2") && !variable.EqualTo("deltaPhi"))
     leg = new TLegend(0.7,0.7,0.9,0.9);
   else
     leg = new TLegend(0.10,0.7,0.25,0.9);
@@ -126,14 +130,18 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hs->Draw("hist");
   hData->Draw("same E");
   hs->GetYaxis()->SetTitle("Number of Events");
+  hs->GetXaxis()->SetRangeUser(0,3);
+  if(variable.EqualTo("deltaPhi")) gPad->SetLogy();
   leg->Draw();
 
 
   closure_pad2->cd();
   TH1F *hDenom = (TH1F*)hQCD->Clone("hDenom");
+  if(variable.EqualTo("deltaPhi")) hDenom->GetXaxis()->SetRangeUser(0,3);
   hDenom->Add(hSub);
   hDenom->Add(hTT);
   TH1F *hNum = (TH1F*)hData->Clone("hNum");
+  if(variable.EqualTo("deltaPhi")) hNum->GetXaxis()->SetRangeUser(0,3);
   hNum->Divide(hDenom);
   hNum->SetTitle("");
   hNum->GetYaxis()->SetRangeUser(0,3);
