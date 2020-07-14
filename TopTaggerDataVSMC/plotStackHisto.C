@@ -12,13 +12,11 @@ using std::cin;
 using std::cout;
 using std::endl;
 #include "TemplateConstants.h"
-bool useDataQCD;
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString leadingStr);
 
-void plotStackHisto(TString year, bool useDataQCD1)
+void plotStackHisto(TString year)
 {
-  useDataQCD = useDataQCD1;
   //get the files from the directory
   //data file
   TFile *infData = TFile::Open(TString::Format("%s/TopTaggerHisto_Data_%s_100.root", year.Data(), year.Data()));
@@ -29,11 +27,11 @@ void plotStackHisto(TString year, bool useDataQCD1)
   //subdominant file:
   TFile *infSub = TFile::Open(TString::Format("%s/TopTaggerHisto_SubdominantBkgs_100.root", year.Data()));
 
-  const int NVAR =11;
+  const int NVAR =12;
   TString leadStr[] = {"leading", "subleading"};
   TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
-                              "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt"};
-  for(int ivar = 0; ivar< NVAR; ivar++)
+                              "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt", "deltaPhi"};
+  for(int ivar = NVAR-1; ivar< NVAR; ivar++)
   {
     for(int ilead = 0; ilead<2; ilead++)
     {
@@ -53,15 +51,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
   //if use data, uncomment
   TString qcdStr = "qcdMC";
-  if(useDataQCD)
-  {
-    qcdStr = "qcdData";
-    hQCD = (TH1F*)infData->Get(TString::Format("hWt_%s_0btag_expYield_%s", variable.Data(),leadingStr.Data()));
-    hQCD->Scale(1./hQCD->Integral());
-    hQCD->Scale(Nbkg2Constants[year]);
-  }
-  else
-    hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
 
   hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
 
