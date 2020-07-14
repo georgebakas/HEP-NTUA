@@ -345,9 +345,9 @@ void initFilesMapping(bool isLoose)
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("2017", 9.25e+02));
 	Nbkg2ConstantsErrors.insert(pair<TString, float>("2018", 5.52e+02));
 
-	signalStrenth.insert(pair<TString, float>("2016", 0.671244));
-	signalStrenth.insert(pair<TString, float>("2017", 0.553099));
-	signalStrenth.insert(pair<TString, float>("2018", 0.615816));
+	signalStrenth.insert(pair<TString, float>("2016", 0.73));
+	signalStrenth.insert(pair<TString, float>("2017", 0.53));
+	signalStrenth.insert(pair<TString, float>("2018", 0.61));
 
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj

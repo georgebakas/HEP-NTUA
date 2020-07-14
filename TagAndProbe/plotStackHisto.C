@@ -155,6 +155,6 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetLabelSize(13);
 
   hNum->Draw();
-  //can->Print(TString::Format("%s/plots/TagAndProbe_%s%s.pdf",year.Data(),  regions.Data(), variable.Data()),"pdf");
+  can->Print(TString::Format("%s/plots/TagAndProbe_%s%s.pdf",year.Data(),  regions.Data(), variable.Data()),"pdf");
 
 }
