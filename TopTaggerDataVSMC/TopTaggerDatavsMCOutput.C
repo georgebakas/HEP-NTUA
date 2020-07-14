@@ -549,7 +549,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
      JetPtOverSumPt[leadingPt] = (*pt_)[leadingPt]/sumPt;
      JetPtOverSumPt[subleadingPt] = (*pt_)[subleadingPt]/sumPt;
     //cout<<"ok"<<endl;
-    float deltaPhi = (*phi_)[leadingPt] - (*phi_)[subleadingPt];
+    float deltaPhi = fabs((*phi_)[leadingPt] - (*phi_)[subleadingPt]);
     //cout<<"ok"<<endl;
     xRecoAll_Leading.push_back((*mass_)[leadingPt]);
     xRecoAll_Leading.push_back((*jetTtag_)[leadingPt]);
@@ -612,7 +612,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     JetPtOverSumPt[0] = (*jetPt)[0]/sumPt;
     JetPtOverSumPt[1] = (*jetPt)[1]/sumPt;
     //cout<<"ok"<<endl;
-    float deltaPhi = (*jetPhi)[0] - (*jetPhi)[1];
+    float deltaPhi = fabs((*jetPhi)[0] - (*jetPhi)[1]);
     //cout<<deltaPhi<<endl;
     xRecoAll_Leading.push_back((*jetMassSoftDrop)[0]);
     xRecoAll_Leading.push_back((*jetTtag)[0]);
