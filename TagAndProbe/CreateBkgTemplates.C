@@ -1,6 +1,8 @@
-
-void CreateBkgTemplates(TString year, TString CUT = "")
+void CreateBkgTemplates(TString year, TString selection= "probe", TString CUT = "")
 {
+  TString selectedRegion;
+  if(selection.EqualTo("probe")) selectedRegion = "hSRBTightAndProbe";
+  else if (selection.EqualTo("SR")) selectedRegion = "hSRBTightAndSR"; 
   gROOT->ForceStyle();
 
   RooMsgService::instance().setSilentMode(kTRUE);
@@ -28,17 +30,17 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   //---- first do the data template ---------------
   //TFile *infData = TFile::Open(TString::Format("%s/TagAndProbeHisto_Data_%s_100_reduced_UnequalBinning.root", year.Data(),year.Data()));
   TFile *infData = TFile::Open(TString::Format("%s/TagAndProbeHisto_QCD_HT300toInf_100_reduced_UnequalBinning.root", year.Data()));
-  TH1F *hData = (TH1F*)infData->Get("hSRBTightAndProbe_mTop_expYield");
+  TH1F *hData = (TH1F*)infData->Get(TString::Format("%s_mTop_expYield",selectedRegion.Data()));
   cout<<"CR Entries from data: "<<hData->GetEntries()<<endl;
   //because of contamination we need to substract the ttbar from the CR.
   //we do that by extracting the 0btag th1 using nominal or mtt mc
   TFile *infTTMC = TFile::Open(TString::Format("%s/TagAndProbeHisto_TT_NominalMC_100_reduced_UnequalBinning.root",year.Data()));  //nominal
   //TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt
-  TH1F *hCR_MC = (TH1F*)infTTMC->Get("hSRBTightAndProbe_mTop_expYield");
+  TH1F *hCR_MC = (TH1F*)infTTMC->Get(TString::Format("%s_mTop_expYield",selectedRegion.Data()));
 
   TFile *infBkg_temp = TFile::Open(TString::Format("%s/TagAndProbeHisto_SubdominantBkgs_100_reduced_UnequalBinning.root",year.Data()));
-  TH1F *hCR_MCSubdominant = (TH1F*)infBkg_temp->Get("hSRBTightAndProbe_mTop_expYield");
-  TH1F *hDataBefore = (TH1F*)hData->Clone("test");
+  TH1F *hCR_MCSubdominant = (TH1F*)infBkg_temp->Get(TString::Format("%s_mTop_expYield",selectedRegion.Data()));
+  //TH1F *hDataBefore = (TH1F*)hData->Clone("test");
 
   //hDataBefore->SetLineColor(kRed);
   //hData->Add(hCR_MC,-1);
@@ -99,16 +101,16 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   else if (year.EqualTo("2017")) LUMI = 41530;
   else if (year.EqualTo("2018")) LUMI = 59740;
 
-  for(int icat=0;icat<3;icat++) {
+  for(int icat=0;icat<1;icat++) {
     if (icat==1) continue;
     infBkg = TFile::Open(TString::Format("%s/TagAndProbeHisto_SubdominantBkgs_100_reduced_UnequalBinning.root",year.Data()));
 
 
-    TString CAT = TString::Format("%dbtag",icat);
+    TString CAT = TString::Format("%dbtag",icat+2);
     TAG = CUT+"_"+CAT;
 
     //---- do the bkg templates -------------
-    TH1F *hBkg = (TH1F*)infBkg->Get("hSRBTightAndProbe_mTop_expYield");
+    TH1F *hBkg = (TH1F*)infBkg->Get(TString::Format("%s_mTop_expYield",selectedRegion.Data()));
     cout<<"icat "<<icat<<": "<<hBkg->Integral()<<endl;
     RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg);
 
@@ -157,7 +159,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     frameBkg->GetXaxis()->SetTitle("m_{t} (GeV)");
     frameBkg->Draw();
     gPad->Update();
-    canBkg->Print(TString::Format("%s/plots/templateResults/"+TString(canBkg->GetName())+".pdf", year.Data()));
+    canBkg->Print(TString::Format("%s/plots/templateResults/"+TString(canBkg->GetName())+selectedRegion+".pdf", year.Data()));
 
     RooArgSet *parsBkg = (RooArgSet*)bkg->getParameters(roohData);
     parsBkg->setAttribAll("Constant",true);
@@ -165,7 +167,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     w->import(*bkg);
   }
 
-  w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));
+  w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"%s_100.root",year.Data(),selectedRegion.Data()));
 
 
 

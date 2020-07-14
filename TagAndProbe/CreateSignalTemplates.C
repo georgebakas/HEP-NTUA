@@ -1,5 +1,8 @@
-void CreateSignalTemplates(TString year, TString CUT = "")
+void CreateSignalTemplates(TString year,TString selection = "probe", TString CUT = "")
 {
+  TString selectedRegion;
+  if(selection.EqualTo("probe")) selectedRegion = "hSRBTightAndProbe";
+  else if (selection.EqualTo("SR")) selectedRegion = "hSRBTightAndSR"; 
   gROOT->ForceStyle();
 
   RooMsgService::instance().setSilentMode(kTRUE);
@@ -46,16 +49,15 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooGaussian pdfW("pdfW","pdfW",*x,mWShift,sWShift);
   */
 
-  for(int icat=0;icat<3;icat++) {
+  for(int icat=0;icat<1;icat++) {
     if(icat ==1) continue;
     infMC = TFile::Open(TString::Format("%s/TagAndProbeHisto_TT_NominalMC_100_reduced_UnequalBinning.root",year.Data())); //nominal
-    TString CAT = TString::Format("%dbtag",icat);
+    TString CAT = TString::Format("%dbtag",icat+2);
     TAG = CUT+"_"+CAT;
 
     //---- then do the signal templates -------------
     hMC = (TH1F*)infMC->Get("hWt_"+VAR+TAG);
-    cout<<"hWt_"+VAR+TAG+"_leading_expYield"<<endl;
-    TH1F *hMC_yield = (TH1F*)infMC->Get("hSRBTightAndProbe_mTop_expYield");
+    TH1F *hMC_yield = (TH1F*)infMC->Get(TString::Format("%s_mTop_expYield",selectedRegion.Data()));
     double error(0.0);
     float signal_yield, signal_error;
     signal_yield =  hMC_yield->IntegralAndError(1,hMC_yield->GetNbinsX(),error);
@@ -129,7 +131,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     frameS->GetXaxis()->SetTitle("m_{t} (GeV)");
     frameS->Draw();
     gPad->Update();
-    canS->Print(TString::Format("%s/plots/templateResults/"+TString(canS->GetName())+".pdf",year.Data()));
+    canS->Print(TString::Format("%s/plots/templateResults/"+TString(canS->GetName())+selectedRegion+".pdf",year.Data()));
 
     RooArgSet *parsSig = (RooArgSet*)signal->getParameters(roohMC);
     parsSig->setAttribAll("Constant",true);
@@ -141,5 +143,5 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     // w->import(*fSigEvt);
   }
 
-  w->writeToFile(TString::Format("%s/templates_Sig_"+CUT+"100.root",year.Data()));
+  w->writeToFile(TString::Format("%s/templates_Sig_"+CUT+"%s_100.root",year.Data(),selectedRegion.Data()));
 }

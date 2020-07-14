@@ -535,7 +535,7 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
         subleadingPt = 0;
       }
 
-      TRandom *randJet = new TRandom();
+      TRandom2 *randJet = new TRandom2();
       int tightJet=0;
       int otherJet=0;
       if (randJet->Rndm() > 0.5)
@@ -584,7 +584,7 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-    TRandom *randJet = new TRandom();
+    TRandom2 *randJet = new TRandom2();
     int tightJet=0;
     int otherJet=0;
     if (randJet->Rndm() > 0.5)
