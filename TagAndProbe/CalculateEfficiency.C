@@ -72,15 +72,85 @@ void CalculateEfficiency(TString year = "2016")
   float eff_data_error = TMath::Sqrt( TMath::Power(error_data[1]/intData[0],2) + TMath::Power(error_data[0] * intData[1]/ TMath::Power(intData[0],2),2));
   float eff_tt_error = TMath::Sqrt( TMath::Power(error_tt[1]/intTT[0],2) + TMath::Power(error_tt[0] * intTT[1]/ TMath::Power(intTT[0],2),2));
 
+  //now calculate it per pT region:
+  //jetPt0 binning: {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}
+  //[i][0] is the ptregion i, denominator and [i][1] is pt region i, numerator
+  Double_t integralPtRegionsData[3][2],integralPtRegionsData_error[3][2];
+  Double_t integralPtRegionsTT[3][2], integralPtRegionsTT_error[3][2];
+
+  float eff_PtRegionsData[3];
+  float eff_PtRegionsTT[3];
+  //calculate errors in pt regions:
+  float eff_data_errorPtRegions[3];
+  float eff_tt_errorPtRegions[3];
+
+
+  float start[3] = {1,9,13};
+  float end[3] = {8,12,21};
+  //loop on all regions
+  for(int ipt=0; ipt<3;ipt++)
+  {
+    integralPtRegionsData[ipt][0] = hData[0]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsData_error[ipt][0]);
+    integralPtRegionsData[ipt][1] = hData[1]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsData_error[ipt][1]);
+
+    integralPtRegionsTT[ipt][0] = hTT[0]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsTT_error[ipt][0]);
+    integralPtRegionsTT[ipt][1] = hTT[1]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsTT_error[ipt][1]);
+
+    eff_PtRegionsData[ipt] = integralPtRegionsData[ipt][1]/integralPtRegionsData[ipt][0];
+    eff_PtRegionsTT[ipt] = integralPtRegionsTT[ipt][1]/integralPtRegionsTT[ipt][0];
+
+    eff_data_errorPtRegions[ipt] = TMath::Sqrt( TMath::Power(integralPtRegionsData_error[ipt][1]/integralPtRegionsData[ipt][0],2) + TMath::Power(integralPtRegionsData_error[ipt][0] * integralPtRegionsData[ipt][1]/ TMath::Power(integralPtRegionsData[ipt][0],2),2));
+    eff_tt_errorPtRegions[ipt] = TMath::Sqrt( TMath::Power(integralPtRegionsTT_error[ipt][1]/integralPtRegionsTT[ipt][0],2) + TMath::Power(integralPtRegionsTT_error[ipt][0] * integralPtRegionsTT[ipt][1]/ TMath::Power(integralPtRegionsTT[ipt][0],2),2));
+  }
+
+
   FILE *fp;
   TString str = TString::Format("%s/Output_%s.txt",year.Data(), year.Data());
   fp = fopen(str.Data(),"w");
+  fprintf(fp, "Efficiency--\n" );
   fprintf(fp, "eff data: %f ± %f\n",eff_data, eff_data_error);
   fprintf(fp, "eff ttbar: %f ± %f\n",eff_tt, eff_tt_error);
-
+  fprintf(fp, "-----------\n" );
+  fprintf(fp, "Efficiency per Pt region\n");
+  fprintf(fp, "eff data pT[400-600]: %f ± %f\n",eff_PtRegionsData[0], eff_data_errorPtRegions[0]);
+  fprintf(fp, "eff ttbar pT[400-600]: %f ± %f\n",eff_PtRegionsTT[0], eff_tt_errorPtRegions[0]);
+  fprintf(fp, "-----------\n" );
+  fprintf(fp, "eff data pT[600-800]: %f ± %f\n",eff_PtRegionsData[1], eff_data_errorPtRegions[1]);
+  fprintf(fp, "eff ttbar pT[600-800]: %f ± %f\n",eff_PtRegionsTT[1], eff_tt_errorPtRegions[1]);
+  fprintf(fp, "-----------\n" );
+  fprintf(fp, "eff data pT[800-Inf]: %f ± %f\n",eff_PtRegionsData[2], eff_data_errorPtRegions[2]);
+  fprintf(fp, "eff ttbar pT[800-Inf]: %f ± %f\n",eff_PtRegionsTT[2], eff_tt_errorPtRegions[2]);
 
   cout<<"eff data: "<<eff_data<<" ± "<<eff_data_error<<endl;
   cout<<"eff ttbar: "<<eff_tt<<" ± "<<eff_tt_error<<endl;
   fclose(fp);
+
+
+
+  TCanvas *can = new TCanvas("effCanPt", "effCanPt", 800, 600);
+  TLegend *leg = new TLegend(0.5, 0.75, 0.7, 0.9);
+
+  int n = 3;
+  float xData[] = {1,2,3};
+  float xTT[] = {1.2,2.2,3.2};
+  std::vector<std::string> x_labels = {"pT[400-600]", "pT[600-800]", "pT[800-Inf]"};
+  float ex[]= {0,0,0};
+  TGraphErrors *grData = new TGraphErrors(n,xData,eff_PtRegionsData,ex,eff_data_errorPtRegions);
+  TGraphErrors *grTT = new TGraphErrors(n,xTT,eff_PtRegionsTT,ex,eff_tt_errorPtRegions);
+
+  leg->AddEntry(grData,"Data", "lep");
+  leg->AddEntry(grTT,"TT MC", "lep");
+  TMultiGraph *mg = new TMultiGraph();
+  grData->SetTitle("TGraphErrors Example");
+  grData->SetMarkerColor(kBlue);
+  grData->SetMarkerStyle(21);
+  grTT->SetMarkerColor(kRed);
+  grTT->SetMarkerStyle(20);
+  mg->Add(grData);
+  mg->Add(grTT);
+  mg->Draw("ap");
+  leg->Draw();
+  can->Update();
+  can->Print(TString::Format("%s/plots/Efficiency_perPtRegion.pdf",year.Data()),"pdf");
 
 }
