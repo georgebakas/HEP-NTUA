@@ -165,7 +165,7 @@ void CalculateBTagSF()
     }//end of jet loop
     cout<<"event: "<<iev<<" has weight: "<<ievDeepCSVWgt<<endl;
     //now fill the branch with the ievDeepCSVWgt
-    //trIN_br->Fill();
+    trIN_br->Fill();
 
   }//-----end of iev loop-----
   //trIN->Print();
