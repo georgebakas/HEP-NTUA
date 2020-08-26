@@ -16,10 +16,13 @@ typedef std::vector<double>                    vdouble;
 typedef std::vector<std::vector<double> >      vvdouble;
 
 
-void CalculateBTagSF()
+void CalculateBTagSF(TString year = "2016", TString infStr = "")
 {
 
+   //btaging scale factors are applied only on MC samples
+   //TString *eospath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/Signal",year.Data());
    TFile *inf = TFile::Open("../../WJetsToQQ_HT400to600_qc19_3j_TuneCP5_13TeV-madgraphMLM-pythia8.root", "UPDATE");
+   //TFile *inf = TFile::Open(eospath+infStr, "UPDATE");
 
    TTree *trIN    = (TTree*)inf->Get("boosted/events");
    //cout<<"XSEC: "<<XSEC[f]<<endl;
@@ -98,8 +101,7 @@ void CalculateBTagSF()
    std::cout << "===> Loading the input .csv SF file..." << std::endl;
 
    std::string inputCSVfile;
-   TString year = "2017";
-   if(year.EqualTo("2016"))inputCSVfile = "2016/DeepCSV_2016LegacySF_V1_TuneCP5.csv";
+   if(year.EqualTo("2016"))inputCSVfile = "2016/DeepCSV_2016LegacySF_V1.csv";
    else if(year.EqualTo("2017")) inputCSVfile= "2017/DeepCSV_94XSF_V5_B_F.csv";
    else inputCSVfile= "2018/DeepCSV_102XSF_V2.csv";
    //std::string inputCSVfile = "2017/subjet_DeepCSV_94XSF_V4_B_F.csv";
@@ -163,17 +165,14 @@ void CalculateBTagSF()
       ievDeepCSVWgt *= ievDeepCSVWgtJet;
 
     }//end of jet loop
-    cout<<"event: "<<iev<<" has weight: "<<ievDeepCSVWgt<<endl;
+    //cout<<"event: "<<iev<<" has weight: "<<ievDeepCSVWgt<<endl;
     //now fill the branch with the ievDeepCSVWgt
     trIN_br->Fill();
 
   }//-----end of iev loop-----
-  //trIN->Print();
-  //TDirectory *dir = new TDirectory("boosted/events", "boosted/events");
-  //trIN->SetDirectory(dir);
-  //trIN->Cd("boosted/events");
-  //trIN->Write();
-
+  inf->cd("boosted");
+  //trIN->Write("boosted");
+  trIN->Write();
 
 /*
    // Using BTagCalibrationReader
