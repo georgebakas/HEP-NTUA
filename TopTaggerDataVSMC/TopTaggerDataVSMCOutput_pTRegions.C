@@ -268,7 +268,8 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
   int NN = trIN->GetEntries();
 
   int nJets,nLeptons;
-  float genEvtWeight;
+  float genEvtWeight(0);
+  double bTagEvntWeight(0);
   vector<float> *jetPt(0),*jetTau3(0),*jetTau2(0),*jetTau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
@@ -299,6 +300,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
   trIN->SetBranchAddress("jetTau1"        ,&jetTau1);
   trIN->SetBranchAddress("triggerBit"     ,&bit);
   trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
+  trIN->SetBranchAddress("bTagEvntWeight"  ,&bTagEvntWeight);
   trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
   trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
   trIN->SetBranchAddress("mJJ"        ,&mJJ);
@@ -388,7 +390,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
 
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=4;iev<NN;iev++)
-  { 
+  {
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
     if (k > decade)
@@ -426,7 +428,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
     jetBtagSub1DCSVbb_->clear();
     jetBtagSub0DCSVbbb_->clear();
     jetBtagSub1DCSVbbb_->clear();
-  
+
   xRecoAll_Leading.clear();
   xRecoAll_SubLeading.clear();
   bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
@@ -518,7 +520,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
-    
+
     ptCutLeading[0] = ((*pt_)[0] > 400) && ((*pt_)[0] < 600);
     ptCutLeading[1] = ((*pt_)[0] > 600) && ((*pt_)[0] < 800);
     ptCutLeading[2] = ((*pt_)[0] > 800) && ((*pt_)[0] < 1200);
@@ -613,33 +615,36 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
   revertBtag = revertBtagDeepCSV;
 
    //cout<<"------"<<endl;
-   
+
 
      xReco_leading = xRecoAll_Leading[0];
      xReco_subleading = xRecoAll_SubLeading[0];
-     if(selection == 0) genEvtWeight =1;
+     if(selection == 0){
+       genEvtWeight =1;
+       bTagEvntWeight = 1;
+     }
       //Signal Region with tTagger
      if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
      {
       if(ptCutLeading[0])
       {
-        hSR_Leading[f][0]->Fill(xReco_leading,genEvtWeight);
-        hSR_SubLeading[f][0]->Fill(xReco_subleading,genEvtWeight);
+        hSR_Leading[f][0]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hSR_SubLeading[f][0]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
       else if(ptCutLeading[1])
       {
-        hSR_Leading[f][1]->Fill(xReco_leading,genEvtWeight);
-        hSR_SubLeading[f][1]->Fill(xReco_subleading,genEvtWeight);
+        hSR_Leading[f][1]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hSR_SubLeading[f][1]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
       else if(ptCutLeading[2])
       {
-        hSR_Leading[f][2]->Fill(xReco_leading,genEvtWeight);
-        hSR_SubLeading[f][2]->Fill(xReco_subleading,genEvtWeight);
+        hSR_Leading[f][2]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hSR_SubLeading[f][2]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
       else if(ptCutLeading[3])
       {
-        hSR_Leading[f][3]->Fill(xReco_leading,genEvtWeight);
-        hSR_SubLeading[f][3]->Fill(xReco_subleading,genEvtWeight);
+        hSR_Leading[f][3]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hSR_SubLeading[f][3]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
      }
      //Control Region with tTagger
@@ -648,23 +653,23 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
 
       if(ptCutLeading[0])
       {
-        hCR_Leading[f][0]->Fill(xReco_leading,genEvtWeight);
-        hCR_SubLeading[f][0]->Fill(xReco_subleading,genEvtWeight);
+        hCR_Leading[f][0]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hCR_SubLeading[f][0]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
       else if(ptCutLeading[1])
       {
-        hCR_Leading[f][1]->Fill(xReco_leading,genEvtWeight);
-        hCR_SubLeading[f][1]->Fill(xReco_subleading,genEvtWeight);
+        hCR_Leading[f][1]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hCR_SubLeading[f][1]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
       else if(ptCutLeading[2])
       {
-        hCR_Leading[f][2]->Fill(xReco_leading,genEvtWeight);
-        hCR_SubLeading[f][2]->Fill(xReco_subleading,genEvtWeight);
+        hCR_Leading[f][2]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hCR_SubLeading[f][2]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
       else if(ptCutLeading[3])
       {
-        hCR_Leading[f][3]->Fill(xReco_leading,genEvtWeight);
-        hCR_SubLeading[f][3]->Fill(xReco_subleading,genEvtWeight);
+        hCR_Leading[f][3]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+        hCR_SubLeading[f][3]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
       }
      }
 

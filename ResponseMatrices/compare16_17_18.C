@@ -163,7 +163,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
       //if(i==0)gPad->Range(xmin,0,xmax,0.2);
       //else gPad->Range(xmin,0,xmax,0.4);
-	   can_eff[i]->Print(TString::Format("plots%s/%s/%s/Efficiency%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+	   can_eff[i]->Print(TString::Format("plots%s/%s/%s/Efficiency_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
 
 	   can_acc[i] = new TCanvas(TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   acc18[i]->SetTitle(TString::Format("%s Acceptance '16,'17,'18 %s;%s (GeV);Acceptance",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));
@@ -179,7 +179,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 		graphAcc->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 		gPad->Update();
 
-	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    }
 
 
@@ -211,7 +211,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
-   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrix%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
+   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrixBtaggingSF%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
    	}
    }
 

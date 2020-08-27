@@ -196,6 +196,7 @@ for(int f=0; f<fileNames.size(); f++)
     //reco vars:
     std::vector<float> *jetPt(0), *jetY(0), *jetEta(0), *jetPhi(0), *jetTtag(0);
     float genEvtWeight(0);
+    double bTagEvntWeight(0);
     float mJJ(0), ptJJ(0), yJJ(0),mva(0);
     vector<float> *tau3(0),*tau2(0),*tau1(0);
 	  vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);
@@ -235,6 +236,7 @@ for(int f=0; f<fileNames.size(); f++)
     trIN->SetBranchAddress("jetTau1"        ,&tau1);
     trIN->SetBranchAddress("triggerBit"     ,&bit);
     trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
+    trIN->SetBranchAddress("bTagEvntWeight" ,&bTagEvntWeight);
     trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
     //trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
     trIN->SetBranchAddress("mJJ"   			,&mJJ);
@@ -478,7 +480,7 @@ for(int f=0; f<fileNames.size(); f++)
 		  {
 		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-				  hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
+				  hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
 			  }
 		  }
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
@@ -487,10 +489,10 @@ for(int f=0; f<fileNames.size(); f++)
 		  {
 			  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  			{
-				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight);
-				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
+				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight);
+				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
            //if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar]<<endl;
-				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI);
+				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI*bTagEvntWeight);
 				}//---- end of the ivar loop
 
 	    }//----- end of selection cuts parton and reco
@@ -500,17 +502,17 @@ for(int f=0; f<fileNames.size(); f++)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);
-	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight);
+	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
+	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
 
-	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar], genEvtWeight*weights[f]*LUMI);
+	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar], genEvtWeight*weights[f]*LUMI*bTagEvntWeight);
 	      	}
 	      }
 	      if(particleCuts)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight);
+	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
 	      	}
 	      }
 
