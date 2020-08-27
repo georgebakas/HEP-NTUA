@@ -269,7 +269,8 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   int NN = trIN->GetEntries();
 
   int nJets,nLeptons;
-  float genEvtWeight;
+  float genEvtWeight(0);
+  double bTagEvntWeight(0);
   vector<float> *jetPt(0),*jetTau3(0),*jetTau2(0),*jetTau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
@@ -300,6 +301,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   trIN->SetBranchAddress("jetTau1"        ,&jetTau1);
   trIN->SetBranchAddress("triggerBit"     ,&bit);
   trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
+  trIN->SetBranchAddress("bTagEvntWeight"  ,&bTagEvntWeight);
   trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
   trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
   trIN->SetBranchAddress("mJJ"        ,&mJJ);
@@ -654,19 +656,22 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
      xReco_leading = xRecoAll_Leading[ivar];
      xReco_subleading = xRecoAll_SubLeading[ivar];
-     if(selection == 0) genEvtWeight =1;
+     if(selection == 0){
+       genEvtWeight =1;
+       bTagEvntWeight = 1;
+     }
      //Signal Region with tTagger
      if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
      {
 
-      hSR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight);
-      hSR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight);
+      hSR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+      hSR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
      }
      //Control Region with tTagger
      if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
      {
-      hCR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight);
-      hCR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight);
+      hCR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
+      hCR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
      }
    }
 

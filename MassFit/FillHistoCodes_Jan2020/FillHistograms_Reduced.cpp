@@ -26,15 +26,15 @@ int selection;
 
 void initFileNames()
 {
-  
+
   if(selection ==0) //data
   {
-    eosPath = TString::Format("%s%s/",eosDataPath.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/",eosDataPath.Data(), year.Data());
     listOfFiles.push_back(dataFiles[year.Data()]);
   }
   else if(selection ==1) //signal ttbar mc mtt
   {
-    eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
     cout<<eosPath<<endl;
     cout<<mttFiles[year.Data()]["700-1000"]<<endl;
     listOfFiles.push_back(mttFiles[year.Data()]["700-1000"]);
@@ -42,7 +42,7 @@ void initFileNames()
   }
   else if(selection ==2) //bkg mc
   {
-    eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());
     listOfFiles.push_back(qcdBkgFiles[year.Data()]["300-500"]);
     listOfFiles.push_back(qcdBkgFiles[year.Data()]["500-700"]);
     listOfFiles.push_back(qcdBkgFiles[year.Data()]["700-1000"]);
@@ -52,7 +52,7 @@ void initFileNames()
   }
   else if(selection ==3) //subdominant bkgs
   {
-    eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());
     if(year.EqualTo("2016"))
     {
       listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
@@ -80,7 +80,7 @@ void initFileNames()
   }
   else if(selection ==4) //signal ttbar mc nominal
   {
-    eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());  
+    eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
     cout<<eosPath<<endl;
     if(year.EqualTo("2016")) listOfFiles.push_back(ttNominalFiles[year.Data()]["TTNominal"]);
     else
@@ -150,11 +150,11 @@ void initXsections()
 
 void initHistoNames()
 {
-  
+
   if(selection ==0) histoNames.push_back(TString::Format("Data_%s", year.Data()));
   else if(selection ==1)
   {
-    histoNames.push_back("Signal_histo_Mtt_700_1000"); 
+    histoNames.push_back("Signal_histo_Mtt_700_1000");
     histoNames.push_back("Signal_histo_Mtt_1000_Inf");
   }
   else if (selection ==2)
@@ -168,7 +168,7 @@ void initHistoNames()
   }
   else if(selection ==3)
   {
-   
+
     if(year.EqualTo("2016"))
     {
        histoNames.push_back("DYJetsToQQ_HT180");
@@ -213,7 +213,7 @@ void initGlobals()
   initXsections();
   initHistoNames();
 }
- 
+
 void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
 {
   year =y;
@@ -222,8 +222,8 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, bool isLoose=false)
   selection = sel;
   LUMI = luminosity[year.Data()];
   LUMI_CR = luminosityCR[year.Data()];
-  initGlobals();  
-  
+  initGlobals();
+
   gStyle->SetOptStat(0);
   const int NVAR =11;
   const int N_MJJ = 10;
@@ -239,48 +239,49 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   cout<<"triggerCRConst[year.Data()]]: "<<triggerCRConst[year.Data()]<<endl;
   cout<<"topTagger: "<<selMvaCut<<endl;
   cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
-  
+
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
                        {0,60,150,300,450,600,750,950,1100,1300}, //ptjj
                        {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                       {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0 
+                       {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt1
                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-  
+
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1",
-               "mva", "topTagger1", "mTop", "jetMassSoftDrop"};  
-  
+               "mva", "topTagger1", "mTop", "jetMassSoftDrop"};
+
   int fileSize = listOfFiles.size();
   TFile *inf;
   vector<float> weights(0);
-  
+
  //number of checks: one for Top Tagger and one for DAK8
  const int nChecks = 2;
- //initialize the required histograms 
+ //initialize the required histograms
  TH1F *hCR[listOfFiles.size()][NVAR];
  TH1F *hSR[listOfFiles.size()][NVAR];
  TH1F *h1Btag[listOfFiles.size()][NVAR];
- 
+
  for(int f=0; f<listOfFiles.size(); f++)
  {
   int counter(0);
   cout<<"Entering "<<eosPath+listOfFiles[f]<<endl;
-  inf = TFile::Open(eosPath+listOfFiles[f]);   
-  TTree *trIN    = (TTree*)inf->Get("boosted/events");  
-  
+  inf = TFile::Open(eosPath+listOfFiles[f]);
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+
   if(selection != 0)
   {
-    float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights(); 
-    weights.push_back(XSEC[f]/NORM);  
+    float NORM = ((TH1F*)inf->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
+    weights.push_back(XSEC[f]/NORM);
   }
-  
+
   int decade(0);
   int NN = trIN->GetEntries();
-  
+
   int nJets,nLeptons;
-  float genEvtWeight;
+  float genEvtWeight(0);
+  double bTagEvntWeight(0);
   vector<float> *jetPt(0),*tau3(0),*tau2(0),*tau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
@@ -290,10 +291,10 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   vector<bool> *bit = new vector<bool>;
   float mTTbarParton(0),mJJ(0), yJJ(0), ptJJ(0), yTTbarParton(0), ptTTbarParton(0);
   int  category(0);
-  //matching info 
+  //matching info
   vector<float> *jetPhi(0), *jetEta(0), *jetY(0);
   vector<int> *partonId(0), *partonMatchIdx(0);
-  
+
   vector<float> *partonEta(0), *partonPhi(0), *partonMatchDR(0),  *partonPt(0), *partonE(0), *partonMass(0), *deepAK8(0);
   std::vector<int> *addedIndexes = new std::vector<int>(0);
   std::vector<float> *jetBtagSub0(0), *jetBtagSub1(0);
@@ -311,6 +312,7 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   trIN->SetBranchAddress("jetTau1"        ,&tau1);
   trIN->SetBranchAddress("triggerBit"     ,&bit);
   trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
+  trIN->SetBranchAddress("bTagEvntWeight"  ,&bTagEvntWeight);
   trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
   trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
   trIN->SetBranchAddress("mJJ"        ,&mJJ);
@@ -323,13 +325,13 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   trIN->SetBranchAddress("category"       ,&category);
   trIN->SetBranchAddress("deepAK8Tagger"  ,&deepAK8);
   trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
-  
+
   //deepCSV
   trIN->SetBranchAddress("jetBtagSub0DCSVbb" ,&jetBtagSub0DCSVbb);
   trIN->SetBranchAddress("jetBtagSub1DCSVbb" ,&jetBtagSub1DCSVbb);
   trIN->SetBranchAddress("jetBtagSub0DCSVbbb",&jetBtagSub0DCSVbbb);
   trIN->SetBranchAddress("jetBtagSub1DCSVbbb",&jetBtagSub1DCSVbbb);
-  
+
   if(selection == 1 || selection ==4)
   {
   trIN->SetBranchAddress("mTTbarParton" ,&mTTbarParton);
@@ -346,14 +348,14 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   float xParton(0), xReco(0);
   std::vector<float> xRecoAll(0);
   //book the histograms
-  //histograms for Signal/QCD in CR 
+  //histograms for Signal/QCD in CR
   for(int ivar =0; ivar< NVAR; ivar++)
   {
     int sizeBins = NBINS[ivar];
     if(ivar < 7)
     {
       float tempBND[NBINS[ivar]+1];
-      std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND); 
+      std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
       hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
       hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
       h1Btag[f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
@@ -390,23 +392,23 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   std::vector<float> *partonY_ = new std::vector<float>(0);
   std::vector<float> *partonMass_ = new std::vector<float>(0);
   std::vector<float> *partonPhi_ = new std::vector<float>(0);
-  
+
   std::vector<float> *jetBtagSub0DCSVbb_ = new std::vector<float>(0);
   std::vector<float> *jetBtagSub1DCSVbb_ = new std::vector<float>(0);
   std::vector<float> *jetBtagSub0DCSVbbb_ = new std::vector<float>(0);
   std::vector<float> *jetBtagSub1DCSVbbb_ = new std::vector<float>(0);
   float jetDr_(0);
-  
+
   cout<<"Reading "<<NN<<" entries"<<endl;
-  for(int iev=4;iev<NN;iev++) 
+  for(int iev=4;iev<NN;iev++)
   {
     double progress = 10.0*iev/(1.0*NN);
-    int k = TMath::FloorNint(progress); 
-    if (k > decade) 
+    int k = TMath::FloorNint(progress);
+    if (k > decade)
       cout<<10*k<<" %"<<endl;
     decade = k;
     trIN->GetEntry(iev);
-  
+
   int isMatched =0;
   eta_->clear();
   y_->clear();
@@ -423,7 +425,7 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     partonMass_->clear();
     partonPhi_->clear();
     partonEta_->clear();
-  
+
   jetBtagSub0DCSVbb_->clear();
     jetBtagSub1DCSVbb_->clear();
     jetBtagSub0DCSVbbb_->clear();
@@ -431,16 +433,16 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
 
   xRecoAll.clear();
   bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
-  bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;  
+  bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;
   bool btagCut, revertBtag, btag1;
-  
+
   if (nJets >1)
-  { 
+  {
     //matching only if we have Signal ttbar MC
     if(selection == 1 || selection ==4)
     {
     //----------------------MATCHING------------------------------------------------------
-    
+
     for(int ijet =0; ijet<nJets; ijet++)
     {
        jetMatchedIndexes->clear();
@@ -461,7 +463,7 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
        {
         float dRmin = (*jetMatchedDr)[0];
       int indexMin = (*jetMatchedIndexes)[0];
-      
+
       for(int k=1; k<jetMatchedIndexes->size(); k++)
       {
         if((*jetMatchedDr)[k] < dRmin)
@@ -469,9 +471,9 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
           dRmin = (*jetMatchedDr)[k];
           indexMin = (*jetMatchedIndexes)[k];
         }
-      
+
       }
-      
+
       if(dRmin < 0.4)
       {
         isMatched++;
@@ -486,29 +488,29 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
    //     jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
         jetTtag_->push_back((*jetTtag)[(*partonMatchIdx)[indexMin]]);
         deepAK8_->push_back((*deepAK8)[(*partonMatchIdx)[indexMin]]);
-        
+
         jetBtagSub0DCSVbb_->push_back((*jetBtagSub0DCSVbb)[(*partonMatchIdx)[indexMin]]);
         jetBtagSub1DCSVbb_->push_back((*jetBtagSub1DCSVbb)[(*partonMatchIdx)[indexMin]]);
         jetBtagSub0DCSVbbb_->push_back((*jetBtagSub0DCSVbbb)[(*partonMatchIdx)[indexMin]]);
         jetBtagSub1DCSVbbb_->push_back((*jetBtagSub1DCSVbbb)[(*partonMatchIdx)[indexMin]]);
-  
+
         //PARTON MATCHED
         partonPt_->push_back( (*partonPt)[indexMin]);
         partonMass_->push_back( (*partonMass)[indexMin]);
         partonPhi_->push_back( (*partonPhi)[indexMin]);
         partonEta_->push_back( (*partonEta)[indexMin]);
         //here misssing partonY
-      }     
+      }
      }//----end of if jetMatchedIndexes > 0
     }//----end of for on all jets for mathching
-     
+
     //---------------------------------------END OF MATCHING------------------------------------------------------
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
     dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0];
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
-    
+
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
@@ -516,44 +518,44 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     massCut    = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
     //2 btag category with deepCSV
-    deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) && 
+    deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
            (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
-    //1 btag category with deepCSV                
+    //1 btag category with deepCSV
     btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
-   
+
    //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
-    
+
     if(isMatched > 1)
     {
       int leadingPt = 0;
       int subleadingPt = 1;
-      if ((*pt_)[0] < (*pt_)[1]) 
+      if ((*pt_)[0] < (*pt_)[1])
       {
         leadingPt = 1;
         subleadingPt = 0;
       }
-        
+
     xRecoAll.push_back(mJJ);
     xRecoAll.push_back(ptJJ);
     xRecoAll.push_back(yJJ);
     xRecoAll.push_back((*pt_)[leadingPt]);
     xRecoAll.push_back((*pt_)[subleadingPt]);
     xRecoAll.push_back(fabs((*y_)[leadingPt]));
-    xRecoAll.push_back(fabs((*y_)[subleadingPt])); 
+    xRecoAll.push_back(fabs((*y_)[subleadingPt]));
     xRecoAll.push_back((*jetTtag_)[leadingPt]);
     xRecoAll.push_back((*jetTtag_)[subleadingPt]);
-    xRecoAll.push_back((*mass_)[leadingPt]);    
+    xRecoAll.push_back((*mass_)[leadingPt]);
     for(int ijet=1; ijet<nJets; ijet++)
       xRecoAll.push_back((*mass_)[ijet]);
     }
     else continue;
 
 
-   
-    }//----end of selection ==1 so that we do this only when we deal with signal MC 
-  
+
+    }//----end of selection ==1 so that we do this only when we deal with signal MC
+
   else //we are in QCD samples or Subdominant BKG or Data sample
   {
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
@@ -561,23 +563,23 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
-    
+
     recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
-    deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) && 
+    deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
            (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
-    //1 btag category with  deepCSV   
+    //1 btag category with  deepCSV
     btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
-   
+
     //0 btag category with deepCSV
       revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
-  
-   
+
+
    xRecoAll.push_back(mJJ);
    xRecoAll.push_back(ptJJ);
    xRecoAll.push_back(yJJ);
@@ -590,12 +592,12 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
    xRecoAll.push_back((*jetMassSoftDrop)[0]);
    for(int ijet=1; ijet<nJets; ijet++)
     xRecoAll.push_back((*jetMassSoftDrop)[ijet]);
-  
-  
-  
-    
+
+
+
+
   }//---end of else of isSignal
-  
+
   btagCut = deepCSV;
   revertBtag = revertBtagDeepCSV;
   btag1 = btag1DeepCSV;
@@ -606,56 +608,59 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
      //cout<<"enter loop"<<endl;
      xReco = xRecoAll[ivar];
      //genEventWeight is set probably to a value and this is why the histos have so many entries
-     if(selection == 0) genEvtWeight =1;
+     if(selection == 0){
+       genEvtWeight =1;
+       bTagEvntWeight = 1;
+     }
      //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
      if(ivar < 10)
      {
        if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
        {
         counter++;
-        hSR[f][ivar]->Fill(xReco,genEvtWeight);
+        hSR[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
        }
         //Control Region with tTagger
        if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
-        hCR[f][ivar]->Fill(xReco,genEvtWeight);
+        hCR[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
        //1 btag region with tTagger
        if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
-        h1Btag[f][ivar]->Fill(xReco,genEvtWeight);  
+        h1Btag[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
     }
     else
     {
       //Signal Region with tTagger
       if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
       {
-        hSR[f][10]->Fill(xReco,genEvtWeight);
+        hSR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
-        
+
       //Control Region with tTagger
       if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
       {
-        hCR[f][10]->Fill(xReco,genEvtWeight);  
+        hCR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
-        
+
       //1 btag region with tTagger
       if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
       {
-        h1Btag[f][10]->Fill(xReco,genEvtWeight);  
-      } 
+        h1Btag[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+      }
     }
    }
-   
-  
+
+
 
   }//----end of nJets
   } //---end of event loop
 
   cout<<"counter: "<<counter<<endl;
-  }//----end of fileSize loop 
-  
+  }//----end of fileSize loop
+
   TH1F *hCR_Clone[listOfFiles.size()][NVAR];
   TH1F *hSR_Clone[listOfFiles.size()][NVAR];
   TH1F *h1Btag_Clone[listOfFiles.size()][NVAR];
-  
+
   cout<<hSR[0][9]->GetEntries()<<endl;
   hSR[0][9]->Draw();
 
@@ -664,43 +669,43 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     //for every slice
     for(int j=0; j<listOfFiles.size(); j++)
     {
-      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data())); 
+      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));
       hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_Clone","tTagger",histoNames[j].Data())); 
-      
+      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_Clone","tTagger",histoNames[j].Data()));
+
         if(selection !=0)
         {
          hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
          hSR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
-         h1Btag_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 1 btagged 
-    
+         h1Btag_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 1 btagged
+
          hCR[j][ivar]->Scale(weights[j]); //this is CR
          hSR[j][ivar]->Scale(weights[j]); //this is Signal region
          h1Btag[j][ivar]->Scale(weights[j]); //this is 1 btag
         }
     }
-    
-  
+
+
     for(int j=1; j<listOfFiles.size(); j++)
     {
       cout<<"inside the loop!"<<endl;
       //Add them to get the whole phase space
       hCR[0][ivar]->Add(hCR[j][ivar]);
       hSR[0][ivar]->Add(hSR[j][ivar]);
-      h1Btag[0][ivar]->Add(h1Btag[j][ivar]);    
+      h1Btag[0][ivar]->Add(h1Btag[j][ivar]);
       hCR_Clone[0][ivar]->Add(hCR_Clone[j][ivar]);
       hSR_Clone[0][ivar]->Add(hSR_Clone[j][ivar]);
       h1Btag_Clone[0][ivar]->Add(h1Btag_Clone[j][ivar]);
-      
-    } 
-  
-    
+
+    }
+
+
   }
- 
+
   TFile *outFile;
-  TString loose = ""; 
+  TString loose = "";
   if(isLoose) loose = "_Loose";
-  
+
   if(selection ==0)
     outFile = new TFile(TString::Format("%s/Histo_Data_%s_100_reduced%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
   else if(selection ==1)
@@ -736,11 +741,11 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     hSR_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
     h1Btag_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   if(ivar == 8)
   {
     hSR[0][ivar-1]->Add(hSR[0][ivar]);
@@ -748,9 +753,9 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
     h1Btag[0][ivar-1]->Add(h1Btag[0][ivar]);
     hSR_Clone[0][ivar-1]->Add(hSR_Clone[0][ivar]);
     hCR_Clone[0][ivar-1]->Add(hCR_Clone[0][ivar]);
-    h1Btag_Clone[0][ivar-1]->Add(h1Btag_Clone[0][ivar]); 
+    h1Btag_Clone[0][ivar-1]->Add(h1Btag_Clone[0][ivar]);
   }
-  
+
    outFile->cd();
    hSR[0][ivar]->Write(TString::Format("hWt_%s_2btag", varNameReco.Data()));
    hCR[0][ivar]->Write(TString::Format("hWt_%s_0btag", varNameReco.Data()));
@@ -758,13 +763,13 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
    hSR_Clone[0][ivar]->Write(TString::Format("hWt_%s_2btag_expYield", varNameReco.Data()));
    hCR_Clone[0][ivar]->Write(TString::Format("hWt_%s_0btag_expYield", varNameReco.Data()));
    h1Btag_Clone[0][ivar]->Write(TString::Format("hWt_%s_1btag_expYield", varNameReco.Data()));
-  
-  
+
+
  }
   //outFile->Close();
-  
+
   listOfFiles.clear();
   XSEC.clear();
   histoNames.clear();
-  
+
 }

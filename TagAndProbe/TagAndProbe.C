@@ -286,7 +286,8 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
   int NN = trIN->GetEntries();
 
   int nJets,nLeptons;
-  float genEvtWeight;
+  float genEvtWeight(0);
+  double bTagEvntWeight(0);
   vector<float> *jetPt(0),*tau3(0),*tau2(0),*tau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
@@ -317,6 +318,7 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
   trIN->SetBranchAddress("jetTau1"        ,&tau1);
   trIN->SetBranchAddress("triggerBit"     ,&bit);
   trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
+  trIN->SetBranchAddress("bTagEvntWeight"  ,&bTagEvntWeight);
   trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
   trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
   trIN->SetBranchAddress("mJJ"        ,&mJJ);
@@ -632,7 +634,10 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
      //cout<<"enter loop"<<endl;
      xReco = xRecoAll[ivar];
      //genEventWeight is set probably to a value and this is why the histos have so many entries
-     if(selection == 0) genEvtWeight =1;
+     if(selection == 0){
+       genEvtWeight =1;
+       bTagEvntWeight = 1;
+     }
      //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
      if(ivar < 10)
      {
@@ -642,12 +647,12 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
         //selMvaCut
         if(tTaggerTight > tightTopTaggerCut)
         {
-          h_Denominator[f][ivar]->Fill(xReco, genEvtWeight);
+          h_Denominator[f][ivar]->Fill(xReco, genEvtWeight*bTagEvntWeight);
         }
 
         if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
         {
-          h_Numerator[f][ivar]->Fill(xReco, genEvtWeight);
+          h_Numerator[f][ivar]->Fill(xReco, genEvtWeight*bTagEvntWeight);
         }
        }
 
@@ -658,11 +663,11 @@ void TagAndProbe(TString y="2016", int sel = 0, bool isLoose=false)
       {
        //selMvaCut
        if(tTaggerTight > tightTopTaggerCut)
-         h_Denominator[f][10]->Fill(xReco, genEvtWeight);
+         h_Denominator[f][10]->Fill(xReco, genEvtWeight*bTagEvntWeight);
 
        if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
        {
-         h_Numerator[f][10]->Fill(xReco, genEvtWeight);
+         h_Numerator[f][10]->Fill(xReco, genEvtWeight*bTagEvntWeight);
        }
       }
     }

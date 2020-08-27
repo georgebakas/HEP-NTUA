@@ -1,7 +1,7 @@
-#include "2016/BTagCalibrationStandalone.h"
-#include "2016/BTagCalibrationStandalone.cpp"
+#include "2018/BTagCalibrationStandalone.h"
+#include "2018/BTagCalibrationStandalone.cpp"
 
-void UpdateBTagSF(TString oldFileName, TString year = "2016")
+void UpdateBTagSF(TString oldFileName, TString year = "2017")
 {
   /*for(int i=0; i<files.size(); i++)
   {*/
