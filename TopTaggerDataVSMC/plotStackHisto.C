@@ -31,7 +31,7 @@ void plotStackHisto(TString year)
   TString leadStr[] = {"leading", "subleading"};
   TString varReco[NVAR]   = {"topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
                               "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt", "deltaPhi"};
-  for(int ivar = NVAR-1; ivar< NVAR; ivar++)
+  for(int ivar = 0; ivar< NVAR; ivar++)
   {
     for(int ilead = 0; ilead<2; ilead++)
     {
