@@ -16,7 +16,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
+void CompareResultsAllYears()
 {
   gStyle->SetOptStat(0);
 
