@@ -94,7 +94,7 @@ void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= 
         cout<<"after fit: "<<hBkg_SR->GetBinContent(ibin)/hBkg_CR->GetBinContent(ibin)<<endl;
       }
     }
-
+    cout<<"before ratioplot"<<endl;
     ratioPlot(year, hBkg_SR, hBkg_CR,recoVar, reas, useScaleFactor, fitResult);
   }
   else
@@ -195,5 +195,6 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString 
     hRatio->Draw();
     fitResult->Draw("same");
   }
+  cout<<"here"<<endl;
   c1->Print(TString::Format("./plotsMedium/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
