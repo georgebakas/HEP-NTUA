@@ -48,6 +48,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   TH1F *hData, *hTT, *hQCD, *hSub;
 
   hData = (TH1F*)infData->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+
   hTT = (TH1F*)infTT->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
   //if use data, uncomment
   TString qcdStr = "qcdMC";
@@ -86,18 +87,15 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
 
-  /*
   hData->Rebin(2);
   hSub->Rebin(2);
   hQCD->Rebin(2);
   hTT->Rebin(2);
-  */
 
   THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
   hs->Add(hSub);
   hs->Add(hQCD);
   hs->Add(hTT);
-
 
   TCanvas *can = new TCanvas(TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), TString::Format("can_%s_%s",variable.Data(),leadingStr.Data()), 800, 600);
   TLegend *leg;
@@ -122,6 +120,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->GetYaxis()->SetTitleOffset(1.4);
   hData->GetYaxis()->SetRangeUser(0, hData->GetMaximum() * 1.2);
 
+
   leg->AddEntry(hData, "Data", "lep");
   leg->AddEntry(hTT, "TTbar", "f");
   leg->AddEntry(hQCD, "QCD", "f");
@@ -130,7 +129,8 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hs->Draw("hist");
   hData->Draw("same E");
   hs->GetYaxis()->SetTitle("Number of Events");
-  hs->GetXaxis()->SetRangeUser(0,3);
+  //I do this because I care only for the > 0 region!
+  //hs->GetXaxis()->SetRangeUser(0,3);
   if(variable.EqualTo("deltaPhi")) gPad->SetLogy();
   leg->Draw();
 
