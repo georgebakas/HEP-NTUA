@@ -37,13 +37,13 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 void graphErrorPropagation(TString year="2016", bool isParton = true, bool isData=false)
 {
-   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
-                                                         {0,60,150,300,450,600,750,1000,1300}, //ptjj
-                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                         {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
-                                                         {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
+                                                       {0,60,150,300,450,600,850,1300}, //ptjj
+                                                       {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
+                                                       {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
+                                                       {400,450,500,570,650,800,1100,1500}, //jetPt1
+                                                       {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
+                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
     int NBINS[BND_gen.size()];
   	for (int i = 0; i<BND_gen.size(); i++)
   		NBINS[i] = BND_gen[i].size()-1;
@@ -108,7 +108,7 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
         hErrorAfterLCurve[ivar]->SetMarkerColor(kGreen);
         hErrorAfterLCurve[ivar]->SetMarkerStyle(21);
 
-        
+
     	if(!variable[ivar].EqualTo("yJJ"))
     	{
     		hErrorBeforeStdRebinned[ivar]=getRebinned(hErrorBeforeStd[ivar], tempBND, NBINS[ivar]);
@@ -125,7 +125,7 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     		hErrorAfterRho[ivar]->Divide(hErrorBeforeRho[ivar]);
             hErrorAfterLCurve[ivar]->Divide(hErrorBeforeRho[ivar]);
 		}
-        
+
 /*
     	canStd[ivar] = new TCanvas(TString::Format("canStd_%s", variable[ivar].Data()), TString::Format("canStd_%s", variable[ivar].Data()), 800, 600);
     	canStd[ivar]->cd();
@@ -158,8 +158,8 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     hErrorAfterStd[ivar]->Draw("hist ");
     hErrorAfterRho[ivar]->Draw("hist same");
     hErrorAfterLCurve[ivar]->Draw("hist same");
-    
-    
+
+
     //cout<<"-----"<<variable[ivar]<<"-----"<<endl;
     //cout<<hErrorAfterLCurve[ivar]->GetNbinsX()<<endl;
     //cout<<hErrorAfterRho[ivar]->GetNbinsX()<<endl;
