@@ -86,12 +86,12 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
 
-
+  /*
   hData->Rebin(2);
   hSub->Rebin(2);
   hQCD->Rebin(2);
   hTT->Rebin(2);
-
+  */
 
   THStack *hs = new THStack("Data vs MC", "Data vs MC;TopTagger Output;Number of Events");
   hs->Add(hSub);

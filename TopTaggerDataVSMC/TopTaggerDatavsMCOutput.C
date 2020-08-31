@@ -658,8 +658,9 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
      xReco_subleading = xRecoAll_SubLeading[ivar];
      if(selection == 0){
        genEvtWeight =1;
-       bTagEvntWeight = 1;
+
      }
+     bTagEvntWeight = 1;
      //Signal Region with tTagger
      if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
      {
