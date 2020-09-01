@@ -200,9 +200,9 @@ void initHistoNames()
     if(year.EqualTo("2016")) histoNames.push_back("TTNominal");
     else
     {
-      histoNames.push_back("TTHadronic_0");
-      histoNames.push_back("TTSemiLeptonic_0");
-      histoNames.push_back("TTTo2L2Nu_0");
+      histoNames.push_back("TTHadronic");
+      histoNames.push_back("TTSemiLeptonic");
+      histoNames.push_back("TTTo2L2Nu");
     }
   }
 
@@ -215,7 +215,7 @@ void initGlobals()
   initHistoNames();
 }
 
-void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
+void BTagSFHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 {
   year =y;
   initFilesMapping(isLoose);
@@ -225,8 +225,8 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   LUMI_CR = luminosityCR[year.Data()];
   initGlobals();
   gStyle->SetOptStat(0);
-  const int NVAR =13;
-  const int N_MVA = 50;
+  const int NVAR =1;
+  const int N_MVA = 100;
 
   float selMvaCut=topTaggerCuts[year];
 
@@ -237,8 +237,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
   //jetMassSub0_[ijet]
 
-  TString varReco[NVAR]   = {"mTop","topTagger","jetTau3", "jetTau2", "jetTau1","jetMassSub0","jetMassSub1",
-                              "ecfB1N2", "ecfB1N3","ecfB2N2", "ecfB2N3", "JetPtOverSumPt", "deltaPhi"};
+  TString varReco[NVAR] = {"bTagEvntWeight"};
 
   int fileSize = listOfFiles.size();
   TFile *inf;
@@ -246,8 +245,8 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
  //number of checks: one for Top Tagger and one for DAK8
  //initialize the required histograms
- TH1F *hCR_Leading[listOfFiles.size()][NVAR], *hCR_SubLeading[listOfFiles.size()][NVAR];
- TH1F *hSR_Leading[listOfFiles.size()][NVAR], *hSR_SubLeading[listOfFiles.size()][NVAR];
+ TH1F *hCR[listOfFiles.size()][NVAR];
+ TH1F *hSR[listOfFiles.size()][NVAR];
 
  for(int f=0; f<listOfFiles.size(); f++)
  {
@@ -338,20 +337,18 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   }
 
   float xParton(0);
-  float xReco_leading(0), xReco_subleading(0);
-  std::vector<float> xRecoAll_Leading(0);
-  std::vector<float> xRecoAll_SubLeading(0);
+  float xReco(0);
+  std::vector<float> xRecoAll(0);
   //book the histograms
   //histograms for Signal/QCD in CR
-  float xMin[NVAR] = {120,-1,0,0,0, 0,0,0,0, 0,0,0,-3};
-  float xMax[NVAR] = {220,1,0.3,0.4, 0.6,220, 120,0.5,5, 0.5,5,1,3};
+  float xMin[NVAR] = {0.0};
+  float xMax[NVAR] = {1.2};
 
   for(int ivar =0; ivar< NVAR; ivar++)
   {
-    hCR_Leading[f][ivar] = new TH1F(TString::Format("hCR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
-    hCR_SubLeading[f][ivar] = new TH1F(TString::Format("hCR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_SubLeading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
-    hSR_Leading[f][ivar] = new TH1F(TString::Format("hSR_Leading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_Leading_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
-    hSR_SubLeading[f][ivar] = new TH1F(TString::Format("hSR_SubLeading_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_SubLeading%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
+    hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
+    hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s",histoNames[f].Data(),varReco[ivar].Data()), N_MVA, xMin[ivar],xMax[ivar]);
+
   }
   //for matching
 
@@ -430,8 +427,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     jetBtagSub0DCSVbbb_->clear();
     jetBtagSub1DCSVbbb_->clear();
 
-  xRecoAll_Leading.clear();
-  xRecoAll_SubLeading.clear();
+  xRecoAll.clear();
   bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
   bool deepCSV, revertBtagDeepCSV;
   bool btagCut, revertBtag;
@@ -534,53 +530,9 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
     if(isMatched > 1)
     {
-     // cout<<"entered isMatched > 1"<<endl;
-      int leadingPt = 0;
-      int subleadingPt = 1;
-      if ((*pt_)[0] < (*pt_)[1])
-      {
-        leadingPt = 1;
-        subleadingPt = 0;
-      }
-     float JetPtOverSumPt[2];
-     float sumPt=0;
-     for(int ijet = 0; ijet<nJets; ijet++)
-     {
-       sumPt = sumPt + (*pt_)[ijet];
-     }
-     JetPtOverSumPt[leadingPt] = (*pt_)[leadingPt]/sumPt;
-     JetPtOverSumPt[subleadingPt] = (*pt_)[subleadingPt]/sumPt;
     //cout<<"ok"<<endl;
-    float deltaPhi = fabs((*phi_)[leadingPt] - (*phi_)[subleadingPt]);
-    //cout<<"ok"<<endl;
-    xRecoAll_Leading.push_back((*mass_)[leadingPt]);
-    xRecoAll_Leading.push_back((*jetTtag_)[leadingPt]);
-    xRecoAll_Leading.push_back((*jetTau3_)[leadingPt]);
-    xRecoAll_Leading.push_back((*jetTau2_)[leadingPt]);
-    xRecoAll_Leading.push_back((*jetTau1_)[leadingPt]);
-    xRecoAll_Leading.push_back((*jetMassSub0_)[leadingPt]);
-    xRecoAll_Leading.push_back((*jetMassSub1_)[leadingPt]);
-    xRecoAll_Leading.push_back((*ecfB1N2_)[leadingPt]);
-    xRecoAll_Leading.push_back((*ecfB1N3_)[leadingPt]);
-    xRecoAll_Leading.push_back((*ecfB2N2_)[leadingPt]);
-    xRecoAll_Leading.push_back((*ecfB2N3_)[leadingPt]);
-    xRecoAll_Leading.push_back(JetPtOverSumPt[leadingPt]);
-    xRecoAll_Leading.push_back(deltaPhi);
-
-    xRecoAll_SubLeading.push_back((*mass_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*jetTtag_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*jetTau3_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*jetTau2_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*jetTau1_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*jetMassSub0_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*jetMassSub1_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*ecfB1N2_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*ecfB1N3_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*ecfB2N2_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back((*ecfB2N3_)[subleadingPt]);
-    xRecoAll_SubLeading.push_back(JetPtOverSumPt[subleadingPt]);
-    xRecoAll_SubLeading.push_back(deltaPhi);
-  }//if is matched
+    xRecoAll.push_back(bTagEvntWeight);
+    }//if is matched
   }//----end of selection ==1 so that we do this only when we deal with signal MC
 
   else //we are in QCD samples or Subdominant BKG or Data sample
@@ -604,46 +556,7 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
 
-    float JetPtOverSumPt[2];
-    float sumPt = 0;
-    for(int ijet = 0; ijet<nJets; ijet++)
-    {
-      sumPt = sumPt + (*jetPt)[ijet];
-    }
-
-    JetPtOverSumPt[0] = (*jetPt)[0]/sumPt;
-    JetPtOverSumPt[1] = (*jetPt)[1]/sumPt;
-    //cout<<"ok"<<endl;
-    float deltaPhi = fabs((*jetPhi)[0] - (*jetPhi)[1]);
-    //cout<<deltaPhi<<endl;
-    xRecoAll_Leading.push_back((*jetMassSoftDrop)[0]);
-    xRecoAll_Leading.push_back((*jetTtag)[0]);
-    xRecoAll_Leading.push_back((*jetTau3)[0]);
-    xRecoAll_Leading.push_back((*jetTau2)[0]);
-    xRecoAll_Leading.push_back((*jetTau1)[0]);
-    xRecoAll_Leading.push_back((*jetMassSub0)[0]);
-    xRecoAll_Leading.push_back((*jetMassSub1)[0]);
-    xRecoAll_Leading.push_back((*ecfB1N2)[0]);
-    xRecoAll_Leading.push_back((*ecfB1N3)[0]);
-    xRecoAll_Leading.push_back((*ecfB2N2)[0]);
-    xRecoAll_Leading.push_back((*ecfB2N3)[0]);
-    xRecoAll_Leading.push_back(JetPtOverSumPt[0]);
-    xRecoAll_Leading.push_back(deltaPhi);
-
-    xRecoAll_SubLeading.push_back((*jetMassSoftDrop)[1]);
-    xRecoAll_SubLeading.push_back((*jetTtag)[1]);
-    xRecoAll_SubLeading.push_back((*jetTau3)[1]);
-    xRecoAll_SubLeading.push_back((*jetTau2)[1]);
-    xRecoAll_SubLeading.push_back((*jetTau1)[1]);
-    xRecoAll_SubLeading.push_back((*jetMassSub0)[1]);
-    xRecoAll_SubLeading.push_back((*jetMassSub1)[1]);
-    xRecoAll_SubLeading.push_back((*ecfB1N2)[1]);
-    xRecoAll_SubLeading.push_back((*ecfB1N3)[1]);
-    xRecoAll_SubLeading.push_back((*ecfB2N2)[1]);
-    xRecoAll_SubLeading.push_back((*ecfB2N3)[1]);
-    xRecoAll_SubLeading.push_back(JetPtOverSumPt[1]);
-    xRecoAll_SubLeading.push_back(deltaPhi);
-
+    xRecoAll.push_back(bTagEvntWeight);
 
   }//---end of else of isSignal
 
@@ -651,11 +564,10 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
   revertBtag = revertBtagDeepCSV;
 
    //cout<<"------"<<endl;
-   for(int ivar = 0; ivar <xRecoAll_Leading.size(); ivar ++)
+   for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
    {
 
-     xReco_leading = xRecoAll_Leading[ivar];
-     xReco_subleading = xRecoAll_SubLeading[ivar];
+     xReco = xRecoAll[ivar];
      if(selection == 0){
        genEvtWeight =1;
        bTagEvntWeight = 1;
@@ -663,17 +575,12 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
      //Signal Region with tTagger
      if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
-     {
+      hSR[f][ivar]->Fill(xReco,genEvtWeight);
 
-      hSR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
-      hSR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
-     }
      //Control Region with tTagger
      if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
-     {
-      hCR_Leading[f][ivar]->Fill(xReco_leading,genEvtWeight*bTagEvntWeight);
-      hCR_SubLeading[f][ivar]->Fill(xReco_subleading,genEvtWeight*bTagEvntWeight);
-     }
+      hCR[f][ivar]->Fill(xReco,genEvtWeight);
+
    }
 
   }//----end of nJets
@@ -681,10 +588,11 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
 
   }//----end of fileSize loop
 
-  TH1F *hCR_Leading_Clone[listOfFiles.size()][NVAR];
-  TH1F *hCR_SubLeading_Clone[listOfFiles.size()][NVAR];
-  TH1F *hSR_Leading_Clone[listOfFiles.size()][NVAR];
-  TH1F *hSR_SubLeading_Clone[listOfFiles.size()][NVAR];
+  TH1F *hCR_Clone[listOfFiles.size()][NVAR];
+  TH1F *hSR_Clone[listOfFiles.size()][NVAR];
+
+  TH1F *hCRTemp[NVAR], *hSRTemp[NVAR];
+  TH1F *hCRTemp_Clone[NVAR], *hCRTemp_Clone[NVAR];
 
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
@@ -692,22 +600,16 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     //for every slice
     for(int j=0; j<listOfFiles.size(); j++)
     {
-      hCR_Leading_Clone[j][ivar]=(TH1F*)hCR_Leading[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      hSR_Leading_Clone[j][ivar]=(TH1F*)hSR_Leading[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      hCR_SubLeading_Clone[j][ivar]=(TH1F*)hCR_SubLeading[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      hSR_SubLeading_Clone[j][ivar]=(TH1F*)hSR_SubLeading[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));
+      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_Clone",histoNames[j].Data()));
+      hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_Clone",histoNames[j].Data()));
 
         if(selection !=0)
         {
-         hCR_Leading_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
-         hCR_SubLeading_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
-         hSR_Leading_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
-         hSR_SubLeading_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
+         hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
+         hSR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
 
-         hCR_Leading[j][ivar]->Scale(weights[j]); //this is CR
-         hCR_SubLeading[j][ivar]->Scale(weights[j]); //this is CR
-         hSR_Leading[j][ivar]->Scale(weights[j]); //this is Signal region
-         hSR_SubLeading[j][ivar]->Scale(weights[j]); //this is Signal region
+         hCR[j][ivar]->Scale(weights[j]); //this is CR
+         hSR[j][ivar]->Scale(weights[j]); //this is Signal region
         }
     }
 
@@ -716,54 +618,43 @@ void TopTaggerDatavsMCOutput(TString y="2016", int sel = 0, bool isLoose=false)
     {
       cout<<"inside the loop!"<<endl;
       //Add them to get the whole phase space
-      hCR_Leading[0][ivar]->Add(hCR_Leading[j][ivar]);
-      hSR_Leading[0][ivar]->Add(hSR_Leading[j][ivar]);
+      hCRTemp[ivar]->Add(hCR[j][ivar]);
+      hSRTemp[ivar]->Add(hSR[j][ivar]);
 
-      hCR_SubLeading[0][ivar]->Add(hCR_SubLeading[j][ivar]);
-      hSR_SubLeading[0][ivar]->Add(hSR_SubLeading[j][ivar]);
-
-      hCR_Leading_Clone[0][ivar]->Add(hCR_Leading_Clone[j][ivar]);
-      hSR_Leading_Clone[0][ivar]->Add(hSR_Leading_Clone[j][ivar]);
-
-      hCR_SubLeading_Clone[0][ivar]->Add(hCR_SubLeading_Clone[j][ivar]);
-      hSR_SubLeading_Clone[0][ivar]->Add(hSR_SubLeading_Clone[j][ivar]);
-
+      hCRTemp_Clone[ivar]->Add(hCR_Clone[j][ivar]);
+      hSRTemp_Clone[ivar]->Add(hSR_Clone[j][ivar]);
     }
 
 
   }
   TFile *outFile;
-  TString loose = "";
-  if(isLoose) loose = "_Loose";
-  if(selection ==0)
-    outFile = new TFile(TString::Format("%s/TopTaggerHisto_Data_%s_100%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
-  else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/TopTaggerHisto_TT_Mtt-700toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
+
+  if(selection ==1)
+    outFile = new TFile(TString::Format("%s/TopTaggerHisto_TT_Mtt-700toInf_100.root",year.Data()), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/TopTaggerHisto_QCD_HT300toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/TopTaggerHisto_QCD_HT300toInf_100.root",year.Data()), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/TopTaggerHisto_SubdominantBkgs_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/TopTaggerHisto_SubdominantBkgs_100.root",year.Data()), "RECREATE");
   else if(selection ==4)
-    outFile = new TFile(TString::Format("%s/TopTaggerHisto_TT_NominalMC_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/TopTaggerHisto_TT_NominalMC_100.root",year.Data()), "RECREATE");
 
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
   TString varNameReco = varReco[ivar];
    outFile->cd();
-   hSR_Leading[0][ivar]->Write(TString::Format("hWt_%s_2btag_leading", varNameReco.Data()));
-   hSR_SubLeading[0][ivar]->Write(TString::Format("hWt_%s_2btag_subleading", varNameReco.Data()));
+   hSRTemp[ivar]->Write(TString::Format("hWt_%s_2btag", varNameReco.Data()));
+   hCRTemp[ivar]->Write(TString::Format("hWt_%s_0btag", varNameReco.Data()));
+   hSRTemp_Clone[ivar]->Write(TString::Format("hWt_%s_2btag_expYield", varNameReco.Data()));
+   hCRTemp_Clone[ivar]->Write(TString::Format("hWt_%s_0btag_expYield", varNameReco.Data()));
 
-   hCR_Leading[0][ivar]->Write(TString::Format("hWt_%s_0btag_leading", varNameReco.Data()));
-   hCR_SubLeading[0][ivar]->Write(TString::Format("hWt_%s_0btag_subleading", varNameReco.Data()));
-
-
-   hSR_Leading_Clone[0][ivar]->Write(TString::Format("hWt_%s_2btag_expYield_leading", varNameReco.Data()));
-   hSR_SubLeading_Clone[0][ivar]->Write(TString::Format("hWt_%s_2btag_expYield_subleading", varNameReco.Data()));
-
-   hCR_Leading_Clone[0][ivar]->Write(TString::Format("hWt_%s_0btag_expYield_leading", varNameReco.Data()));
-   hCR_SubLeading_Clone[0][ivar]->Write(TString::Format("hWt_%s_0btag_expYield_subleading", varNameReco.Data()));
-
+   for(int j=1; j<listOfFiles.size(); j++)
+   {
+     hSR[j][ivar]->Write(TString::Format("hWt_%s_2btag_%s", varNameReco.Data(), histoNames[j].Data()));
+     hCR[j][ivar]->Write(TString::Format("hWt_%s_0btag_%s", varNameReco.Data(), histoNames[j].Data()));
+     hSR_Clone[j][ivar]->Write(TString::Format("hWt_%s_2btag_%s_expYield", varNameReco.Data(), histoNames[j].Data()));
+     hCR_Clone[j][ivar]->Write(TString::Format("hWt_%s_0btag_%s_expYield", varNameReco.Data(), histoNames[j].Data()));
+   }
 
 
  }
