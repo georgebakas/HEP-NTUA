@@ -603,6 +603,14 @@ void BTagSFHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_Clone",histoNames[j].Data()));
       hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_Clone",histoNames[j].Data()));
 
+      if(j==0)
+      {
+        hCRTemp[ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCRTemp_%s",histoNames[j].Data()));
+        hSRTemp[ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSRTemp_%s",histoNames[j].Data()));
+
+        hCRTemp_Clone[ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCRTemp_%s_Clone",histoNames[j].Data()));
+        hSRTemp_Clone[ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSRTemp_%s_Clone",histoNames[j].Data()));
+      }
         if(selection !=0)
         {
          hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
