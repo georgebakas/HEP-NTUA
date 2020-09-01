@@ -592,7 +592,7 @@ void BTagSFHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   TH1F *hSR_Clone[listOfFiles.size()][NVAR];
 
   TH1F *hCRTemp[NVAR], *hSRTemp[NVAR];
-  TH1F *hCRTemp_Clone[NVAR], *hCRTemp_Clone[NVAR];
+  TH1F *hCRTemp_Clone[NVAR], *hSRTemp_Clone[NVAR];
 
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
