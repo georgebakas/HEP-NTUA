@@ -11,6 +11,9 @@ TColor color;
 map<TString, float> luminosity;
 map<TString, float> floatConstants;
 map<TString, float> ttbarSigStrength;
+map<TString, float> ttbarSigStrength_noBTagSF;
+map<TString, float> ttbarSigStrengthError;
+map<TString, float> ttbarSigStrengthError_noBTagSF;
 
 
 void initFilesMapping()
@@ -81,6 +84,18 @@ void initFilesMapping()
 	ttbarSigStrength.insert(pair<TString, float>("2016", 0.686668));
 	ttbarSigStrength.insert(pair<TString, float>("2017", 0.644361));
 	ttbarSigStrength.insert(pair<TString, float>("2018", 0.687217));
+
+	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2016", 0.671244));
+	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2017", 0.553099));
+	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2018", 0.615816));
+
+	ttbarSigStrengthError.insert(pair<TString, float>("2016", 0.0263103));
+	ttbarSigStrengthError.insert(pair<TString, float>("2017", 0.023851));
+	ttbarSigStrengthError.insert(pair<TString, float>("2018", 0.0194349));
+
+	ttbarSigStrengthError_noBTagSF.insert(pair<TString, float>("2016", 0.0252439));
+	ttbarSigStrengthError_noBTagSF.insert(pair<TString, float>("2017", 0.0198563));
+	ttbarSigStrengthError_noBTagSF.insert(pair<TString, float>("2018", 0.017298));
 
 
 }
