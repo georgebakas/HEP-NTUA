@@ -33,6 +33,7 @@ using std::endl;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
 void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", TString fitRecoVar = "leadingJetPt", float ry_err_final = 0);
+bool normalised;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
 {
@@ -59,8 +60,9 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 }
 
-void SignalExtraction_UnequalBins(TString year)
+void SignalExtraction_UnequalBins(TString year, bool isNormalised)
 {
+    normalised = isNormalised;
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
     float r_yield_errors[3][7] = {{0.0289754, 0.0289714, 0.028963, 0.0289885, 0.0289772, 0.028963, 0.028963},
@@ -164,9 +166,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hD_rebinned, *hQ_rebinned, *hSub_rebinned;
     TH1F *hQ_copy = (TH1F*)hQ->Clone(TString::Format("hD_copy_%s", variable.Data()));
     cout<<hQ_copy->GetNbinsX()<<endl;
-    //before remove subdominat and ttbar contribution from Data 0btag (IS IT NEEDED???)
-    //hQ->Add(hSub_0, -1);
-    //hQ->Add(hSMC_0, -1);
 
     /*
     cout<<"hData 0:"<<hQ->Integral()<<endl;
@@ -286,7 +285,15 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hSignal->Scale(1/luminosity[year],"width");
     hSMC->Scale(1/luminosity[year], "width");
 
-    hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
+    //if you don't want normalised xsec comment these lines
+    if(normalised)
+    {
+      hSignal->Scale(1/hSignal->Integral());
+      hSMC->Scale(1/hSMC->Integral());
+      hSMC->GetYaxis()->SetTitle("(#frac{1}{#sigma})#frac{d#sigma}{d#chi} [pb]");
+    }
+    else hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
+
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
     if(!variable.EqualTo("yJJ") && !variable.EqualTo("jetY0") && !variable.EqualTo("jetY1") ) gPad->SetLogy();
 
@@ -321,16 +328,20 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     TString path;
     TString method = "simpleMassFit";
-    path = TString::Format("%s/FiducialMeasurement/UnequalBinning/fiducial_%s.pdf",year.Data(),variable.Data());
+    TString strNorm = "";
+    if(normalised) strNorm = "_Norm";
+    path = TString::Format("%s/FiducialMeasurement/UnequalBinning/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
     can->Print(path,"pdf");
 
 
-    TFile *outf;
-    outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
-    hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
-    hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
-    outf->Close();
-
+    if(!normalised)
+    {
+      TFile *outf;
+      outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
+      hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
+      hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
+      outf->Close();
+    }
     cout<<variable.Data()<<endl;
     cout<<hSignal_noScale->Integral()<<endl;
 
