@@ -134,8 +134,10 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
 
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
 
-  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,10e+3);
-
+  RooRealVar *nFitBkg2b;
+  if(year.EqualTo("2018")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",10,0,500);
+  else nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,10e+3);
+  
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);
 
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
