@@ -137,7 +137,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooRealVar *nFitBkg2b;
   if(year.EqualTo("2018")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",10,0,500);
   else nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,10e+3);
-  
+
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);
 
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
@@ -230,7 +230,10 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   wOut->import(pdf_qcdCor_2b);
   wOut->import(*nFitQCD2b);
   wOut->import(*nFitSig2b);
+	wOut->import(*nFitBkg2b);
   wOut->import(*yieldTT);
+	wOut->import(*kMassScale);
+	wOut->import(*kMassResol);
   wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+".root");
   //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
   //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");

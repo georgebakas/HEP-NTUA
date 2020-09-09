@@ -30,6 +30,7 @@ using std::cout;
 using std::endl;
 
 #include "TemplateConstants.h"
+using namespace RooFit;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
 void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", TString fitRecoVar = "leadingJetPt", float ry_err_final = 0);
@@ -85,6 +86,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 {
     initFilesMapping();
     cout<<luminosity[year]<<endl;
+    RooMsgService::instance().setSilentMode(kTRUE);
+    RooMsgService::instance().setStreamStatus(0,kFALSE);
+    RooMsgService::instance().setStreamStatus(1,kFALSE);
 
     gStyle->SetOptStat(0);
     //open the signal file: get D(x) and Q(x) for every variable
@@ -123,8 +127,12 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
     //return;
     //open the file to get the Nbkg
-    float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
-    float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
+    TFile *fitFile = TFile::Open(TString::Format("%s/MassFitResults__.root", year.Data()));
+    RooWorkspace *w = (RooWorkspace*)fitFile->Get("w");
+    //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
+    //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
+    float NQCD = ((RooRealVar*)w->var("nFitQCD_2b"))->getVal();
+    float NQCD_error = ((RooRealVar*)w->var("nFitQCD_2b"))->getError();
 
     //Subdominant bkgs files
     TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
@@ -326,6 +334,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hSig_temp[0]->Draw();
     hSig_temp[0]->GetXaxis()->SetLabelSize(0.09);
 
+
     TString path;
     TString method = "simpleMassFit";
     TString strNorm = "";
@@ -344,6 +353,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     }
     cout<<variable.Data()<<endl;
     cout<<hSignal_noScale->Integral()<<endl;
-
+    
 
 }
