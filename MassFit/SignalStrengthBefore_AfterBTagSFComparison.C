@@ -1,9 +1,58 @@
 #include "TemplateConstants.h"
+using namespace RooFit;
+
+void drawPlot(TString nuisance, float values[3], float errors[3], float values_noBtag[3], float errors_noBtag[3]);
 
 void SignalStrengthBefore_AfterBTagSFComparison()
 {
   initFilesMapping();
+  RooMsgService::instance().setSilentMode(kTRUE);
+  RooMsgService::instance().setStreamStatus(0,kFALSE);
+  RooMsgService::instance().setStreamStatus(1,kFALSE);
 
+  const int N =3;
+  TString years[N] = {"2016", "2017", "2018"};
+  TFile *file[N];
+  RooWorkspace *w[N];
+  float yieldTT[N], yieldQCD[N], yieldSub[N], kMassScale[N], kMassResol[N], kQCD[N];
+  float yieldTT_e[N], yieldQCD_e[N], yieldSub_e[N], kMassScale_e[N], kMassResol_e[N], kQCD_e[N];
+
+  const int N_nuisances = 6;
+  TString nuisances[N_nuisances] = {"nFitSig2b", "nFitQCD_2b","nFitBkg_2b","kMassScale","kMassResol","kQCD_2b"};
+  float nuisanceValues[N_nuisances][N], nuisanceErrors[N_nuisances][N];
+  float nuisanceValues_noBtag[N_nuisances][N], nuisanceErrors_noBtag[N_nuisances][N];
+  for(int iy=0; iy<N; iy++)
+  {
+    file[iy] = TFile::Open(TString::Format("%s/MassFitResults__.root", years[iy].Data()));
+    w[iy] = (RooWorkspace*)file[iy]->Get("w");
+
+    for(int in=0; in<N_nuisances; in++)
+    {
+      nuisanceValues[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getVal();
+      nuisanceErrors[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getError();
+      nuisanceValues_noBtag[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getVal();
+      nuisanceErrors_noBtag[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getError();
+    }
+
+  }
+  //create temp arrays that get each nuisance for each year
+  float tempValue[N], tempError[N];
+  float tempValue_noBtag[N], tempError_noBtag[N];
+  for(int in=0; in<N_nuisances;in++)
+  {
+    //assign the value for each year
+    for(int iy=0; iy<N; iy++)
+    {
+      tempValue[iy]=nuisanceValues[in][iy];
+      tempError[iy]=nuisanceErrors[in][iy];
+      tempValue_noBtag[iy]=nuisanceValues_noBtag[in][iy];
+      tempError_noBtag[iy]=nuisanceErrors_noBtag[in][iy];
+      cout<<tempValue[iy]<<endl;
+    }
+    drawPlot(nuisances[in], tempValue, tempError, tempValue_noBtag, tempError_noBtag);
+  }
+
+  return;
   float sigStrength[3] = {
     ttbarSigStrength["2016"],
     ttbarSigStrength["2017"],
@@ -28,14 +77,19 @@ void SignalStrengthBefore_AfterBTagSFComparison()
     ttbarSigStrengthError_noBTagSF["2018"]
   };
 
-  //ttbarSigStrengthError
+
+}
+
+void drawPlot(TString nuisance, float values[3], float errors[3], float values_noBtag[3], float errors_noBtag[3])
+{
+
   const int n = 3;
   float e_x[n] = {0,0,0};
   float x[n] = {0.5,1.5,2.5};
   float x_noBTag[n] = {0.7,1.7,2.7};
 
-  TGraphErrors *gr = new TGraphErrors(n,x, sigStrength, e_x, sigStrengthError);
-  TGraphErrors *gr_noBTagSF = new TGraphErrors(n,x_noBTag, sigStrength_noBTagSF,e_x, sigStrengthError_noBTagSF);
+  TGraphErrors *gr = new TGraphErrors(n,x, values, e_x, errors);
+  TGraphErrors *gr_noBTagSF = new TGraphErrors(n,x_noBTag, values_noBtag,e_x, errors_noBtag);
 
   gr->SetMarkerColor(kRed);
   gr->SetMarkerStyle(22);
@@ -43,7 +97,7 @@ void SignalStrengthBefore_AfterBTagSFComparison()
   gr_noBTagSF->SetMarkerStyle(20);
 
   //use TMultiGraph to draw the two graphs together
-  TCanvas *can = new TCanvas("can", "can", 800, 600);
+  TCanvas *can = new TCanvas("can"+nuisance, "can"+nuisance, 800, 600);
   TLegend *leg = new TLegend(0.4,0.75,0.6,0.9);
   leg->AddEntry(gr, "bTag SFs", "lep");
   leg->AddEntry(gr_noBTagSF, "NO bTag SFs", "lep");
@@ -64,8 +118,10 @@ void SignalStrengthBefore_AfterBTagSFComparison()
   for(int i=0; i<n; i++){
     mg->GetHistogram()->GetXaxis()->SetBinLabel(i+1, Xname[i]);
   }
-  mg->GetYaxis()->SetTitle("t#bar{t} Sig. Strength");
-  mg->GetYaxis()->SetRangeUser(0.5, 0.8);
+  //mg->GetYaxis()->SetTitle("t#bar{t} Sig. Strength");
+  mg->GetYaxis()->SetTitle(nuisance);
+
+  //mg->GetYaxis()->SetRangeUser(0.5, 0.8);
 
   mg->Draw("AP");
   leg->Draw();
