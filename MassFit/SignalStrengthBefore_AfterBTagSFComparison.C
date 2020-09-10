@@ -3,17 +3,16 @@ using namespace RooFit;
 
 void drawPlot(TString nuisance, float values[3], float errors[3], float values_noBtag[3], float errors_noBtag[3]);
 
-void SignalStrengthBefore_AfterBTagSFComparison()
+void NuisancesComparison()
 {
-  initFilesMapping();
   RooMsgService::instance().setSilentMode(kTRUE);
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
   const int N =3;
   TString years[N] = {"2016", "2017", "2018"};
-  TFile *file[N];
-  RooWorkspace *w[N];
+  TFile *file[N], *file_noBtagSF[N];
+  RooWorkspace *w[N], *w_noBtagSF[N];
   float yieldTT[N], yieldQCD[N], yieldSub[N], kMassScale[N], kMassResol[N], kQCD[N];
   float yieldTT_e[N], yieldQCD_e[N], yieldSub_e[N], kMassScale_e[N], kMassResol_e[N], kQCD_e[N];
 
@@ -24,14 +23,16 @@ void SignalStrengthBefore_AfterBTagSFComparison()
   for(int iy=0; iy<N; iy++)
   {
     file[iy] = TFile::Open(TString::Format("%s/MassFitResults__.root", years[iy].Data()));
+    file_noBtagSF[iy] = TFile::Open(TString::Format("%s_noBTagSF/MassFitResults__.root", years[iy].Data()));
     w[iy] = (RooWorkspace*)file[iy]->Get("w");
+    w_noBtagSF[iy] = (RooWorkspace*)file_noBtagSF[iy]->Get("w");
 
     for(int in=0; in<N_nuisances; in++)
     {
       nuisanceValues[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getVal();
       nuisanceErrors[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getError();
-      nuisanceValues_noBtag[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getVal();
-      nuisanceErrors_noBtag[in][iy]= ((RooRealVar*)w[iy]->var(nuisances[in].Data()))->getError();
+      nuisanceValues_noBtag[in][iy]= ((RooRealVar*)w_noBtagSF[iy]->var(nuisances[in].Data()))->getVal();
+      nuisanceErrors_noBtag[in][iy]= ((RooRealVar*)w_noBtagSF[iy]->var(nuisances[in].Data()))->getError();
     }
 
   }
@@ -47,12 +48,18 @@ void SignalStrengthBefore_AfterBTagSFComparison()
       tempError[iy]=nuisanceErrors[in][iy];
       tempValue_noBtag[iy]=nuisanceValues_noBtag[in][iy];
       tempError_noBtag[iy]=nuisanceErrors_noBtag[in][iy];
-      cout<<tempValue[iy]<<endl;
     }
+    cout<<"Drawing "<<nuisances[in]<<endl;
     drawPlot(nuisances[in], tempValue, tempError, tempValue_noBtag, tempError_noBtag);
   }
 
-  return;
+  //return;
+
+}
+
+void SignalStrengthComparison()
+{
+  initFilesMapping();
   float sigStrength[3] = {
     ttbarSigStrength["2016"],
     ttbarSigStrength["2017"],
@@ -76,9 +83,9 @@ void SignalStrengthBefore_AfterBTagSFComparison()
     ttbarSigStrengthError_noBTagSF["2017"],
     ttbarSigStrengthError_noBTagSF["2018"]
   };
-
-
+  drawPlot("t#bar{t} Sig.Strength", sigStrength, sigStrengthError, sigStrength_noBTagSF, sigStrengthError_noBTagSF);
 }
+
 
 void drawPlot(TString nuisance, float values[3], float errors[3], float values_noBtag[3], float errors_noBtag[3])
 {
@@ -98,7 +105,7 @@ void drawPlot(TString nuisance, float values[3], float errors[3], float values_n
 
   //use TMultiGraph to draw the two graphs together
   TCanvas *can = new TCanvas("can"+nuisance, "can"+nuisance, 800, 600);
-  TLegend *leg = new TLegend(0.4,0.75,0.6,0.9);
+  TLegend *leg = new TLegend(0.4,0.88,0.6,0.98);
   leg->AddEntry(gr, "bTag SFs", "lep");
   leg->AddEntry(gr_noBTagSF, "NO bTag SFs", "lep");
 
@@ -118,14 +125,13 @@ void drawPlot(TString nuisance, float values[3], float errors[3], float values_n
   for(int i=0; i<n; i++){
     mg->GetHistogram()->GetXaxis()->SetBinLabel(i+1, Xname[i]);
   }
-  //mg->GetYaxis()->SetTitle("t#bar{t} Sig. Strength");
   mg->GetYaxis()->SetTitle(nuisance);
 
-  //mg->GetYaxis()->SetRangeUser(0.5, 0.8);
+  if(nuisance.EqualTo("t#bar{t} Sig.Strength"))mg->GetYaxis()->SetRangeUser(0.5, 0.8);
 
   mg->Draw("AP");
   leg->Draw();
 
-  can->Print("SignalStrengthBefore_AfterBTagSFComparison.pdf", "pdf");
+  can->Print(TString::Format("NuisancePlots_BeforeAfterBtagSFs/Comparison_%s.pdf",nuisance.Data()), "pdf");
 
 }
