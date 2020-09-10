@@ -622,33 +622,33 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
        if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
        {
         counter++;
-        hSR[f][ivar]->Fill(xReco,genEvtWeight);//*bTagEvntWeight);
+        hSR[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
        }
         //Control Region with tTagger
        if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
-        hCR[f][ivar]->Fill(xReco,genEvtWeight);//*bTagEvntWeight);
+        hCR[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
        //1 btag region with tTagger
        if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
-        h1Btag[f][ivar]->Fill(xReco,genEvtWeight);//*bTagEvntWeight);
+        h1Btag[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
     }
     else
     {
       //Signal Region with tTagger
       if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
       {
-        hSR[f][10]->Fill(xReco,genEvtWeight);//*bTagEvntWeight);
+        hSR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
 
       //Control Region with tTagger
       if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
       {
-        hCR[f][10]->Fill(xReco,genEvtWeight);//*bTagEvntWeight);
+        hCR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
 
       //1 btag region with tTagger
       if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
       {
-        h1Btag[f][10]->Fill(xReco,genEvtWeight);//*bTagEvntWeight);
+        h1Btag[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
     }
    }
