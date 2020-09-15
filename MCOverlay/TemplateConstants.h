@@ -38,14 +38,14 @@ void initFilesMapping()
 	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
 	                                  {"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
 	
-    map<TString, TString> eostt17 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+    map<TString, TString> eostt17 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+	                                  /*{"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},*/
 	                                  {"TTHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
                                       {"TTSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
                                       {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 
 
-    map<TString, TString> eostt18 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+    map<TString, TString> eostt18 = {/*{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},*/
 	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
 	                                  {"TTHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
                                       {"TTSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
@@ -56,14 +56,14 @@ void initFilesMapping()
 	                                  {"TTNominal", 832.}};
 	
     map<TString, float> eosttXSEC17 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74},
+	                                //  {"1000-Inf",16.74},
 	                                  {"TTHadronic", 377.96 },
                                       {"TTSemiLeptonic", 365.34},
                                       {"TTTo2L2Nu", 88.29}};
 
 
 
-    map<TString, float> eosttXSEC18 = {{"700-1000",69.64},
+    map<TString, float> eosttXSEC18 = {//{"700-1000",69.64},
 	                                  {"1000-Inf",16.74},
 	                                  {"TTHadronic", 377.96 },
                                       {"TTSemiLeptonic", 365.34},
