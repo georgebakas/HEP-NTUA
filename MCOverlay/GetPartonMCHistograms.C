@@ -29,8 +29,8 @@ void initFileNames()
   cout<<eosPath<<endl;
   if(!globalIsNominalMC)
   {
-     if(year.EqualTo("2017")) listOfFiles.push_back(ttFiles[year.Data()]["700-1000"]);
-     else if(year.EqualTo("2018"))listOfFiles.push_back(ttFiles[year.Data()]["1000-Inf"]);
+     listOfFiles.push_back(ttFiles[year.Data()]["700-1000"]);
+     listOfFiles.push_back(ttFiles[year.Data()]["1000-Inf"]);
   }
   else
   {
@@ -49,8 +49,8 @@ void initXsections()
 {
     if(!globalIsNominalMC)
   {
-      if(year.EqualTo("2017")) XSEC.push_back(ttXSEC[year.Data()]["700-1000"]);
-      else if(year.EqualTo("2018")) XSEC.push_back(ttXSEC[year.Data()]["1000-Inf"]);
+      XSEC.push_back(ttXSEC[year.Data()]["700-1000"]);
+      XSEC.push_back(ttXSEC[year.Data()]["1000-Inf"]);
   }
   else
   {
@@ -70,8 +70,8 @@ void initHistoNames()
   
   if(!globalIsNominalMC)
   {
-     if(year.EqualTo("2017")) histoNames.push_back("Signal_histo_Mtt_700_1000"); 
-     else if(year.EqualTo("2018")) histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+     histoNames.push_back("Signal_histo_Mtt_700_1000"); 
+     histoNames.push_back("Signal_histo_Mtt_1000_Inf");
   }
   else
   {
