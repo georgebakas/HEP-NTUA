@@ -28,7 +28,7 @@ void plotTT_QCD(TString year1 = "2017", TString year2 = "2018", bool isNominalMC
 	globalYear2.Remove(TString::kBoth,'2');
 	globalYear1.Remove(TString::kBoth,'0');
 	globalYear2.Remove(TString::kBoth,'0');
-	
+
 	const int NVAR = 11;
 	TString recoVar[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","jetPhi0","jetPhi1","mTop0", "mTop1"};
 
@@ -50,10 +50,10 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
 
   if(!globalIsNominalMC)
   {
-  	histoNamesTT.push_back("Signal_histo_Mtt_700_1000"); 
+  	histoNamesTT.push_back("Signal_histo_Mtt_700_1000");
   	histoNamesTT.push_back("Signal_histo_Mtt_1000_Inf");
   }
-  else 
+  else
   {
   	histoNamesTT.push_back("Signal_histo_TTHadronic");
   	histoNamesTT.push_back("Signal_histo_TTSemiLeptonic");
@@ -65,7 +65,7 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   histoNamesQCD.push_back("QCD_histo_1000_1500");
   histoNamesQCD.push_back("QCD_histo_1500_2000");
   histoNamesQCD.push_back("QCD_histo_2000_Inf");
-  
+
   //0 is 2017 and //1 is 2018
   //TT files
   TFile *infTT[2];
@@ -73,16 +73,16 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
 
   TString temp = "";
   if(globalIsNominalMC) temp = "Nominal";
-  infTT[0] = TFile::Open(filesttbar[TString::Format("%s%s",year1.Data(),temp.Data())]); 
-  infTT[1] = TFile::Open(filesttbar[TString::Format("%s%s",year2.Data(),temp.Data())]);  
-  
-  //QCD files 
+  infTT[0] = TFile::Open(filesttbar[TString::Format("%s%s",year1.Data(),temp.Data())]);
+  infTT[1] = TFile::Open(filesttbar[TString::Format("%s%s",year2.Data(),temp.Data())]);
+
+  //QCD files
   TFile *infBkg[2];
   infBkg[0] = TFile::Open(filesqcd[year1.Data()]);
   infBkg[1] = TFile::Open(filesqcd[year2.Data()]);
 
   TH1F *hQCDAll[2], *hSigAll[2];
-  
+
   TH1F *hQCD_slice[2][6], *hSig_slice[2][histoNamesTT.size()];
 
 
@@ -98,13 +98,14 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   hParticle_Signal_histo_Mtt_700_1000_mJJ
   */
 
-  //get the histograms 
+  //get the histograms
   //tt slices
-  //TString level = ""; //reco 
+  //TString level = ""; //reco
   TString level = "Parton";
   //TString level = "Particle";
   for(int i =0; i<histoNamesTT.size(); i++)
   {
+		cout<<TString::Format("h%s_%s_%s",level.Data(),histoNamesTT[i].Data(),recoVar.Data())<<endl;
   	hSig_slice[0][i] = (TH1F*)infTT[0]->Get(TString::Format("h%s_%s_%s",level.Data(),histoNamesTT[i].Data(),recoVar.Data()));
   	hSig_slice[1][i] = (TH1F*)infTT[1]->Get(TString::Format("h%s_%s_%s",level.Data(),histoNamesTT[i].Data(),recoVar.Data()));
   	hSig_slice[0][i]->SetTitle(TString::Format("Slice %s: %s %s",level.Data(), histoNamesTT[i].Data(), year1.Data()));
@@ -143,9 +144,9 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   */
   TString reason;
   //we do 17/18 so numerator is 17 --> [0] and denominator is 18 --> [1]
-  
+
   for(int i =0; i<histoNamesTT.size(); i++)
-  {	
+  {
   	reason = "TT MC Overlay " + histoNamesTT[i];
   	ratioPlot(hSig_slice[0][i],hSig_slice[1][i], recoVar, reason);
   }
@@ -153,17 +154,17 @@ void plotYearVar(TString year1, TString year2 ,TString recoVar = "jetPt0")
   /*
   for(int i =0; i<histoNamesQCD.size(); i++)
   {
-  	reason = "QCD MC Overlay "+ histoNamesQCD[i];	
+  	reason = "QCD MC Overlay "+ histoNamesQCD[i];
   	ratioPlot(hQCD_slice[0][i],hQCD_slice[1][i], recoVar, reason);
   }*/
-  
-  
+
+
   reason = "TT MC Overlay all slices";
   ratioPlot(hSigAll[0], hSigAll[1],recoVar,reason);
 
   //reason = "QCD MC Overlay all slices";
   //ratioPlot(hQCDAll[0], hQCDAll[1],recoVar,reason);
-  
+
   histoNamesQCD.clear();
   histoNamesTT.clear();
 }
@@ -186,47 +187,47 @@ void ratioPlot(TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason)
   //cout<<"hDenom name: "<<hDenom->GetTitle()<<endl;
 
   auto c1 = new TCanvas(reason+recoVar, reason+recoVar, 800,700);
-  auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.4); 
+  auto *closure_pad2 = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.4);
   closure_pad2->Draw();
   closure_pad2->SetTopMargin(0.05);
   closure_pad2->SetBottomMargin(0.3);
   closure_pad2->SetGrid();
 
-  auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.4,1.,1.);  
+  auto *closure_pad1 = new TPad("closure_pad1","closure_pad1",0.,0.4,1.,1.);
   closure_pad1->Draw();
   closure_pad1->SetBottomMargin(0.005);
   closure_pad1->cd();
   //closure_pad1->SetGrid();
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
-  hNum->GetYaxis()->SetTitleOffset(1.4); 
+  hNum->GetYaxis()->SetTitleOffset(1.4);
   hNum->ResetAttLine();
   hNum->ResetAttMarker();
   hNum->SetLineColor(kRed-7);
   hNum->SetMarkerStyle(22);
-  hNum->SetMarkerColor(kRed-7); 
+  hNum->SetMarkerColor(kRed-7);
   //hBkg_SR[0]->GetXaxis()->SetTitleOffset(1.5);
   if(!recoVar.EqualTo("yJJ") || !recoVar.EqualTo("jetY0") || !recoVar.EqualTo("jetY1")) hNum->GetXaxis()->SetTitle(recoVar+" (GeV)");
   else hNum->GetXaxis()->SetTitle(recoVar);
   // h2 settings
-  
+
   //hBkg_CR[0]->ResetAttFill();
   hDenom->ResetAttLine();
   hDenom->ResetAttMarker();
-  hDenom->SetLineColor(kBlue-2); 
+  hDenom->SetLineColor(kBlue-2);
   hDenom->SetMarkerStyle(21);
   hDenom->SetMarkerColor(kBlue-2);
-  
+
   hNum->Draw();
   hDenom->Draw("same");
-  
+
   closureLegend->Draw();
   closure_pad1->SetLogy();
-  
-  
+
+
   TH1F *hRatio;
   closure_pad2->cd();
-  hRatio = (TH1F*)hNum->Clone("hNumerator_0"); 
+  hRatio = (TH1F*)hNum->Clone("hNumerator_0");
   hRatio->SetTitle("");
   hRatio->ResetAttMarker();
   //hRatio->GetYaxis()->SetTitle(TString::Format("ratio %s/%s",hNum->GetTitle(),hDenom->GetTitle()));
