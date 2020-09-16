@@ -1,24 +1,16 @@
-void UpdateTopTagger(TString oldFileName)
+void UpdateTopTagger(TString oldFileName, TString newFileName)
 {
-  	
-    //TString weightsFile = "/afs/cern.ch/work/i/ipapakri/private/analysis/TopAnalysis/MVA_Trainings/Training_2016/BoostedMVA/weights/boosted_MVA_MLPCat.weights.xml";
-    TString weightsFile = "/afs/cern.ch/work/g/gbakas/public/TrainingOutputs/TrainingOutputs/Training_2018/BoostedMVA/weights/boosted_MVA_BDTCat.weights.xml";
+  	//TString weightsFile = "/afs/cern.ch/work/i/ipapakri/private/analysis/TopAnalysis/MVA_Trainings/Training_2016/BoostedMVA/weights/boosted_MVA_MLPCat.weights.xml";
+    //TString weightsFile = "/afs/cern.ch/work/g/gbakas/public/TrainingOutputs/TrainingOutputs/Training_2018/BoostedMVA/weights/boosted_MVA_BDTCat.weights.xml"
     std::cout<<"Openning: "<<oldFileName<<std::endl;
-    TFile *oldFile = TFile::Open(oldFileName+".root", "update");
+    TFile *oldFile = TFile::Open(oldFileName);
 
     TH1F* triggerNames = (TH1F*) oldFile->Get("boosted/TriggerNames");
     TH1F* cutFlow = (TH1F*) oldFile->Get("boosted/CutFlow");
     TH1F* triggerPass = (TH1F*) oldFile->Get("boosted/TriggerPass");
     TTree* tr = (TTree*) oldFile->Get("boosted/events");
 
-    tr->SetBranchStatus("jetTtagCategory", 0);
-    /*TBranch *b_temp = tr->GetBranch("jetTtagCategory");
-    tr->GetListOfBranches()->Remove(b_temp);	
-    TLeaf *l = tr->GetLeaf("jetTtagCategory");
-    tr->GetListOfLeaves()->Remove(l);
-    cout<<"deleted previous branch!"<<endl; */
 
-    TString newFileName = oldFileName + "_new.root";
     std::cout<<"Output file is: "<<newFileName<<std::endl;
     TFile *newFile = TFile::Open(newFileName, "RECREATE");
     if(oldFile->cd("eventCounter"))
@@ -44,7 +36,7 @@ void UpdateTopTagger(TString oldFileName)
     cutFlow->Write("CutFlow");
     triggerPass->Write("TriggerPass");
 
-    //
+    //tr->SetBranchStatus("jetTtagCategory", 0);
     TTree *outputTree = tr->CloneTree(-1, "fast");
 
     std::vector<float> *jetPt = new std::vector<float>();
@@ -75,7 +67,6 @@ void UpdateTopTagger(TString oldFileName)
     outputTree->SetBranchAddress("ht", &ht);
     outputTree->SetBranchAddress("nJets", &nJets);
 
-
     TBranch *bpt = outputTree->Branch("jetTtagCategory", "vector<float>", &jetTtagCategory);
 
     TMVA::Reader *reader = new TMVA::Reader("!Color:!Silent");
@@ -94,7 +85,7 @@ void UpdateTopTagger(TString oldFileName)
 
     reader->AddSpectator("jetPt",&var[10]);
 
-    reader->BookMVA("BDTCat", weightsFile);
+    reader->BookMVA("MLPCat", weightsFile);
 
     for(int evt = 0; evt< tr->GetEntries(); evt++)
     {
@@ -116,7 +107,7 @@ void UpdateTopTagger(TString oldFileName)
           var[9] = (*jetPt)[ijet]/ht;
           var[10] = (*jetPt)[ijet];
 
-          jetTtagCategory->push_back(reader->EvaluateMVA("BDTCat"));
+          jetTtagCategory->push_back(reader->EvaluateMVA("MLPCat"));
         }
         else
         {

@@ -1,18 +1,24 @@
-#include "2017/BTagCalibrationStandalone.h"
-#include "2017/BTagCalibrationStandalone.cpp"
+#include "2018/BTagCalibrationStandalone.h"
+#include "2018/BTagCalibrationStandalone.cpp"
 
 void UpdateBTagSF(TString oldFileName, TString year = "2017")
 {
   /*for(int i=0; i<files.size(); i++)
   {*/
     std::cout<<"Openning: "<<oldFileName<<std::endl;
-    TFile *oldFile = TFile::Open(oldFileName+".root");
+    TFile *oldFile = TFile::Open(oldFileName+".root","update");
 
     TString newFileName = oldFileName + "_new.root";
     TH1F* triggerNames = (TH1F*) oldFile->Get("boosted/TriggerNames");
     TH1F* cutFlow = (TH1F*) oldFile->Get("boosted/CutFlow");
     TH1F* triggerPass = (TH1F*) oldFile->Get("boosted/TriggerPass");
     TTree* tr = (TTree*) oldFile->Get("boosted/events");
+    /*
+    TBranch *b_temp = tr->GetBranch("bTagEvntWeight");
+    tr->GetListOfBranches()->Remove(b_temp);	
+    TLeaf *l = tr->GetLeaf("bTagEvntWeight");
+    tr->GetListOfLeaves()->Remove(l);*/
+
 
     std::cout<<"Output file is: "<<newFileName<<std::endl;
     TFile *newFile = TFile::Open(newFileName, "RECREATE");
