@@ -15,7 +15,9 @@ map<TString, map<TString, float>> qcdBkgXSEC;
 
 map<TString, TString> dataFiles;
 map<TString, float> Nbkg2Constants;
-map<TString, float> signalStrenth;
+map<TString, float> signalStrengthSR;
+map<TString, float> signalStrengthProbe;
+
 
 map<TString, float> Nbkg2ConstantsErrors;
 map<TString, int> variableConstant;
@@ -336,9 +338,13 @@ void initFilesMapping(bool isLoose)
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 
-	signalStrenth.insert(pair<TString, float>("2016", 0.791024));
-	signalStrenth.insert(pair<TString, float>("2017", 0.621038));
-	signalStrenth.insert(pair<TString, float>("2018", 0.621996));
+	signalStrengthSR.insert(pair<TString, float>("2016", 0.804651));
+	signalStrengthSR.insert(pair<TString, float>("2017", 0.610508));
+	signalStrengthSR.insert(pair<TString, float>("2018", 0.665652));
+
+	signalStrengthProbe.insert(pair<TString, float>("2016", 0.791024));
+	signalStrengthProbe.insert(pair<TString, float>("2017", 0.621038));
+	signalStrengthProbe.insert(pair<TString, float>("2018", 0.62617));
 
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj

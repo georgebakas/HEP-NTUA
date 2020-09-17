@@ -54,7 +54,8 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hSub = (TH1F*)infSub->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
 
   //scale ttbar with signal strength
-  hTT->Scale(signalStrenth[year]);
+  if(regions.EqualTo("hSRBTightAndSR_")) hTT->Scale(signalStrengthSR[year]);
+  else hTT->Scale(signalStrengthProbe[year]);
 
   //scale qcd with Data
   //we use a k-factor
