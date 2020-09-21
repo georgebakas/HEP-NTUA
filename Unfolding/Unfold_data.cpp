@@ -291,6 +291,13 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hTheory[ivar]->Scale(1/luminosity[year], "width");
     hUnf[ivar]->Scale(1/luminosity[year], "width");
 
+    bool isNorm = true;
+    if(isNorm)
+    {
+      hUnf[ivar]->Scale(1/hUnf[ivar]->Integral());
+      hTheory[ivar]->Scale(1/hTheory[ivar]->Integral());
+    }
+
     hUnf[ivar]->SetLineColor(kBlue);
     hTheory[ivar]->SetLineColor(kRed);
     hUnf[ivar]->SetMarkerStyle(20);
@@ -298,8 +305,16 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(),year.Data()));
     hTheory[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(), year.Data()));
 
-    hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
-    hTheory[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
+    if(!isNorm)
+    {
+      hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
+      hTheory[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
+    }
+    else
+    {
+      hUnf[ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{d#chi}");
+      hTheory[ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{d#chi}");
+    }
     hTheory[ivar]->SetMarkerStyle(23);
     hTheory[ivar]->SetMarkerColor(kRed);
 
@@ -343,7 +358,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
   	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
     hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
-    can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    if(!isNorm) can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
   }
 
 }
