@@ -160,7 +160,7 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
       canNorm[ivar]->cd();
 
       hUnfNorm[iy][ivar]->SetTitle(TString::Format("Normalized %s Unfolded Ratio Comparison ('16,'17,'18)",varParton.Data()));
-      hUnfNorm[iy][ivar]->GetYaxis()->SetTitle("Normalised #frac{Data}{Theory}");
+      hUnfNorm[iy][ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{Data}{Theory}");
       hUnfNorm[iy][ivar]->GetYaxis()->SetRangeUser(0,2);
       legNorm[ivar]->AddEntry(hUnfolded[iy][ivar], TString::Format("%s",years[iy].Data()), "lpe");
 
