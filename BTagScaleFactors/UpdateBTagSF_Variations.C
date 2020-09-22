@@ -1,5 +1,5 @@
-#include "2016/BTagCalibrationStandalone.h"
-#include "2016/BTagCalibrationStandalone.cpp"
+#include "2018/BTagCalibrationStandalone.h"
+#include "2018/BTagCalibrationStandalone.cpp"
 
 void UpdateBTagSF_Variations(TString fileName, TString year = "2016")
 {
@@ -10,7 +10,7 @@ void UpdateBTagSF_Variations(TString fileName, TString year = "2016")
     TFile *oldFile = TFile::Open(eosPath+fileName);
 
     TString newEosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/variations",year.Data());
-    TString newFileName = newEosPath + fileName;
+    TString newFileName = newEosPath + "/"+fileName;
     TH1F* triggerNames = (TH1F*) oldFile->Get("boosted/TriggerNames");
     TH1F* cutFlow = (TH1F*) oldFile->Get("boosted/CutFlow");
     TH1F* triggerPass = (TH1F*) oldFile->Get("boosted/TriggerPass");
