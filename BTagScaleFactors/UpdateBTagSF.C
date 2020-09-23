@@ -1,14 +1,16 @@
-#include "2016/BTagCalibrationStandalone.h"
-#include "2016/BTagCalibrationStandalone.cpp"
+#include "2018/BTagCalibrationStandalone.h"
+#include "2018/BTagCalibrationStandalone.cpp"
 
 void UpdateBTagSF(TString oldFileName, TString year = "2017")
 {
   /*for(int i=0; i<files.size(); i++)
   {*/
-    std::cout<<"Openning: "<<oldFileName<<std::endl;
-    TFile *oldFile = TFile::Open(oldFileName+".root","update");
+    TString eosPath = TString::Format("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/%s/variations/",year.Data());
+    std::cout<<"Openning: "<<eosPath+oldFileName<<std::endl;
+    TFile *oldFile = TFile::Open(eosPath+oldFileName);
 
-    TString newFileName = oldFileName + "_new.root";
+    
+    TString newFileName = oldFileName;
     TH1F* triggerNames = (TH1F*) oldFile->Get("boosted/TriggerNames");
     TH1F* cutFlow = (TH1F*) oldFile->Get("boosted/CutFlow");
     TH1F* triggerPass = (TH1F*) oldFile->Get("boosted/TriggerPass");
@@ -19,9 +21,9 @@ void UpdateBTagSF(TString oldFileName, TString year = "2017")
     TLeaf *l = tr->GetLeaf("bTagEvntWeight");
     tr->GetListOfLeaves()->Remove(l);*/
 
-
-    std::cout<<"Output file is: "<<newFileName<<std::endl;
-    TFile *newFile = TFile::Open(newFileName, "RECREATE");
+    TString newEosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/variations/",year.Data());
+    std::cout<<"Output file is: "<<newEosPath+newFileName<<std::endl;
+    TFile *newFile = TFile::Open(newEosPath + newFileName, "RECREATE");
     if(oldFile->cd("eventCounter"))
     {
       TH1F* GenEventWeight = (TH1F*) oldFile->Get("eventCounter/GenEventWeight");
