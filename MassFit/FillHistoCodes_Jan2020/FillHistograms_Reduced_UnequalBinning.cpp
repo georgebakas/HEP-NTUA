@@ -82,13 +82,10 @@ void initFileNames()
   {
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
     cout<<eosPath<<endl;
-    if(year.EqualTo("2016")) listOfFiles.push_back(ttNominalFiles[year.Data()]["TTNominal"]);
-    else
-    {
-      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic_0"]);
-      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic_0"]);
-      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu_0"]);
-    }
+
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic_0"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic_0"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu_0"]);
   }
 }
 
@@ -137,13 +134,9 @@ void initXsections()
   }
   else if(selection ==4)
   {
-    if(year.EqualTo("2016")) XSEC.push_back(ttNominalXSEC[year.Data()]["TTNominal"]);
-    else
-    {
-      XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic_0"]);
-      XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic_0"]);
-      XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu_0"]);
-    }
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic_0"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic_0"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu_0"]);
   }
 
 }
@@ -196,13 +189,9 @@ void initHistoNames()
   }
   else if(selection ==4)
   {
-    if(year.EqualTo("2016")) histoNames.push_back("TTNominal");
-    else
-    {
-      histoNames.push_back("TTHadronic_0");
-      histoNames.push_back("TTSemiLeptonic_0");
-      histoNames.push_back("TTTo2L2Nu_0");
-    }
+    histoNames.push_back("TTHadronic_0");
+    histoNames.push_back("TTSemiLeptonic_0");
+    histoNames.push_back("TTTo2L2Nu_0");
   }
 
 }

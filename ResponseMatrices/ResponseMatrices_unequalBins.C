@@ -48,14 +48,9 @@ void initXsections()
   }
   else
   {
-  	//this is for nominal files
- 	if(globalYear.EqualTo("2016")) XSEC.push_back(832.);
- 	else
- 	{
  		XSEC.push_back(377.96);
  		XSEC.push_back(365.34);
  		XSEC.push_back(88.29);
- 	}
   }
 }
 
@@ -71,13 +66,6 @@ void initHistoNames()
   }
   else
   {
-	  if(globalYear.EqualTo("2016"))
-	  {
-	  	fileNames.push_back("TTNominal");
-	  	histoNames.push_back("Signal_histo_Nominal");
-	  }
-	  else
-	  {
 	  	fileNames.push_back("TTHadronic_0");
 	  	fileNames.push_back("TTSemiLeptonic_0");
 	  	fileNames.push_back("TTTo2L2Nu_0");
@@ -86,7 +74,6 @@ void initHistoNames()
 	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
 	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
 
-	  }
   }
 }
 
