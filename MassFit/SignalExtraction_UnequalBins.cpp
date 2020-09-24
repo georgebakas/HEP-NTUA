@@ -290,17 +290,23 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hSignal_noScale = (TH1F*)hSignal->Clone("hSignal_noScale");
     TH1F *hSMC_noScale = (TH1F*)hSMC->Clone("hSMC_noScale");
 
-    hSignal->Scale(1/luminosity[year],"width");
+    float sigmaTotalMC = hSMC->Integral() / luminosity[year];
+    float sigmaTotal = hSignal->Integral() / luminosity[year];
+
     hSMC->Scale(1/luminosity[year], "width");
+    hSignal->Scale(1/luminosity[year],"width");
 
     //if you don't want normalised xsec comment these lines
     if(normalised)
     {
-      hSignal->Scale(1/hSignal->Integral());
-      hSMC->Scale(1/hSMC->Integral());
+      hSignal->Scale(1/sigmaTotal);
+      hSMC->Scale(1/sigmaTotalMC);
       hSMC->GetYaxis()->SetTitle("(#frac{1}{#sigma})#frac{d#sigma}{d#chi} [pb]");
     }
-    else hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
+    else
+    {
+      hSMC->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
+    }
 
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
     if(!variable.EqualTo("yJJ") && !variable.EqualTo("jetY0") && !variable.EqualTo("jetY1") ) gPad->SetLogy();
@@ -353,6 +359,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     }
     cout<<variable.Data()<<endl;
     cout<<hSignal_noScale->Integral()<<endl;
-    
+
 
 }

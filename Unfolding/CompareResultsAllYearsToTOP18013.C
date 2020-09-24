@@ -18,7 +18,7 @@ using std::endl;
 #include "TemplateConstantsUnfold.h"
 
 
-void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
+void CompareResultsAllYearsToTOP18013(bool isParton = true, int unfoldMethod = 1)
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
@@ -47,12 +47,22 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
   inf[1] = TFile::Open(TString::Format("2017/%sMeasurements/Data/OutputFile.root", varParton.Data()));
   inf[2] = TFile::Open(TString::Format("2018/%sMeasurements/Data/OutputFile.root", varParton.Data()));
 
+  TFile *top18013file;
+
   //TH1F here for the unfolded
   TH1F *hUnfolded[3][NVAR], *hUnfNorm[3][NVAR];
   //clones for double ratio
   TH1F *hUnfolded_Clone[3][NVAR], *hUnfNorm_Clone[3][NVAR];
   //for theory 16,17,18:
   TH1F *hTheory[3][NVAR], *hTheoryNorm[3][NVAR];
+
+  //TH1F here for the top18013
+  TH1F *hTOP18013[NVAR], *hTOP18013Norm[NVAR];
+  //th1f for the top18013 mc files
+  TH1F *hTOP18013_theory[NVAR], *hTOP18013Norm_theory[NVAR];
+
+  TH1F *hTOP18013_Clone[NVAR], *hTOP18013Norm_Clone[NVAR];
+
 
   TString years[] = {"2016", "2017", "2018"};
   Int_t colors[] = {kBlue, kRed, kGreen+2};
@@ -65,6 +75,16 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
   TH1F *hTemp, *hTemp_Norm;
   for(int ivar =0; ivar<NVAR; ivar++)
   {
+    //top-18-013 files and histograms
+    top18013file = TFile::Open(TString::Format("Results-TOP18013/CrossSection_%s_%s.root",varParton_top.Data(), variable[ivar].Data()));
+    //top-18-013 data
+    hTOP18013[ivar] = (TH1F*)top18013file->Get(TString::Format("CrossSection_%s_Nominal",varParton_top.Data()));
+    hTOP18013Norm[ivar] = (TH1F*)top18013file->Get(TString::Format("NormCrossSection_%s_Nominal",varParton_top.Data()));
+
+    //top-18-013 theory plots:
+    hTOP18013_theory[ivar] = (TH1F*)top18013file->Get("CrossSection_PowhegPythia8");
+    hTOP18013Norm_theory[ivar] = (TH1F*)top18013file->Get("NormCrossSection_PowhegPythia8");
+
     cout<<variable[ivar]<<endl;
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
     can[ivar]->cd();
@@ -80,8 +100,103 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
     closure_pad1_norm[ivar] =  new TPad(TString::Format("norm_closure_pad1%d",ivar),TString::Format("closure_pad1%d", ivar),0.,0.3,1.,1.);
     closure_pad1_norm[ivar]->Draw();
 
-    leg[ivar] = new TLegend(0.8,0.75,0.9,0.95);
-    legNorm[ivar] = new TLegend(0.8,0.75,0.9,0.95);
+    leg[ivar] = new TLegend(0.65,0.7,0.9,0.9);
+    legNorm[ivar] = new TLegend(0.65,0.7,0.9,0.9);
+
+
+
+    //plot TOP-18-013
+    //now do the same for the top-18-013 histograms
+    hTOP18013[ivar]->SetLineColor(kBlack);
+    hTOP18013[ivar]->SetMarkerColor(kBlack);
+    hTOP18013[ivar]->SetMarkerStyle(20);
+
+    if(variable[ivar].Contains("jetY"))
+    {
+      if(isParton)
+        hTOP18013_theory[ivar]->GetXaxis()->SetTitle("|"+variableParton[ivar]+"|");
+      else
+        hTOP18013_theory[ivar]->GetXaxis()->SetTitle("|"+variableGen[ivar]+"|");
+    }
+
+    hTOP18013[ivar]->Divide(hTOP18013_theory[ivar]);
+    hTOP18013Norm[ivar]->Divide(hTOP18013Norm_theory[ivar]);
+
+    //get the clones of these because I need to do their ratios also (double ratio)
+    hTOP18013_Clone[ivar] = (TH1F*)hTOP18013[ivar]->Clone(TString::Format("TOP18013_%s_Clone", hTOP18013[ivar]->GetName()));
+    hTOP18013Norm_Clone[ivar] = (TH1F*)hTOP18013Norm[ivar]->Clone(TString::Format("TOP18013_%s_Clone", hTOP18013Norm[ivar]->GetName()));
+
+    //draw the unfolded and extrapolated with the mc result
+    can[ivar]->cd();
+    //if(iy==0)closure_pad1[ivar]->Draw();
+    closure_pad1[ivar]->SetBottomMargin(0.005);
+    closure_pad1[ivar]->cd();
+
+    hTOP18013[ivar]->SetTitle(TString::Format("%s Unfolded Ratio Comparison ('16,'17,'18)",varParton.Data()));
+    hTOP18013[ivar]->GetYaxis()->SetTitle("#frac{Data}{Theory}");
+    hTOP18013[ivar]->GetYaxis()->SetRangeUser(0,2);
+    leg[ivar]->AddEntry(hTOP18013[ivar], "TOP-18-013 2016", "lpe");
+
+    //for the double ratio:
+    //divide with 2016 top-18-013 as reference
+    hTemp = (TH1F*)hTOP18013_Clone[ivar]->Clone("hTemp");
+    hTemp_Norm= (TH1F*)hTOP18013Norm_Clone[ivar]->Clone("hTemp_Norm");
+
+    hTOP18013_Clone[ivar]->Divide(hTemp);
+
+    hTOP18013_Clone[ivar]->Draw("same");
+    leg[ivar]->Draw();
+
+    closure_padRatio[ivar]->SetTopMargin(0.05);
+    closure_padRatio[ivar]->SetBottomMargin(0.3);
+    //closure_padRatio[ivar]->SetGrid();
+    closure_padRatio[ivar]->cd();
+
+    hTOP18013_Clone[ivar]->SetTitle("");
+    hTOP18013_Clone[ivar]->GetYaxis()->SetTitle("#frac{Other year}{2016}");
+    hTOP18013_Clone[ivar]->GetYaxis()->SetTitleSize(14);
+    hTOP18013_Clone[ivar]->GetYaxis()->SetTitleFont(43);
+    hTOP18013_Clone[ivar]->GetYaxis()->SetTitleOffset(1.55);
+    hTOP18013_Clone[ivar]->GetYaxis()->SetLabelFont(43);
+    hTOP18013_Clone[ivar]->GetYaxis()->SetLabelSize(15);
+    hTOP18013_Clone[ivar]->GetXaxis()->SetLabelSize(0.09);
+    hTOP18013_Clone[ivar]->GetXaxis()->SetTitleSize(0.09);
+    hTOP18013_Clone[ivar]->GetYaxis()->SetRangeUser(0,2);
+
+    hTOP18013_Clone[ivar]->Draw("hist same");
+
+    //normalized plots:
+
+    canNorm[ivar]->cd();
+
+    hTOP18013Norm[ivar]->SetTitle(TString::Format("Normalized %s Unfolded Ratio Comparison ('16,'17,'18)",varParton.Data()));
+    hTOP18013Norm[ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{Data}{Theory}");
+    hTOP18013Norm[ivar]->GetYaxis()->SetRangeUser(0,2);
+    legNorm[ivar]->AddEntry(hTOP18013[ivar], "TOP-18-013 2016", "lpe");
+
+    hTOP18013Norm_Clone[ivar]->Divide(hTemp_Norm);
+
+    closure_padRatio_norm[ivar]->SetTopMargin(0.05);
+    closure_padRatio_norm[ivar]->SetBottomMargin(0.3);
+    //closure_padRatio_norm[ivar]->SetGrid();
+    closure_padRatio_norm[ivar]->cd();
+    hTOP18013Norm_Clone[ivar]->Draw("hist same");
+
+    hTOP18013Norm_Clone[ivar]->SetTitle("");
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetTitle("Norm #frac{Other year}{2016}");
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetTitleSize(14);
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetTitleFont(43);
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetTitleOffset(1.55);
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetLabelFont(43);
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetLabelSize(15);
+    hTOP18013Norm_Clone[ivar]->GetXaxis()->SetLabelSize(0.09);
+    hTOP18013Norm_Clone[ivar]->GetXaxis()->SetTitleSize(0.09);
+    hTOP18013Norm_Clone[ivar]->GetYaxis()->SetRangeUser(0,2);
+
+    closure_pad1_norm[ivar]->cd();
+    closure_pad1_norm[ivar]->SetBottomMargin(0.005);
+
+    hTOP18013Norm_Clone[ivar]->Draw("same");
 
     for(int iy = 0; iy<3; iy++)
     {
@@ -127,11 +242,11 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
 
       //for the double ratio:
       //divide with 2016 as reference
-      if(iy==0)
+      /*if(iy==0)
       {
           hTemp = (TH1F*)hUnfolded_Clone[0][ivar]->Clone("hTemp");
           hTemp_Norm= (TH1F*)hUnfNorm_Clone[0][ivar]->Clone("hTemp_Norm");
-      }
+      }*/
       hUnfolded_Clone[iy][ivar]->Divide(hTemp);
 
       hUnfolded[iy][ivar]->Draw("same");
@@ -187,13 +302,16 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
       closure_pad1_norm[ivar]->SetBottomMargin(0.005);
 
       hUnfNorm[iy][ivar]->Draw("same");
-    	legNorm[ivar]->Draw();
+
 
 
     }//------end of loop on years
 
-    can[ivar]->Print(TString::Format("ComparisonAllYears/%s/DiffCrossSection_%s%s.pdf", varParton.Data(), variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    canNorm[ivar]->Print(TString::Format("ComparisonAllYears/%s/NormDiffCrossSection_%s%s.pdf",varParton.Data(), variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+
+    legNorm[ivar]->Draw();
+
+  //  can[ivar]->Print(TString::Format("ComparisonAllYears/%s/DiffCrossSection_%s%s.pdf", varParton.Data(), variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+  //  canNorm[ivar]->Print(TString::Format("ComparisonAllYears/%s/NormDiffCrossSection_%s%s.pdf",varParton.Data(), variable[ivar].Data(), unfMethodStr.Data()), "pdf");
     //break;
   }//------ end of loop on nvars
 

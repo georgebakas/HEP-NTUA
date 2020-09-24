@@ -11,6 +11,7 @@
 #include "TUnfoldDensity.h"
 
 using namespace std;
+#include "TemplateConstants.h"
 
 using std::cin;
 using std::cout;
@@ -19,6 +20,8 @@ using std::endl;
 void CompareResults(TString year = "2016")
 {
   gStyle->SetOptStat(0);
+  initFilesMapping();
+
   const int NVAR = 7;
   TString variable[NVAR] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1","jetY0", "jetY1"};
 
@@ -65,9 +68,9 @@ void CompareResults(TString year = "2016")
 
     //normalized 16,17,18:
     hFiducialNorm[ivar] = (TH1F*)hFiducial[ivar]->Clone(TString::Format("hSignalNormalised_%s", variable[ivar].Data()));
-    hFiducialNorm[ivar]->Scale(1./hFiducial[ivar]->Integral());
+    hFiducialNorm[ivar]->Scale(luminosity[year]/hFiducial[ivar]->Integral(), "width");
     hTheoryNorm[ivar] = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryNormalised_%s", variable[ivar].Data()));
-    hTheoryNorm[ivar]->Scale(1./hTheory[ivar]->Integral());
+    hTheoryNorm[ivar]->Scale(luminosity[year]/hTheory[ivar]->Integral(), "width");
 
 
     //top-18-013 plots:

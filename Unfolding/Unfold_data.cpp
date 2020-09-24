@@ -294,8 +294,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     bool isNorm = true;
     if(isNorm)
     {
-      hUnf[ivar]->Scale(1/hUnf[ivar]->Integral());
-      hTheory[ivar]->Scale(1/hTheory[ivar]->Integral());
+      hUnf[ivar]->Scale(luminosity[year]/hUnfFinal[ivar]->Integral());
+      hTheory[ivar]->Scale(luminosity[year]/hTheoryFinal[ivar]->Integral());
     }
 
     hUnf[ivar]->SetLineColor(kBlue);
