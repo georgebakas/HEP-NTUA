@@ -72,7 +72,7 @@ void CompareResults(TString year = "2016", bool isParton = true, int unfoldMetho
   TFile *inf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()));
 
   //top-18-013 files
-  TFile *top18013file, *top18013file_theory;
+  TFile *top18013file;
 
   //TH1F here for the unfolded
   TH1F *hUnfolded[NVAR], *hUnfNorm[NVAR];
