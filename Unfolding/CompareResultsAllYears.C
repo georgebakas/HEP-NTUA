@@ -102,8 +102,9 @@ void CompareResultsAllYears(bool isParton = true, int unfoldMethod = 1)
 
       //normalized 16,17,18:
       hUnfNorm[iy][ivar] = (TH1F*)hUnfolded[iy][ivar]->Clone(TString::Format("hUnfoldNormalised_%s", variable[ivar].Data()));
-      hUnfNorm[iy][ivar]->Scale(luminosity[years[iy]]/((TH1F*)inf[iy]->Get(TString::Format("hUnfoldFinal_%s", variable[ivar].Data())))->Integral());
       hTheoryNorm[iy][ivar] = (TH1F*)hTheory[iy][ivar]->Clone(TString::Format("hTheoryNormalised_%s", variable[ivar].Data()));
+
+      hUnfNorm[iy][ivar]->Scale(luminosity[years[iy]]/((TH1F*)inf[iy]->Get(TString::Format("hUnfoldFinal_%s", variable[ivar].Data())))->Integral());
       hTheoryNorm[iy][ivar]->Scale(luminosity[years[iy]]/((TH1F*)inf[iy]->Get(TString::Format("hTheoryFinal_%s", variable[ivar].Data())))->Integral());
 
       //now for 16,17,18

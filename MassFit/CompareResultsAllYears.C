@@ -10,6 +10,7 @@
 #include "TUnfold.h"
 #include "TUnfoldDensity.h"
 
+#include "TemplateConstants.h"
 using namespace std;
 
 using std::cin;
@@ -18,6 +19,7 @@ using std::endl;
 
 void CompareResultsAllYears()
 {
+  initFilesMapping();
   gStyle->SetOptStat(0);
 
   const int NVAR = 7;
@@ -80,9 +82,21 @@ void CompareResultsAllYears()
 
       //normalized 16,17,18:
       hFiducialNorm[iy][ivar] = (TH1F*)hFiducial[iy][ivar]->Clone(TString::Format("hSignalNormalised_%s", variable[ivar].Data()));
-      hFiducialNorm[iy][ivar]->Scale(1./hFiducial[iy][ivar]->Integral());
       hTheoryNorm[iy][ivar] = (TH1F*)hTheory[iy][ivar]->Clone(TString::Format("hSMCNorm_%s", variable[ivar].Data()));
-      hTheoryNorm[iy][ivar]->Scale(1./hTheory[iy][ivar]->Integral());
+
+      //1st get the Ntotal to compute the total cross section:
+      float totalXSecData = hFiducial[iy][ivar]->Integral()/ luminosity[years[iy]];
+      float totalXSecTheory = hTheory[iy][ivar]->Integral()/ luminosity[years[iy]];
+
+      hFiducialNorm[iy][ivar]->Scale(1/luminosity[years[iy]], "width");
+      hTheoryNorm[iy][ivar]->Scale(1/luminosity[years[iy]], "width");
+      hFiducialNorm[iy][ivar]->Scale(1/totalXSecData);
+      hTheoryNorm[iy][ivar]->Scale(1/totalXSecTheory);
+
+      //not necessary because we get the division...
+      hFiducial[iy][ivar]->Scale(1/luminosity[years[iy]],"width");
+      hTheory[iy][ivar]->Scale(1/luminosity[years[iy]],"width");
+
       //now for 16,17,18
       hFiducial[iy][ivar]->Divide(hTheory[iy][ivar]);
       hFiducialNorm[iy][ivar]->Divide(hTheoryNorm[iy][ivar]);
@@ -125,7 +139,15 @@ void CompareResultsAllYears()
       hFiducial_Clone[iy][ivar]->GetYaxis()->SetLabelSize(15);
       hFiducial_Clone[iy][ivar]->GetXaxis()->SetLabelSize(0.09);
       hFiducial_Clone[iy][ivar]->GetXaxis()->SetTitleSize(0.09);
+      hFiducial_Clone[iy][ivar]->GetXaxis()->SetTitleOffset(1.55);
       hFiducial_Clone[iy][ivar]->GetYaxis()->SetRangeUser(0,2);
+
+      if(variable[ivar].Contains("jetY"))
+        hFiducial_Clone[iy][ivar]->GetXaxis()->SetTitle("|"+variable[ivar]+"|");
+      else if (variable[ivar].EqualTo("yJJ"))
+        hFiducial_Clone[iy][ivar]->GetXaxis()->SetTitle(variable[ivar]);
+      else
+        hFiducial_Clone[iy][ivar]->GetXaxis()->SetTitle(variable[ivar]+ "(GeV)");
 
       hFiducial_Clone[iy][ivar]->Draw("hist same");
 
@@ -153,8 +175,16 @@ void CompareResultsAllYears()
       hFiducialNorm_Clone[iy][ivar]->GetXaxis()->SetLabelSize(0.09);
       hFiducialNorm_Clone[iy][ivar]->GetXaxis()->SetTitleSize(0.09);
       hFiducialNorm_Clone[iy][ivar]->GetYaxis()->SetRangeUser(0,2);
+      hFiducialNorm_Clone[iy][ivar]->GetXaxis()->SetTitleOffset(1.55);
       closure_pad1_norm[ivar]->cd();
       closure_pad1_norm[ivar]->SetBottomMargin(0.005);
+
+      if(variable[ivar].Contains("jetY"))
+        hFiducialNorm_Clone[iy][ivar]->GetXaxis()->SetTitle("|"+variable[ivar]+"|");
+      else if (variable[ivar].EqualTo("yJJ"))
+        hFiducialNorm_Clone[iy][ivar]->GetXaxis()->SetTitle(variable[ivar]);
+      else
+        hFiducialNorm_Clone[iy][ivar]->GetXaxis()->SetTitle(variable[ivar]+ "(GeV)");
 
       hFiducialNorm[iy][ivar]->Draw("same");
       legNorm[ivar]->Draw();
