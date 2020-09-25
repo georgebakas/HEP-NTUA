@@ -92,6 +92,8 @@ void CompareResults(TString year = "2016", bool isParton = true, int unfoldMetho
   {
     cout<<variable[ivar]<<endl;
     //get our plots:
+    //this is the differential cross section scaled to width and lumi
+    //so for the normalized you need to dived with sigma = Ntotal (Si and not scaled) / Lumi 
     hUnfolded[ivar] = (TH1F*)inf->Get(TString::Format("hUnfold_%s", variable[ivar].Data()));
     hTheory[ivar] = (TH1F*)inf->Get(TString::Format("hTheory_%s", variable[ivar].Data()));
     hUnfolded[ivar]->SetLineColor(kBlue);

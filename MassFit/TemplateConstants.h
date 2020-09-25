@@ -81,7 +81,7 @@ void initFilesMapping()
 	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
 	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
 
-	ttbarSigStrength.insert(pair<TString, float>("2016", 0.686668));
+	ttbarSigStrength.insert(pair<TString, float>("2016", 0.641241));
 	ttbarSigStrength.insert(pair<TString, float>("2017", 0.644361));
 	ttbarSigStrength.insert(pair<TString, float>("2018", 0.683382));
 
@@ -89,7 +89,7 @@ void initFilesMapping()
 	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2017", 0.553099));
 	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2018", 0.615816));
 
-	ttbarSigStrengthError.insert(pair<TString, float>("2016", 0.0263103));
+	ttbarSigStrengthError.insert(pair<TString, float>("2016", 0.0238714));
 	ttbarSigStrengthError.insert(pair<TString, float>("2017", 0.023851));
 	ttbarSigStrengthError.insert(pair<TString, float>("2018", 0.0200866));
 

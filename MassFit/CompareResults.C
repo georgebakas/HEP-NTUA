@@ -67,11 +67,22 @@ void CompareResults(TString year = "2016")
       hFiducial[ivar]->GetXaxis()->SetTitle(variable[ivar]+" (GeV)");
 
     //normalized 16,17,18:
-    hFiducialNorm[ivar] = (TH1F*)hFiducial[ivar]->Clone(TString::Format("hSignalNormalised_%s", variable[ivar].Data()));
-    hFiducialNorm[ivar]->Scale(luminosity[year]/hFiducial[ivar]->Integral(), "width");
-    hTheoryNorm[ivar] = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryNormalised_%s", variable[ivar].Data()));
-    hTheoryNorm[ivar]->Scale(luminosity[year]/hTheory[ivar]->Integral(), "width");
 
+    hFiducialNorm[ivar] = (TH1F*)hFiducial[ivar]->Clone(TString::Format("hSignalNormalised_%s", variable[ivar].Data()));
+    hTheoryNorm[ivar] = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryNormalised_%s", variable[ivar].Data()));
+
+    //1st get the Ntotal to compute the total cross section:
+    float totalXSecData = hFiducial[ivar]->Integral()/ luminosity[year];
+    float totalXSecTheory = hTheory[ivar]->Integral()/ luminosity[year];
+
+    hFiducialNorm[ivar]->Scale(1/luminosity[year], "width");
+    hTheoryNorm[ivar]->Scale(1/luminosity[year], "width");
+    hFiducialNorm[ivar]->Scale(1/totalXSecData);
+    hTheoryNorm[ivar]->Scale(1/totalXSecTheory);
+
+    //not necessary because we get the division...
+    hFiducial[ivar]->Scale(1/luminosity[year],"width");
+    hTheory[ivar]->Scale(1/luminosity[year],"width");
 
     //top-18-013 plots:
     top18013file = TFile::Open(TString::Format("../Unfolding/Results-TOP18013/CrossSection_Parton_%s.root",variable[ivar].Data()));

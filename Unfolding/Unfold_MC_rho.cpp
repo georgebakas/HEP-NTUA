@@ -65,6 +65,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMethod=3)
 {
+  bool isNorm = false;
   year = inYear;
   initFilesMapping();
   gStyle->SetOptStat(0);
@@ -138,7 +139,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   if(unfoldMethod ==2) unfMethodStr = "_LCurveMethod";
   else if(unfoldMethod ==3) unfMethodStr = "_RhoMethod";
   //TFile *gfile = TFile::Open("2016/output_2016_mcSig_nom_reduced.root");
-  TFile *outf = TFile::Open(TString::Format("%s/%sMeasurements/MC/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
+  TFile *outf;
+  if(!isNorm) outf = TFile::Open(TString::Format("%s/%sMeasurements/MC/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
 
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
@@ -298,12 +300,29 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     hTheory[ivar]->Scale(1/luminosity[year], "width");
     hUnf[ivar]->Scale(1/luminosity[year], "width");
 
+    if(isNorm)
+    {
+      hUnf[ivar]->Scale(luminosity[year]/hUnfFinal[ivar]->Integral());
+      hTheory[ivar]->Scale(luminosity[year]/hTheoryFinal[ivar]->Integral());
+    }
+
     hUnf[ivar]->SetLineColor(kBlue);
     hTheory[ivar]->SetLineColor(kRed);
     hUnf[ivar]->SetMarkerStyle(20);
     hUnf[ivar]->SetMarkerColor(kBlue);
     hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(),year.Data()));
     hTheory[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s %s",varParton.Data(),variable[ivar].Data(),year.Data()));
+
+    if(!isNorm)
+    {
+      hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
+      hTheory[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
+    }
+    else
+    {
+      hUnf[ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{d#chi}");
+      hTheory[ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{d#chi}");
+    }
 
     hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
     hTheory[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
@@ -350,13 +369,17 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     //cout<<"theory from eff: "<<hTheory[ivar]->Integral()<<endl;
 
     outf->cd();
-    hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
-    hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal%s", variable[ivar].Data()));
-  	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
-    hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
-  	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
-    hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
-    can[ivar]->Print(TString::Format("%s/%sMeasurements/MC/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    if(!isNorm)
+    {
+      hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+      hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal%s", variable[ivar].Data()));
+  	  hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+      hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
+   	  hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
+      hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+      can[ivar]->Print(TString::Format("%s/%sMeasurements/MC/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    }
+    else can[ivar]->Print(TString::Format("%s/%sMeasurements/MC_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
  //   break;
   }
 

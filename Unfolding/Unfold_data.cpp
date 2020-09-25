@@ -65,6 +65,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod=1)
 {
+  bool isNorm = false;
   year = inYear;
   initFilesMapping();
   gStyle->SetOptStat(0);
@@ -134,7 +135,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   if(unfoldMethod ==2) unfMethodStr = "_LCurveMethod";
   else if(unfoldMethod ==3) unfMethodStr = "_RhoMethod";
   //TFile *gfile = TFile::Open("2016/output_2016_mcSig_nom_reduced.root");
-  TFile *outf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
+  TFile *outf;
+  if(!isNorm) outf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
 
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
@@ -288,10 +290,10 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
     hUnfFinal[ivar]= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s", variable[ivar].Data()));
     hTheoryFinal[ivar]= (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
+    //this is differential cross section dsigma / dX  = S_i / L * dXi
     hTheory[ivar]->Scale(1/luminosity[year], "width");
     hUnf[ivar]->Scale(1/luminosity[year], "width");
 
-    bool isNorm = true;
     if(isNorm)
     {
       hUnf[ivar]->Scale(luminosity[year]/hUnfFinal[ivar]->Integral());
@@ -351,14 +353,18 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfTemp[ivar]->Draw();
     hUnfTemp[ivar]->GetXaxis()->SetLabelSize(0.09);
 
-    outf->cd();
-    hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
-    hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
-  	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
-    hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
-  	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
-    hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
-    if(!isNorm) can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+
+    if(!isNorm)
+    {
+      outf->cd();
+      hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+      hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
+    	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+      hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
+    	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
+      hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+      can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    }
     else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
   }
 
