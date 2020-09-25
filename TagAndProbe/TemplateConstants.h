@@ -344,11 +344,11 @@ void initFilesMapping(bool isLoose)
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 
-	signalStrengthSR.insert(pair<TString, float>("2016", 0.804651));
+	signalStrengthSR.insert(pair<TString, float>("2016", 0.699221));
 	signalStrengthSR.insert(pair<TString, float>("2017", 0.610508));
 	signalStrengthSR.insert(pair<TString, float>("2018", 0.665652));
 
-	signalStrengthProbe.insert(pair<TString, float>("2016", 0.791024));
+	signalStrengthProbe.insert(pair<TString, float>("2016", 0.77978));
 	signalStrengthProbe.insert(pair<TString, float>("2017", 0.621038));
 	signalStrengthProbe.insert(pair<TString, float>("2018", 0.62617));
 
