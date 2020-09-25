@@ -189,9 +189,9 @@ void initFilesMapping(bool isLoose)
 //----------------------------------------------------------------------------------------------------------------
 	//Nominal TT files (MC):
 	map<TString, TString> eosNomTT16 = {{"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-																			{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
-																	 		{"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
-																	 		{"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};};
+																			{"TTHadronic_0", "TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+																	 		{"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+																	 		{"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root"}};
 
     map<TString, TString> eosNomTT17 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
@@ -204,7 +204,7 @@ void initFilesMapping(bool isLoose)
 	map<TString, float> eosNomTTXSEC16 = {{"TTNominal",832.},
 																				{"TTHadronic_0",377.96},
 																				{"TTSemiLeptonic_0",365.34},
-																				{"TTTo2L2Nu_0",88.29}};};
+																				{"TTTo2L2Nu_0",88.29}};
 
     map<TString, float> eosNomTTXSEC17 = {{"TTHadronic_0",377.96},
 	                                    {"TTSemiLeptonic_0",365.34},
