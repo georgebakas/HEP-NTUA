@@ -146,7 +146,8 @@ for(int f=0; f<fileNames.size(); f++)
     vector<bool>  *bit(0),*matchedJet(0);
     //reco vars:
     std::vector<float> *jetPt(0), *jetY(0), *jetEta(0), *jetPhi(0), *jetTtag(0);
-    float genEvtWeight(0), bTagEvntWeight(0);
+    float genEvtWeight(0);
+    double  bTagEvntWeight(0);
     float mJJ(0), ptJJ(0), yJJ(0),mva(0);
     vector<float> *tau3(0),*tau2(0),*tau1(0);
 	vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);

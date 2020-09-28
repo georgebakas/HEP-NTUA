@@ -263,7 +263,8 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   int NN = trIN->GetEntries();
 
   int nJets,nLeptons;
-  float genEvtWeight(0), bTagEvntWeight(0);
+  float genEvtWeight(0);
+  double  bTagEvntWeight(0);
   vector<float> *jetPt(0),*tau3(0),*tau2(0),*tau1(0);
   vector<float> *jetMassSub0(0), *jetMassSub1(0);
   vector<float> *jetMassSoftDrop(0);
