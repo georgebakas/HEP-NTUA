@@ -1,10 +1,10 @@
 void UpdateTopTagger(TString oldFileName)
 {
-  	
+
     //TString weightsFile = "/afs/cern.ch/work/i/ipapakri/private/analysis/TopAnalysis/MVA_Trainings/Training_2016/BoostedMVA/weights/boosted_MVA_MLPCat.weights.xml";
     TString weightsFile = "/afs/cern.ch/work/g/gbakas/public/TrainingOutputs/TrainingOutputs/Training_2018/BoostedMVA/weights/boosted_MVA_BDTCat.weights.xml";
     std::cout<<"Openning: "<<oldFileName<<std::endl;
-    TFile *oldFile = TFile::Open(oldFileName+".root", "update");
+    TFile *oldFile = TFile::Open(oldFileName+".root");
 
     TH1F* triggerNames = (TH1F*) oldFile->Get("boosted/TriggerNames");
     TH1F* cutFlow = (TH1F*) oldFile->Get("boosted/CutFlow");
@@ -13,7 +13,7 @@ void UpdateTopTagger(TString oldFileName)
 
     tr->SetBranchStatus("jetTtagCategory", 0);
     /*TBranch *b_temp = tr->GetBranch("jetTtagCategory");
-    tr->GetListOfBranches()->Remove(b_temp);	
+    tr->GetListOfBranches()->Remove(b_temp);
     TLeaf *l = tr->GetLeaf("jetTtagCategory");
     tr->GetListOfLeaves()->Remove(l);
     cout<<"deleted previous branch!"<<endl; */
