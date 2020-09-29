@@ -112,7 +112,7 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC= false
 for(int f=0; f<fileNames.size(); f++)
 {
   	//declare the histograms
-  	for(int ivar =0; ivar<NVAR-2; ivar++)
+  	for(int ivar =0; ivar<NVAR; ivar++)
   	{
   		 int sizeBins = NBINS[ivar];
          float tempBND[NBINS[ivar]+1];
@@ -449,7 +449,7 @@ for(int f=0; f<fileNames.size(); f++)
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
 		  if(recoCuts && btagCut && tTaggerCut)
 		  {
-		  	for(int ivar = 0; ivar < NVAR-2; ivar++)
+		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
 				hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
 			}
@@ -458,7 +458,7 @@ for(int f=0; f<fileNames.size(); f++)
 		  //fill also response matrix
 	      if(partonCuts && recoCuts && tTaggerCut && btagCut)
 		  {
-			  	for(int ivar = 0; ivar < NVAR-2; ivar++)
+			  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  			{
 				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight);
 				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
@@ -471,7 +471,7 @@ for(int f=0; f<fileNames.size(); f++)
 	      //3. Events pass reco and particle
 	      if(particleCuts && recoCuts && tTaggerCut && btagCut)
 	      {
-	      	for(int ivar = 0; ivar < NVAR-2; ivar++)
+	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
 	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
 	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
@@ -481,7 +481,7 @@ for(int f=0; f<fileNames.size(); f++)
 	      }
 	      if(particleCuts)
 	      {
-	      	for(int ivar = 0; ivar < NVAR-2; ivar++)
+	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
 	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
 	      	}
@@ -543,7 +543,7 @@ for(int f=0; f<fileNames.size(); f++)
 	  xPartonAllCnt.push_back(fabs(TMath::Cos(p4T_ZMFPartonCnt[0].Theta()))); //this is |cos(theta*)| leading
 	  xPartonAllCnt.push_back(fabs(TMath::Cos(p4T_ZMFPartonCnt[1].Theta()))); //this is |cos(theta*)| subleading
 
-	  for(int ivar = 0; ivar < NVAR-2; ivar++)
+	  for(int ivar = 0; ivar < NVAR; ivar++)
 	  {
 	  	if(partonCuts)
 			hParton[f][ivar]->Fill(xPartonAllCnt[ivar], genEvtWeightCnt);
@@ -554,7 +554,7 @@ for(int f=0; f<fileNames.size(); f++)
 }//----end of file loop
 
 
-  for(int ivar =0; ivar<NVAR-2; ivar++)
+  for(int ivar =0; ivar<NVAR; ivar++)
   {
 	//for every slice
 	for(int j=0; j<fileNames.size(); j++)
@@ -599,7 +599,7 @@ for(int f=0; f<fileNames.size(); f++)
 
   //efficiency for parton quantity and for topTagger (new)
 
-  for(int ivar = 0; ivar< NVAR-2; ivar++)
+  for(int ivar = 0; ivar< NVAR; ivar++)
   {
   	if(hParton[0][ivar]->GetBinContent(0) > 0)
   		hParton[0][ivar]->SetBinContent(0,0.0);
@@ -620,7 +620,7 @@ for(int f=0; f<fileNames.size(); f++)
   }
 
 
-  for(int ivar = 0; ivar< NVAR-2; ivar++)
+  for(int ivar = 0; ivar< NVAR; ivar++)
   {
 
   cout<<"--------"<<endl;
@@ -665,7 +665,7 @@ for(int f=0; f<fileNames.size(); f++)
   TH1F *purityParton[NVAR], *stabilityParton[NVAR];
   TH1F *purityParticle[NVAR], *stabilityParticle[NVAR];
 
-  for(int ivar = 0; ivar<NVAR-2; ivar++)
+  for(int ivar = 0; ivar<NVAR; ivar++)
   {
 	int sizeBins = NBINS[ivar];
   	float tempBND[NBINS[ivar]+1];
@@ -721,7 +721,7 @@ for(int f=0; f<fileNames.size(); f++)
   outFile = TFile::Open(TString::Format("%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
-  for(int ivar = 0; ivar<NVAR-2; ivar++)
+  for(int ivar = 0; ivar<NVAR; ivar++)
   {
   	efficiency_parton[ivar]->Write(TString::Format("EfficiencyParton_%s",varParton[ivar].Data()));
   	efficiency_particle[ivar]->Write(TString::Format("EfficiencyParticle_%s",varParticle[ivar].Data()));

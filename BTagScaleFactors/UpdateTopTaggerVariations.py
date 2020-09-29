@@ -14,5 +14,5 @@ for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/gbakas/ttbar/t
 	print("file {}".format(ifile))
 	split_file_name = file_name.split('.')
 	#print(file_name)
-	os.system(f'root -l -b -q \'UpdateTopTagger.cxx(\"{split_file_name[0]}\")\'')
+	os.system(f'root -l -b -q \'UpdateTopTagger.C(\"{split_file_name[0]}\")\'')
 	#break
