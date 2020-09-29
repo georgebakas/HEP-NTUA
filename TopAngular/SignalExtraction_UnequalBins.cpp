@@ -33,7 +33,7 @@ using std::endl;
 using namespace RooFit;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
-void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", TString fitRecoVar = "leadingJetPt", float ry_err_final = 0);
+void SignalExtractionSpecific(TString year = "2016", TString variable = "chi");
 bool normalised;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
@@ -64,11 +64,8 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 void SignalExtraction_UnequalBins(TString year, bool isNormalised)
 {
     normalised = isNormalised;
-    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
-    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
-    float r_yield_errors[3][7] = {{0.0289754, 0.0289714, 0.028963, 0.0289885, 0.0289772, 0.028963, 0.028963},
-                                {0.0207616, 0.0207703, 0.0207602, 0.0207695, 0.0207622, 0.0207602, 0.0207602},
-                                {0.0230198, 0.0230225, 0.0230183, 0.0230248, 0.023019, 0.0230183, 0.0230183}};
+    TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
+
     int selectedYear;
     if(year.EqualTo("2016")) selectedYear = 0;
     else if(year.EqualTo("2017")) selectedYear = 1;
@@ -76,13 +73,13 @@ void SignalExtraction_UnequalBins(TString year, bool isNormalised)
 
     for(int i=0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], fitRecoVar[i], r_yield_errors[selectedYear][i]);
+        SignalExtractionSpecific(year, vars[i]);
         //break;
     }
 }
 
 
-void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0", TString fitRecoVar = "leadingJetPt", float ry_err_final=0)
+void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
 {
     initFilesMapping();
     cout<<luminosity[year]<<endl;
@@ -121,13 +118,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<"r_yield_correction: "<<r_yield_correction<<" ± "<<r_yield_correction_error<<endl;
 
     float corrected_rYield = r_yield_correction * Ryield;
-    float corrected_error = ry_err_final;
-    //corrected_error = TMath::Sqrt(TMath::Power(r_yield_correction*Ryield_error,2) + TMath::Power(r_yield_correction_error*Ryield,2));
+    float corrected_error(0);
+    corrected_error = TMath::Sqrt(TMath::Power(r_yield_correction*Ryield_error,2) + TMath::Power(r_yield_correction_error*Ryield,2));
     //cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
     //return;
     //open the file to get the Nbkg
-    TFile *fitFile = TFile::Open(TString::Format("%s/MassFitResults__.root", year.Data()));
+    TFile *fitFile = TFile::Open(TString::Format("../MassFit/%s/MassFitResults__.root", year.Data()));
     RooWorkspace *w = (RooWorkspace*)fitFile->Get("w");
     //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
@@ -146,18 +143,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
-
-    //now i need the rebin function for aaaaaall my hists so that I am conistent
-    //I will include binning in the TemplateConstants.h
-
-    std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-  													                          {0,60,150,300,450,600,750,900,1300}, //ptjj
-  													                          {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-  		   	                                            {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
-  													                          {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
-  													                          {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                      {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-
+    std::vector< std::vector <Float_t> > const BND = {{1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,11.5,13,14.5,16}, //chi
+                                                       {0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1}, //|cosTheta*| leading
+                                                       {0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1}};  //|cosTheta*| leading
 
     int nBins[BND.size()];
     for (int i = 0; i<BND.size(); i++)
@@ -175,28 +163,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hQ_copy = (TH1F*)hQ->Clone(TString::Format("hD_copy_%s", variable.Data()));
     cout<<hQ_copy->GetNbinsX()<<endl;
 
-    /*
-    cout<<"hData 0:"<<hQ->Integral()<<endl;
-    cout<<"hD_copy 0:"<<hQ_copy->Integral()<<endl;
-    cout<<"hSub 0:"<<hSub_0->Integral()<<endl;
-    cout<<"httbar 0:"<<hSMC_0->Integral()<<endl;
-
-    TCanvas *c1 = new TCanvas(TString::Format("c_copy_%s", variable.Data()), TString::Format("c_copy_%s", variable.Data()), 800, 600);
-    hQ->Scale(1./hQ->Integral());
-    hQ_copy->Scale(1./hQ_copy->Integral());
-
-    hQ->Draw("hist");
-    hQ->SetLineColor(kRed);
-    hQ_copy->SetLineColor(kBlue);
-    hQ_copy->Draw("hist same");
-    */
-
-    /* DO NOT REBIN!!!!!
-    hD_rebinned = getRebinned(hD, tempBND, nBins[selVar]);
-    hQ_rebinned = getRebinned(hQ, tempBND, nBins[selVar]);
-    hSub_rebinned = getRebinned(hSub, tempBND, nBins[selVar]);
-
-    */
     hD_rebinned = (TH1F*)hD->Clone();
     hQ_rebinned = (TH1F*)hQ->Clone();
     hSub_rebinned = (TH1F*)hSub->Clone();
@@ -209,6 +175,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
     cout<<variable.Data()<<endl;
+    /* No correction needed for shape...
     if(variable.EqualTo("jetPt0") || (variable.EqualTo("jetPt1") && !year.EqualTo("2016")))
     {
         TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s_reduced.root",year.Data()));
@@ -222,6 +189,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     }
     else
      for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+     */
 
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
     cout<<"--------"<<endl;
@@ -234,21 +202,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         float newContent;
         //cout<<"i: "<<i+1<<" old content* SF: "<<oldContent* SF[i]<<endl; //* SF[i]<<endl;
         //cout<<oldContent * SF[i] * corrected_rYield * NQCD<<" ± "<<endl;
-        newContent = oldContent * corrected_rYield * NQCD * SF[i];
+        newContent = oldContent * corrected_rYield * NQCD;//* SF[i];
         //cout<<Ryield * r_yield_correction * NQCD * oldContent * SF[i]<<endl;
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         //cout<<"i: "<<i+1<<", with content: "<<newContent<<endl;
-        float newError   = TMath::Sqrt(TMath::Power(oldError*SF[i]*NQCD*corrected_rYield,2)+
-                                       TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
-                                       TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
-
-/*
-        cout<<"bin: "<<i+1<<endl;
-        cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
-        cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
-        cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
-*/
-
+        float newError   = TMath::Sqrt(TMath::Power(oldError*NQCD*corrected_rYield/*SF[i]*/,2)+
+                                       TMath::Power(NQCD_error*oldContent*corrected_rYield/*SF[i]*/,2) +
+                                       TMath::Power(corrected_error*NQCD*oldContent/**SF[i]*/,2));
         //cout<<"-----"<<endl;
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);

@@ -34,13 +34,13 @@ void Contamination(TString year)
 
     if(recoVar.EqualTo("mTop"))
     {
-      cout<<"QCD: "<<hCR_QCD[ivar]->Integral()<<endl;
-      cout<<"Subdominant: "<<hCR_Subdominant[ivar]->Integral()<<endl;
-      cout<<"TT: "<<hCR_tt[ivar]->Integral()<<endl;
-      cout<<"Data: "<<hData[ivar]->Integral()<<endl;
+      cout<<"QCD entries: "<<hCR_QCD[ivar]->GetEntries()<<endl;
+      cout<<"Subdominant entries: "<<hCR_Subdominant[ivar]->GetEntries()<<endl;
+      cout<<"TT entries: "<<hCR_tt[ivar]->GetEntries()<<endl;
+      cout<<"QCD Integral: "<<hCR_QCD[ivar]->Integral()<<endl;
+      cout<<"Subdominant Integral: "<<hCR_Subdominant[ivar]->Integral()<<endl;
+      cout<<"TT Integral: "<<hCR_tt[ivar]->Integral()<<endl;
       cout<<"-------------"<<endl;
-      cout<<"Data after removing tt, subdominant: "<<hData[ivar]->Integral() - hCR_tt[ivar]->Integral()- hCR_Subdominant[ivar]->Integral()<<endl;
-      cout<<"QCD: "<<hCR_QCD[ivar]->Integral()<<endl;
     }
     //hData[ivar]->Add(hCR_tt,-1);
     //hData[ivar]->Add(hCR_Subdominant,-1);
@@ -159,7 +159,7 @@ void Contamination(TString year)
     hRatio[ivar][2]->Draw("hist same");
     //break;
 
-    c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/Medium/contamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+    //c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/Medium/contamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 
   }
 

@@ -65,28 +65,22 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod=1)
 {
-  bool isNorm = false;
+  bool isNorm = true;
   year = inYear;
   initFilesMapping();
   gStyle->SetOptStat(0);
-
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-                                                        {0,60,150,300,450,600,850,1300}, //ptjj
-                                                        {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
-                                                        {400,450,500,570,650,800,1100,1500}, //jetPt1
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-                                                         {0,60,150,300,450,600,750,900,1300}, //ptjj
-                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                         {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
-                                                         {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+  std::vector< std::vector <Float_t> > const BND_gen = {{1,2,3,4,5,6,7,8,9,10,13,16}, //chi
+                                                    {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}, //|cosTheta*| leading
+                                                    {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}}; //|cosTheta*| subleading
 
 
+  /*std::vector< std::vector <Float_t> > const BND_reco = {{1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,11.5,13,14.5,16}, //chi
+                                                     {0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1}, //|cosTheta*| leading
+                                                     {0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1}};  //|cosTheta*| leading
+                                                     */
+  std::vector< std::vector <Float_t> > const BND_reco = {{1,2,3,4,5,6,7,8,9,10,13,16}, //
+                                                        {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}, //|cosTheta*| leading
+                                                        {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1}}; //|cosTheta*| subleading
 
 
   float LUMI = luminosity[year];
@@ -94,8 +88,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile;
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
-  //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
 
 
   //whether parton or particle, from the choice of the user
@@ -105,16 +98,16 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   //get the number of bins for each
   int NBINS[BND_reco.size()];
   int NBINS_GEN[BND_gen.size()];
-  const int NVAR = 7;
+  const int NVAR = 3;
   for (int i = 0; i<BND_reco.size(); i++)
   	NBINS[i] = BND_reco[i].size()-1;
   for (int i = 0; i<BND_gen.size(); i++)
   	NBINS_GEN[i] = BND_gen[i].size()-1;
 
   TH1F *inSig[BND_reco.size()], *hSig[BND_reco.size()], *hSig_Init[BND_reco.size()];
-  TString variable[NVAR] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1","jetY0", "jetY1"};
-  TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen", "genjetPt0", "genjetPt1","genjetY0", "genjetY1"};
-  TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton", "partonPt0", "partonPt1","partonY0", "partonY1"};
+  TString variable[NVAR] = {"chi", "cosTheta_0", "cosTheta_1"};
+  TString variableGen[NVAR] = {"chiParticle", "cosThetaParticle_0", "cosThetaParticle_1"};
+  TString variableParton[NVAR] = {"chiParton", "cosThetaParton_0", "cosThetaParton_1"};
 
   TH2F *hResponse[BND_reco.size()];
   TUnfold *unf[BND_reco.size()];
@@ -141,7 +134,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
-    signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",
+    signalFile = TFile::Open(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms_%s.root",
                       year.Data(), variable[ivar].Data()));
 
     int sizeBins = NBINS[ivar];

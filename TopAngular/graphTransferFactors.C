@@ -17,8 +17,8 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 
 void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 {
-  const int NVAR = 8;
-  TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "mTop"};
+  const int NVAR = 3;
+  TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
   for(int ivar =0; ivar<sizeof(vars)/sizeof(vars[0]); ivar++)
   {
     graphTransferFactorsSpecific(year, bEnriched, vars[ivar]);
@@ -26,7 +26,7 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 }
 
 
-void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false, TString variable = "jetPt0")
+void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false, TString variable = "chi")
 {
   gStyle->SetOptStat(0);
   TH1F *hfData;
