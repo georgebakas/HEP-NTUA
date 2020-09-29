@@ -367,7 +367,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   float jetDr_(0);
 
   cout<<"Reading "<<NN<<" entries"<<endl;
-  for(int iev=0;iev<NN;iev++)
+  for(int iev=1;iev<NN;iev++)
   {
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
