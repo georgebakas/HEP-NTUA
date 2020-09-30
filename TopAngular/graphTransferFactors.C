@@ -160,7 +160,7 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 	  hfData->SetMarkerColor(col[i]);
 	  hfData->SetLineColor(col[i]);
 	  hfData->GetYaxis()->SetTitleOffset(1.25);
-      hfData->GetYaxis()->SetRangeUser(0.1,0.8);
+      hfData->GetYaxis()->SetRangeUser(0.1,0.5);
 	  can = new TCanvas(TString::Format("can_%s_%s", year.Data(),variable.Data()),TString::Format("can_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfData->Draw("hist e");
 	  can->Print(TString::Format("%s/Ryield/TransferFactor%s_%s.pdf",year.Data(), bEnr.Data(),variable.Data()),"pdf");
