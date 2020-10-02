@@ -61,7 +61,6 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar *fBkgJet = new RooRealVar("fBkgJet","fBkgJet",hDataJet->Integral()/hData->Integral());
   RooRealVar *fBkgEvt = new RooRealVar("fBkgEvt","fBkgEvt",hDataEvt->Integral()/hData->Integral());
   //---- QCD -----------------------------------
-
   RooRealVar bQCD0("qcd_b0","qcd_b0",qcdParams[year]["qcd_b0"],0,2.);
   RooRealVar bQCD1("qcd_b1","qcd_b1",qcdParams[year]["qcd_b1"],0,2.);
   RooRealVar bQCD2("qcd_b2","qcd_b2",qcdParams[year]["qcd_b2"],0,2.);
@@ -105,8 +104,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   parsQCD->setAttribAll("Constant",true);
 
   w->import(*qcd);
-  w->import(*fBkgJet);
-  w->import(*fBkgEvt);
+  //w->import(*fBkgJet);
+  //w->import(*fBkgEvt);
   //TH1F *hMeanTop[2],*hSigmaTop[2],*hMeanW[2],*hSigmaW[2];
 
   float LUMI(0);

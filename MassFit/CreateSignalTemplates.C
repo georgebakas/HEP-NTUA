@@ -53,7 +53,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     //infMC = TFile::Open(TString::Format("%s/output_2016_mcSig_02_extended.root",year.Data()));
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
-
+    if(icat==1) continue;
     cout<<TAG<<endl;
     //---- then do the signal templates -------------
     hMC = (TH1F*)infMC->Get("hWt_"+VAR+TAG);
@@ -120,7 +120,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
     RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb,g1),RooArgList(fsig1,fsig2,fsig3));
     cout<<"ttbar_pdf_"+CAT<<endl;
-
+   
     canS = new TCanvas("Template_TT_"+CAT+"_"+CUT,"Template_TT_"+CAT+"_"+CUT,900,600);
 
     RooFitResult *res = signal->fitTo(*roohMC,RooFit::Save());
