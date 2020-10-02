@@ -9,7 +9,6 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TFile *infBkg;
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);
@@ -37,13 +36,15 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   //TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt
   TH1F *hCR_MC = (TH1F*)infTTMC->Get("hWt_mTop_0btag_expYield");
 
-  TFile *infBkg_temp = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
-  TH1F *hCR_MCSubdominant = (TH1F*)infBkg_temp->Get("hWt_mTop_0btag_expYield");
+  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
+  TH1F *hCR_MCSubdominant = (TH1F*)infBkg->Get("hWt_mTop_0btag_expYield");
   TH1F *hDataBefore = (TH1F*)hData->Clone("test");
 
   //hDataBefore->SetLineColor(kRed);
-  hData->Add(hCR_MC,-1);
   hData->Add(hCR_MCSubdominant,-1);
+  hData->Add(hCR_MC,-1);
+
+  hData->Rebin(2);
 
   cout<<"After Substr: "<<hData->GetEntries()<<endl;
   /*
@@ -112,69 +113,71 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   if (year.EqualTo("2016")) LUMI = 35920;
   else if (year.EqualTo("2017")) LUMI = 41530;
   else if (year.EqualTo("2018")) LUMI = 59740;
-  return;
+
+
   for(int icat=0;icat<3;icat++) {
-    if (icat==1) continue;
-    infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
 
+    if (icat == 1)
+      continue;
+    //infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root", year.Data()));
 
-    TString CAT = TString::Format("%dbtag",icat);
-    TAG = CUT+"_"+CAT;
-
+    TString CAT = TString::Format("%dbtag", icat);
+    TAG = CUT + "_" + CAT;
+    TH1F *hBkg;
     //---- do the bkg templates -------------
-    TH1F *hBkg = (TH1F*)infBkg->Get("hWt_"+VAR+TAG+"_expYield");
-    cout<<"icat "<<icat<<": "<<hBkg->Integral()<<endl;
-    RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg);
+    if (icat == 0)
+    {
+      hBkg = (TH1F *)hCR_MCSubdominant->Clone("hBkg");
+    }
+    else if (icat == 2)
+    {
+      hBkg = (TH1F *)infBkg ->Get("hWt_mTop_2btag_expYield");
+    }
+    hBkg->Rebin(2);
 
-    RooRealVar mW("bkg_meanW_"+CAT,"meanW_"+CAT,80,70,90);
-    RooRealVar sW("bkg_sigmaW_"+CAT,"sigmaW_"+CAT,5,0,15);
-    RooFormulaVar mWShift("bkg_meanWShifted_"+CAT,"@0*@1",RooArgList(mW,*(kMassScale)));
-    RooFormulaVar sWShift("bkg_sigmaWShifted_"+CAT,"@0*@1",RooArgList(sW,*(kMassResol)));
+    RooDataHist *roohBkg = new RooDataHist("roohistBkg", "roohistBkg", RooArgList(*x), hBkg);
 
-    RooGaussian pdfW("bkg_pdfW_"+CAT,"bkg_pdfW_"+CAT,*x,mWShift,sWShift);
+    RooRealVar mW("bkg_meanW_" + CAT, "meanW_" + CAT, 80, 70, 90);
+    RooRealVar sW("bkg_sigmaW_" + CAT, "sigmaW_" + CAT, 5, 0, 15);
+    RooGaussian pdfW("bkg_pdfW_" + CAT, "bkg_pdfW_" + CAT, *x, mW, sW);
 
+    RooRealVar mBkgTop("bkg_meanTop_" + CAT, "bkg_meanTop_" + CAT, 172, 150, 180);
+    RooRealVar sBkgTop("bkg_sigmaTop_" + CAT, "bkg_sigmaTop_" + CAT, 15, 5, 40);
+    RooGaussian bkgTop("bkg_pdfTop_" + CAT, "bkg_pdfTop_" + CAT, *x, mBkgTop, sBkgTop);
 
-    RooRealVar mBkgTop("bkg_meanTop_"+CAT,"bkg_meanTop_"+CAT,172,150,180);
-    RooRealVar sBkgTop("bkg_sigmaTop_"+CAT,"bkg_sigmaTop_"+CAT,15,5,30);
+    RooRealVar bBkg0("bkg_b0_" + CAT, "bkg_b0_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg1("bkg_b1_" + CAT, "bkg_b1_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg2("bkg_b2_" + CAT, "bkg_b2_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg3("bkg_b3_" + CAT, "bkg_b3_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg4("bkg_b4_" + CAT, "bkg_b4_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg5("bkg_b5_" + CAT, "bkg_b5_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg6("bkg_b6_" + CAT, "bkg_b6_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg7("bkg_b7_" + CAT, "bkg_b7_" + CAT, 0.5, 0, 1);
+    RooRealVar bBkg8("bkg_b8_" + CAT, "bkg_b8_" + CAT, 0.5, 0, 1);
 
-    RooFormulaVar mBkgTopShift("bkg_meanTopShifted_"+CAT,"@0*@1",RooArgList(mBkgTop,*(kMassScale)));
-    RooFormulaVar sBkgTopShift("bkg_sigmaTopShifted_"+CAT,"@0*@1",RooArgList(sBkgTop,*(kMassResol)));
+    RooBernstein bkgComb("bkg_pdfComb_" + CAT, "bkg_pdfComb_" + CAT, *x, RooArgList(bBkg0, bBkg1, bBkg2));
 
-    RooGaussian bkgTop("bkg_pdfTop_"+CAT,"bkg_pdfTop_"+CAT,*x,mBkgTopShift,sBkgTopShift);
+    RooRealVar fbkg1("bkg_f1_" + CAT, "bkg_f1_" + CAT, 0.9, 0.01, 1);
+    RooRealVar fbkg2("bkg_f2_" + CAT, "bkg_f2_" + CAT, 0.1, 0.01, 1);
 
-    RooRealVar bBkg0("bkg_b0_"+CAT,"bkg_b0_"+CAT,0.5,0,1);
-    RooRealVar bBkg1("bkg_b1_"+CAT,"bkg_b1_"+CAT,0.5,0,1);
-    RooRealVar bBkg2("bkg_b2_"+CAT,"bkg_b2_"+CAT,0.5,0,1);
-    RooRealVar bBkg3("bkg_b3_"+CAT,"bkg_b3_"+CAT,0.5,0,1);
-    RooRealVar bBkg4("bkg_b4_"+CAT,"bkg_b4_"+CAT,0.5,0,1);
-    RooRealVar bBkg5("bkg_b5_"+CAT,"bkg_b5_"+CAT,0.5,0,1);
-    RooRealVar bBkg6("bkg_b6_"+CAT,"bkg_b6_"+CAT,0.5,0,1);
-    RooRealVar bBkg7("bkg_b7_"+CAT,"bkg_b7_"+CAT,0.5,0,1);
-    RooRealVar bBkg8("bkg_b8_"+CAT,"bkg_b8_"+CAT,0.5,0,1);
-
-    RooBernstein bkgComb("bkg_pdfComb_"+CAT,"bkg_pdfComb_"+CAT,*x,RooArgList(bBkg0,bBkg1,bBkg2));
-
-    RooRealVar fbkg1("bkg_f1_"+CAT,"bkg_f1_"+CAT,0.9,0.01,1);
-    RooRealVar fbkg2("bkg_f2_"+CAT,"bkg_f2_"+CAT,0.1,0.01,1);
-
-    RooAddPdf *bkg = new RooAddPdf("bkg_pdf_"+CAT,"bkg_pdf_"+CAT,RooArgList(bkgTop,pdfW,bkgComb),RooArgList(fbkg1,fbkg2));
-    res = bkg->fitTo(*roohBkg,RooFit::Save());
+    RooAddPdf *bkg = new RooAddPdf("bkg_pdf_" + CAT, "bkg_pdf_" + CAT, RooArgList(bkgTop, pdfW, bkgComb), RooArgList(fbkg1, fbkg2));
+    RooFitResult *res = bkg->fitTo(*roohBkg, RooFit::Save());
     res->Print();
 
-    TCanvas *canBkg = new TCanvas("Template_Bkg_"+CUT+"_"+CAT,"Template_Bkg_"+CUT+"_"+CAT,900,600);
+    TCanvas *canBkg = new TCanvas("Template_Bkg_" + CUT + "_" + CAT, "Template_Bkg_" + CUT + "_" + CAT, 900, 600);
     RooPlot *frameBkg = x->frame();
     roohBkg->plotOn(frameBkg);
     bkg->plotOn(frameBkg);
-    bkg->plotOn(frameBkg,RooFit::Components("bkg_pdfComb_"+CAT),RooFit::LineColor(kRed),RooFit::LineWidth(2),RooFit::LineStyle(2));
-    bkg->plotOn(frameBkg,RooFit::Components("bkg_pdfTop_"+CAT),RooFit::LineColor(kGreen+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
-    bkg->plotOn(frameBkg,RooFit::Components("bkg_pdfW_"+CAT),RooFit::LineColor(kOrange+1),RooFit::LineWidth(2),RooFit::LineStyle(2));
+    bkg->plotOn(frameBkg, RooFit::Components("bkg_pdfComb_" + CAT), RooFit::LineColor(kRed), RooFit::LineWidth(2), RooFit::LineStyle(2));
+    bkg->plotOn(frameBkg, RooFit::Components("bkg_pdfTop_" + CAT), RooFit::LineColor(kGreen + 1), RooFit::LineWidth(2), RooFit::LineStyle(2));
+    bkg->plotOn(frameBkg, RooFit::Components("bkg_pdfW_" + CAT), RooFit::LineColor(kOrange + 1), RooFit::LineWidth(2), RooFit::LineStyle(2));
     frameBkg->GetXaxis()->SetTitle("m_{t} (GeV)");
     frameBkg->Draw();
     gPad->Update();
-    canBkg->Print(TString::Format("%s/plots/templateResults/"+TString(canBkg->GetName())+".pdf", year.Data()));
+    canBkg->Print(TString::Format("%s/plots/templateResults/" + TString(canBkg->GetName()) + ".pdf", year.Data()));
 
-    RooArgSet *parsBkg = (RooArgSet*)bkg->getParameters(roohData);
-    parsBkg->setAttribAll("Constant",true);
+    RooArgSet *parsBkg = (RooArgSet*)bkg->getParameters(roohBkg);
+    parsBkg->setAttribAll("Constant", true);
 
     w->import(*bkg);
   }

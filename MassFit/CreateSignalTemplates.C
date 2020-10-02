@@ -83,10 +83,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     RooRealVar mTop("ttbar_meanTop_"+CAT,"ttbar_meanTop_"+CAT,172,150,180);
     RooRealVar sTop("ttbar_sigmaTop_"+CAT,"ttbar_sigmaTop_"+CAT,20,5,30);
 
-    RooFormulaVar mTopShift("ttbar_meanTopShifted_"+CAT,"@0*@1",RooArgList(mTop,*(kMassScale)));
-    RooFormulaVar sTopShift("ttbar_sigmaTopShifted_"+CAT,"@0*@1",RooArgList(sTop,*(kMassResol)));
-
-    RooGaussian sigTop("ttbar_pdfTop_"+CAT,"ttbar_pdfTop_"+CAT,*x,mTopShift,sTopShift);
+    RooGaussian sigTop("ttbar_pdfTop_"+CAT,"ttbar_pdfTop_"+CAT,*x,mTop,sTop);
 
     RooRealVar mW("ttbar_meanW_"+CAT,"ttbar_meanW_"+CAT,90,70,100);
     RooRealVar sW("ttbar_sigmaW_"+CAT,"ttbar_sigmaW_"+CAT,5,5,10);
@@ -120,7 +117,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
 
     RooAddPdf *signal = new RooAddPdf("ttbar_pdf_"+CAT,"ttbar_pdf_"+CAT,RooArgList(sigTop,sigW,sigComb,g1),RooArgList(fsig1,fsig2,fsig3));
     cout<<"ttbar_pdf_"+CAT<<endl;
-   
+
     canS = new TCanvas("Template_TT_"+CAT+"_"+CUT,"Template_TT_"+CAT+"_"+CUT,900,600);
 
     RooFitResult *res = signal->fitTo(*roohMC,RooFit::Save());

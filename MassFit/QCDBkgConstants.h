@@ -2,7 +2,7 @@
 /*
 This code provides the qcd bkg parameters for the template fit, taken from the template fit on the MC QCD
 */
-map<TString, map<TString, float>> qcdParams;
+map<TString, map<TString, Double_t>> qcdParams;
 
 
 void initQCDParams()
@@ -20,7 +20,7 @@ void initQCDParams()
              qcd_sigma    2.7498e+01 +/-  3.25e+00
 */
 //----------------------------------------------------------------------------------------------------------------
-	map<TString, float> qcdParams16 = {{"qcd_b0", 3.0981e-01},
+	map<TString, Double_t> qcdParams16 = {{"qcd_b0", 3.0981e-01},
 									  								 {"qcd_b1", 9.0739e-01},
 									  							 	 {"qcd_b2", 2.1589e-07},
 									  							   {"qcd_b3", 2.2265e-03},
@@ -42,7 +42,7 @@ void initQCDParams()
              qcd_sigma    3.6270e+01 +/-  1.51e+00
 */
 //----------------------------------------------------------------------------------------------------------------
-	map<TString, float> qcdParams17 = {{"qcd_b0", 9.7042e-01},
+	map<TString, Double_t> qcdParams17 = {{"qcd_b0", 9.7042e-01},
 									  {"qcd_b1", 1.9814e+00},
 									  {"qcd_b2", 6.5869e-06},
 									  {"qcd_b3", 8.7545e-02},
@@ -64,7 +64,7 @@ void initQCDParams()
              qcd_sigma    2.9477e+01 +/-  8.10e-01
 */
 //----------------------------------------------------------------------------------------------------------------
-	map<TString, float> qcdParams18 = {{"qcd_b0", 2.7840e-01},
+	map<TString, Double_t> qcdParams18 = {{"qcd_b0", 2.7840e-01},
 									  {"qcd_b1", 5.6995e-01},
 									  {"qcd_b2", 4.6676e-02},
 									  {"qcd_b3", 1.5639e-03},
@@ -73,9 +73,9 @@ void initQCDParams()
 	                              	  {"qcd_mean", 1.5079e+02},
 	                              	  {"qcd_sigma", 2.9477e+01}};
 
-	qcdParams.insert(pair<TString, map<TString, float>>("2016",qcdParams16));
-	qcdParams.insert(pair<TString, map<TString, float>>("2017",qcdParams17));
-	qcdParams.insert(pair<TString, map<TString, float>>("2018",qcdParams18));
+	qcdParams.insert(pair<TString, map<TString, Double_t>>("2016",qcdParams16));
+	qcdParams.insert(pair<TString, map<TString, Double_t>>("2017",qcdParams17));
+	qcdParams.insert(pair<TString, map<TString, Double_t>>("2018",qcdParams18));
 
 //----------------------------------------------------------------------------------------------------------------
 
