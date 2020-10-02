@@ -1,6 +1,6 @@
 #include "TString.h"
 /*
-This code provides the qcd bkg parameters for the template fit, taken from the template fit on the MC QCD 
+This code provides the qcd bkg parameters for the template fit, taken from the template fit on the MC QCD
 */
 map<TString, map<TString, float>> qcdParams;
 
@@ -8,7 +8,7 @@ map<TString, map<TString, float>> qcdParams;
 void initQCDParams()
 {
 /* 2016
-   Floating Parameter    FinalValue +/-  Error   
+   Floating Parameter    FinalValue +/-  Error
   --------------------  --------------------------
                 qcd_b0    3.0981e-01 +/-  4.26e-01
                 qcd_b1    9.0739e-01 +/-  1.43e+00
@@ -19,19 +19,18 @@ void initQCDParams()
               qcd_mean    1.5378e+02 +/-  5.00e+00
              qcd_sigma    2.7498e+01 +/-  3.25e+00
 */
-//----------------------------------------------------------------------------------------------------------------	
-	//Mtt files (MC):
+//----------------------------------------------------------------------------------------------------------------
 	map<TString, float> qcdParams16 = {{"qcd_b0", 3.0981e-01},
-									  {"qcd_b1", 9.0739e-01},
-									  {"qcd_b2", 2.1589e-07},
-									  {"qcd_b3", 2.2265e-03},
-	                                  {"qcd_b4", 4.2621e-03},
-	                              	  {"qcd_f1", 7.6541e-01},
-	                              	  {"qcd_mean", 1.5378e+02},
-	                              	  {"qcd_sigma", 2.7498e+01}};
+									  								 {"qcd_b1", 9.0739e-01},
+									  							 	 {"qcd_b2", 2.1589e-07},
+									  							   {"qcd_b3", 2.2265e-03},
+	                                   {"qcd_b4", 4.2621e-03},
+	                              	   {"qcd_f1", 7.6541e-01},
+	                              	   {"qcd_mean", 1.5378e+02},
+	                              	   {"qcd_sigma", 2.7498e+01}};
 
 /* 2017
-    Floating Parameter    FinalValue +/-  Error   
+    Floating Parameter    FinalValue +/-  Error
   --------------------  --------------------------
                 qcd_b0    9.7042e-01 +/-  1.48e-01
                 qcd_b1    1.9814e+00 +/-  2.43e-02
@@ -42,8 +41,7 @@ void initQCDParams()
               qcd_mean    1.4635e+02 +/-  2.21e+00
              qcd_sigma    3.6270e+01 +/-  1.51e+00
 */
-//----------------------------------------------------------------------------------------------------------------	
-	//Mtt files (MC):
+//----------------------------------------------------------------------------------------------------------------
 	map<TString, float> qcdParams17 = {{"qcd_b0", 9.7042e-01},
 									  {"qcd_b1", 1.9814e+00},
 									  {"qcd_b2", 6.5869e-06},
@@ -54,7 +52,7 @@ void initQCDParams()
 	                              	  {"qcd_sigma", 3.6270e+01}};
 
 /* 2018
-    Floating Parameter    FinalValue +/-  Error   
+    Floating Parameter    FinalValue +/-  Error
   --------------------  --------------------------
                 qcd_b0    2.7840e-01 +/-  5.86e-02
                 qcd_b1    5.6995e-01 +/-  1.20e-01
@@ -65,8 +63,7 @@ void initQCDParams()
               qcd_mean    1.5079e+02 +/-  6.62e-01
              qcd_sigma    2.9477e+01 +/-  8.10e-01
 */
-//----------------------------------------------------------------------------------------------------------------	
-	//Mtt files (MC):
+//----------------------------------------------------------------------------------------------------------------
 	map<TString, float> qcdParams18 = {{"qcd_b0", 2.7840e-01},
 									  {"qcd_b1", 5.6995e-01},
 									  {"qcd_b2", 4.6676e-02},
@@ -74,15 +71,12 @@ void initQCDParams()
 	                                  {"qcd_b4", 5.8243e-03},
 	                              	  {"qcd_f1", 7.4736e-01},
 	                              	  {"qcd_mean", 1.5079e+02},
-	                              	  {"qcd_sigma", 2.9477e+01}};                        
+	                              	  {"qcd_sigma", 2.9477e+01}};
 
 	qcdParams.insert(pair<TString, map<TString, float>>("2016",qcdParams16));
 	qcdParams.insert(pair<TString, map<TString, float>>("2017",qcdParams17));
 	qcdParams.insert(pair<TString, map<TString, float>>("2018",qcdParams18));
 
 //----------------------------------------------------------------------------------------------------------------
-
-
-
 
 }

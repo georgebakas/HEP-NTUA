@@ -44,6 +44,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   //hDataBefore->SetLineColor(kRed);
   hData->Add(hCR_MC,-1);
   hData->Add(hCR_MCSubdominant,-1);
+
+  cout<<"After Substr: "<<hData->GetEntries()<<endl;
   /*
   hData->Draw();
   hDataBefore->Draw("same");
@@ -81,6 +83,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooRealVar fqcd2("qcd_f2","qcd_f2",0.5,0,1);
 
   RooAddPdf *qcd = new RooAddPdf("qcd_pdf","qcd_pdf",RooArgList(qcd1,qcd2), RooArgList(fqcd1));
+  qcd->Print();
 
   //---- plots ---------------------------------------------------
   TCanvas *canQCD = new TCanvas("Template_QCD_"+CUT,"Template_QCD_"+CUT,900,600);
@@ -110,7 +113,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   if (year.EqualTo("2016")) LUMI = 35920;
   else if (year.EqualTo("2017")) LUMI = 41530;
   else if (year.EqualTo("2018")) LUMI = 59740;
-
+  return;
   for(int icat=0;icat<3;icat++) {
     if (icat==1) continue;
     infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
