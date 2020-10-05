@@ -83,7 +83,10 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     RooRealVar mTop("ttbar_meanTop_"+CAT,"ttbar_meanTop_"+CAT,172,150,180);
     RooRealVar sTop("ttbar_sigmaTop_"+CAT,"ttbar_sigmaTop_"+CAT,20,5,30);
 
-    RooGaussian sigTop("ttbar_pdfTop_"+CAT,"ttbar_pdfTop_"+CAT,*x,mTop,sTop);
+    RooFormulaVar mTopShift("ttbar_meanTopShifted_" + CAT, "@0*@1", RooArgList(mTop, (*kMassScale)));
+    RooFormulaVar sTopShift("ttbar_sigmaTopShifted_" + CAT, "@0*@1", RooArgList(sTop, (*kMassResol)));
+
+    RooGaussian sigTop("ttbar_pdfTop_" + CAT, "ttbar_pdfTop_" + CAT, *x, mTopShift, sTopShift);
 
     RooRealVar mW("ttbar_meanW_"+CAT,"ttbar_meanW_"+CAT,90,70,100);
     RooRealVar sW("ttbar_sigmaW_"+CAT,"ttbar_sigmaW_"+CAT,5,5,10);
