@@ -66,7 +66,7 @@ void SignalExtraction_UnequalBins(TString year, bool isNormalised)
     normalised = isNormalised;
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
-    float r_yield_errors[3][7] = {{0.0289754, 0.0289714, 0.028963, 0.0289885, 0.0289772, 0.028963, 0.028963},
+    float r_yield_errors[3][7] = {{0.028927, 0.0289228, 0.0289145, 0.0289403, 0.0289288, 0.0289145, 0.0289145},
                                 {0.0207616, 0.0207703, 0.0207602, 0.0207695, 0.0207622, 0.0207602, 0.0207602},
                                 {0.0230198, 0.0230225, 0.0230183, 0.0230248, 0.023019, 0.0230183, 0.0230183}};
     int selectedYear;
@@ -109,7 +109,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float r_yield_correction;
     TH1F *hRyieldMC = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     r_yield_correction = (hRyieldMC->GetBinContent(2)/ hRyieldMC->GetBinContent(1));
-    //float r_yield_correction_error = TMath::Sqrt(TMath::Power(hRyieldMC->GetBinError(2)/hRyieldMC->GetBinContent(1),2)
+    //xfloat r_yield_correction_error = TMath::Sqrt(TMath::Power(hRyieldMC->GetBinError(2)/hRyieldMC->GetBinContent(1),2)
     //                                  + TMath::Power((hRyieldMC->GetBinContent(2)*hRyieldMC->GetBinError(2))/TMath::Power(hRyieldMC->GetBinContent(1),2),2));
 
 
@@ -128,11 +128,12 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //return;
     //open the file to get the Nbkg
     TFile *fitFile = TFile::Open(TString::Format("%s/MassFitResults__.root", year.Data()));
-    RooWorkspace *w = (RooWorkspace*)fitFile->Get("w");
+    RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
     //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
-    float NQCD = ((RooRealVar*)w->var("nFitQCD_2b"))->getVal();
-    float NQCD_error = ((RooRealVar*)w->var("nFitQCD_2b"))->getError();
+    RooRealVar *value = (RooRealVar*)fitResult->floatParsFinal().find("nFitQCD_2b");
+    float NQCD = value->getVal();
+    float NQCD_error = value->getError();
 
     //Subdominant bkgs files
     TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
@@ -173,30 +174,8 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //rebin all histograms with the same method
     TH1F *hD_rebinned, *hQ_rebinned, *hSub_rebinned;
     TH1F *hQ_copy = (TH1F*)hQ->Clone(TString::Format("hD_copy_%s", variable.Data()));
-    cout<<hQ_copy->GetNbinsX()<<endl;
+    //cout<<hQ_copy->GetNbinsX()<<endl;
 
-    /*
-    cout<<"hData 0:"<<hQ->Integral()<<endl;
-    cout<<"hD_copy 0:"<<hQ_copy->Integral()<<endl;
-    cout<<"hSub 0:"<<hSub_0->Integral()<<endl;
-    cout<<"httbar 0:"<<hSMC_0->Integral()<<endl;
-
-    TCanvas *c1 = new TCanvas(TString::Format("c_copy_%s", variable.Data()), TString::Format("c_copy_%s", variable.Data()), 800, 600);
-    hQ->Scale(1./hQ->Integral());
-    hQ_copy->Scale(1./hQ_copy->Integral());
-
-    hQ->Draw("hist");
-    hQ->SetLineColor(kRed);
-    hQ_copy->SetLineColor(kBlue);
-    hQ_copy->Draw("hist same");
-    */
-
-    /* DO NOT REBIN!!!!!
-    hD_rebinned = getRebinned(hD, tempBND, nBins[selVar]);
-    hQ_rebinned = getRebinned(hQ, tempBND, nBins[selVar]);
-    hSub_rebinned = getRebinned(hSub, tempBND, nBins[selVar]);
-
-    */
     hD_rebinned = (TH1F*)hD->Clone();
     hQ_rebinned = (TH1F*)hQ->Clone();
     hSub_rebinned = (TH1F*)hSub->Clone();
@@ -204,7 +183,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hSignal = (TH1F*)hD_rebinned->Clone(TString::Format("hSignal_%s",variable.Data()));
     //work on the elements for the QCD so that we have the right Q(x)
     //Ryield * Nbkg  * Q(x)
-    cout<<variable<<endl;
 
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
@@ -224,9 +202,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
      for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
 
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
+    /*
     cout<<"--------"<<endl;
     cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
-    cout<<"---"<<endl;
+    cout<<"---"<<endl; */
     for(int i =0; i<hQ_rebinned->GetNbinsX(); i++)
     {
         float oldContent = hQ_rebinned->GetBinContent(i+1);
@@ -241,28 +220,27 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         float newError   = TMath::Sqrt(TMath::Power(oldError*SF[i]*NQCD*corrected_rYield,2)+
                                        TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
                                        TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
-
 /*
         cout<<"bin: "<<i+1<<endl;
         cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
         cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
 */
-
-        //cout<<"-----"<<endl;
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
         cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
-        //cout<<
-        //now setThe content for the hSignal
     }
     cout<<"-----"<<endl;
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
     cout<<hD_rebinned->Integral()<<endl;
-    cout<<hSub_rebinned->Integral()<<endl;
-    cout<<hQ_rebinned->Integral()<<endl;
-
+    /*
+    cout<<"hSub int: "<<hSub_rebinned->Integral()<<endl;
+    cout<<"hSub entries: "<<hSub_rebinned->GetEntries()<<endl;
+    cout<<"hQCD int: "<<hQ_rebinned->Integral()<<endl;
+    cout<<"hQCD entries: "<<hQ_rebinned->GetEntries()<<endl;
+    cout<<"INTEGRAL FOR "<<variable<<" is: "<<hSignal->Integral()<<endl;
+    cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl; */
 
     cout<<"-------"<<endl;
     hSignal->SetLineColor(kBlue);
