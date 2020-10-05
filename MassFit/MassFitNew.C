@@ -96,7 +96,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
 
   RooRealVar *x = (RooRealVar*)wTemplatesSig->var("mTop");
   RooRealVar *yieldTT = (RooRealVar*)wTemplatesSig->var("YieldTT_2btag");
-	wTemplatesSig->Print();
 
   RooRealVar *kMassScale = (RooRealVar*)wTemplatesSig->var("kMassScale");
   RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
@@ -115,9 +114,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
-  pdf_signal_2b->Print();
-  pdf_bkg_2b->Print();
-  pdf_qcd_2b->Print();
   //RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 
   //---- QCD correction factor ---------------------------
