@@ -1,6 +1,5 @@
-  void CreateBkgTemplates(TString year, TString CUT = "")
+  void CreateBkgTemplates(TString year, int icat, TString CUT = "")
 {
-
   gROOT->ForceStyle();
 
   RooMsgService::instance().setSilentMode(kTRUE);
@@ -32,11 +31,9 @@
   if (year.EqualTo("2016")) LUMI = 35920;
   else if (year.EqualTo("2017")) LUMI = 41530;
   else if (year.EqualTo("2018")) LUMI = 59740;
-  for(int icat= 0; icat<3; icat++)
-  {
   cout<<icat<<endl;
   if (icat == 1)
-    continue;
+    return;
     //infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root", year.Data()));
 
     TString CAT = TString::Format("%dbtag", icat);
@@ -51,7 +48,7 @@
     {
       hBkg = (TH1F *)infBkg ->Get("hWt_mTop_2btag_expYield");
     }
-    hBkg->Rebin(2);
+    //hBkg->Rebin(2);
 
     RooDataHist *roohBkg = new RooDataHist("roohistBkg", "roohistBkg", RooArgList(*x), hBkg);
 
@@ -98,11 +95,7 @@
     parsBkg->setAttribAll("Constant", true);
 
     w->import(*bkg);
-  }
-
-  w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));
 
 
-
-
+  w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"100_"+icat+".root",year.Data()));
 }
