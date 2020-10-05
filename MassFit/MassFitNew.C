@@ -89,13 +89,14 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
   //h2b->Rebin(2);
   // -----------------------------------------
-  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root", year.Data()));
+  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_100.root",year.Data()));
   TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_100.root",year.Data()));
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
 
   RooRealVar *x = (RooRealVar*)wTemplatesSig->var("mTop");
   RooRealVar *yieldTT = (RooRealVar*)wTemplatesSig->var("YieldTT_2btag");
+	wTemplatesSig->Print();
 
   RooRealVar *kMassScale = (RooRealVar*)wTemplatesSig->var("kMassScale");
   RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
@@ -114,6 +115,9 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
 
   RooAbsPdf *pdf_signal_2b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_2btag");
+  pdf_signal_2b->Print();
+  pdf_bkg_2b->Print();
+  pdf_qcd_2b->Print();
   //RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 
   //---- QCD correction factor ---------------------------
@@ -123,7 +127,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   min = -1;
   max = 10;
   sP = 0.0025;
-  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", sP);//, min, max);
+  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 1e-3, -1, 1);
   RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
   mBar->setConstant(true);
   kQCD2b_0->setConstant(false);
@@ -144,10 +148,10 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
 
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
 
-  RooSimultaneous simPdf("simPdf","simPdf",sample);
-  simPdf.addPdf(*model_2b,"2btag");
+  /* RooSimultaneous simPdf("simPdf","simPdf",sample);
+  simPdf.addPdf(*model_2b,"2btag"); */
 
-  RooFitResult *res = simPdf.fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
+  RooFitResult *res = model_2b->fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
 
 	//Signal strengh and error propagation:
 	float sigError = TMath::Sqrt(TMath::Power(nFitSig2b->getError()/yieldTT->getVal(),2) + TMath::Power(nFitSig2b->getVal()*nFitSig2b->getError()/TMath::Power(yieldTT->getVal(),2),2));
@@ -172,11 +176,11 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   RooPlot *frame2b = x->frame();
   combData.plotOn(frame2b,Cut("sample==sample::2btag"),DrawOption("EP"));
   //simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),VisualizeError(*res,1),FillColor(kOrange),MoveToBack());
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),LineColor(kBlue),MoveToBack());
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),LineColor(kBlue),MoveToBack());
   RooHist *pull2b = frame2b->pullHist();
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+2),LineWidth(3),LineStyle(7));
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),DrawOption("FL"),LineColor(kRed),LineWidth(0),FillColor(kRed-10),MoveToBack());
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kBlack),LineWidth(3),LineStyle(5));
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+2),LineWidth(3),LineStyle(7));
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),DrawOption("FL"),LineColor(kRed),LineWidth(0),FillColor(kRed-10),MoveToBack());
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kBlack),LineWidth(3),LineStyle(5));
 
   RooPlot *frame2bPull = x->frame();
   frame2bPull->addPlotable(pull2b,"p");

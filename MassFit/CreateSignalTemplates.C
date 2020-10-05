@@ -42,7 +42,6 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   RooRealVar sW("sigmaW","sigmaW",5,0,15);
   RooFormulaVar mWShift("meanWShifted","@0*@1",RooArgList(mW,*(kMassScale)));
   RooFormulaVar sWShift("sigmaWShifted","@0*@1",RooArgList(sW,*(kMassResol)));
-
   RooGaussian pdfW("pdfW","pdfW",*x,mWShift,sWShift);
   */
 
@@ -58,6 +57,7 @@ void CreateSignalTemplates(TString year, TString CUT = "")
     //---- then do the signal templates -------------
     hMC = (TH1F*)infMC->Get("hWt_"+VAR+TAG);
     TH1F *hMC_yield = (TH1F*)infMC->Get("hWt_"+VAR+TAG+"_expYield");
+    hMC_yield->Rebin(4);
     double error(0.0);
     float signal_yield, signal_error;
     signal_yield =  hMC_yield->IntegralAndError(1,hMC_yield->GetNbinsX(),error);
