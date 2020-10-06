@@ -124,12 +124,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
     //return;
     //open the file to get the Nbkg
-    TFile *fitFile = TFile::Open(TString::Format("../MassFit/%s/MassFitResults__.root", year.Data()));
-    RooWorkspace *w = (RooWorkspace*)fitFile->Get("w");
+    TFile *fitFile = TFile::Open(TString::Format("%s/MassFitResults__.root", year.Data()));
+    RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
     //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
-    float NQCD = ((RooRealVar*)w->var("nFitQCD_2b"))->getVal();
-    float NQCD_error = ((RooRealVar*)w->var("nFitQCD_2b"))->getError();
+    RooRealVar *value = (RooRealVar*)fitResult->floatParsFinal().find("nFitQCD_2b");
+    float NQCD = value->getVal();
+    float NQCD_error = value->getError();
 
     //Subdominant bkgs files
     TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
@@ -175,21 +176,6 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     float SF[hQ_rebinned->GetNbinsX()];
     //QCD correction factor for shape
     cout<<variable.Data()<<endl;
-    /* No correction needed for shape...
-    if(variable.EqualTo("jetPt0") || (variable.EqualTo("jetPt1") && !year.EqualTo("2016")))
-    {
-        TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s_reduced.root",year.Data()));
-        //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
-        TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
-        for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
-        {
-            float chi = hQ_rebinned->GetBinCenter(i+1);
-            SF[i] = fitResult->Eval(chi);
-        }
-    }
-    else
-     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
-     */
 
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
     cout<<"--------"<<endl;
