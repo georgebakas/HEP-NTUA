@@ -155,10 +155,10 @@ for(int f=0; f<fileNames.size(); f++)
          hReco[f][ivar] = new TH1F(TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hReco_%s_%s", histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
          //this is events pass particle cuts only used as denominator for particle eff vs particle -->BND
          hParticle[f][ivar] = new TH1F(TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), TString::Format("hParticle_%s_%s", histoNames[f].Data(),varParticle[ivar].Data()), sizeBinsPartonParticle, tempBNDPartonParticle);
-
+         /*
          hParton[f][ivar]->Sumw2();
          hReco[f][ivar]->Sumw2();
-         hParticle[f][ivar]->Sumw2();
+         hParticle[f][ivar]->Sumw2(); */
 
          //numerator for parton efficiency (hPartonReco vs parton) and acceptance (hRecoParton vs reco)
          //this is RecoParton vs reco --> BND_reco
@@ -229,7 +229,7 @@ for(int f=0; f<fileNames.size(); f++)
     trIN->SetBranchAddress("mJJ"   			,&mJJ);
     trIN->SetBranchAddress("yJJ"   			,&yJJ);
     trIN->SetBranchAddress("ptJJ"   		,&ptJJ);
-	trIN->SetBranchAddress("jetBtagSub0"	,&jetBtagSub0);
+	  trIN->SetBranchAddress("jetBtagSub0"	,&jetBtagSub0);
     trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
     trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   	trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
@@ -334,7 +334,10 @@ for(int f=0; f<fileNames.size(); f++)
 	   xPartonAll.clear();
 	   xRecoAll.clear();
 	   xParticleAll.clear();
+     double funcWeight = genEvtWeight * bTagEvntWeight;
 
+     //cout<<"weight: "<<genEvtWeight*bTagEvntWeight<<endl;
+     if(funcWeight != genEvtWeight*bTagEvntWeight) cout<<"problem at "<<iev<<endl;
       //----------------------MATCHING------------------------------------------------------
 
 			for(int ijet =0; ijet<nJets; ijet++)
@@ -467,7 +470,7 @@ for(int f=0; f<fileNames.size(); f++)
 		  {
 		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-				  hReco[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+				  hReco[f][ivar]->Fill(xRecoAll[ivar], funcWeight);
 			  }
 		  }
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
@@ -476,10 +479,10 @@ for(int f=0; f<fileNames.size(); f++)
 		  {
 			  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  			{
-				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight);
-				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+				   hPartonReco[f][ivar]->Fill(xPartonAll[ivar], funcWeight);
+				   hRecoParton[f][ivar]->Fill(xRecoAll[ivar], funcWeight);
            //if(ivar==3) myFile<<"evtNo: "<<evtNo<<" Parton: "<<xPartonAll[ivar]<<" Reco: "<<xRecoAll[ivar]<<endl;
-				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], genEvtWeight *weights[f]*LUMI*bTagEvntWeight);
+				   hPartonResponse[f][ivar]->Fill(xPartonAll[ivar] ,xRecoAll[ivar], funcWeight *weights[f]*LUMI);
 				}//---- end of the ivar loop
 
 	    }//----- end of selection cuts parton and reco
@@ -489,17 +492,17 @@ for(int f=0; f<fileNames.size(); f++)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
-	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+	      		hParticleReco[f][ivar]->Fill(xParticleAll[ivar], funcWeight);
+	      		hRecoParticle[f][ivar]->Fill(xRecoAll[ivar], funcWeight);
 
-	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar], genEvtWeight*weights[f]*LUMI*bTagEvntWeight);
+	      		hParticleResponse[f][ivar]->Fill(xParticleAll[ivar], xRecoAll[ivar],funcWeight*weights[f]*LUMI);
 	      	}
 	      }
 	      if(particleCuts)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
+	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], funcWeight);
 	      	}
 	      }
 
@@ -565,7 +568,7 @@ for(int f=0; f<fileNames.size(); f++)
   //--------------------------------------------END OF EVENT COUNTER LOOP ------------------------------------------------------------------
 }//----end of file loop
 
-
+return;
   for(int ivar =0; ivar<NVAR; ivar++)
   {
 	//for every slice
