@@ -234,6 +234,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     leg->AddEntry(hSignal, "Data", "lpe");
     leg->AddEntry(hSMC, "MC", "lp");
 
+    hSignal->GetXaxis()->SetTitle(variable);
+    hSMC->GetXaxis()->SetTitle(variable);
+
+
     TCanvas *can = new TCanvas(TString::Format("can_%s",variable.Data()),TString::Format("can_%s",variable.Data()) , 800,600);
     auto *closure_padRatio = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3);
     closure_padRatio->Draw();

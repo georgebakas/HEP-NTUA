@@ -167,8 +167,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       float oldContent = hSig[ivar]->GetBinContent(j);
       float oldContentError = hSig[ivar]->GetBinError(j);
       float acc = acceptance->GetEfficiency(j);
-      cout<<"total: "<<(acceptance->GetTotalHistogram())->GetBinContent(j)<<endl;
-      cout<<"passed: "<<(acceptance->GetPassedHistogram())->GetBinContent(j)<<endl;
+      //cout<<"total: "<<(acceptance->GetTotalHistogram())->GetBinContent(j)<<endl;
+      //cout<<"passed: "<<(acceptance->GetPassedHistogram())->GetBinContent(j)<<endl;
 
       //handle errors as well--> asymmetric error from acceptance
       float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
@@ -264,7 +264,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
         hUnf[ivar]->SetBinContent(i, newContent);
         hUnf[ivar]->SetBinError(i, TMath::Sqrt(sqrt1+sqrt2));
         //hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
-        //cout<<"i= "<<i<<" hUnf: "<<hUnf[ivar]->GetBinContent(i)<<" ± "<<hUnf[ivar]->GetBinError(i)<<endl;
+        //cout<<"i= "<<i<<" hUnf after eff: "<<hUnf[ivar]->GetBinContent(i)<<" ± "<<hUnf[ivar]->GetBinError(i)<<endl;
         //cout<<"bin center "<<hUnf[ivar]->GetBinCenter(i)<<endl;
   	  }
     }

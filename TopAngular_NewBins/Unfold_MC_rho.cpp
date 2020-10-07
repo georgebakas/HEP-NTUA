@@ -197,13 +197,8 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
     else
     	hUnf[ivar] = unfoldedOutputRho(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     //continue;
-    if(variable[ivar].EqualTo("yJJ"))
-      hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
-    else if(variable[ivar].Contains("jetY"))
-    	hUnf[ivar]->GetXaxis()->SetTitle("|"+variable[ivar]+"|");
-    else
-    	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", variable[ivar].Data()));
 
+    hUnf[ivar]->GetXaxis()->SetTitle(variable[ivar]);
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 
