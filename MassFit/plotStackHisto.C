@@ -55,6 +55,14 @@ void plotStackHisto_Variable(TString variable)
   hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
 
 
+  if(variable.EqualTo("mva") || variable.EqualTo("topTagger1") || variable.EqualTo("mTop") || variable.EqualTo("jetMassSoftDrop"))
+  {
+    hData->Rebin(4);
+    hTT->Rebin(4);
+    hQCD->Rebin(4);
+    hSub->Rebin(4);
+  }
+
   //scale ttbar with signal strength
   hTT->Scale(ttbarSigStrength[year]);
 
