@@ -84,6 +84,10 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   initFilesMapping();
   initHistoNames();
   initXsections();
+  TString nominalTemp ="";
+  if(isNominalMC) nominalTemp = "NominalMC";
+  cout<<TString::Format("%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominalTemp.Data(),year.Data())<<endl;
+
 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
@@ -568,7 +572,6 @@ for(int f=0; f<fileNames.size(); f++)
   //--------------------------------------------END OF EVENT COUNTER LOOP ------------------------------------------------------------------
 }//----end of file loop
 
-return;
   for(int ivar =0; ivar<NVAR; ivar++)
   {
 	//for every slice
