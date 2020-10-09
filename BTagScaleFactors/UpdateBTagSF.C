@@ -1,5 +1,5 @@
-#include "2018/BTagCalibrationStandalone.h"
-#include "2018/BTagCalibrationStandalone.cpp"
+#include "2016/BTagCalibrationStandalone.h"
+#include "2016/BTagCalibrationStandalone.cpp"
 
 void UpdateBTagSF(TString oldFileName, TString year = "2017")
 {
@@ -9,7 +9,7 @@ void UpdateBTagSF(TString oldFileName, TString year = "2017")
     std::cout<<"Openning: "<<eosPath+oldFileName<<std::endl;
     TFile *oldFile = TFile::Open(eosPath+oldFileName);
 
-    
+
     TString newFileName = oldFileName;
     TH1F* triggerNames = (TH1F*) oldFile->Get("boosted/TriggerNames");
     TH1F* cutFlow = (TH1F*) oldFile->Get("boosted/CutFlow");
@@ -17,7 +17,7 @@ void UpdateBTagSF(TString oldFileName, TString year = "2017")
     TTree* tr = (TTree*) oldFile->Get("boosted/events");
     /*
     TBranch *b_temp = tr->GetBranch("bTagEvntWeight");
-    tr->GetListOfBranches()->Remove(b_temp);	
+    tr->GetListOfBranches()->Remove(b_temp);
     TLeaf *l = tr->GetLeaf("bTagEvntWeight");
     tr->GetListOfLeaves()->Remove(l);*/
 
