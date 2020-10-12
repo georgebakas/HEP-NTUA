@@ -389,7 +389,7 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   float jetDr_(0);
 
   cout<<"Reading "<<NN<<" entries"<<endl;
-  for(int iev=4;iev<NN;iev++)
+  for(int iev=0;iev<NN;iev++)
   {
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
