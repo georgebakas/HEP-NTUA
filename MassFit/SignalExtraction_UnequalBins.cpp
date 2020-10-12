@@ -221,13 +221,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
                                        TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
                                        TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
 
-
+/*
         cout<<"bin: "<<i+1<<endl;
         cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
         cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
         cout<<"scale factor: "<<SF[i]<<endl;
-
+*/
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
         //cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
