@@ -252,7 +252,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       float eff = efficiency->GetEfficiency(i);
-      cout<<"bin: "<<i<<" eff:"<<eff<<endl;
+      //cout<<"bin: "<<i<<" eff:"<<eff<<endl;
       if(eff >0)
       {
         float oldContent = hUnf[ivar]->GetBinContent(i);
@@ -264,7 +264,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
         hUnf[ivar]->SetBinContent(i, newContent);
         hUnf[ivar]->SetBinError(i, TMath::Sqrt(sqrt1+sqrt2));
         //hUnf[ivar]->SetBinError(i,TMath::Sqrt(TMath::Power(effError*hUnf[ivar]->GetBinContent(i)/TMath::Power(eff,2),2) + TMath::Power(hUnf[ivar]->GetBinError(i)/eff,2)));
-        //cout<<"i= "<<i<<" hUnf after eff: "<<hUnf[ivar]->GetBinContent(i)<<" ± "<<hUnf[ivar]->GetBinError(i)<<endl;
+        cout<<"i= "<<i<<" hUnf after eff: "<<hUnf[ivar]->GetBinContent(i)<<" ± "<<hUnf[ivar]->GetBinError(i)<<endl;
         //cout<<"bin center "<<hUnf[ivar]->GetBinCenter(i)<<endl;
   	  }
     }

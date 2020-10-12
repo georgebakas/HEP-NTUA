@@ -1,4 +1,4 @@
- #include "QCDBkgConstants.h"
+#include "QCDBkgConstants.h"
 
 void CreateBkgTemplates(TString year, TString CUT = "")
 {
@@ -105,7 +105,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   RooArgSet *parsQCD = (RooArgSet*)qcd->getParameters(roohData);
   parsQCD->setAttribAll("Constant",true);
   w->import(*qcd);
-  
+
   float LUMI(0);
   if (year.EqualTo("2016")) LUMI = 35920;
   else if (year.EqualTo("2017")) LUMI = 41530;
@@ -138,7 +138,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     RooGaussian pdfW("bkg_pdfW_" + CAT, "bkg_pdfW_" + CAT, *x, mW, sW);
 
     RooRealVar mBkgTop("bkg_meanTop_" + CAT, "bkg_meanTop_" + CAT, 172, 150, 180);
-    RooRealVar sBkgTop("bkg_sigmaTop_" + CAT, "bkg_sigmaTop_" + CAT, 15, 5, 30);
+    RooRealVar sBkgTop("bkg_sigmaTop_" + CAT, "bkg_sigmaTop_" + CAT, 15, 5, 40);
     RooGaussian bkgTop("bkg_pdfTop_" + CAT, "bkg_pdfTop_" + CAT, *x, mBkgTop, sBkgTop);
 
     RooRealVar bBkg0("bkg_b0_" + CAT, "bkg_b0_" + CAT, 0.5, 0, 1);

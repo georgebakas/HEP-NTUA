@@ -117,12 +117,6 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   //RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 
   //---- QCD correction factor ---------------------------
-
-  float sP, min, max;
-  //sP = 1e-3;
-  min = -1;
-  max = 10;
-  sP = 0.0025;
   RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 1e-3, -1, 1);
   RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
   mBar->setConstant(true);
@@ -234,7 +228,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   wOut->import(*yieldTT);
 	wOut->import(*kMassScale);
 	wOut->import(*kMassResol);
-  wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+".root");
+  wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+"gbakas.root");
   //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
   //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");
 

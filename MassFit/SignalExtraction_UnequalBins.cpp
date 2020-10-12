@@ -67,8 +67,8 @@ void SignalExtraction_UnequalBins(TString year, bool isNormalised)
     TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
     float r_yield_errors[3][7] = {{0.028927, 0.0289228, 0.0289145, 0.0289403, 0.0289288, 0.0289145, 0.0289145},
-                                {0.0207616, 0.0207703, 0.0207602, 0.0207695, 0.0207622, 0.0207602, 0.0207602},
-                                {0.0230198, 0.0230225, 0.0230183, 0.0230248, 0.023019, 0.0230183, 0.0230183}};
+                                  {0.0207961, 0.0208046, 0.0207949, 0.0208042, 0.0207968, 0.0207949, 0.0207949},
+                                  {0.0230198, 0.0230225, 0.0230183, 0.0230248, 0.023019, 0.0230183, 0.0230183}};
     int selectedYear;
     if(year.EqualTo("2016")) selectedYear = 0;
     else if(year.EqualTo("2017")) selectedYear = 1;
@@ -97,7 +97,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //hQ has to be scaled to integral, because we need the shape
-
+    cout<<"Data entries: "<<hD->GetEntries()<<endl;
     //open the file to get the Ryield
     TFile *infRyield = TFile::Open(TString::Format("%s/Ryield/TransferFactor_HT300toInf_100_%s.root",year.Data(),variable.Data()));
     //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
@@ -127,7 +127,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
     //return;
     //open the file to get the Nbkg
-    TFile *fitFile = TFile::Open(TString::Format("%s/MassFitResults__.root", year.Data()));
+    TFile *fitFile = TFile::Open(TString::Format("%s/fitResults_%s.root", year.Data(), year.Data()));
     RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
     //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
@@ -189,7 +189,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<variable.Data()<<endl;
     if(variable.EqualTo("jetPt0") || (variable.EqualTo("jetPt1") && !year.EqualTo("2016")))
     {
-        TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s_reduced.root",year.Data()));
+        TFile *fitFile =  TFile::Open(TString::Format("../QCD_ClosureTests_All/closureTest_fitResults_%s.root",year.Data()));
         //TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("func_%s",variable.Data()));
         TF1 *fitResult = (TF1*)fitFile->Get(TString::Format("FitFunction_%s",fitRecoVar.Data()));
         for(int i=0; i<hQ_rebinned->GetNbinsX(); i++)
@@ -220,27 +220,30 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         float newError   = TMath::Sqrt(TMath::Power(oldError*SF[i]*NQCD*corrected_rYield,2)+
                                        TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
                                        TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
-/*
+
+
         cout<<"bin: "<<i+1<<endl;
         cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
         cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
-*/
+        cout<<"scale factor: "<<SF[i]<<endl;
+
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
-        cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
+        //cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
     }
     cout<<"-----"<<endl;
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
     cout<<hD_rebinned->Integral()<<endl;
-    /*
+
     cout<<"hSub int: "<<hSub_rebinned->Integral()<<endl;
     cout<<"hSub entries: "<<hSub_rebinned->GetEntries()<<endl;
     cout<<"hQCD int: "<<hQ_rebinned->Integral()<<endl;
     cout<<"hQCD entries: "<<hQ_rebinned->GetEntries()<<endl;
+
     cout<<"INTEGRAL FOR "<<variable<<" is: "<<hSignal->Integral()<<endl;
-    cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl; */
+    cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl;
 
     cout<<"-------"<<endl;
     hSignal->SetLineColor(kBlue);
