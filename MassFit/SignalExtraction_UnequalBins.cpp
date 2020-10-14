@@ -68,7 +68,7 @@ void SignalExtraction_UnequalBins(TString year, bool isNormalised)
     TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
     float r_yield_errors[3][7] = {{0.028927, 0.0289228, 0.0289145, 0.0289403, 0.0289288, 0.0289145, 0.0289145},
                                   {0.0207961, 0.0208046, 0.0207949, 0.0208042, 0.0207968, 0.0207949, 0.0207949},
-                                  {0.0230198, 0.0230225, 0.0230183, 0.0230248, 0.023019, 0.0230183, 0.0230183}};
+                                  {0.0247692, 0.024771, 0.0247676, 0.0247779, 0.0247679, 0.0247675, 0.0247675}};
     int selectedYear;
     if(year.EqualTo("2016")) selectedYear = 0;
     else if(year.EqualTo("2017")) selectedYear = 1;
@@ -94,7 +94,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     //open the signal file: get D(x) and Q(x) for every variable
     TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
-    TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
+    TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //hQ has to be scaled to integral, because we need the shape
     cout<<"Data entries: "<<hD->GetEntries()<<endl;
@@ -221,16 +221,17 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
                                        TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
                                        TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
 
-/*
+
         cout<<"bin: "<<i+1<<endl;
         cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
+        cout<<"oldContent * SF: "<<oldContent *SF[i]<<endl;
         cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
         cout<<"scale factor: "<<SF[i]<<endl;
-*/
+
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
-        //cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
+        cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
     }
     cout<<"-----"<<endl;
     hSignal->Add(hQ_rebinned,-1);
@@ -243,7 +244,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<"hQCD entries: "<<hQ_rebinned->GetEntries()<<endl;
 
     cout<<"INTEGRAL FOR "<<variable<<" is: "<<hSignal->Integral()<<endl;
-    cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl;
+    //cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl;
 
     cout<<"-------"<<endl;
     hSignal->SetLineColor(kBlue);
