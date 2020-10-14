@@ -15,7 +15,7 @@ using std::endl;
 std::vector<TString> histoNames;
 std::vector<TString> fileNames;
 
-#include "TemplateConstants_Response.h"
+#include "TemplateConstants.h"
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
 TString globalYear;
@@ -24,11 +24,15 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 {
   globalYear = year;
   initFilesMapping();
+  cout<<"YEAR: "<<year<<endl;
+  cout<<"file_name: "<<file_name<<endl;
+  cout<<"mass_name: "<<mass_name<<endl;
+
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   float XSEC = XSECAll[year.Data()][mass_name.Data()];
-
+  cout<<"XSEC: "<<XSEC<<endl;
   std::vector< std::vector <Float_t> > const BND = {{1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
@@ -466,7 +470,7 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 
 
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("%s/Histo_%s.root", year.Data(),file_name.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/Histo_%s", year.Data(),file_name.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
