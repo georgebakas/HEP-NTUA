@@ -8,7 +8,7 @@
 #include "TLorentzVector.h"
 #include "TLatex.h"
 
-#include "TemplateConstants.h"
+#include "TemplateConstants_FillHistograms.h"
 using std::cin;
 using std::cout;
 using std::endl;
@@ -204,10 +204,10 @@ void initGlobals()
   initHistoNames();
 }
 
-void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
+void FillHistograms(TString y="2016", int sel = 0, int massWindow =1000)
 {
   year =y;
-  initFilesMapping(isLoose);
+  initFilesMapping(false);
   deepCSVFloat = deepCSVFloatMap[year.Data()];
   selection = sel;
   LUMI = luminosity[year.Data()];
@@ -215,7 +215,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   initGlobals();
   gStyle->SetOptStat(0);
 
-  const int NVAR = 3;
+  const int NVAR = 4;
   const int chiSize =11;
   const int cosSize = 10;
 
@@ -231,7 +231,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
-  TString varReco[NVAR]   = {"chi", "cosTheta_0", "cosTheta_1"};
+  TString varReco[NVAR]   = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
 
   int fileSize = listOfFiles.size();
   TFile *inf;
@@ -242,7 +242,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
  //initialize the required histograms
  TH1F *hCR[listOfFiles.size()][NVAR];
  TH1F *hSR[listOfFiles.size()][NVAR];
- TH1F *h1Btag[listOfFiles.size()][NVAR];
 
  for(int f=0; f<listOfFiles.size(); f++)
  {
@@ -333,14 +332,24 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   std::vector<float> xRecoAll(0);
   //book the histograms
   //histograms for Signal/QCD in CR
+  const int mJJbins = 50;
+  const int MJJ_UPPERLIMIT = 5500;
+
   for(int ivar =0; ivar< NVAR; ivar++)
   {
-    int sizeBins = NBINS[ivar];
-    float tempBND[NBINS[ivar]+1];
-    std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
-    hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-    hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-    h1Btag[f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+    if(ivar < 3)
+    {
+      int sizeBins = NBINS[ivar];
+      float tempBND[NBINS[ivar]+1];
+      std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
+      hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+      hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+    }
+    else
+    {
+      hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), mJJbins,massWindow, MJJ_UPPERLIMIT);
+      hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), mJJbins,massWindow, MJJ_UPPERLIMIT);
+    }
   }
   //for matching
   std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
@@ -479,7 +488,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
 
-    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
+    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > massWindow && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
@@ -526,6 +535,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
      xRecoAll.push_back(yStarExp); //this is chi
      xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
      xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+     xRecoAll.push_back(mJJ); //this is dijet mass
     }
     else continue;
 
@@ -548,7 +558,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       leadingPt = 1;
       subleadingPt = 0;
     }
-    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
+    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > massWindow && nLeptons==0;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
@@ -582,6 +592,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
      xRecoAll.push_back(yStarExp); //this is chi
      xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
      xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+     xRecoAll.push_back(mJJ); //this is dijet Mass
   }//---end of else of isSignal
 
   btagCut = deepCSV;
@@ -607,9 +618,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
       hCR[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
 
-    //1 btag region with tTagger
-    if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
-      h1Btag[f][ivar]->Fill(xReco,genEvtWeight*bTagEvntWeight);
    }
 
 
@@ -621,7 +629,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
   TH1F *hCR_Clone[listOfFiles.size()][NVAR];
   TH1F *hSR_Clone[listOfFiles.size()][NVAR];
-  TH1F *h1Btag_Clone[listOfFiles.size()][NVAR];
 
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
@@ -630,17 +637,14 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     {
       hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));
       hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_Clone","tTagger",histoNames[j].Data()));
 
         if(selection !=0)
         {
          hCR_Clone[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
          hSR_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
-         h1Btag_Clone[j][ivar]->Scale(weights[j]*LUMI); //this is 1 btagged
 
          hCR[j][ivar]->Scale(weights[j]); //this is CR
          hSR[j][ivar]->Scale(weights[j]); //this is Signal region
-         h1Btag[j][ivar]->Scale(weights[j]); //this is 1 btag
         }
     }
 
@@ -651,28 +655,23 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       //Add them to get the whole phase space
       hCR[0][ivar]->Add(hCR[j][ivar]);
       hSR[0][ivar]->Add(hSR[j][ivar]);
-      h1Btag[0][ivar]->Add(h1Btag[j][ivar]);
       hCR_Clone[0][ivar]->Add(hCR_Clone[j][ivar]);
       hSR_Clone[0][ivar]->Add(hSR_Clone[j][ivar]);
-      h1Btag_Clone[0][ivar]->Add(h1Btag_Clone[j][ivar]);
-
     }
 
 
   }
   TFile *outFile;
-  TString loose = "";
-  if(isLoose) loose = "_Loose";
   if(selection ==0)
-    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_Data_%s_%d.root",year.Data(),year.Data(),massWindow), "RECREATE");
   else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_%d.root",year.Data(),massWindow), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_%d.root",year.Data(),massWindow), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_%d.root",year.Data(),massWindow), "RECREATE");
   else if(selection ==4)
-    outFile = new TFile(TString::Format("%s/Histo_TT_NominalMC_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("%s/Histo_TT_NominalMC_%d.root",year.Data(), massWindow), "RECREATE");
 
 
   for(int ivar = 0; ivar<NVAR; ivar++)
@@ -683,19 +682,15 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
   hCR[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
   hSR[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
-  h1Btag[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
   hCR_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
   hSR_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
-  h1Btag_Clone[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s", varNameReco.Data()));
 
 
   outFile->cd();
   hSR[0][ivar]->Write(TString::Format("hWt_%s_2btag", varNameReco.Data()));
   hCR[0][ivar]->Write(TString::Format("hWt_%s_0btag", varNameReco.Data()));
-  h1Btag[0][ivar]->Write(TString::Format("hWt_%s_1btag", varNameReco.Data()));
   hSR_Clone[0][ivar]->Write(TString::Format("hWt_%s_2btag_expYield", varNameReco.Data()));
   hCR_Clone[0][ivar]->Write(TString::Format("hWt_%s_0btag_expYield", varNameReco.Data()));
-  h1Btag_Clone[0][ivar]->Write(TString::Format("hWt_%s_1btag_expYield", varNameReco.Data()));
 
 
  }
