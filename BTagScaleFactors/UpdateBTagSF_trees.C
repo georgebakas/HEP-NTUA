@@ -12,7 +12,8 @@ void UpdateBTagSF_trees(TString oldFileName, TString year = "2017")
 
 
     TString newFileName = oldFileName;
-    TString newEosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/variations/",year.Data());
+    //TString newEosPath = TString::Format("/eos/cms/store/user/gbakas/ttbar/topTagger/mc-%s/variations/",year.Data());
+    TString newEosPath = TString::Format("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/%s/variations/combined/",year.Data());
     std::cout<<"Output file is: "<<newEosPath+newFileName<<std::endl;
     TFile *newFile = TFile::Open(newEosPath + newFileName, "RECREATE");
 
