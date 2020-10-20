@@ -13,12 +13,14 @@ using std::endl;
 
 void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TString histoNames, TString mJJCut)
 {
+  gStyle->SetOptStat(0);
   initFilesMapping();
   float LUMI = luminosity["luminosity"+year];
   const int NVAR = 4;
   TString vars[NVAR] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
-  int cols[] = {kRed, kRed+1, kRed+3,kBlue, kBlue+1, kBlue+3,kMagenta, kMagenta+1, kMagenta+3, kGreen, kGreen+1, kGreen+3, kYellow+2,kYellow+3, kYellow+4,
-                kTeal, kTeal-3, kTeal-6};
+  //int cols[] = {kRed, kRed+1, kRed+3,kBlue, kBlue+1, kBlue+3,kMagenta, kMagenta+1, kMagenta+3, kGreen, kGreen+1, kGreen+3, kYellow+2,kYellow+3, kYellow+4,
+  //              kTeal, kTeal-3, kTeal-6};
+  int cols[] = {kRed, kRed+3, kGreen, kGreen+3, kTeal, kTeal-6};
   //open the mc ttbar file:
   TFile *inf_fid[NVAR], *inf_par;
   TH1F *hSig[NVAR];
@@ -29,7 +31,8 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
     inf_fid[1] = TFile::Open(TString::Format("../TopAngular_NewBins/%s/FiducialMeasurement/EqualBinning/SignalHistograms_cosTheta_0.root", year.Data()));
     inf_fid[2] = TFile::Open(TString::Format("../TopAngular_NewBins/%s/FiducialMeasurement/EqualBinning/SignalHistograms_cosTheta_1.root", year.Data()));
     */
-    inf_fid[0] = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_TT_NominalMC_reduced_%s.root", year.Data(), mJJCut.Data()));
+    //inf_fid[0] = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_TT_NominalMC_reduced_%s.root", year.Data(), mJJCut.Data()));
+    inf_fid[0] = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_Data_2016_reduced_%s.root", year.Data(), mJJCut.Data()));
     for(int ivar = 0; ivar<NVAR; ivar++)
     {
       //hSig[ivar] = (TH1F*)inf_fid[ivar]->Get(TString::Format("hSignal_%s", vars[ivar].Data()));
@@ -47,6 +50,8 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
     {
       //hSig[ivar] = (TH1F*)inf_par->Get(TString::Format("hUnfoldFinal_%s", vars[ivar].Data()));
       hSig[ivar] = (TH1F*)inf_par->Get(TString::Format("hTheoryFinal_%s", vars[ivar].Data()));
+      hSig[ivar]->GetYaxis()->SetTitle("1/Integral");
+      hSig[ivar]->GetYaxis()->SetName("1/Integral");
       float integral = hSig[ivar]->Integral();
       hSig[ivar]->Scale(1/LUMI, "width");
       hSig[ivar]->Scale(1/integral);
@@ -66,17 +71,22 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
   //t_names->Print();
   TH1F *hZ[NVAR];
   TCanvas *can[NVAR];
+  TLegend *leg[NVAR];
+  TFile *outf = new TFile(TString::Format("%s/MC_Comparison/%s/OutputFileMC_%s.root", year.Data(), mJJCut.Data(), level.Data()), "RECREATE");
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
-    //cout<<year<<"/"<<((TObjString *)(tx->At(i)))->String()<<endl;
     can[ivar] = new TCanvas(TString::Format("can_%s", vars[ivar].Data()), TString::Format("can_%s", vars[ivar].Data()), 800,600);
+    if(vars[ivar].EqualTo("chi")) can[ivar]->SetLogy();
+    if(vars[ivar].Contains("cos") && mJJCut.EqualTo("1000")) leg[ivar] = new TLegend(0.35,0.2,0.65,0.4);
+    else if(vars[ivar].Contains("cos") && mJJCut.EqualTo("2000")) leg[ivar] = new TLegend(0.35,0.7,0.65,0.9);
+    else leg[ivar] = new TLegend(0.6,0.7,0.9,0.9);
     hSig[ivar]->SetLineColor(kBlack);
     hSig[ivar]->SetMarkerStyle(20);
     hSig[ivar]->SetMarkerColor(kBlack);
     hSig[ivar]->Draw();
+    leg[ivar]->AddEntry(hSig[ivar], "NominalTT", "lep");
     for (Int_t i = 0; i < tx->GetEntries(); i++)
     {
-      cout<<year+"/"+((TObjString *)(tx->At(i)))->String()<<endl;
       TFile *infZprime = TFile::Open(year+"/"+((TObjString *)(tx->At(i)))->String());
       hZ[ivar] = (TH1F*)infZprime->Get(TString::Format("h%s_%s_%s", level.Data(), vars[ivar].Data(), mJJCut.Data()));
       hZ[ivar]->SetName(((TObjString *)(t_names->At(i)))->String());
@@ -86,7 +96,16 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
       hZ[ivar]->Scale(1/LUMI,"width");
       hZ[ivar]->Scale(1/integral);
       hZ[ivar]->Draw("same");
+      outf->cd();
+      hZ[ivar]->Write(TString::Format("hZprime%s_%s_%s.pdf", level.Data(), vars[ivar].Data(), mJJCut.Data()));
+      leg[ivar]->AddEntry(hZ[ivar], ((TObjString *)(t_names->At(i)))->String(), "lep");
     }
+
+    outf->cd();
+    hSig[ivar]->Write(TString::Format("hSig%s_%s_%s.pdf",level.Data(), vars[ivar].Data(), mJJCut.Data()));
+    leg[ivar]->Draw();
+
+    can[ivar]->Print(TString::Format("%s/MC_Comparison/%s/dist_%s.pdf", year.Data(), mJJCut.Data(), vars[ivar].Data()), "pdf");
 
 
   }
