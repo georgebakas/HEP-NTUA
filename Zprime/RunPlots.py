@@ -11,7 +11,7 @@ mJJCut = sys.argv[3]
 allFiles = []
 histo_names = []
 
-for ifile, file_name in enumerate(glob.iglob('{}/HistoMassWindows*{}*.root'.format(year, mJJCut), recursive=True)):
+for ifile, file_name in enumerate(glob.iglob('{}_backup/HistoMassWindows*.root'.format(year), recursive=True)):
     print('file: {}'.format(file_name))
     file_to_append = file_name.split('/')
     allFiles.append(file_to_append[-1])
