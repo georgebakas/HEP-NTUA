@@ -718,7 +718,7 @@ for(int f=0; f<fileNames.size(); f++)
   TFile *outFile;
   TString nominal ="";
   if(isNominalMC) nominal = "NominalMC";
-  outFile = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiency%s_%s_%d.root", year.Data(),nominal.Data(),year.Data(), mJJCut), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiency%s_%s_%d.root", year.Data(),nominal.Data(),year.Data(), (int)mJJCut), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
