@@ -79,7 +79,7 @@ void initHistoNames()
   }
 }
 
-void ResponseMatrices(TString year = "2016", bool isNominalMC= false)
+void ResponseMatrices(TString year = "2016", bool isNominalMC= false, float mJJCut=1000)
 {
   globalIsNominalMC = isNominalMC;
   globalYear = year;
@@ -433,9 +433,9 @@ for(int f=0; f<fileNames.size(); f++)
 	  bool recoCuts, partonCuts, particleCuts;
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[5];
-	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
-	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
+	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > mJJCut && massCut && nLeptons==0 && (*bit)[5];
+	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > mJJCut;
+	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > mJJCut && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
 	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
@@ -518,7 +518,7 @@ for(int f=0; f<fileNames.size(); f++)
 
 	  std::vector<float> xPartonAllCnt(0);
 	  xPartonAllCnt.clear();
-	  bool partonCuts = fabs(partonEtaCnt[0]) < 2.4 && fabs(partonEtaCnt[1]) <2.4 && partonPtCnt[0] > 400 && partonPtCnt[1] > 400 && mTTbarPartonCnt > 1000;
+	  bool partonCuts = fabs(partonEtaCnt[0]) < 2.4 && fabs(partonEtaCnt[1]) <2.4 && partonPtCnt[0] > 400 && partonPtCnt[1] > 400 && mTTbarPartonCnt > mJJCut;
 	  int leadingPt = 0;
 	  int subleadingPt = 1;
 	  if(partonPtCnt[0] < partonPtCnt[1])
@@ -718,7 +718,7 @@ for(int f=0; f<fileNames.size(); f++)
   TFile *outFile;
   TString nominal ="";
   if(isNominalMC) nominal = "NominalMC";
-  outFile = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/EqualBins/ResponsesEfficiency%s_%s_%d.root", year.Data(),nominal.Data(),year.Data(), mJJCut), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)

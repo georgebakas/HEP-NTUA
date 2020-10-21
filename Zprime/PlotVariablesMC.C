@@ -16,8 +16,8 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
   gStyle->SetOptStat(0);
   initFilesMapping();
   float LUMI = luminosity["luminosity"+year];
-  const int NVAR = 4;
-  TString vars[NVAR] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
+  const int NVAR = 3;
+  TString vars[NVAR] = {"chi", "cosTheta_0", "cosTheta_1"};
   //int cols[] = {kRed, kRed+1, kRed+3,kBlue, kBlue+1, kBlue+3,kMagenta, kMagenta+1, kMagenta+3, kGreen, kGreen+1, kGreen+3, kYellow+2,kYellow+3, kYellow+4,
   //              kTeal, kTeal-3, kTeal-6};
   int cols[] = {kRed, kRed+3, kGreen, kGreen+3, kTeal, kTeal-6};
@@ -37,6 +37,7 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
     {
       //hSig[ivar] = (TH1F*)inf_fid[ivar]->Get(TString::Format("hSignal_%s", vars[ivar].Data()));
       hSig[ivar] = (TH1F*)inf_fid[0]->Get(TString::Format("hWt_%s_2btag_expYield", vars[ivar].Data()));
+      hSig[ivar]->Rebin(2);
       float integral = hSig[ivar]->Integral();
       hSig[ivar]->Scale(1/LUMI, "width");
       hSig[ivar]->Scale(1/integral);
@@ -76,7 +77,7 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
     can[ivar] = new TCanvas(TString::Format("can_%s", vars[ivar].Data()), TString::Format("can_%s", vars[ivar].Data()), 800,600);
-    if(vars[ivar].EqualTo("chi")) can[ivar]->SetLogy();
+    //if(vars[ivar].EqualTo("chi")) can[ivar]->SetLogy();
     if(vars[ivar].Contains("cos") && mJJCut.EqualTo("1000")) leg[ivar] = new TLegend(0.35,0.2,0.65,0.4);
     else if(vars[ivar].Contains("cos") && mJJCut.EqualTo("2000")) leg[ivar] = new TLegend(0.35,0.7,0.65,0.9);
     else leg[ivar] = new TLegend(0.6,0.7,0.9,0.9);
@@ -92,6 +93,7 @@ void PlotVariablesMC(TString file_names_Zprime, TString level, TString year, TSt
       hZ[ivar]->SetName(((TObjString *)(t_names->At(i)))->String());
       hZ[ivar]->SetTitle(((TObjString *)(t_names->At(i)))->String());
       hZ[ivar]->SetLineColor(cols[i]);
+      hZ[ivar]->Rebin(2);
       float integral = hZ[ivar]->Integral();
       hZ[ivar]->Scale(1/LUMI,"width");
       hZ[ivar]->Scale(1/integral);
