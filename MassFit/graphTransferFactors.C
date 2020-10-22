@@ -92,8 +92,8 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
     }
     else
     {
-      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
-      hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+      hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
       hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
   		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
 
@@ -107,13 +107,13 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
     tFactorDataError[i] = TMath::Sqrt(TMath::Power(intErrorDataReduced/integralData,2) + TMath::Power(integralDataReduced*intErrorData/TMath::Power(integralData,2),2) );
 
     tFactorQCD[i] = (hQCDReduced[i]->Integral() / hQCD[i]->Integral());
-		//cout<<tFactorData[i]<<endl;
+		cout<<tFactorData[i]<<"±"<<tFactorDataError[i]<<endl;;
+    cout<<tFactorQCD[i]<<endl;
 		Double_t intError, intErrorReduced;
 		Double_t integral = hQCD[i]->IntegralAndError(1, hQCD[i]->GetNbinsX(), intError);
 		Double_t integralReduced = hQCDReduced[i]->IntegralAndError(1, hQCDReduced[i]->GetNbinsX(), intErrorReduced);
 
     tFactorQCDError[i] = TMath::Sqrt(TMath::Power(intErrorReduced/integral,2) + TMath::Power(integralReduced*intError/TMath::Power(integral,2),2) );
-
 
     if(i==0)
     {

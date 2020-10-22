@@ -17,8 +17,8 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar);
 
 void plot_QCD_Closure(TString year = "2016")
 {
-  const int NVAR = 3;
-  TString recoVar[NVAR] = {"chi", "cosTheta_0", "cosTheta_1"};
+  const int NVAR = 4;
+  TString recoVar[NVAR] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
@@ -34,11 +34,13 @@ void plotYearVar(TString year, TString recoVar = "chi")
   TString yearControlRegion = year;
 
   //QCD files
-  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced_UnequalBinning.root",year.Data()));
+  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_2000.root",year.Data()));
   TH1F *hBkg_CR, *hBkg_SR;
   //for closure test
   hBkg_CR = (TH1F*)infBkg->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
   hBkg_SR = (TH1F*)infBkg->Get(TString::Format("hWt_%s_2btag_expYield",recoVar.Data()));
+  hBkg_CR->Rebin(2);
+  hBkg_SR->Rebin(2);
 
   //These are bkg Signal region and bkg region
   hBkg_CR->SetTitle("QCD_{CR} 0btag");
