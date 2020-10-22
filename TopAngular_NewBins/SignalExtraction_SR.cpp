@@ -61,7 +61,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 }
 
-void SignalExtraction_EqualBins(TString year, bool isNormalised)
+void SignalExtraction_SR(TString year, bool isNormalised)
 {
     normalised = isNormalised;
     TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
@@ -124,7 +124,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
     //return;
     //open the file to get the Nbkg
-    TFile *fitFile = TFile::Open(TString::Format("../MassFit/%s/MassFitResults__.root", year.Data()));
+    TFile *fitFile = TFile::Open(TString::Format("../MassFit/%s/fitResults_%s.root", year.Data(), year.Data()));
     RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
     //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];

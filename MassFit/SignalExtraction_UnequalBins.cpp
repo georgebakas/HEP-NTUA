@@ -76,7 +76,7 @@ void SignalExtraction_UnequalBins(TString year, bool isNormalised)
 
     for(int i=0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i], fitRecoVar[i], r_yield_errors[selectedYear][i]);
+        SignalExtractionSpecific(year, vars[i], fitRecoVar[i],r_yield_errors[selectedYear][i]);
         //break;
     }
 }
@@ -122,10 +122,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     float corrected_rYield = r_yield_correction * Ryield;
     float corrected_error = ry_err_final;
-    //corrected_error = TMath::Sqrt(TMath::Power(r_yield_correction*Ryield_error,2) + TMath::Power(r_yield_correction_error*Ryield,2));
+    //float corrected_error = TMath::Sqrt(TMath::Power(r_yield_correction*Ryield_error,2) + TMath::Power(r_yield_correction_error*Ryield,2));
     //cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
+    cout<<variable<<endl;
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
-    //return;
     //open the file to get the Nbkg
     TFile *fitFile = TFile::Open(TString::Format("%s/fitResults_%s.root", year.Data(), year.Data()));
     RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));

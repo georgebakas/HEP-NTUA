@@ -17,12 +17,11 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 
 void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 {
-  const int NVAR = 3;
-  TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
+  const int NVAR = 4;
+  TString vars[] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
   for(int ivar =0; ivar<sizeof(vars)/sizeof(vars[0]); ivar++)
   {
     graphTransferFactorsSpecific(year, bEnriched, vars[ivar]);
-    //break;
   }
 }
 
@@ -33,17 +32,16 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
   TH1F *hfData;
   TH1F *hfQCD;
   TFile *outF, *outFQCD;
-  TString bEnr = "_HT300toInf_100";
-  if(bEnriched) bEnr = "_bEnriched_HT200toInf_100";
+  TString bEnr = "";
 
 
 	TFile *infData, *infDataReduced, *infQCD, *infQCDReduced;
 	TString str=year;
-	infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", str.Data(),str.Data()));
-	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root", str.Data(),str.Data()));
+	infData = TFile::Open(TString::Format("%s/Histo_Data_%s_1000.root", str.Data(),str.Data()));
+	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1000.root", str.Data(),str.Data()));
 
-	infQCD = TFile::Open(TString::Format("%s/Histo_QCD%s.root", str.Data(),bEnr.Data()));
-	infQCDReduced = TFile::Open(TString::Format("%s/Histo_QCD%s_reduced_UnequalBinning.root",str.Data(),bEnr.Data()));
+	infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf%s_1000.root", str.Data(),bEnr.Data()));
+	infQCDReduced = TFile::Open(TString::Format("%s/Histo_QCD%s_HT300toInf_reduced_1000.root",str.Data(),bEnr.Data()));
 
 	TH1F *hData[2], *hDataReduced[2];
 	TH1F *hQCD[2], *hQCDReduced[2];
@@ -54,7 +52,7 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 	float tFactorData[2], tFactorQCD[2], tFactorQCDError[2], tFactorDataError[2];
 	std::vector<TString> names = {"0btag", "2btag"};
 
-    float x[2] = {0,2};
+  int x[2] = {0,2};
 /*
 	hData[0] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
 	hDataReduced[0] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),0));
@@ -83,22 +81,21 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
   cout<<variable<<endl;
 	for(int i =0; i<2; i++)
 	{
-		if(i==0)
-    {
-      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
-		  hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
-      hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
-  		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
 
-    }
-    else
-    {
-      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
-      hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i));
+      cout<<TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),x[i])<<endl;
+      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),x[i]));
+		  hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),x[i]));
+      hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),x[i]));
+  		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),x[i]));
+
+      /*
+      cout<<TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1)<<endl;
+      hData[i] = (TH1F*)infData->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+      hDataReduced[i] = (TH1F*)infDataReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
       hQCD[i] = (TH1F*)infQCD->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
   		hQCDReduced[i] = (TH1F*)infQCDReduced->Get(TString::Format("hWt_%s_%dbtag_expYield",variable.Data(),i+1));
+      */
 
-    }
 
 		tFactorData[i] = (hDataReduced[i]->Integral() / hData[i]->Integral());
     Double_t intErrorData, intErrorDataReduced;
