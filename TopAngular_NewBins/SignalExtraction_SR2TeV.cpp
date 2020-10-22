@@ -162,13 +162,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     float NQCD_error = value->getError();
 
     //Subdominant bkgs files
-    TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_2000.root", year.Data()));
+    TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_2000.root", year.Data()));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //here I will import correction factors for QCD if needed...
 
     TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_2000.root", year.Data()));
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_2000.root", year.Data()));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
@@ -188,16 +188,15 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     std::copy(BND[selVar].begin(), BND[selVar].end(), tempBND);
 
     //rebin all histograms with the same method
-    TH1F *hD_rebinned, *hQ, *hSub;
     TH1F *hQ_copy = (TH1F*)hQ->Clone(TString::Format("hD_copy_%s", variable.Data()));
     cout<<hQ_copy->GetNbinsX()<<endl;
 
-    TH1F *hSignal = (TH1F*)hD_rebinned->Clone(TString::Format("hSignal_%s",variable.Data()));
+    TH1F *hSignal = (TH1F*)hD->Clone(TString::Format("hSignal_%s",variable.Data()));
     //work on the elements for the QCD so that we have the right Q(x)
     //Ryield * Nbkg  * Q(x)
     cout<<variable<<endl;
 
-    float SF[hQ_rebinned->GetNbinsX()];
+    float SF[hQ->GetNbinsX()];
     //QCD correction factor for shape
     cout<<variable.Data()<<endl;
 
