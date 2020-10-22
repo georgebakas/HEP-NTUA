@@ -44,8 +44,8 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
   TString varParton[NVAR] = {"chiParton", "cosThetaParton_0", "cosThetaParton_1", "mJJGen"};
   TString varParticle[NVAR] = {"chiParticle", "cosThetaParticle_0", "cosThetaParticle_1", "mTTbarParton"};
 
-  const int NWINDOWS=5;
-  int massWindows[NWINDOWS] = {1000,2000,3000,4000,5000};
+  const int NWINDOWS=6;
+  int massWindows[NWINDOWS] = {1000,1500,2000,3000,4000,5000};
 
   float weights;
   TH1F *hParton[NVAR][NWINDOWS], *hParticle[NVAR][NWINDOWS], *hReco[NVAR][NWINDOWS];
