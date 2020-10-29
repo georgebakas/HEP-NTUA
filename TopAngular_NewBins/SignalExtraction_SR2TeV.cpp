@@ -22,6 +22,8 @@
 #include "TLorentzVector.h"
 #include "TLatex.h"
 #include "TGraphErrors.h"
+#include "../CMS_plots/tdrstyle.C"
+#include "../CMS_plots/CMS_lumi.C"
 
 using namespace std;
 
@@ -63,6 +65,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 void SignalExtraction_SR2TeV(TString year, bool isNormalised)
 {
+    setTDRStyle();
     normalised = isNormalised;
     TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
 
@@ -89,7 +92,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
 
     gStyle->SetOptStat(0);
     //open the signal file: get D(x) and Q(x) for every variable
-    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_2000.root", year.Data(), year.Data()));
+    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1500.root", year.Data(), year.Data()));
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
@@ -126,7 +129,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     //------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     //open the file to get the Ryield for the SRA--> SR regions
-    TFile *infRyield_2TeV = TFile::Open(TString::Format("%s/Ryield/TransferFactor_%s_2TeV.root",year.Data(),variable.Data()));
+    TFile *infRyield_2TeV = TFile::Open(TString::Format("%s/Ryield/TransferFactor_%s_1.5TeV.root",year.Data(),variable.Data()));
     TH1F *hRyield_2TeV = (TH1F*)infRyield->Get("dataTransferFactor");
 
     float Ryield_2TeV = hRyield->GetBinContent(1);
@@ -162,13 +165,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     float NQCD_error = value->getError();
 
     //Subdominant bkgs files
-    TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_2000.root", year.Data()));
+      TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_1500.root", year.Data()));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //here I will import correction factors for QCD if needed...
 
     TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_2000.root", year.Data()));
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_1500.root", year.Data()));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
@@ -278,7 +281,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     }
 
     hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
-    if(!variable.EqualTo("yJJ") && !variable.EqualTo("jetY0") && !variable.EqualTo("jetY1") ) gPad->SetLogy();
+    //if(!variable.EqualTo("yJJ") && !variable.EqualTo("jetY0") && !variable.EqualTo("jetY1") ) gPad->SetLogy();
 
     closure_pad1->cd();
     hSMC->Draw();
@@ -309,7 +312,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     hSig_temp[0]->Draw();
     hSig_temp[0]->GetXaxis()->SetLabelSize(0.09);
 
-
+    lumi_13TeV = "35.9 fb^{-1}";
+    //lumi_sqrtS = "13 TeV";
+    int iPeriod = 4;
+    int iPos = 10;
+    writeExtraText=true;
+    CMS_lumi(closure_pad1, iPeriod, iPos);
+    
     TString path;
     TString method = "simpleMassFit";
     TString strNorm = "";
@@ -324,6 +333,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
       outf = new TFile(TString::Format("%s/FiducialMeasurement_2TeV/EqualBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
       hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
       hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
+      hQ->Write(TString::Format("hQCD_%s", variable.Data())); //this is expected yield for QCD so I can use it with my stack
       outf->Close();
     }
     cout<<variable.Data()<<endl;

@@ -7,6 +7,8 @@
 #include "TCanvas.h"
 #include "TLatex.h"
 #include "TRatioPlot.h"
+#include "../CMS_plots/tdrstyle.C"
+#include "../CMS_plots/CMS_lumi.C"
 
 using std::cin;
 using std::cout;
@@ -27,7 +29,7 @@ void plot_QCD_Closure(TString year = "2016")
 }
 void plotYearVar(TString year, TString recoVar = "chi")
 {
-
+  setTDRStyle();
   //I need 2 files for each:
   //1. Signal and Control Region files which contain everything with medium WP's
   TString yearSignalRegion = year;
@@ -129,6 +131,12 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar)
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
 
+  lumi_13TeV = "35.9 fb^{-1}";
+  //lumi_sqrtS = "13 TeV";
+  int iPeriod = 4;
+  int iPos = 10;
+  writeExtraText=true;
+  CMS_lumi(closure_pad1, iPeriod, iPos);
   cout<<"here"<<endl;
   c1->Print(TString::Format("QCDClosure/%s/qcdClosure_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 }
