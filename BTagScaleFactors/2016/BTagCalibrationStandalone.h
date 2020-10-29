@@ -1,4 +1,3 @@
-
 #ifndef BTagEntry_H
 #define BTagEntry_H
 

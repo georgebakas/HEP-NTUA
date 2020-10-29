@@ -252,13 +252,14 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       float eff = efficiency->GetEfficiency(i);
-      //cout<<"bin: "<<i<<" eff:"<<eff<<endl;
+
       if(eff >0)
       {
         float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
 
 	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
+        //cout<<"bin: "<<i<<" eff:"<<eff<<" ±"<<effError<<endl;
         float sqrt1 = TMath::Power((1/eff)*hUnf[ivar]->GetBinError(i),2);
         float sqrt2 = TMath::Power((hUnf[ivar]->GetBinContent(i)*effError),2)/TMath::Power(eff,4);
         hUnf[ivar]->SetBinContent(i, newContent);

@@ -1,6 +1,9 @@
+#include "../CMS_plots/tdrstyle.C"
+#include "../CMS_plots/CMS_lumi.C"
 
 void Contamination(TString year)
 {
+  setTDRStyle();
   gStyle->SetOptStat(0);
 
   //data template
@@ -47,13 +50,13 @@ void Contamination(TString year)
     //hData->Draw();
 
     c1[ivar] = new TCanvas(TString::Format("can_%s",recoVar.Data()), TString::Format("can_%s",recoVar.Data()), 800,700);
-    closure_pad2[ivar] = new TPad(TString::Format("cp2_%s",recoVar.Data()),TString::Format("cp2_%s",recoVar.Data()),0.,0.,1.,0.6);
+    closure_pad2[ivar] = new TPad(TString::Format("cp2_%s",recoVar.Data()),TString::Format("cp2_%s",recoVar.Data()),0.,0.,1.,0.4);
     closure_pad2[ivar]->Draw();
     closure_pad2[ivar]->SetTopMargin(0.05);
     closure_pad2[ivar]->SetBottomMargin(0.2);
     closure_pad2[ivar]->SetGrid();
 
-    closure_pad1[ivar] = new TPad(TString::Format("cp1_%s",recoVar.Data()),TString::Format("cp1_%s",recoVar.Data()),0.,0.6,1.,1.);
+    closure_pad1[ivar] = new TPad(TString::Format("cp1_%s",recoVar.Data()),TString::Format("cp1_%s",recoVar.Data()),0.,0.4,1.,1.);
     closure_pad1[ivar]->Draw();
     closure_pad1[ivar]->SetBottomMargin(0.01);
     closure_pad1[ivar]->cd();
@@ -133,7 +136,7 @@ void Contamination(TString year)
       hRatio[ivar][i]->GetYaxis()->SetLabelFont(43);
       hRatio[ivar][i]->GetYaxis()->SetLabelSize(15);
       hRatio[ivar][i]->GetXaxis()->SetTitleSize(0.06);
-      hRatio[ivar][i]->GetYaxis()->SetRangeUser(-0.001,0.2);
+      hRatio[ivar][i]->GetYaxis()->SetRangeUser(-0.001,0.1);
       hRatio[ivar][i]->GetXaxis()->SetLabelSize(0.04);
     }
 
@@ -141,6 +144,13 @@ void Contamination(TString year)
 
     hRatio[ivar][1]->Draw("hist");
     hRatio[ivar][2]->Draw("hist same");
+
+    lumi_13TeV = "35.9 fb^{-1}";
+    //lumi_sqrtS = "13 TeV";
+    int iPeriod = 4;
+    int iPos = 1;
+    writeExtraText=true;
+    CMS_lumi(closure_pad1[ivar], iPeriod, iPos);
     //break;
 
     c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/contamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");

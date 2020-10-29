@@ -166,8 +166,8 @@ void graphErrorPropagation(TString year="2016", bool isParton = true, bool isDat
     //cout<<hErrorAfterStd[ivar]->GetNbinsX()<<endl;
     legComb[ivar]->Draw();
 
-    canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombinedRatio_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
-    										 variable[ivar].Data()), "pdf");
+  //  canCombined[ivar]->Print(TString::Format("%s/%sMeasurements/%s/Errors/ErrorPropCombinedRatio_%s.pdf",year.Data(),phaseSpace.Data(),dataMC.Data(),
+    //										 variable[ivar].Data()), "pdf");
  /*
     globalCorrGraph[ivar] = (TGraph*)globalCorrFile->Get(TString::Format("globalCorrGraph_%s",variable[ivar].Data()));
  		canGr[ivar] = new TCanvas (TString::Format("globalCorrGraph_%s",variable[ivar].Data()), TString::Format("globalCorrGraph_%s",variable[ivar].Data()),
