@@ -41,8 +41,8 @@ void plotYearVar(TString year, TString recoVar = "chi")
   //for closure test
   hBkg_CR = (TH1F*)infBkg->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
   hBkg_SR = (TH1F*)infBkg->Get(TString::Format("hWt_%s_2btag_expYield",recoVar.Data()));
-  hBkg_CR->Rebin(2);
-  hBkg_SR->Rebin(2);
+  //hBkg_CR->Rebin(2);
+  //hBkg_SR->Rebin(2);
 
   //These are bkg Signal region and bkg region
   hBkg_CR->SetTitle("QCD_{CR} 0btag");
@@ -126,8 +126,8 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar)
   hRatio->GetXaxis()->SetLabelSize(0.06);
   hRatio->Divide(hDenom);
   hRatio->SetLineColor(kBlack);
-  if(recoVar.Contains("cosTheta")) hRatio->GetXaxis()->SetTitle("|"+recoVar+"|");
-  else hRatio->GetXaxis()->SetTitle(recoVar);
+  //if(recoVar.Contains("cosTheta")) hRatio->GetXaxis()->SetTitle("|"+recoVar+"|");
+  hRatio->GetXaxis()->SetTitle(recoVar);
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
 
