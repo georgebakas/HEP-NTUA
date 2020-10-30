@@ -93,24 +93,24 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   cout<<LUMI<<endl;
-
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-													                              {0,60,150,300,450,600,850,1300}, //ptjj
-													                              {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-		   	                                                {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
-													                              {400,450,500,570,650,800,1100,1500}, //jetPt1
-													                              {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
-
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-													                               {0,60,150,300,450,600,750,900,1300}, //ptjj
-													                               {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-		   	                                                 {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
-													                               {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
-													                               {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+                                                        {0, 60, 150, 300, 450, 850, 1300}, //ptjj
+                                                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
 
+
+
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
+                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
+                                                {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
   float triggerFloat;
   if(year.EqualTo("2016")) triggerFloat = 2;
   else triggerFloat = 5;
@@ -121,6 +121,7 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
 
   int NBINSParton[BND_reco.size()];
   for(int i =0; i<BND_reco.size(); i++) NBINSParton[i] = BND_gen[i].size()-1;
+  
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"};
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"};
   TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"};
