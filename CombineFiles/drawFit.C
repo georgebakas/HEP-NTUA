@@ -1,10 +1,10 @@
-void drawFit(TString fit, float XMIN=0, float XMAX=12)/*, TString channel, int kbins, float XMIN, float XMAX)*/
+void drawFit(TString fit, float XMIN=0, float XMAX=16)/*, TString channel, int kbins, float XMIN, float XMAX)*/
 {
   //TString bins = to_string(kbins);
   gROOT->ForceStyle();
   gStyle->SetOptStat(0);
 
-  TFile *inf = TFile::Open("fitDiagnostics_"+fit+".root", "READ");
+  TFile *inf = TFile::Open("fitDiagnostics."+fit+".root", "READ");
 
 
   RooMsgService::instance().setSilentMode(kTRUE);
@@ -96,7 +96,7 @@ void drawFit(TString fit, float XMIN=0, float XMAX=12)/*, TString channel, int k
   hSignal->SetFillStyle(3005);
 
 
-  TCanvas *can_fit = new TCanvas("fit_"+fit+"_SR_C","fit_"+fit+"_SR_C",900,600);
+  TCanvas *can_fit = new TCanvas("fit_"+fit+"_SR_C","fit_"+fit+"_SR_C",800,600);
 
   can_fit->SetBottomMargin(0.35);
 
@@ -165,4 +165,6 @@ void drawFit(TString fit, float XMIN=0, float XMAX=12)/*, TString channel, int k
 
   axisPad->SetName("axisPad");
   axisPad->Draw("same");
+
+  can_fit->Print("plots/postFit_"+fit+".pdf", "pdf");
 }
