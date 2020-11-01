@@ -394,7 +394,8 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=0;iev<NN;iev++)
-  {
+  {  
+    if(selection ==4 && year.EqualTo("2017") && f==1 && iev ==0) continue;
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
     if (k > decade)

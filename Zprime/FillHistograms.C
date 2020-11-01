@@ -27,6 +27,9 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
   cout<<"YEAR: "<<year<<endl;
   cout<<"file_name: "<<file_name<<endl;
   cout<<"mass_name: "<<mass_name<<endl;
+  float triggerFloat;
+  if(year.EqualTo("2016")) triggerFloat = 2;
+  else triggerFloat = 5;
 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
@@ -364,7 +367,7 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 	  bool recoCuts, partonCuts, particleCuts;
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[5];
+	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
 	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
