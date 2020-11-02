@@ -20,7 +20,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 TString globalYear;
 
-void FillHistograms_CutFlow(TString file_name, TString mass_name, TString year = "2016")
+void FillHistograms_CutFlowJetMassSoftDrop(TString file_name, TString mass_name, TString year = "2016")
 {
   globalYear = year;
   initFilesMapping();
