@@ -20,6 +20,8 @@
 #include "TGraphErrors.h"
 #include "TUnfold.h"
 #include "TUnfoldDensity.h"
+#include "../CMS_plots/tdrstyle.C"
+#include "../CMS_plots/CMS_lumi.C"
 
 using namespace std;
 
@@ -68,24 +70,27 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   bool isNorm = false;
   year = inYear;
   initFilesMapping();
+  setTDRStyle();
   gStyle->SetOptStat(0);
 
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-                                                        {0,60,150,300,450,600,850,1300}, //ptjj
-                                                        {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
-                                                        {400,450,500,570,650,800,1100,1500}, //jetPt1
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                        {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+                                                        {0, 60, 150, 300, 450, 850, 1300}, //ptjj
+                                                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3700, 5000}, //mjj
-                                                         {0,60,150,300,450,600,750,900,1300}, //ptjj
-                                                         {-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-                                                         {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
-                                                         {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                         {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
 
+
+
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
+                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
+                                                {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
 
 
@@ -364,6 +369,12 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfTemp[ivar]->Draw();
     hUnfTemp[ivar]->GetXaxis()->SetLabelSize(0.09);
 
+    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity[year]/100);
+    //lumi_sqrtS = "13 TeV";
+    int iPeriod = 4;
+    int iPos = 0;
+    writeExtraText=true;
+    CMS_lumi(closure_pad1, iPeriod, iPos);
 
     if(!isNorm)
     {
