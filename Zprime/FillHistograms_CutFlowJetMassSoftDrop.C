@@ -64,7 +64,7 @@ void FillHistograms_CutFlowJetMassSoftDrop(TString file_name, TString mass_name,
         std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
         hReco[ivar][icut] = new TH1F(TString::Format("hReco_%s_%d", varReco[ivar].Data(),icut), TString::Format("hReco_%s_%d",varReco[ivar].Data(),icut), sizeBins, tempBND);
       }
-      else if(ivar == 4){
+      else if(ivar == 3){
         hReco[ivar][icut] = new TH1F(TString::Format("hReco_%s_%d", varReco[ivar].Data(),icut), TString::Format("hReco_%s_%d",varReco[ivar].Data(),icut), mJJbins,1500, MJJ_UPPERLIMIT );
       }
       else {
