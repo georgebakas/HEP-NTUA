@@ -91,13 +91,13 @@ void ResponseMatrices(TString year = "2016", bool isNominalMC= false)
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   cout<<eospath[year.Data()]+files[year.Data()][fileNames[0].Data()]<<endl;
-  std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}, //mjj
-													{0,60,150,300,450,600,750,1000,1300}, //ptjj
-													{-2.4,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.4}, //yjj
-		   	                                        {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
-													{400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
-													{0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                    {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+  std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
+                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
+                                                {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
   float triggerFloat;
   if(year.EqualTo("2016")) triggerFloat = 2;
@@ -651,7 +651,7 @@ for(int f=0; f<fileNames.size(); f++)
 	    sumOfColsParton[i] = ((TH1D*)hPartonResponse[0][ivar]->ProjectionX())->GetBinContent(i);
 	    sumOfRowsParton[i] = ((TH1D*)hPartonResponse[0][ivar]->ProjectionY())->GetBinContent(i);
 
-		sumOfColsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionX())->GetBinContent(i);
+		  sumOfColsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionX())->GetBinContent(i);
 	    sumOfRowsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionY())->GetBinContent(i);
 
 	    for(int j=1; j<=sizeBins; j++)
@@ -698,7 +698,6 @@ for(int f=0; f<fileNames.size(); f++)
 
   	purityParticle[ivar]->Write(TString::Format("PurityParticle_%s", varReco[ivar].Data()));
   	stabilityParticle[ivar]->Write(TString::Format("StabilityParticle_%s", varReco[ivar].Data()));
-
 
   }//end of ivar
 
