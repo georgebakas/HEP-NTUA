@@ -99,7 +99,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile;
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
 
 
@@ -375,7 +375,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     int iPos = 0;
     writeExtraText=true;
     CMS_lumi(closure_pad1, iPeriod, iPos);
-
+    /*
     if(!isNorm)
     {
       outf->cd();
@@ -388,6 +388,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
     }
     else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    */
   }
 
 }
