@@ -26,5 +26,5 @@ for ifile in  all_files[year]:
     split_file_underscore = ifile.split('_')
     print(split_file_underscore[0])
     print(ifile)
-    os.system(f'root -l -b -q \'FillHistograms_Extended_PS_PDF.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{weightType}\")\'')
-    #os.system(f'root -l -b -q \'FillHistograms_Reduced_PS_PDF.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{weightType}\")\'')
+    #os.system(f'root -l -b -q \'FillHistograms_Extended_PS_PDF.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{weightType}\")\'')
+    os.system(f'root -l -b -q \'FillHistograms_Reduced_PS_PDF.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{weightType}\")\'')

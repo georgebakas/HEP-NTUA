@@ -22,8 +22,9 @@ TString globalYear;
 
 void FillHistograms_CutFlowJetMassSoftDrop(TString file_name, TString mass_name, TString year = "2016")
 {
+  bool isTTbar = true;
   globalYear = year;
-  initFilesMapping();
+  initFilesMapping(isTTbar);
   cout<<"YEAR: "<<year<<endl;
   cout<<"file_name: "<<file_name<<endl;
   cout<<"mass_name: "<<mass_name<<endl;

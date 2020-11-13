@@ -1,5 +1,6 @@
 #include "TString.h"
 
+map<TString, map<TString, TString>> files;
 map<TString, map<TString, float>> XSECAll;
 
 map<TString, float> floatConstants;
@@ -7,12 +8,13 @@ map<TString, float> topTaggerConstants;
 map<TString, float> luminosity;
 map<TString, TString> eospath;
 
-void initFilesMapping()
+void initFilesMapping(bool isTTbar)
 {
+	if(!isTTbar){
+		eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ZprimeToTT/mc-2016_btag/"));
+		eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ZprimeToTT/mc-2017_btag/"));
+		eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ZprimeToTT/mc-2018_btag/"));
 
-	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ZprimeToTT/mc-2016_btag/"));
-	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ZprimeToTT/mc-2017_btag/"));
-	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ZprimeToTT/mc-2018_btag/"));
 
 	map<TString, float> XSEC2016 = {{"M-1000", 0.5392},
 																	{"M-1500", 0.07238},
@@ -42,10 +44,40 @@ void initFilesMapping()
 																	{"M4000", 6.214e-05},
 																	{"M5000", 5.053e-06}};
 
-
 	XSECAll.insert(pair<TString, map<TString, float>>("2016", XSEC2016));
 	XSECAll.insert(pair<TString, map<TString, float>>("2017", XSEC2017));
 	XSECAll.insert(pair<TString, map<TString, float>>("2018", XSEC2018));
+	}
+	else{
+		eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/"));
+		eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/"));
+		eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/"));
+
+		map<TString, float> XSEC_ = {{"TT", 832.},
+															  {"TTToHadronic", 377.96},
+																{"TTToSemiLeptonic", 365.34},
+																{"TTTo2L2Nu", 88.29}};
+
+		XSECAll.insert(pair<TString, map<TString, float>>("2016", XSEC_));
+		XSECAll.insert(pair<TString, map<TString, float>>("2017", XSEC_));
+		XSECAll.insert(pair<TString, map<TString, float>>("2018", XSEC_));
+
+		map<TString, TString> files2016 = {{"TTToHadronic", "2016/HistoCutFlowJetMassSoftDrop_TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+		                                   {"TTToSemiLeptonic", "2016/HistoCutFlowJetMassSoftDrop_TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+		                                   {"TTTo2L2Nu", "2016/HistoCutFlowJetMassSoftDrop_TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root"}};
+
+		map<TString, TString> files2017 = {{"TTToHadronic",  "2017/HistoCutFlowJetMassSoftDrop_TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+		                                   {"TTToSemiLeptonic", "2017/HistoCutFlowJetMassSoftDrop_TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+		                                   {"TTTo2L2Nu", "2017/HistoCutFlowJetMassSoftDrop_TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
+
+		map<TString, TString> files2018 = {{"TTToHadronic",  "2018/HistoCutFlowJetMassSoftDrop_TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+		                                   {"TTToSemiLeptonic", "2018/HistoCutFlowJetMassSoftDrop_TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+		                                   {"TTTo2L2Nu", "2018/HistoCutFlowJetMassSoftDrop_TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
+
+		files.insert(pair<TString, map<TString, TString>>("2016", files2016));
+		files.insert(pair<TString, map<TString, TString>>("2017", files2017));
+		files.insert(pair<TString, map<TString, TString>>("2018", files2018));
+	}
 
 	//these are btagging Working points for each year Medium WP
 	floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
