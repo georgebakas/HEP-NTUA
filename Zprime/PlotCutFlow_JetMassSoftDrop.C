@@ -16,11 +16,12 @@ using std::endl;
 //this code will be used for stacks
 void PlotCutFlow_JetMassSoftDrop(TString year, TString infStr, TString histo_names)
 {
+  bool isTTbar = true;
+  initFilesMapping(isTTbar);
   cout<<year<<endl;
   cout<<infStr<<endl;
   cout<<histo_names<<endl;
   gStyle->SetOptStat(0);
-  initFilesMapping();
   setTDRStyle();
   float LUMI = luminosity["luminosity"+year];
   const int NVAR = 2;
