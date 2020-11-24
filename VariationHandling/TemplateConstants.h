@@ -8,6 +8,8 @@ map<TString, float> luminosity;
 map<TString, float> luminosityCR;
 map<TString, TString> eospath;
 map<int, TString> ps_weights;
+map<int, TString> pdf_weights;
+map<int, TString> scale_weights;
 
 void initFilesMapping()
 {
@@ -58,6 +60,18 @@ void initFilesMapping()
 	ps_weights.insert(pair<int, TString>(11, "fsrConHi"));
 	ps_weights.insert(pair<int, TString>(12, "isrConLo"));
 	ps_weights.insert(pair<int, TString>(13, "fsrConLo"));
+
+	for(int i =0; i<101; i++)
+	{
+		pdf_weights.insert(pair<int, TString>(i, TString::Format("pdf_%d",i)));
+	}
+
+	scale_weights.insert(pair<int, TString>(0, "scale_2"));
+	scale_weights.insert(pair<int, TString>(1, "scale_3"));
+	scale_weights.insert(pair<int, TString>(2, "scale_4"));
+	scale_weights.insert(pair<int, TString>(3, "scale_5"));
+	scale_weights.insert(pair<int, TString>(4, "scale_7"));
+	scale_weights.insert(pair<int, TString>(5, "scale_9"));
 
 
 }

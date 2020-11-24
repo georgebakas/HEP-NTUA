@@ -95,7 +95,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
     std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
 
     //ps_weights
-    std::vector<float> *psWeights(0),*pdfWeights(0);
+    std::vector<float> *psWeights(0),*pdfWeights(0), *scaleWeights(0);
 
     //particle
     std::vector<float> *genjetPt(0), *genjetY(0), *genjetEta(0), *genSoftDropMass(0), *genjetMassSoftDrop(0),*genjetPhi(0);
@@ -121,6 +121,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
     trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
     trIN->SetBranchAddress("psWeights"      ,&psWeights);
     trIN->SetBranchAddress("pdfWeights"     ,&pdfWeights);
+    trIN->SetBranchAddress("scaleWeights"   ,&scaleWeights);
     trIN->SetBranchAddress("bTagEvntWeight"   ,&bTagEvntWeight);
     trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
     trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
@@ -169,10 +170,12 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 
 
   //declare the histograms
-  trIN->GetEntry(1);
-  int weightsSize(0);
-  if(weightType.EqualTo("PSWeights")) weightsSize = psWeights->size();
-  else weightsSize = pdfWeights->size();
+  //trIN->GetEntry(1);
+  int weightsSize(1);
+  if(weightType.EqualTo("PSWeights")) weightsSize = ps_weights.size();
+  else if(weightType.EqualTo("PDFWeights")) weightsSize = pdf_weights.size();
+  else weightsSize = scale_weights.size();
+
 
   TH1F *hParton[weightsSize][NVAR], *hParticle[weightsSize][NVAR], *hReco[weightsSize][NVAR];
   TH1F *hRecoParton[weightsSize][NVAR], *hPartonReco[weightsSize][NVAR];
@@ -184,9 +187,11 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
     for(int iweight=0; iweight<weightsSize; iweight++)
     {
       TString weightName;
-      if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight+2];
+      if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight];
+      else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
+      else weightName = scale_weights[iweight];
 
-    int sizeBins = NBINS[ivar];
+      int sizeBins = NBINS[ivar];
       float tempBND[NBINS[ivar]+1];
       std::copy(BND_reco[ivar].begin(), BND_reco[ivar].end(), tempBND);
 
@@ -461,17 +466,19 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 	  btagCut = deepCSV;
 
 	  //qcout<<"----------"<<endl;
-
+    float extra_weight(1);
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
 		  if(recoCuts && btagCut && tTaggerCut)
 		  {
 		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-          for(int iweight=0; iweight<psWeights->size(); iweight++)
+          for(int iweight=0; iweight<weightsSize; iweight++)
           {
-            float psWeight_ = (*psWeights)[iweight];
-				    hReco[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
+            if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeights)[iweight];
+            else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeights)[iweight];
+            else extra_weight = (*scaleWeights)[iweight];
+				    hReco[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
           }
 			}
 		  }
@@ -481,13 +488,15 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 		  {
 			  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  			{
-            for(int iweight=0; iweight<psWeights->size(); iweight++)
+            for(int iweight=0; iweight<weightsSize; iweight++)
             {
-              float psWeight_ = (*psWeights)[iweight];
-				      hPartonReco[iweight][ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
-				      hRecoParton[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
+              if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeights)[iweight];
+              else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeights)[iweight];
+              else extra_weight = (*scaleWeights)[iweight];
+				      hPartonReco[iweight][ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
+				      hRecoParton[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
 
-				      hPartonResponse[iweight][ivar]->Fill(xPartonAll[ivar],xRecoAll[ivar], genEvtWeight *weights*LUMI*bTagEvntWeight*psWeight_);
+				      hPartonResponse[iweight][ivar]->Fill(xPartonAll[ivar],xRecoAll[ivar], genEvtWeight *weights*LUMI*bTagEvntWeight*extra_weight);
             }
 				}//---- end of the ivar loop
 
@@ -498,13 +507,16 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-           for(int iweight=0; iweight<psWeights->size(); iweight++)
+           for(int iweight=0; iweight<weightsSize; iweight++)
            {
-            float psWeight_ = (*psWeights)[iweight];
-	      		hParticleReco[iweight][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
-	      		hRecoParticle[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
+            if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeights)[iweight];
+            else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeights)[iweight];
+            else extra_weight = (*scaleWeights)[iweight];
 
-	      		hParticleResponse[iweight][ivar]->Fill(xParticleAll[ivar],xRecoAll[ivar], genEvtWeight*weights*LUMI*bTagEvntWeight*psWeight_);
+            hParticleReco[iweight][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
+	      		hRecoParticle[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
+
+	      		hParticleResponse[iweight][ivar]->Fill(xParticleAll[ivar],xRecoAll[ivar], genEvtWeight*weights*LUMI*bTagEvntWeight*extra_weight);
            }
 	      	}
 	      }
@@ -512,10 +524,12 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-          for(int iweight=0; iweight<psWeights->size(); iweight++)
+          for(int iweight=0; iweight<weightsSize; iweight++)
           {
-            float psWeight_ = (*psWeights)[iweight];
-	      		hParticle[iweight][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
+            if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeights)[iweight];
+            else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeights)[iweight];
+            else extra_weight = (*scaleWeights)[iweight];
+	      		hParticle[iweight][ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
           }
 	       }
 	      }
@@ -600,7 +614,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 
   for(int ivar =0; ivar<NVAR; ivar++)
   {
-    for(int iweight=0; iweight<psWeights->size(); iweight++)
+    for(int iweight=0; iweight<weightsSize; iweight++)
     {
       hReco[iweight][ivar]->Scale(weights*LUMI);
       hParticle[iweight][ivar]->Scale(weights*LUMI);
@@ -645,7 +659,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
     for(int iweight=0; iweight<weightsSize; iweight++)
     {
       TString weightName;
-      if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight+2];
+      if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight];
         cout<<"--------"<<endl;
         cout<<"parton "<<ivar<<endl;
         efficiency_parton[iweight][ivar]  = new TEfficiency(*hPartonReco[iweight][ivar], *hParton[iweight][ivar]);
@@ -686,8 +700,10 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
   for(int iweight=0; iweight<weightsSize; iweight++ )
   {
     TString weightName;
-    if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight+2];
-    //else weightName = pdf_weights[iweight];
+    if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight];
+    else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
+    else weightName = scale_weights[iweight];
+
     outFile[iweight] = TFile::Open(TString::Format("%s/Responses%s/HistoReduced_%s_%s.root", year.Data(), weightType.Data() ,ttbar_process.Data(), weightName.Data()), "RECREATE");
     outFile[iweight]->cd();
       //write them to file
