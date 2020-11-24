@@ -9,15 +9,15 @@ year = sys.argv[1]
 weightType = sys.argv[2]
 allFiles = []
 
-all_files = {"2016":['TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root',
-                     'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root',
-                     'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root'],
-             "2017":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root'],
-             "2018":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root']}
+all_files = {"2016":['TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8_old.root',
+                     'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_old.root',
+                     'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8_old.root'],
+             "2017":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_old.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_old.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_old.root'],
+             "2018":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_old.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_old.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_old.root']}
 
 eospath = '/eos/cms/store/user/gbakas/ttbar/topTagger/mc-{}/Signal/'.format(year)
 

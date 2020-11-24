@@ -80,13 +80,24 @@ void initFilesMapping(bool isTTbar)
 	}
 
 	//these are btagging Working points for each year Medium WP
-	floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
-	floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
-	floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
+	//floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
+	//floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
+	//floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
 
-	topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.2));
-	topTaggerConstants.insert(pair<TString, float>("topTagger2017", 0.0));
-	topTaggerConstants.insert(pair<TString, float>("topTagger2018", 0.1));
+	//loose WP
+	floatConstants.insert(pair<TString, float>("btagWP2016", 0.2217));
+	floatConstants.insert(pair<TString, float>("btagWP2017", 0.1522));
+	floatConstants.insert(pair<TString, float>("btagWP2018", 0.1241));
+
+	//ttbar analysis WP
+	//topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.2));
+	//topTaggerConstants.insert(pair<TString, float>("topTagger2017", 0.0));
+	//topTaggerConstants.insert(pair<TString, float>("topTagger2018", 0.1));
+
+	//Z prime analysis WP
+	topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.1));
+	topTaggerConstants.insert(pair<TString, float>("topTagger2017", -0.1));
+	topTaggerConstants.insert(pair<TString, float>("topTagger2018", 0.0));
 
 	luminosity.insert(pair<TString,float>("luminosity2016", 35920));
 	luminosity.insert(pair<TString,float>("luminosity2017", 41530));

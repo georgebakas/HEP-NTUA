@@ -51,7 +51,7 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
-  int NBINS[BND.size()];
+  int NBINS[BND.size()+2];
   for (int i = 0; i<BND.size()+2; i++)
   {
     if(i<10) NBINS[i] = BND[i].size()-1;
@@ -86,7 +86,7 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
     std::vector<float> *jetBtagSub0DCSVbbb(0), *jetBtagSub1DCSVbbb(0);
 
     //ps_weights
-    std::vector<float> *psWeights(0),*pdfWeights(0);
+    std::vector<float> *psWeights(0),*pdfWeights(0), *scaleWeights(0);
 
     int nJetsGen(0);
     float mJJGen(0), ptJJGen(0), yJJGen(0);
@@ -108,6 +108,7 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
     trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
     trIN->SetBranchAddress("psWeights"      ,&psWeights);
     trIN->SetBranchAddress("pdfWeights"     ,&pdfWeights);
+    trIN->SetBranchAddress("scaleWeights"   ,&scaleWeights);
     trIN->SetBranchAddress("bTagEvntWeight" ,&bTagEvntWeight);
     trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
     trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
@@ -144,10 +145,14 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
 
 
   //declare the histograms
+  /*
   trIN->GetEntry(1);
-  int weightsSize(0);
-  if(weightType.EqualTo("PSWeights")) weightsSize = psWeights->size();
-  else weightsSize = pdfWeights->size();
+  if(weightType.EqualTo("PSWeights")) weightsSize = weightsSize;
+  else weightsSize = pdfWeights->size(); */
+  int weightsSize(1);
+  if(weightType.EqualTo("PSWeights")) weightsSize = ps_weights.size();
+  else if(weightType.EqualTo("PDFWeights")) weightsSize = pdf_weights.size();
+  else weightsSize = scale_weights.size();
 
   TH1F *hReco[weightsSize][NVAR], *hRecoCR[weightsSize][NVAR];
   for(int ivar =0; ivar<BND.size()+2; ivar++)
@@ -155,8 +160,9 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
     for(int iweight=0; iweight<weightsSize; iweight++)
     {
       TString weightName;
-      if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight+2];
-      //else weightName = pdf_weights[iweight];
+      if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight];
+      else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
+      else weightName = scale_weights[iweight];
 
       int sizeBins = NBINS[ivar];
       if(ivar>=10)
@@ -352,15 +358,18 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
 
       bool btagCut;
 	  btagCut = deepCSV;
+    float extra_weight(1);
     //Signal Region 2btags
 		if(recoCuts && btagCut && tTaggerCut)
 		{
 		  for(int ivar = 0; ivar < NVAR; ivar++)
 	  	{
-        for(int iweight=0; iweight<psWeights->size(); iweight++)
+        for(int iweight=0; iweight<weightsSize; iweight++)
         {
-          float psWeight_ = (*psWeights)[iweight];
-		      hReco[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
+          if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeights)[iweight];
+          else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeights)[iweight];
+          else extra_weight = (*scaleWeights)[iweight];
+		      hReco[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
         }
 		  }
 	  }
@@ -369,10 +378,12 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{
-        for(int iweight=0; iweight<psWeights->size(); iweight++)
+        for(int iweight=0; iweight<weightsSize; iweight++)
         {
-          float psWeight_ = (*psWeights)[iweight];
-		      hRecoCR[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*psWeight_);
+          if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeights)[iweight];
+          else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeights)[iweight];
+          else extra_weight = (*scaleWeights)[iweight];
+		      hRecoCR[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
         }
 		  }
 	  }
@@ -396,7 +407,9 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
   {
     TString weightName;
     if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight];
-    //else weightName = pdf_weights[iweight];
+    else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
+    else weightName = scale_weights[iweight];
+
     outFile[iweight] = TFile::Open(TString::Format("%s/%s/Histo_%s_%s.root", year.Data(), weightType.Data() ,ttbar_process.Data(), weightName.Data()), "RECREATE");
     outFile[iweight]->cd();
     //write them to file

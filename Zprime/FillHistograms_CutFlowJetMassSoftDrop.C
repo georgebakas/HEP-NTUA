@@ -22,7 +22,7 @@ TString globalYear;
 
 void FillHistograms_CutFlowJetMassSoftDrop(TString file_name, TString mass_name, TString year = "2016")
 {
-  bool isTTbar = true;
+  bool isTTbar = false;
   globalYear = year;
   initFilesMapping(isTTbar);
   cout<<"YEAR: "<<year<<endl;
@@ -337,7 +337,7 @@ void FillHistograms_CutFlowJetMassSoftDrop(TString file_name, TString mass_name,
 
 
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("%s/HistoCutFlowJetMassSoftDrop_%s", year.Data(),file_name.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/HistoCutFlowJetMassSoftDrop_newCuts_%s", year.Data(),file_name.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
