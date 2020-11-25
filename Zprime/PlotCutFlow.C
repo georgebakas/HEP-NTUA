@@ -20,7 +20,7 @@ void PlotCutFlow(TString year, TString infStr, TString histo_names)
   cout<<infStr<<endl;
   cout<<histo_names<<endl;
   gStyle->SetOptStat(0);
-  initFilesMapping();
+  initFilesMapping(false);
   setTDRStyle();
   float LUMI = luminosity["luminosity"+year];
   const int NVAR = 4;

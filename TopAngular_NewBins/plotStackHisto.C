@@ -18,7 +18,7 @@ int mass, width;
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
 
-void plotStackHisto(TString year, int mJJCut = 1500, int selMass= 2000, int selWidth=20)
+void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2000, int selWidth=20)
 {
   setTDRStyle();
   initFilesMapping();
@@ -129,10 +129,13 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   //add the Zprime contribution
   TFile *infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
+  //TFile *infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
   TH1F *hZ = (TH1F*)infZprime->Get(TString::Format("hReco_%s_%d", variable.Data(), mJJCut));
   hZ->SetLineColor(kGray);
-  hZ->SetMarkerColor(kGray);
-  hZ->SetMarkerStyle(5);
+  //hZ->SetMarkerColor(kCyan);
+  //hZ->SetMarkerStyle(5);
+  hZ->SetFillColor(kGray);
+  hZ->SetFillStyle(3021);
 
 
   leg->AddEntry(hData, "Data", "lep");
@@ -145,7 +148,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   hs->Draw("hist");
   hData->Draw("same E");
-  hZ->Draw("same E");
+  hZ->Draw("hist same E");
   hs->GetYaxis()->SetTitle("Number of Events");
   hs->SetMaximum(hs->GetMaximum()* 1.2);
   leg->Draw();

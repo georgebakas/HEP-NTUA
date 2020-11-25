@@ -65,7 +65,7 @@ void PlotCutFlow_JetMassSoftDrop(TString year, TString infStr, TString histo_nam
     }
     leg[ivar]->Draw();
     CMS_lumi(can[ivar], iPeriod, iPos);
-    //can[ivar]->Print(TString::Format("%s/CutFlowPlots_JetMassSoftDrop/CutFlow_%s_%s.pdf", year.Data(), vars[ivar].Data(), histo_names.Data()), "pdf");
+    can[ivar]->Print(TString::Format("%s/CutFlowPlots_JetMassSoftDrop/CutFlow_%s_%s.pdf", year.Data(), vars[ivar].Data(), histo_names.Data()), "pdf");
   }
 
 
