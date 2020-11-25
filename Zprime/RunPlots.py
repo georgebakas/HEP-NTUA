@@ -17,6 +17,6 @@ for ifile, file_name in enumerate(glob.iglob('{}/HistoCutFlowJetMassSoftDrop_*.r
     mass_name = split_file_in_underscores[2]
     width_name = split_file_in_underscores[3]
     histo_names = mass_name+"_"+width_name
-    #os.system(f'root -l -q \'PlotCutFlow.C(\"{year}\", \"{file_to_append[-1]}\",\"{histo_names}\")\'')
-    os.system(f'root -l -b -q \'PlotCutFlow_JetMassSoftDrop.C(\"{year}\", \"{file_to_append[-1]}\",\"{histo_names}\")\'')
+    os.system(f'root -l -q \'PlotCutFlow.C(\"{year}\", \"{file_to_append[-1]}\",\"{histo_names}\")\'')
+    #os.system(f'root -l -b -q \'PlotCutFlow_JetMassSoftDrop.C(\"{year}\", \"{file_to_append[-1]}\",\"{histo_names}\")\'')
     #break
