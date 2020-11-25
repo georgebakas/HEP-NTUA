@@ -52,6 +52,7 @@ void PlotCutFlow_JetMassSoftDrop(TString year, TString infStr, TString histo_nam
     for(int icut=0; icut<NCUTS; icut++)
     {
       hCut[ivar][icut] =(TH1F*)inf->Get(TString::Format("hReco_%s_%d",vars[ivar].Data(), icut));
+      hCut[ivar][icut]->Rebin(2);
       hCut[ivar][icut]->SetLineColor(cols[icut]);
       hCut[ivar][icut]->SetMarkerStyle(20+icut);
       hCut[ivar][icut]->SetMarkerColor(cols[icut]);

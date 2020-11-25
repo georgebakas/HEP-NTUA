@@ -10,7 +10,7 @@ year = sys.argv[1]
 allFiles = []
 histo_names = []
 
-for ifile, file_name in enumerate(glob.iglob('{}/HistoCutFlowJetMassSoftDrop*.root'.format(year), recursive=True)):
+for ifile, file_name in enumerate(glob.iglob('{}/HistoCutFlowJetMassSoftDrop_*.root'.format(year), recursive=True)):
     print('file: {}'.format(file_name))
     file_to_append = file_name.split('/')
     split_file_in_underscores = file_to_append[-1].split('_')

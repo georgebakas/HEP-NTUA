@@ -76,7 +76,7 @@ void correlation(RooRealVar *x, RooRealVar *y, RooFitResult *res, TString titleX
 	correlationCanvases.push_back(can);
 }
 
-void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBIN= 5)
+void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile= "", TString ALIAS="",TString CUT="", int REBIN= 5)
 {
   gROOT->ForceStyle();
 
@@ -89,8 +89,8 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   TH1F *h2b  = (TH1F*)inf->Get("hWt_mTop_2btag");
   //h2b->Rebin(2);
   // -----------------------------------------
-  TFile *fTemplatesBkg = TFile::Open(TString::Format("./MassFit/%s/templates_Bkg_100.root",year.Data()));
-  TFile *fTemplatesSig = TFile::Open(TString::Format("%s/%s.root",year.Data(), inputFile.Data()));
+  TFile *fTemplatesBkg = TFile::Open(TString::Format("../MassFit/%s/templates_Bkg_100.root",year.Data()));
+  TFile *fTemplatesSig = TFile::Open(year+"/"+weightType+"/"+inputFile);
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
 
@@ -216,7 +216,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
 
   //CMS_lumi(can2b,4,0);
 
-  can2b->Print(TString::Format("%s/plots/SimpleMassFit/", year.Data())+TString(can2b->GetName())+".pdf");
+  can2b->Print(TString::Format("%s/%s/plots/MassFitResult_%s", year.Data(), weightType.Data(), inputFile.Data())+".pdf");
 
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
@@ -228,7 +228,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   wOut->import(*yieldTT);
 	wOut->import(*kMassScale);
 	wOut->import(*kMassResol);
-  wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+"gbakas.root");
+  wOut->writeToFile(TString::Format("%s/%s/MassFitResults_%s",year.Data(), weightType.Data(), inputFile.Data()));
   //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
   //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");
 

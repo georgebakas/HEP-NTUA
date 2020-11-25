@@ -12,8 +12,8 @@ for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/gbakas/ZprimeT
     print('file: {}'.format(ifile))
     split_file_name = file_name.split('/')
     split_file_in_underscores = split_file_name[-1].split('_')
-    mass_name = split_file_in_underscores[1]
-    #print(mass_name)
+    mass_name = split_file_in_underscores[1] +'_'+split_file_in_underscores[2]
+    print(mass_name)
     #print(split_file_name[-1])
     os.system(f'root -l -b -q \'FillHistograms_CutFlowJetMassSoftDrop.C(\"{split_file_name[-1]}\",\"{mass_name}\",\"{year}\")\'')
     #break
