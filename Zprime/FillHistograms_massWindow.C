@@ -23,7 +23,7 @@ TString globalYear;
 void FillHistograms_massWindow(TString file_name, TString mass_name, TString year = "2016")
 {
   globalYear = year;
-  initFilesMapping();
+  initFilesMapping(false);
   cout<<"YEAR: "<<year<<endl;
   cout<<"file_name: "<<file_name<<endl;
   cout<<"mass_name: "<<mass_name<<endl;
