@@ -38,8 +38,8 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 
 	TFile *infData, *infDataReduced, *infQCD, *infQCDReduced;
 	TString str=year;
-	infData = TFile::Open(TString::Format("%s/Histo_Data_%s_100.root", str.Data(),str.Data()));
-	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root", str.Data(),str.Data()));
+	infData = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_100.root", str.Data(),str.Data()));
+	infDataReduced = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_100_reduced_UnequalBinning.root", str.Data(),str.Data()));
 
 	infQCD = TFile::Open(TString::Format("%s/Histo_QCD%s.root", str.Data(),bEnr.Data()));
 	infQCDReduced = TFile::Open(TString::Format("%s/Histo_QCD%s_reduced_UnequalBinning.root",str.Data(),bEnr.Data()));

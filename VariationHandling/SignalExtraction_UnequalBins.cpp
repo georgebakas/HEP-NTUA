@@ -92,14 +92,14 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     gStyle->SetOptStat(0);
     //open the signal file: get D(x) and Q(x) for every variable
-    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
+    TFile *infDataMedium = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //hQ has to be scaled to integral, because we need the shape
     cout<<"Data entries: "<<hD->GetEntries()<<endl;
     //open the file to get the Ryield
-    TFile *infRyield = TFile::Open(TString::Format("%s/Ryield/TransferFactor_HT300toInf_100_%s.root",year.Data(),variable.Data()));
+    TFile *infRyield = TFile::Open(TString::Format("../MassFit/%s/Ryield/TransferFactor_HT300toInf_100_%s.root",year.Data(),variable.Data()));
     //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
     TH1F *hRyield = (TH1F*)infRyield->Get("dataTransferFactor");
 
@@ -127,7 +127,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     cout<<variable<<endl;
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
     //open the file to get the Nbkg
-    TFile *fitFile = TFile::Open(TString::Format("%s/fitResults_%s.root", year.Data(), year.Data()));
+    TFile *fitFile = TFile::Open(TString::Format("%s/%s/MassFitResults_%s",year.Data(), weightType.Data(), inputFile.Data()));
     RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
     //float NQCD = Nbkg2Constants[TString::Format("Nbkg%s",year.Data())];
     //float NQCD_error = Nbkg2ConstantsErrors[TString::Format("Nbkg%s_error",year.Data())];
@@ -136,13 +136,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     float NQCD_error = value->getError();
 
     //Subdominant bkgs files
-    TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
+    TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //here I will import correction factors for QCD if needed...
 
     TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data()));
+    infSignalMC = TFile::Open(TString::Format("../MassFit/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data()));
     //else infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced_UnequalBinning.root", year.Data()));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
