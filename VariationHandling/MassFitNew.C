@@ -229,8 +229,6 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
 	wOut->import(*kMassScale);
 	wOut->import(*kMassResol);
   wOut->writeToFile(TString::Format("%s/%s/MassFitResults_%s",year.Data(), weightType.Data(), inputFile.Data()));
-  //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
-  //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");
 
   /*
   correlation(kQCD2b_0, nFitBkg2b, res, "kQCD2b ", "nFitBkg2b");
