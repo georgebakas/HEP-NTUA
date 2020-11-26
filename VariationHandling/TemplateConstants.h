@@ -10,6 +10,7 @@ map<TString, TString> eospath;
 map<int, TString> ps_weights;
 map<int, TString> pdf_weights;
 map<int, TString> scale_weights;
+map<TString, int> variableConstant;
 
 void initFilesMapping()
 {
@@ -72,6 +73,17 @@ void initFilesMapping()
 	scale_weights.insert(pair<int, TString>(3, "scale_5"));
 	scale_weights.insert(pair<int, TString>(4, "scale_7"));
 	scale_weights.insert(pair<int, TString>(5, "scale_9"));
+
+	variableConstant.insert(pair<TString, int>("mJJ",  0));
+	variableConstant.insert(pair<TString, int>("ptJJ", 1));
+	variableConstant.insert(pair<TString, int>("yJJ",  2));
+	variableConstant.insert(pair<TString, int>("jetPt0", 3));
+	variableConstant.insert(pair<TString, int>("jetPt1", 4));
+	variableConstant.insert(pair<TString, int>("jetY0", 5));
+	variableConstant.insert(pair<TString, int>("jetY1", 6));
+	variableConstant.insert(pair<TString, int>("cosTheta_0", 7));
+	variableConstant.insert(pair<TString, int>("cosTheta_1", 8));
+	variableConstant.insert(pair<TString, int>("chi", 9));
 
 
 }

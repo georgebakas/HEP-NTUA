@@ -18,7 +18,7 @@ int mass, width;
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
 
-void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2000, int selWidth=20)
+void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
 {
   setTDRStyle();
   initFilesMapping();
@@ -43,7 +43,7 @@ void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2000, int selW
   const int NVAR =4;
   TString varReco[NVAR]   = {"chi","cosTheta_0", "cosTheta_1", "mJJ"};
 
-  for(int ivar = 0; ivar< NVAR; ivar++)
+  for(int ivar = 0; ivar< 1; ivar++)
   {
     plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], mJJCut);
   }
