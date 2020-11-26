@@ -704,7 +704,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
     else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
     else weightName = scale_weights[iweight];
 
-    outFile[iweight] = TFile::Open(TString::Format("%s/Responses%s/HistoReduced_%s_%s.root", year.Data(), weightType.Data() ,ttbar_process.Data(), weightName.Data()), "RECREATE");
+    outFile[iweight] = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_%s_%s.root", year.Data(), weightType.Data() ,ttbar_process.Data(), weightName.Data()), "RECREATE");
     outFile[iweight]->cd();
       //write them to file
       for(int ivar = 0; ivar<NVAR; ivar++)
@@ -715,7 +715,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
       	acceptance_parton[iweight][ivar]->Write(TString::Format("AcceptanceParton_%s",varReco[ivar].Data()));
       	acceptance_particle[iweight][ivar]->Write(TString::Format("AcceptanceParticle_%s",varReco[ivar].Data()));
 
-      	hPartonResponse[iweight][ivar]->Write(TString::Format("hParticleReco_%s", varReco[ivar].Data()));
+      	hPartonResponse[iweight][ivar]->Write(TString::Format("hPartonResponse_%s", varReco[ivar].Data()));
       	hParticleResponse[iweight][ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
 
       }//end of ivar

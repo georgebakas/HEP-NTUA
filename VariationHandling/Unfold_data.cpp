@@ -29,7 +29,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-#include "TemplateConstantsUnfold.h"
+#include "TemplateConstants.h"
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
 TH1 *unfoldedOutput(TH2F *hResponse_, TH1F *hReco, float BND[], int sizeBins, TString variable);
@@ -65,13 +65,19 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod=1)
+void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreeProcesses = true, bool isParton = true, int unfoldMethod=1)
 {
   bool isNorm = false;
   year = inYear;
   initFilesMapping();
   setTDRStyle();
   gStyle->SetOptStat(0);
+
+  TString tempFileName;
+  if(dir.EqualTo("PDFWeights")) tempFileName = "pdf_"+inputFile;
+  else if (dir.EqualTo("ScaleWeights")) tempFileName = "scale_"+inputFile;
+  else tempFileName = inputFile;
+
 
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
@@ -94,13 +100,12 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
 
 
-  float LUMI = luminosity[year];
+  float LUMI = luminosity["luminosity"+year];
+  cout<<LUMI<<endl;
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile;
-  //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
-  //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
+
 
 
   //whether parton or particle, from the choice of the user
@@ -121,7 +126,73 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen", "genjetPt0", "genjetPt1","genjetY0", "genjetY1"};
   TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton", "partonPt0", "partonPt1","partonY0", "partonY1"};
 
+  //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
+  //handle responses efficiency, acceptance
   TH2F *hResponse[BND_reco.size()];
+  TEfficiency *efficiency[BND_reco.size()], *acceptance[BND_reco.size()];
+  if(isThreeProcesses)
+  {
+    TEfficiency *acc_had[BND_reco.size()], *acc_sem[BND_reco.size()], *acc_dil[BND_reco.size()];
+    TEfficiency *eff_had[BND_reco.size()], *eff_sem[BND_reco.size()], *eff_dil[BND_reco.size()];
+    TH2F *hResponse_had[BND_reco.size()], *hResponse_sem[BND_reco.size()], *hResponse_dil[BND_reco.size()];
+    TFile *inf_had, *inf_sem, *inf_dil;
+    cout<<TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic_%s.root", year.Data(), dir.Data(), tempFileName.Data())<<endl;
+    inf_had = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+    inf_sem = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+    inf_dil = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+
+    //get response matrix
+    for(int ivar = 0; ivar<BND_reco.size(); ivar++)
+    {
+
+      TString tempVar;
+      if(isParton)
+        tempVar = variableParton[ivar];
+      else
+        tempVar = variableGen[ivar];
+
+      acc_had[ivar] = (TEfficiency*)inf_had->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+      acc_sem[ivar] = (TEfficiency*)inf_sem->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+      acc_dil[ivar] = (TEfficiency*)inf_dil->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+
+      eff_had[ivar] = (TEfficiency*)inf_had->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+      eff_sem[ivar] = (TEfficiency*)inf_sem->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+      eff_dil[ivar] = (TEfficiency*)inf_dil->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+
+      hResponse_had[ivar] = (TH2F*)inf_had->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
+      hResponse_sem[ivar] = (TH2F*)inf_sem->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
+      hResponse_dil[ivar] = (TH2F*)inf_dil->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
+
+      hResponse[ivar] = (TH2F*)hResponse_had[ivar]->Clone();
+      hResponse[ivar]->Add(hResponse_sem[ivar]);
+      hResponse[ivar]->Add(hResponse_dil[ivar]);
+
+      efficiency[ivar] = (TEfficiency*)eff_had[ivar]->Clone();
+      efficiency[ivar]->Add(*eff_sem[ivar]);
+      efficiency[ivar]->Add(*eff_dil[ivar]);
+
+      acceptance[ivar] = (TEfficiency*)acc_had[ivar]->Clone();
+      acceptance[ivar]->Add(*acc_sem[ivar]);
+      acceptance[ivar]->Add(*acc_dil[ivar]);
+    }
+  }
+  else
+  {
+    TFile *effAccInf = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+    for(int ivar = 0; ivar<BND_reco.size(); ivar++)
+    {
+      TString tempVar;
+      if(isParton)
+        tempVar = variableParton[ivar];
+      else
+        tempVar = variableGen[ivar];
+
+      acceptance[ivar] = (TEfficiency*)effAccInf->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+      efficiency[ivar] = (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+      hResponse[ivar] = (TH2F*)effAccInf->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
+    }
+  }
+
   TUnfold *unf[BND_reco.size()];
   TH1 *hUnf[BND_reco.size()];
 
@@ -141,8 +212,8 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   else if(unfoldMethod ==3) unfMethodStr = "_RhoMethod";
   //TFile *gfile = TFile::Open("2016/output_2016_mcSig_nom_reduced.root");
   TFile *outf;
-  if(!isNorm) outf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
-
+  if(!isNorm) outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFile%s_%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
+  else outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFileNormalised%s_%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
@@ -155,6 +226,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
     float tempBNDGen[NBINS_GEN[ivar]+1];
     std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDGen);
+
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
     hSig_Init[ivar] = (TH1F*)signalFile->Get(TString::Format("hSignal_%s",variable[ivar].Data()));
 
@@ -163,7 +235,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     leg[ivar] = new TLegend(0.65,0.7,0.9,0.9);
 
     //set the new content and get acceptance
-    TEfficiency *acceptance =  (TEfficiency*)effAccInf->Get(TString::Format("Acceptance%s_%s",varParton.Data(), variable[ivar].Data()));
+
     cout<<"The variable is: "<<variable[ivar]<<endl;
 
 
@@ -171,12 +243,12 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     {
       float oldContent = hSig[ivar]->GetBinContent(j);
       float oldContentError = hSig[ivar]->GetBinError(j);
-      float acc = acceptance->GetEfficiency(j);
+      float acc = acceptance[ivar]->GetEfficiency(j);
       //cout<<"total: "<<(acceptance->GetTotalHistogram())->GetBinContent(j)<<endl;
       //cout<<"passed: "<<(acceptance->GetPassedHistogram())->GetBinContent(j)<<endl;
 
       //handle errors as well--> asymmetric error from acceptance
-      float accError = (acceptance->GetEfficiencyErrorLow(j) + acceptance->GetEfficiencyErrorUp(j))/2;
+      float accError = (acceptance[ivar]->GetEfficiencyErrorLow(j) + acceptance[ivar]->GetEfficiencyErrorUp(j))/2;
 
       //cout<<"bin: "<<j<<" hSig: "<<hSig[ivar]->GetBinContent(j)<<" ± "<<hSig[ivar]->GetBinError(j) <<endl;
       //cout<<"Input: "<<oldContent<<" ± "<<oldContentError<<endl;
@@ -197,8 +269,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       tempVar = variableParton[ivar];
     else
       tempVar = variableGen[ivar];
-    //get response matrix
-    hResponse[ivar] = (TH2F*)effAccInf->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
+
 
     cout<<"Response matrix integral: "<<hResponse[ivar]->Integral()<<endl;
     //this will be used to unfold result
@@ -238,7 +309,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       hErrorBefore[ivar]->SetBinContent(j,hSig[ivar]->GetBinError(j));
     }
 
-    TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+
 
     if(!variable[ivar].EqualTo("yJJ"))hErrorBefore[ivar]->Rebin(2);
     hErrorBefore[ivar]->SetLineColor(kBlue);
@@ -256,14 +327,14 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
-      float eff = efficiency->GetEfficiency(i);
+      float eff = efficiency[ivar]->GetEfficiency(i);
 
       if(eff >0)
       {
         float oldContent = hUnf[ivar]->GetBinContent(i);
 	      float newContent = hUnf[ivar]->GetBinContent(i)/eff;
 
-	      float effError = (efficiency->GetEfficiencyErrorLow(i) + efficiency->GetEfficiencyErrorUp(i))/2;
+	      float effError = (efficiency[ivar]->GetEfficiencyErrorLow(i) + efficiency[ivar]->GetEfficiencyErrorUp(i))/2;
         //cout<<"bin: "<<i<<" eff:"<<eff<<" ±"<<effError<<endl;
         float sqrt1 = TMath::Power((1/eff)*hUnf[ivar]->GetBinError(i),2);
         float sqrt2 = TMath::Power((hUnf[ivar]->GetBinContent(i)*effError),2)/TMath::Power(eff,4);
@@ -278,6 +349,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     //draw the unfolded and extrapolated with the mc result
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
     can[ivar]->cd();
+
     auto *closure_padRatio = new TPad("closure_pad2","closure_pad2",0.,0.,1.,0.3);
     closure_padRatio->Draw();
     closure_padRatio->SetTopMargin(0.05);
@@ -290,7 +362,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     closure_pad1->cd();
 
     //theory histogram
-    hTheory[ivar] = (TH1F*)efficiency->GetCopyTotalHisto();
+    hTheory[ivar] = (TH1F*)efficiency[ivar]->GetCopyTotalHisto();
 
     /* if(variable[ivar].EqualTo("jetY0") || variable[ivar].EqualTo("jetY1"))
     {
@@ -301,13 +373,13 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfFinal[ivar]= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s", variable[ivar].Data()));
     hTheoryFinal[ivar]= (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
     //this is differential cross section dsigma / dX  = S_i / L * dXi
-    hTheory[ivar]->Scale(1/luminosity[year], "width");
-    hUnf[ivar]->Scale(1/luminosity[year], "width");
+    hTheory[ivar]->Scale(1/LUMI, "width");
+    hUnf[ivar]->Scale(1/LUMI, "width");
 
     if(isNorm)
     {
-      hUnf[ivar]->Scale(luminosity[year]/hUnfFinal[ivar]->Integral());
-      hTheory[ivar]->Scale(luminosity[year]/hTheoryFinal[ivar]->Integral());
+      hUnf[ivar]->Scale(LUMI/hUnfFinal[ivar]->Integral());
+      hTheory[ivar]->Scale(LUMI/hTheoryFinal[ivar]->Integral());
     }
 
     hUnf[ivar]->SetLineColor(kBlue);
@@ -344,7 +416,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   	hUnf[ivar]->Draw("same");
   	leg[ivar]->Draw();
 
-  	if(!variable[ivar].Contains("jetY")) gPad->SetLogy();
+  	//if(!variable[ivar].Contains("jetY")) gPad->SetLogy();
 
   	closure_padRatio->cd();
   	hUnfTemp[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_%s", variable[ivar].Data()));
@@ -369,26 +441,23 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfTemp[ivar]->Draw();
     hUnfTemp[ivar]->GetXaxis()->SetLabelSize(0.09);
 
-    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity[year]/100);
+    lumi_13TeV = TString::Format("%0.1f fb^{-1}", LUMI/1000);
     //lumi_sqrtS = "13 TeV";
     int iPeriod = 4;
     int iPos = 0;
     writeExtraText=true;
     CMS_lumi(closure_pad1, iPeriod, iPos);
-    /*
-    if(!isNorm)
-    {
-      outf->cd();
-      hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
-      hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
-    	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
-      hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
-    	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
-      hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
-      can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    }
-    else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    */
+
+    outf->cd();
+    //hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+    //hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
+    hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+    hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
+    hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
+    hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+    //if(!isNorm) can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    //else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+    //outf->Close();
   }
 
 }
