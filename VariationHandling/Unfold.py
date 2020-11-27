@@ -27,7 +27,7 @@ for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*TTToHadronic*.root
         weight_sufix = dot_split[0]
         print(weight_sufix)
 
-        os.system(f'root -l \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
+        os.system(f'root -l -b -q \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
     else:
         #TT, and TTJets files are handled below
         split_file_name = file_name.split('/')

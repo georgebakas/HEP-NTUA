@@ -79,7 +79,7 @@ void initHistoNames()
   }
 }
 
-void ResponseMatrices(TString year = "2016", bool isNominalMC= false, float mJJCut=1000)
+void ResponseMatrices(TString year = "2016", bool isNominalMC= false, float mJJCut=1500)
 {
   globalIsNominalMC = isNominalMC;
   globalYear = year;
