@@ -217,8 +217,8 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
-    signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",
-                      year.Data(), variable[ivar].Data()));
+    signalFile = TFile::Open(TString::Format("/%s/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
+                      year.Data(), dir.Data(), variable[ivar].Data(), inputFile.Data()));
 
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
