@@ -40,7 +40,7 @@ void graphTransferFactorsSpecific(TString year = "2016", TString variable = "chi
   //_reduced_ is for mTop cut --> [120,220]GeV!!!!!!
    //extended is mJJ > 1000 GeV
 	infData = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1000.root", str.Data(),str.Data()));
-  //my Signal region, is the reduced with mJJ > 2000 GeV
+  //my Signal region, is the reduced with mJJ > 1500 GeV
 	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1500.root", str.Data(),str.Data()));
 
 	infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_reduced_1000.root", str.Data())); //this is now my SR

@@ -9,7 +9,7 @@
 #include "TRatioPlot.h"
 #include "../CMS_plots/tdrstyle.C"
 #include "../CMS_plots/CMS_lumi.C"
-
+#include "TemplateConstants.h"
 using std::cin;
 using std::cout;
 using std::endl;
@@ -34,9 +34,9 @@ void plotYearVar(TString year, TString recoVar = "chi")
   //1. Signal and Control Region files which contain everything with medium WP's
   TString yearSignalRegion = year;
   TString yearControlRegion = year;
-
+   initFilesMapping();
   //QCD files
-  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_2000.root",year.Data()));
+  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_1500.root",year.Data()));
   TH1F *hBkg_CR, *hBkg_SR;
   //for closure test
   hBkg_CR = (TH1F*)infBkg->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
@@ -131,8 +131,10 @@ void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar)
   //hRatio->GetXaxis()->SetTitleOffset(1);
   hRatio->Draw();
 
-  lumi_13TeV = "35.9 fb^{-1}";
+ // lumi_13TeV = "35.9 fb^{-1}";
   //lumi_sqrtS = "13 TeV";
+  TString lumi_str = TString::Format("%0.1f", luminosity[year]/1000);
+    lumi_13TeV = lumi_str+" fb^{-1}";
   int iPeriod = 4;
   int iPos = 10;
   writeExtraText=true;

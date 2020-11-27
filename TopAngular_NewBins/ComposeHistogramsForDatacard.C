@@ -14,7 +14,7 @@ using std::endl;
 
 
 
-void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1000)
+void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
 {
   initFilesMapping();
   //read the data file and get the histogram for our new SR
@@ -26,7 +26,7 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1000)
   //move on to ttbar
   //TFile *infTTfile = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_%d.root",year.Data(), mJJCut));
   //select the ttbar from extracted signal
-  TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement_2TeV/EqualBinning/SignalHistograms_chi.root",year.Data()));
+  TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_chi.root",year.Data()));
   //our new SR is: SR (old) + mJJ > mJJCut
   TH1F *hTT = (TH1F*)infTTfile->Get("hSignal_chi");
   //hTT->Scale(ttbarSigStrength[year]); //only to be used when looking at ttbar from mc
@@ -70,8 +70,11 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1000)
     {
       if(imass==2 && iw ==2) continue;
       float width = masses[imass]* widths[iw];
-      infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root",
-                          year.Data(),masses[imass],(int)width));
+
+      if(year.EqualTo("2016")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
+      else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
+      else infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
+
       infZprime->cd();
       hZprime = (TH1F*)infZprime->Get(TString::Format("hReco_chi_%d", mJJCut));
       outf_Zprime = new TFile(TString::Format("%s/Datacard/ZprimeFile_%d_%d_massCut%d.root",

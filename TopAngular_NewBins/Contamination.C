@@ -1,11 +1,12 @@
 #include "../CMS_plots/tdrstyle.C"
 #include "../CMS_plots/CMS_lumi.C"
+#include "TemplateConstants.h"
 
 void Contamination(TString year)
 {
   setTDRStyle();
   gStyle->SetOptStat(0);
-
+  initFilesMapping(); 
   //data template
   TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_1000.root", year.Data(),year.Data()));
   //qcd template
@@ -145,8 +146,10 @@ void Contamination(TString year)
     hRatio[ivar][1]->Draw("hist");
     hRatio[ivar][2]->Draw("hist same");
 
-    lumi_13TeV = "35.9 fb^{-1}";
+   // lumi_13TeV = "35.9 fb^{-1}";
     //lumi_sqrtS = "13 TeV";
+    TString lumi_str = TString::Format("%0.1f", luminosity[year]/1000);
+    lumi_13TeV = lumi_str+" fb^{-1}";
     int iPeriod = 4;
     int iPos = 1;
     writeExtraText=true;
