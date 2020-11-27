@@ -18,7 +18,7 @@ int mass, width;
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
 
-void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
+void plotStackHisto(TString year, int mJJCut = 1500, int selMass= 2500, int selWidth=25)
 {
   setTDRStyle();
   initFilesMapping();
@@ -35,7 +35,7 @@ void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2500, int selW
 
   //qcd mc file
   //thake qcd from mc and scale it accordingly
-  TFile *infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300ToInf_reduced_%d.root",year.Data(), mJJCut));
+  TFile *infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_reduced_%d.root",year.Data(), mJJCut));
 
   //subdominant file:
   TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_%d.root",year.Data(), mJJCut));
@@ -43,7 +43,7 @@ void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2500, int selW
   const int NVAR =4;
   TString varReco[NVAR]   = {"chi","cosTheta_0", "cosTheta_1", "mJJ"};
 
-  for(int ivar = 0; ivar< 1; ivar++)
+  for(int ivar = 0; ivar< NVAR-1; ivar++)
   {
     plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], mJJCut);
   }
@@ -128,7 +128,10 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->GetYaxis()->SetRangeUser(0, hData->GetMaximum() * 1.2);
 
   //add the Zprime contribution
-  TFile *infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
+  TFile *infZprime;
+  if(year.EqualTo("2016")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
+  else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
+  else infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
   //TFile *infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
   TH1F *hZ = (TH1F*)infZprime->Get(TString::Format("hReco_%s_%d", variable.Data(), mJJCut));
   hZ->SetLineColor(kGray);
@@ -174,7 +177,9 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetLabelSize(13);
   hNum->Draw();
 
-  lumi_13TeV = "35.9 fb^{-1}";
+  TString lumi_str = TString::Format("%0.1f", luminosity[year]/1000);
+  lumi_13TeV = lumi_str+" fb^{-1}";
+
   //lumi_sqrtS = "13 TeV";
   int iPeriod = 4;
   int iPos = 10;

@@ -143,13 +143,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
 
     cout<<"-------------------------"<<endl;
     cout<<"Ryield_data _2TeV(0): "<<Ryield_2TeV<<" ± "<<Ryield_error_2TeV<<endl;
-    cout<<"r_yield_correction _2TeV: "<<r_yield_correction_2TeV<<" ± "<<r_yield_correction_error_2TeV<<endl;
+    cout<<"r_yield_correction _1.5TeV: "<<r_yield_correction_2TeV<<" ± "<<r_yield_correction_error_2TeV<<endl;
 
     float corrected_rYield_2TeV = r_yield_correction_2TeV * Ryield_2TeV;
     float corrected_error_2TeV(0);
     corrected_error_2TeV = TMath::Sqrt(TMath::Power(r_yield_correction_2TeV*Ryield_error_2TeV,2) + TMath::Power(r_yield_correction_error_2TeV*Ryield_2TeV,2));
     //cout<<"Ryield_data (2): "<<hRyield->GetBinContent(2)<<endl;
-    cout<<"corrected Ryield _2TeV: "<<corrected_rYield_2TeV<<" ± "<<corrected_error_2TeV<<endl;
+    cout<<"corrected Ryield _1.5TeV: "<<corrected_rYield_2TeV<<" ± "<<corrected_error_2TeV<<endl;
     //------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
 
@@ -318,19 +318,19 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     int iPos = 10;
     writeExtraText=true;
     CMS_lumi(closure_pad1, iPeriod, iPos);
-    
+
     TString path;
     TString method = "simpleMassFit";
     TString strNorm = "";
     if(normalised) strNorm = "_Norm";
-    path = TString::Format("%s/FiducialMeasurement_2TeV/EqualBinning/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
+    path = TString::Format("%s/FiducialMeasurement_1.5TeV/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
     can->Print(path,"pdf");
 
 
     if(!normalised)
     {
       TFile *outf;
-      outf = new TFile(TString::Format("%s/FiducialMeasurement_2TeV/EqualBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
+      outf = new TFile(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
       hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
       hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
       hQ->Write(TString::Format("hQCD_%s", variable.Data())); //this is expected yield for QCD so I can use it with my stack
