@@ -217,7 +217,9 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
-    signalFile = TFile::Open(TString::Format("/%s/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
+    cout<<TString::Format("%s/%s/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
+                      year.Data(), dir.Data(), variable[ivar].Data(), inputFile.Data())<<endl;
+    signalFile = TFile::Open(TString::Format("%s/%s/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
                       year.Data(), dir.Data(), variable[ivar].Data(), inputFile.Data()));
 
     int sizeBins = NBINS[ivar];
@@ -458,6 +460,7 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
     //if(!isNorm) can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
     //else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
     //outf->Close();
+    signalFile->Close();
   }
 
 }
