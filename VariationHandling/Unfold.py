@@ -42,7 +42,7 @@ for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*TTToHadronic*.root
         print(weight_sufix)
         #(TString inYear, TString dir, TString inputFile, bool isThreeProcesses, bool isParton = true, int unfoldMethod=1)
         os.system(f'root -l -b -q \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
-    break
+    #break
 
 combined_files = ['TT','TTJets']
 #check for files of type TT_Tune

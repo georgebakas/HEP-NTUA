@@ -638,7 +638,7 @@ void ResponseMatrices(TString file_name, TString ttbar_process, TString year = "
   }//end of Nvars
 
 
-  TFile *outFile = TFile::Open(TString::Format("%s/Responses/ResponsesEfficiency_%s.root", year.Data(),file_name.Data()), "RECREATE");
+  TFile *outFile = TFile::Open(TString::Format("%s/Responses/ResponsesEfficiency_%s", year.Data(),file_name.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
