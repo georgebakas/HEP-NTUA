@@ -187,7 +187,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     std::cout<<"Entries: "<<NN<<std::endl;
 	std::vector<float> xRecoAll(0);
 
-    for(int iev=0;iev<NN;iev++)
+    for(int iev=0;iev<100;iev++)
     {
 		double progress = 10.0*iev/(1.0*NN);
       int k = TMath::FloorNint(progress);
@@ -342,6 +342,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
 		  for(int ivar = 0; ivar < NVAR; ivar++)
 	  	{
 		    hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+        cout<<iev<<" w:"<<genEvtWeight*bTagEvntWeight<<endl;
 		  }
 	  }
     //Control Region 0btag
@@ -363,7 +364,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
       hRecoCR[ivar]->Scale(weights*LUMI_CR);
     }//end of loop on all vars
 
-
+    /*
     TFile *outFile;
     outFile = TFile::Open(TString::Format("%s/bTagVariation/HistoReduced_%s_%s.root", year.Data(), ttbar_process.Data(), variation.Data()), "RECREATE");
     //outFile->cd();
@@ -372,7 +373,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     {
       hReco[ivar]->Write(TString::Format("hWt_%s_2btag", varReco[ivar].Data()));
       hRecoCR[ivar]->Write(TString::Format("hWt_%s_0btag", varReco[ivar].Data()));
-    }//end of ivar
+    }//end of ivar */
 
  }
 

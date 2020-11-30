@@ -11,6 +11,7 @@ map<int, TString> ps_weights;
 map<int, TString> pdf_weights;
 map<int, TString> scale_weights;
 map<TString, int> variableConstant;
+map<int, TString> vars;
 
 void initFilesMapping()
 {
@@ -84,6 +85,17 @@ void initFilesMapping()
 	variableConstant.insert(pair<TString, int>("cosTheta_0", 7));
 	variableConstant.insert(pair<TString, int>("cosTheta_1", 8));
 	variableConstant.insert(pair<TString, int>("chi", 9));
+
+	vars.insert(pair<int, TString>(0, "mJJ"));
+	vars.insert(pair<int, TString>(1, "ptJJ"));
+	vars.insert(pair<int, TString>(2, "yJJ"));
+	vars.insert(pair<int, TString>(3, "jetPt0"));
+	vars.insert(pair<int, TString>(4, "jetPt1"));
+	vars.insert(pair<int, TString>(5, "jetY0"));
+	vars.insert(pair<int, TString>(6, "jetY1"));
+	vars.insert(pair<int, TString>(7, "cosTheta_0"));
+	vars.insert(pair<int, TString>(8, "cosTheta_1"));
+	vars.insert(pair<int, TString>(9, "chi"));
 
 
 }

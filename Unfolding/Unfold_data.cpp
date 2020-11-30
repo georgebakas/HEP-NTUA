@@ -82,8 +82,6 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
 
-
-
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
                                                 {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
@@ -91,6 +89,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+
 
 
 
@@ -142,7 +141,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   //TFile *gfile = TFile::Open("2016/output_2016_mcSig_nom_reduced.root");
   TFile *outf;
   if(!isNorm) outf = TFile::Open(TString::Format("%s/%sMeasurements/Data/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
-
+  else outf = TFile::Open(TString::Format("%s/%sMeasurements/Data_Norm/OutputFile%s.root", year.Data(), varParton.Data(), unfMethodStr.Data()),"RECREATE");
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
@@ -222,6 +221,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 
+    /*
      //here get the errors:
     hErrorBefore[ivar] = (TH1F*)hSig[ivar]->Clone(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
     hErrorAfter[ivar] = (TH1F*)hUnf[ivar]->Clone(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
@@ -238,8 +238,6 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
       hErrorBefore[ivar]->SetBinContent(j,hSig[ivar]->GetBinError(j));
     }
 
-    TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
-
     if(!variable[ivar].EqualTo("yJJ"))hErrorBefore[ivar]->Rebin(2);
     hErrorBefore[ivar]->SetLineColor(kBlue);
     hErrorBefore[ivar]->SetMarkerColor(kBlue);
@@ -251,9 +249,9 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     canError[ivar] = new TCanvas(TString::Format("canError_%s",variable[ivar].Data()),TString::Format("canError_%s",variable[ivar].Data()) , 800,600);
     canError[ivar]->cd();
     hErrorAfter[ivar]->Draw("hist");
-    hErrorBefore[ivar]->Draw("hist same");
+    hErrorBefore[ivar]->Draw("hist same"); */
 
-
+    TEfficiency *efficiency =  (TEfficiency*)effAccInf->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
     for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       float eff = efficiency->GetEfficiency(i);
@@ -274,6 +272,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
         //cout<<"bin center "<<hUnf[ivar]->GetBinCenter(i)<<endl;
   	  }
     }
+
   //break;
     //draw the unfolded and extrapolated with the mc result
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
@@ -369,26 +368,28 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
     hUnfTemp[ivar]->Draw();
     hUnfTemp[ivar]->GetXaxis()->SetLabelSize(0.09);
 
-    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity[year]/100);
+    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity[year]/1000);
     //lumi_sqrtS = "13 TeV";
     int iPeriod = 4;
     int iPos = 0;
     writeExtraText=true;
     CMS_lumi(closure_pad1, iPeriod, iPos);
-    /*
+
+    outf->cd();
+    hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+    hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
+    hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
+    hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
+    //hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
+    //hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
+
     if(!isNorm)
-    {
-      outf->cd();
-      hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
-      hTheoryFinal[ivar]->Write(TString::Format("hTheoryFinal_%s", variable[ivar].Data()));
-    	hUnf[ivar]->Write(TString::Format("hUnfold_%s", variable[ivar].Data()));
-      hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
-    	hErrorAfter[ivar]->Write(TString::Format("hErrorAfter_%s", variable[ivar].Data()));
-      hErrorBefore[ivar]->Write(TString::Format("hErrorBefore_%s", variable[ivar].Data()));
       can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    }
-    else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    */
+    else
+      can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
+
+
+
   }
 
 }
