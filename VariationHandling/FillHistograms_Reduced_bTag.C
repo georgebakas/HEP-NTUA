@@ -156,7 +156,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
 	float weight = XSEC/norm;
 	weights = weight;
-
+  cout<<"norm: "<<norm<<endl;
 	//for parton matching
 	std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
 	std::vector<float> *jetMatchedDr = new std::vector<float>(0);
@@ -187,7 +187,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     std::cout<<"Entries: "<<NN<<std::endl;
 	std::vector<float> xRecoAll(0);
 
-    for(int iev=0;iev<100;iev++)
+    for(int iev=0;iev<100000;iev++)
     {
 		double progress = 10.0*iev/(1.0*NN);
       int k = TMath::FloorNint(progress);
@@ -339,10 +339,11 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     //Signal Region 2btags
 		if(recoCuts && btagCut && tTaggerCut)
 		{
-		  for(int ivar = 0; ivar < NVAR; ivar++)
+		  for(int ivar = 0; ivar < 1; ivar++)
 	  	{
+        double weights_temp = genEvtWeight * bTagEvntWeight;
 		    hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-        cout<<iev<<" w:"<<genEvtWeight*bTagEvntWeight<<endl;
+        cout<<genEvtWeight*bTagEvntWeight<<endl;
 		  }
 	  }
     //Control Region 0btag
@@ -360,6 +361,8 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
 
     for(int ivar =0; ivar<NVAR; ivar++)
     {
+      //cout<<ivar<<endl;
+      //cout<<"Integral before scaling: " <<hReco[ivar]->Integral()<<endl;
       hReco[ivar]->Scale(weights*LUMI);
       hRecoCR[ivar]->Scale(weights*LUMI_CR);
     }//end of loop on all vars

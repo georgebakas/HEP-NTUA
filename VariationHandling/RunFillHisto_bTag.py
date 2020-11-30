@@ -31,3 +31,5 @@ for var in variations:
         print(ifile)
         #os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\")\'')
         os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\")\'')
+        break
+    break
