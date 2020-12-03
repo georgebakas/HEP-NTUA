@@ -20,7 +20,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 TString globalYear;
 
-void FillHistograms_New_Reduced(TString file_name, TString ttbar_process, TString year = "2016")
+void FillHistograms_Reduced_SystematicsFiles(TString file_name, TString ttbar_process, TString year = "2016")
 {
   globalYear = year;
   initFilesMapping();
@@ -326,12 +326,20 @@ void FillHistograms_New_Reduced(TString file_name, TString ttbar_process, TStrin
 
 
 	  //---------------------------end of MATCHING---------------------------------------------------------
+    float dCSVScoreSub0[2], dCSVScoreSub1[2];
+    dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0];
+    dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
+    dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
+    dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
+
 	  bool recoCuts;
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
 	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
 	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
+
+    bool revertBtag = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
 
       bool btagCut;
 	  btagCut = deepCSV;
@@ -344,7 +352,7 @@ void FillHistograms_New_Reduced(TString file_name, TString ttbar_process, TStrin
 		  }
 	  }
     //Control Region 0btag
-    if(recoCuts && !btagCut && tTaggerCut)
+    if(recoCuts && revertBtag && tTaggerCut)
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{
@@ -364,7 +372,7 @@ void FillHistograms_New_Reduced(TString file_name, TString ttbar_process, TStrin
 
 
     TFile *outFile;
-    outFile = TFile::Open(TString::Format("%s/HistoReduced_%s", year.Data(),file_name.Data()), "RECREATE");
+    outFile = TFile::Open(TString::Format("%s/SystematicsFiles/HistoReduced_%s", year.Data(),file_name.Data()), "RECREATE");
     //outFile->cd();
     //write them to file
     for(int ivar = 0; ivar<NVAR; ivar++)

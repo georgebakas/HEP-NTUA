@@ -187,7 +187,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     std::cout<<"Entries: "<<NN<<std::endl;
 	std::vector<float> xRecoAll(0);
 
-    for(int iev=0;iev<100000;iev++)
+    for(int iev=0;iev<NN;iev++)
     {
 		double progress = 10.0*iev/(1.0*NN);
       int k = TMath::FloorNint(progress);
@@ -327,6 +327,12 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
 
 
 	  //---------------------------end of MATCHING---------------------------------------------------------
+    float dCSVScoreSub0[2], dCSVScoreSub1[2];
+    dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0];
+    dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
+    dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
+    dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
+
 	  bool recoCuts;
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -334,20 +340,22 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
 	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
 
-      bool btagCut;
+    bool revertBtag = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+
+    bool btagCut;
 	  btagCut = deepCSV;
     //Signal Region 2btags
 		if(recoCuts && btagCut && tTaggerCut)
 		{
-		  for(int ivar = 0; ivar < 1; ivar++)
+		  for(int ivar = 0; ivar < NVAR; ivar++)
 	  	{
         double weights_temp = genEvtWeight * bTagEvntWeight;
 		    hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-        cout<<genEvtWeight*bTagEvntWeight<<endl;
+        //cout<<genEvtWeight*bTagEvntWeight<<endl;
 		  }
 	  }
     //Control Region 0btag
-    if(recoCuts && !btagCut && tTaggerCut)
+    if(recoCuts && revertBtag && tTaggerCut)
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{
@@ -367,7 +375,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
       hRecoCR[ivar]->Scale(weights*LUMI_CR);
     }//end of loop on all vars
 
-    /*
+
     TFile *outFile;
     outFile = TFile::Open(TString::Format("%s/bTagVariation/HistoReduced_%s_%s.root", year.Data(), ttbar_process.Data(), variation.Data()), "RECREATE");
     //outFile->cd();
@@ -376,7 +384,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     {
       hReco[ivar]->Write(TString::Format("hWt_%s_2btag", varReco[ivar].Data()));
       hRecoCR[ivar]->Write(TString::Format("hWt_%s_0btag", varReco[ivar].Data()));
-    }//end of ivar */
+   }//end of ivar
 
  }
 

@@ -14,5 +14,6 @@ for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/gbakas/ttbar/t
     split_file_underscore = split_file_name[-1].split('_')
     print(split_file_underscore[0])
     print(split_file_name[-1])
-    os.system(f'root -l -b -q \'FillHistograms_New_Reduced.C(\"{split_file_name[-1]}\",\"{split_file_underscore[0]}\",\"{year}\")\'')
+    os.system(f'root -l -b -q \'FillHistograms_Extended_SystematicsFiles.C(\"{split_file_name[-1]}\",\"{split_file_underscore[0]}\",\"{year}\")\'')
+    #os.system(f'root -l -b -q \'FillHistograms_Reduced_SystematicsFiles.C(\"{split_file_name[-1]}\",\"{split_file_underscore[0]}\",\"{year}\")\'')
     #break
