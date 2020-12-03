@@ -20,7 +20,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 TString globalYear;
 
-void FillHistograms_New_Extended(TString file_name, TString ttbar_process, TString year = "2016")
+void FillHistograms_Extended_SystematicsFiles(TString file_name, TString ttbar_process, TString year = "2016")
 {
   globalYear = year;
   initFilesMapping();
@@ -323,6 +323,12 @@ void FillHistograms_New_Extended(TString file_name, TString ttbar_process, TStri
       xRecoAll.push_back((*mass_)[subleadingPt]);
 
 	  //---------------------------end of MATCHING---------------------------------------------------------
+    float dCSVScoreSub0[2], dCSVScoreSub1[2];
+    dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0];
+    dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
+    dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
+    dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
+
 	  bool recoCuts;
 	  bool massCut = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
@@ -330,7 +336,9 @@ void FillHistograms_New_Extended(TString file_name, TString ttbar_process, TStri
 	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
 					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
 
-      bool btagCut;
+    bool revertBtag = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+
+    bool btagCut;
 	  btagCut = deepCSV;
     //Signal Region 2btags
 		if(recoCuts && btagCut && tTaggerCut)
@@ -341,7 +349,7 @@ void FillHistograms_New_Extended(TString file_name, TString ttbar_process, TStri
 		  }
 	  }
     //Control Region 0btag
-    if(recoCuts && !btagCut && tTaggerCut)
+    if(recoCuts && revertBtag && tTaggerCut)
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{
@@ -361,7 +369,7 @@ void FillHistograms_New_Extended(TString file_name, TString ttbar_process, TStri
 
 
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("%s/Histo_%s", year.Data(),file_name.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/SystematicsFiles/Histo_%s", year.Data(),file_name.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
