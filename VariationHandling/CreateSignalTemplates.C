@@ -17,16 +17,17 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   XMIN = 50;
   XMAX = 300;
   TString tempFileName;
-  if(dir.EqualTo("PDFWeights")) tempFileName = "pdf_"+inputFile;
-  else if (dir.EqualTo("ScaleWeights")) tempFileName = "scale_"+inputFile;
-  else tempFileName = inputFile;
+  if(dir.EqualTo("PDFWeights")) tempFileName = "_pdf_"+inputFile;
+  else if (dir.EqualTo("ScaleWeights")) tempFileName = "_scale_"+inputFile;
+  else if (dir.EqualTo("Nominal")) tempFileName = "";
+  else tempFileName = "_"+inputFile;
 
 
   TFile *inf_had, *inf_sem, *inf_dil;
 
-  inf_had = TFile::Open(TString::Format("%s/%s/Histo_TTToHadronic_%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal Hadronic
-  inf_sem = TFile::Open(TString::Format("%s/%s/Histo_TTToSemiLeptonic_%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal SemiLeptonic
-  inf_dil = TFile::Open(TString::Format("%s/%s/Histo_TTTo2L2Nu_%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal 2L2Nu
+  inf_had = TFile::Open(TString::Format("%s/%s/Histo_TTToHadronic%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal Hadronic
+  inf_sem = TFile::Open(TString::Format("%s/%s/Histo_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal SemiLeptonic
+  inf_dil = TFile::Open(TString::Format("%s/%s/Histo_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal 2L2Nu
 
   //histograms to be added
   TH1F *h_had, *h_sem, *h_dil;

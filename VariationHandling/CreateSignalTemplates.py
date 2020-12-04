@@ -26,7 +26,12 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo_TTToHadronic*.root'.fo
         weight_sufix = dot_split[0]
         print(weight_sufix)
 
-        os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
+        #os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
+
+    elif weightType == 'Nominal':
+        weight_sufix = ""
+        #os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
+
     else:
         #TT, and TTJets files are handled below
         split_file_name = file_name.split('/')
@@ -40,7 +45,7 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo_TTToHadronic*.root'.fo
         weight_sufix = dot_split[0]
         print(weight_sufix)
 
-        os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
+    os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
 
 combined_files = ['TT','TTJets']
 #check for files of type TT_Tune

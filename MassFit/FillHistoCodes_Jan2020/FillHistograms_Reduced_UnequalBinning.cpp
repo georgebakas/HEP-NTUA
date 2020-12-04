@@ -24,6 +24,8 @@ TString eosPath;
 TString year;
 int selection;
 
+TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
+
 void initFileNames()
 {
 
@@ -394,7 +396,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
   cout<<"Reading "<<NN<<" entries"<<endl;
   for(int iev=0;iev<NN;iev++)
-  {  
+  {
     if(selection ==4 && year.EqualTo("2017") && f==1 && iev ==0) continue;
     double progress = 10.0*iev/(1.0*NN);
     int k = TMath::FloorNint(progress);
@@ -765,4 +767,15 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   XSEC.clear();
   histoNames.clear();
 
+}
+
+TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector)
+{
+  //define the combined Lorentz vector of ttbar
+  //TLorentzVector p4CombinedVector;
+  p4CombinedVector.SetPxPyPzE(p4_1.Px()+p4_2.Px(),p4_1.Py()+p4_2.Py(), p4_1.Pz()+p4_2.Pz(), p4_1.Energy()+p4_2.Energy());
+  //get boost from this vector
+  TVector3 TTbar_boostVector = p4CombinedVector.BoostVector();
+  p4CombinedVector.Boost(-TTbar_boostVector);
+  return -TTbar_boostVector;
 }
