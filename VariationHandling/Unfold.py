@@ -27,7 +27,9 @@ for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*TTToHadronic*.root
         weight_sufix = dot_split[0]
         print(weight_sufix)
 
-        os.system(f'root -l -b -q \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
+        #os.system(f'root -l -b -q \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
+    elif weightType == 'Nominal':
+        weight_sufix = ""
     else:
         #TT, and TTJets files are handled below
         split_file_name = file_name.split('/')
@@ -41,7 +43,8 @@ for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*TTToHadronic*.root
         weight_sufix = dot_split[0]
         print(weight_sufix)
         #(TString inYear, TString dir, TString inputFile, bool isThreeProcesses, bool isParton = true, int unfoldMethod=1)
-        os.system(f'root -l -b -q \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
+
+    os.system(f'root -l -b -q \'Unfold_data.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", true)\'')
     #break
 
 combined_files = ['TT','TTJets']
