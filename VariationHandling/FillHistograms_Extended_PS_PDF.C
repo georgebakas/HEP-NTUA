@@ -324,7 +324,7 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
    		    leadingPt = 1;
    		}
 
-		TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
+		  TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
     	p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
    		p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
   	  TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
@@ -354,7 +354,7 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
-    
+
 	  bool recoCuts;
 	  bool massCut = (*mass_)[0] > 50 && (*mass_)[0] < 300 && (*mass_)[1] > 50 && (*mass_)[1] < 300;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
