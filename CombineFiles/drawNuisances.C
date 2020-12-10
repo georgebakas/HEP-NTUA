@@ -32,7 +32,7 @@ void ComputeFraction(TH1D *h,TH2D *COV)
   cout<<"f = "<<f<<" +/- "<<ef<<", "<<ef/f<<endl;
 }
 //void drawNuisances(TString channel, int kbins, float XMIN, float XMAX, TString TITLE)
-void drawNuisances(TString channel="", float XMIN=0, float XMAX=12)/*, TString channel, int kbins, float XMIN, float XMAX)*/
+void drawNuisances(TString year, TString channel="", float XMIN=0, float XMAX=12)/*, TString channel, int kbins, float XMIN, float XMAX)*/
 {
   channel = "SR_C";
   TString TITLE = "#chi";
@@ -40,16 +40,16 @@ void drawNuisances(TString channel="", float XMIN=0, float XMAX=12)/*, TString c
   TString bins = "11";
   gROOT->ForceStyle();
 
-  TFile *inf = TFile::Open("fitDiagnostics_fit_result.root", "READ");
+  TFile *inf = TFile::Open(year+"/fitDiagnostics_fit_result.root", "READ");
 
   RooMsgService::instance().setSilentMode(kTRUE);
   RooMsgService::instance().setStreamStatus(0,kFALSE);
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
-  TH2D *hCorBin_p = (TH2D*)inf->Get("shapes_prefit/overall_total_covar");
-  TH2D *hCorBin_s = (TH2D*)inf->Get("shapes_fit_s/overall_total_covar");
-  TH1D *hSignal_p = (TH1D*)inf->Get("shapes_prefit/total_signal");
-  TH1D *hSignal_s = (TH1D*)inf->Get("shapes_fit_s/total_signal");
+  TH2D *hCorBin_p = (TH2D*)inf->Get("shapes_prefit/SR_C/overall_total_covar");
+  TH2D *hCorBin_s = (TH2D*)inf->Get("shapes_fit_s/SR_C/overall_total_covar");
+  TH1D *hSignal_p = (TH1D*)inf->Get("shapes_prefit/SR_C/total_signal");
+  TH1D *hSignal_s = (TH1D*)inf->Get("shapes_fit_s/SR_C/total_signal");
 
   //ComputeFraction(hSignal_p,hCorBin_p);
   // ComputeFraction(hSignal_s,hCorBin_s);

@@ -50,10 +50,7 @@ void Systematics(TString year)
   TString outputDirectory = TString::Format("%s/results/", year.Data());
   //CheckAndCreateDirectory(outputDirectory);
   const int NVAR = 7;
-  /* TString fileName = TString::Format("../Unfolding/%s/%sMeasurements/Data/OutputFile.root",
-                                     year.Data(),
-                                     isParton.Data()); */
-  TString fileName = TString::Format("%s/Unfolding_PSWeights/OutputFile%s_nom0.root",
+  TString fileName = TString::Format("%s/Unfolding_Nominal/OutputFile%s_.root",
                                      year.Data(),
                                      isParton.Data());
 
@@ -66,7 +63,6 @@ void Systematics(TString year)
     std::vector<TH1F *> groupHistogramsDown;
     std::vector<TH1F *> groupHistogramsSym;
 
-    //TH1F *hUnfoldedNominal = (TH1F *)fNominal->Get(TString::Format("hUnfold_%s", vars[i].Data()));
     TH1F *hUnfoldedNominal = (TH1F *)fNominal->Get(TString::Format("hUnfold_%s", vars[i].Data()));
 
     //initialize group histograms
