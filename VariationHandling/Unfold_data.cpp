@@ -74,9 +74,10 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
   gStyle->SetOptStat(0);
 
   TString tempFileName;
-  if(dir.EqualTo("PDFWeights")) tempFileName = "pdf_"+inputFile;
-  else if (dir.EqualTo("ScaleWeights")) tempFileName = "scale_"+inputFile;
-  else tempFileName = inputFile;
+  if(dir.EqualTo("PDFWeights")) tempFileName = "_pdf_"+inputFile;
+  else if (dir.EqualTo("ScaleWeights")) tempFileName = "_scale_"+inputFile;
+  else if (dir.EqualTo("Nominal")) tempFileName = "";
+  else tempFileName = "_"+inputFile;
 
 
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
@@ -136,10 +137,10 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
     TEfficiency *eff_had[BND_reco.size()], *eff_sem[BND_reco.size()], *eff_dil[BND_reco.size()];
     TH2F *hResponse_had[BND_reco.size()], *hResponse_sem[BND_reco.size()], *hResponse_dil[BND_reco.size()];
     TFile *inf_had, *inf_sem, *inf_dil;
-    cout<<TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic_%s.root", year.Data(), dir.Data(), tempFileName.Data())<<endl;
-    inf_had = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
-    inf_sem = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
-    inf_dil = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu_%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+    cout<<TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic%s.root", year.Data(), dir.Data(), tempFileName.Data())<<endl;
+    inf_had = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+    inf_sem = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+    inf_dil = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data()));
 
     //get response matrix
     for(int ivar = 0; ivar<BND_reco.size(); ivar++)
