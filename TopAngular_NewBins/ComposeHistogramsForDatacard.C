@@ -57,8 +57,8 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
 
 
   //get the Zprime files:
-  const int number_of_masses = 5;
-  int masses[] = {1000,2000,2500,3000,4000};
+  const int number_of_masses = 6;
+  int masses[] = {1000,2000,2500,3000,3500,4000};
   float widths[] = {.01, .1, .3};
   TFile *infZprime;
   TFile *outf_Zprime;
@@ -66,10 +66,13 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
 
   for (int imass = 0; imass<number_of_masses; imass++)
   {
+    if (masses[imass] == 3500 && year.EqualTo("2016")) continue;
     for(int iw = 0; iw<3; iw++)
     {
+
       if(imass==2 && iw ==2) continue;
       float width = masses[imass]* widths[iw];
+      cout<<"mass: "<<masses[imass]<<" width:"<<(int)width<<endl;
 
       if(year.EqualTo("2016")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
       else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
