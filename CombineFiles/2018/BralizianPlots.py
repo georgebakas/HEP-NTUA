@@ -88,11 +88,15 @@ def plotUpperLimits(file_names, values, width):
     # see CMS plot guidelines: https://ghm.web.cern.ch/ghm/plots/
 
     if width == 1:
-        #here you have 2000_20, 2500_25, 3000_30, 4000_40
-        cross_section = [0.165, 0.04715, 0.01495, 0.001908]
+        #here you have 2000_20, 2500_25, 3000_30, 3500_35, 4000_40
+        cross_section = [0.165, 0.04715, 0.01495, 0.005108, 0.001908]
+    elif width == 10:
+        #here we got 2000_200, 2500_250, 3000_300, 3500_350, 4000_400
+        cross_section = [0.01825, 0.005708, 0.002056, 0.0008352, 0.0003779]
     else:
-        #here we got 1000_300, 2000_200, 2500_250, 3000_300, 4000_400
-        cross_section = [0.1036, 0.01825, 0.005708, 0.002056, 0.0003779]
+        #30% we got 2000_600, 2500_750, 3000_900, 3500_1050, 4000_1200
+        cross_section = [0.006399, 0.002255, 0.0009167, 0.0004248, 0.0002186]
+
     N = len(file_names)
     yellow = TGraph(2*N)    # yellow band
     green = TGraph(2*N)     # green band
@@ -141,11 +145,11 @@ def plotUpperLimits(file_names, values, width):
     frame.GetYaxis().SetTitleOffset(0.9)
     frame.GetXaxis().SetNdivisions(508)
     frame.GetYaxis().CenterTitle(True)
-    frame.GetYaxis().SetTitle("95% upper limit on #sigma") #sigma_{SM}")
+    frame.GetYaxis().SetTitle("95% upper limit on #sigma #times BR")
     #frame.GetYaxis().SetTitle("95% upper limit on #sigma #times BR / (#sigma #times BR)_{SM}")
     #frame.GetXaxis().SetTitle("background systematic uncertainty [%]")
-    frame.GetXaxis().SetTitle("m_{Z} (GeV)")
-    frame.SetMinimum(0.1)
+    frame.GetXaxis().SetTitle("M_{Z} (GeV)")
+    frame.SetMinimum(0.01)
     frame.SetMaximum(max(up2s)*10.5)
     frame.GetXaxis().SetLimits(min(values),max(values))
 
@@ -212,10 +216,13 @@ def main(width):
     #values = [ ]
 
     if width == 1:
-        file_names=["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_4000_40"];
+        file_names = ["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_3500_35", "mZ_4000_40"]
+    elif width ==10:
+        file_names = ["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_3500_350", "mZ_4000_400"]
     else:
-        file_names=["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_4000_40"];
-    values = [2000, 2500, 3000, 4000];
+        file_names = ["mZ_2000_600", "mZ_2500_750", "mZ_3000_900", "mZ_3500_1050", "mZ_4000_1200"]
+
+    values = [2000, 2500, 3000, 3500, 4000];
 
     print(file_names)
     #createDataCardsThetaB(file_names)

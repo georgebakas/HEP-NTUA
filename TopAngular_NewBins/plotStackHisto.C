@@ -18,7 +18,7 @@ int mass, width;
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
 
-void plotStackHisto(TString year, int mJJCut = 1500, int selMass= 2500, int selWidth=25)
+void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
 {
   setTDRStyle();
   initFilesMapping();
@@ -43,7 +43,7 @@ void plotStackHisto(TString year, int mJJCut = 1500, int selMass= 2500, int selW
   const int NVAR =4;
   TString varReco[NVAR]   = {"chi","cosTheta_0", "cosTheta_1", "mJJ"};
 
-  for(int ivar = 0; ivar< NVAR-1; ivar++)
+  for(int ivar = 0; ivar< NVAR; ivar++)
   {
     plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], mJJCut);
   }
@@ -95,12 +95,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetLineColor(kBlack);
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
-/*
-  hData->Rebin(2);
-  hSub->Rebin(2);
-  hQCD->Rebin(2);
-  hTT->Rebin(2);
-*/
+
   THStack *hs = new THStack("Data vs MC", "Data vs MC;Top Angular Dists;Number of Events");
   hs->Add(hSub);
   hs->Add(hQCD);
@@ -120,12 +115,13 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   TPad *closure_pad1 = new TPad(TString::Format("cp1_%s",variable.Data()),TString::Format("cp2_%s",variable.Data()),0.,0.3,1.,1.);
   closure_pad1->Draw();
   closure_pad1->SetBottomMargin(0.01);
+  if(variable.EqualTo("mJJ")) closure_pad1->SetLogy();
   closure_pad1->cd();
 
   hData->GetYaxis()->SetTitleSize(20);
   hData->GetYaxis()->SetTitleFont(43);
   hData->GetYaxis()->SetTitleOffset(1.4);
-  hData->GetYaxis()->SetRangeUser(0, hData->GetMaximum() * 1.2);
+  hData->GetYaxis()->SetRangeUser(0.01, hData->GetMaximum() * 1.2);
 
   //add the Zprime contribution
   TFile *infZprime;
@@ -150,10 +146,10 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   cout<<"hZ integral: "<<hZ->Integral()<<endl;
 
   hs->Draw("hist");
-  hData->Draw("same E");
   hZ->Draw("hist same E");
+  hData->Draw("hist same E");
   hs->GetYaxis()->SetTitle("Number of Events");
-  hs->SetMaximum(hs->GetMaximum()* 1.2);
+  hs->SetMaximum(hs->GetMaximum()* 2);
   leg->Draw();
 
 
@@ -164,7 +160,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   TH1F *hNum = (TH1F*)hData->Clone("hNum");
   hNum->Divide(hDenom);
   hNum->SetTitle("");
-  hNum->GetYaxis()->SetRangeUser(0,3);
+  hNum->GetYaxis()->SetRangeUser(0.01,3);
   hNum->GetYaxis()->SetTitle("#frac{Data}{MC}");
   hNum->GetXaxis()->SetTitle(variable);
   hNum->GetYaxis()->SetTitleSize(20);
@@ -182,8 +178,8 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   //lumi_sqrtS = "13 TeV";
   int iPeriod = 4;
-  int iPos = 10;
-  writeExtraText=true;
+  int iPos = 0;
+  //writeExtraText=true;
   CMS_lumi(closure_pad1, iPeriod, iPos);
   can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%d_M%dW%d.pdf",year.Data(), variable.Data(), mJJCut, mass, width),"pdf");
 

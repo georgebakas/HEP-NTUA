@@ -36,7 +36,7 @@ void plotYearVar(TString year, TString recoVar = "chi")
   TString yearControlRegion = year;
    initFilesMapping();
   //QCD files
-  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_1500.root",year.Data()));
+  TFile *infBkg = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_2000.root",year.Data()));
   TH1F *hBkg_CR, *hBkg_SR;
   //for closure test
   hBkg_CR = (TH1F*)infBkg->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
