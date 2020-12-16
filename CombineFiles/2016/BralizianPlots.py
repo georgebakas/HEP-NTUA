@@ -7,7 +7,7 @@ ROOT.gROOT.SetBatch(ROOT.kTRUE)
 
 # CMS style
 CMS_lumi.cmsText = "CMS"
-CMS_lumi.extraText = "Preliminary"
+CMS_lumi.extraText = "Work in Progress"
 CMS_lumi.cmsTextSize = 0.65
 CMS_lumi.outOfFrame = True
 tdrstyle.setTDRStyle()
@@ -32,10 +32,11 @@ def createDataCardsThetaB(masses):
                        "process                           0           1           2            3",
                        "rate                              -1.0        -1.0        -1.0         -1.0",
                        "----------------------------------------------------------------------------",
-                       "yield_ttbar           lnN         -           -           -            1.5",
+                       "yield_ttbar            lnN         -           -           -            1.5",
                        "yield_qcd              lnN        -           1.5         -            -",
                        "yield_Subdominant      lnN        -           -          1.5            -",
-                       "* autoMCStats 10 0 1",
+                       "lumi_13TeV             lnN         -         1.025      1.025        1.025",
+                       "*  autoMCStats  10  1"
                       ]
 
     # make datacards for differents values of theta_B
@@ -54,6 +55,18 @@ def createDataCardsThetaB(masses):
 
     return 1
 
+# EXECUT FitDiagnostics
+def executFitDiagnostics(masses):
+
+    for mass in masses:
+        file_name = "datacard_chi_SR_"+mass+".txt"
+        fit_command = 'combine -M FitDiagnostics -d '+file_name+' -n _fit_result --saveShapes --saveWithUncertainties'
+        print ""
+        print ">>> " + fit_command
+        p = subprocess.Popen(fit_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            print line.rstrip("\n")
+        retval = p.wait()
 
 # EXECUTE datacards
 def executeDataCards(masses):
@@ -90,9 +103,13 @@ def plotUpperLimits(file_names, values, width):
     if width == 1:
         #here you have 2000_20, 2500_25, 3000_30, 4000_40
         cross_section = [0.1451, 0.04169, 0.01309, 0.001568]
-    else:
+    elif width ==10:
         #here we got 2000_200, 2500_250, 3000_300, 4000_400
-        cross_section = [0.005714, 0.005061, 0.001809, 0.0003247]
+        cross_section = [0.01592, 0.005061, 0.001809, 0.0003247]
+    else:
+        #30% for 2000_600, 3000_900, 4000_1200
+        cross_section = [0.005714, 0.0008196, 0.000193]
+
     N = len(file_names)
     yellow = TGraph(2*N)    # yellow band
     green = TGraph(2*N)     # green band
@@ -101,9 +118,16 @@ def plotUpperLimits(file_names, values, width):
 
     up2s = [ ]
     for i in range(len(file_names)):
+        if width == 30 and i ==1:
+            continue
+
         file_name = "higgsCombine."+file_names[i]+".AsymptoticLimits.mH120.root"
         limit = getLimits(file_name)
         limit = [x * cross_section[i] for x in limit]
+
+        for ilim in range(6):
+            print i, values[i], limit[ilim]
+
         up2s.append(limit[4])
         observed.SetPoint(  i,    values[i], limit[5] ) # observed
         yellow.SetPoint(    i,    values[i], limit[4] ) # + 2 sigma
@@ -204,7 +228,6 @@ def frange(start, stop, step):
         yield i
         i += step
 
-
 # MAIN
 def main(width):
 
@@ -212,15 +235,19 @@ def main(width):
     #values = [ ]
 
     if width == 1:
-        file_names=["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_4000_40"];
+        file_names=["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_4000_40"]
+    elif width == 10:
+        file_names=["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_4000_400"]
     else:
-        file_names=["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_4000_40"];
+        file_names = ["mZ_2000_600", "mZ_3000_900", "mZ_4000_1200"]
+
     values = [2000, 2500, 3000, 4000];
 
     print(file_names)
     #createDataCardsThetaB(file_names)
+    executFitDiagnostics(file_names)
     #executeDataCards(file_names)
-    plotUpperLimits(file_names, values, width)
+    #plotUpperLimits(file_names, values, width)
 
 
 

@@ -36,14 +36,13 @@ std::vector<TString> listFiles(const char *dirname="", const char *var="", const
    return list_of_files;
 }
 
-
 void Systematics_levels(TString year)
 {
   gStyle->SetOptStat(0);
   TString isParton = "Parton";
   initFilesMapping();
   TString baseDir = TString::Format("%s//results", year.Data());
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights"};
+  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
   std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange};
 
@@ -122,7 +121,7 @@ void Systematics_levels(TString year)
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("SystematicsFiles"))
+      if (variation.Contains("SystematicsFiles") || variation.Contains("PS"))
         group = 3;
       if (variation.Contains("PDF") || variation.Contains("PS") || variation.Contains("Scale"))
         group = 4;

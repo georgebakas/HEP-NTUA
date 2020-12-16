@@ -67,7 +67,7 @@ void SignalExtraction_SR2TeV(TString year, bool isNormalised)
 {
     setTDRStyle();
     normalised = isNormalised;
-    TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
+    TString vars[] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
 
     int selectedYear;
     if(year.EqualTo("2016")) selectedYear = 0;
@@ -92,7 +92,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
 
     gStyle->SetOptStat(0);
     //open the signal file: get D(x) and Q(x) for every variable
-    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1500.root", year.Data(), year.Data()));
+    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_2000.root", year.Data(), year.Data()));
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
@@ -165,13 +165,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     float NQCD_error = value->getError();
 
     //Subdominant bkgs files
-      TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_1500.root", year.Data()));
+      TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_2000.root", year.Data()));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //here I will import correction factors for QCD if needed...
 
     TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_1500.root", year.Data()));
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_2000.root", year.Data()));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
@@ -324,7 +324,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     TString strNorm = "";
     if(normalised) strNorm = "_Norm";
     path = TString::Format("%s/FiducialMeasurement_1.5TeV/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
-    can->Print(path,"pdf");
+    //can->Print(path,"pdf");
 
 
     if(!normalised)

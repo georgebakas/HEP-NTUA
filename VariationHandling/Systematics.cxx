@@ -42,8 +42,8 @@ void Systematics(TString year)
   gStyle->SetOptStat(0);
   TString isParton = "Parton";
   initFilesMapping();
-  TString baseDir = TString::Format("%s//results", year.Data());
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights"};
+  TString baseDir = TString::Format("%s/results", year.Data());
+  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
   std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange};
 
@@ -118,9 +118,9 @@ void Systematics(TString year)
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("SystematicsFiles"))
+      if (variation.Contains("SystematicsFiles") || variation.Contains("PS"))
         group = 3;
-      if (variation.Contains("PDF") || variation.Contains("PS") || variation.Contains("Scale"))
+      if (variation.Contains("PDF") || variation.Contains("Scale"))
         group = 4;
 
       cout<<variation<<" group: "<<group <<endl;
@@ -136,7 +136,7 @@ void Systematics(TString year)
                                    variationFiles[jfile].Data());
 
         TFile *f = TFile::Open(fileName);
-        cout<<fileName<<endl;
+        //cout<<fileName<<endl;
         if(fileName.EqualTo("2018/Unfolding_PDFWeights/OutputFileParton_pdf_35.root")) continue;
         TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfold_%s", vars[i].Data()));
 

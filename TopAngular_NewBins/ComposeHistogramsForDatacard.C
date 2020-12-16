@@ -14,7 +14,7 @@ using std::endl;
 
 
 
-void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
+void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 2000)
 {
   initFilesMapping();
   //read the data file and get the histogram for our new SR
