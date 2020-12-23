@@ -51,7 +51,7 @@ void CreateSignalTemplates_TT(TString year, TString dir, TString inputFile, TStr
     TAG = CUT+"_"+CAT;
     cout<<TAG<<endl;
     //---- then do the signal templates -------------
-    hMC_yield->Rebin(2);
+    //hMC_yield->Rebin(2);
     double error(0.0);
     float signal_yield, signal_error;
     signal_yield =  hMC_yield->IntegralAndError(1,hMC_yield->GetNbinsX(),error);

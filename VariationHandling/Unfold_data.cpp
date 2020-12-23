@@ -175,6 +175,23 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
       acceptance[ivar] = (TEfficiency*)acc_had[ivar]->Clone();
       acceptance[ivar]->Add(*acc_sem[ivar]);
       acceptance[ivar]->Add(*acc_dil[ivar]);
+
+      cout<<"----"<<variable[ivar]<<"----"<<endl;
+      cout<<"Integral responses: "<<hResponse[ivar]->Integral()<<endl;
+      cout<<"Entries responses: "<<hResponse[ivar]->GetEntries()<<endl;
+
+      TCanvas *can_acc, *can_eff;
+      if(variable[ivar].EqualTo("jetPt0"))
+      {
+        can_acc = new TCanvas("acc", "acc", 900, 600);
+        can_acc->cd();
+        acceptance[ivar]->Draw();
+
+        can_eff = new TCanvas("eff", "eff", 900, 600);
+        can_eff->cd();
+        efficiency[ivar]->Draw();
+
+      }
     }
   }
   else
@@ -213,8 +230,10 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
   else if(unfoldMethod ==3) unfMethodStr = "_RhoMethod";
   //TFile *gfile = TFile::Open("2016/output_2016_mcSig_nom_reduced.root");
   TFile *outf;
-  if(!isNorm) outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFile%s_%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
-  else outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFileNormalised%s_%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
+  if (dir.EqualTo("Nominal")) tempFileName = "_";
+
+  if(!isNorm) outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFile%s%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
+  else outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFileNormalised%s%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {

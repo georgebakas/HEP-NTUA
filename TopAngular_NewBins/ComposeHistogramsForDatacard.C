@@ -14,11 +14,11 @@ using std::endl;
 
 
 
-void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 2000)
+void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
 {
   initFilesMapping();
   //read the data file and get the histogram for our new SR
-  TString histoName = "hWt_chi_2btag_expYield";
+  TString histoName = "hWt_mJJ_2btag_expYield";
   TFile *infDataFile = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_%d.root",year.Data(), year.Data(), mJJCut));
   //our new SR is: SR (old) + mJJ > mJJCut
   TH1F *hData = (TH1F*)infDataFile->Get(histoName);
@@ -26,9 +26,9 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 2000)
   //move on to ttbar
   //TFile *infTTfile = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_%d.root",year.Data(), mJJCut));
   //select the ttbar from extracted signal
-  TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_chi.root",year.Data()));
+  TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_mJJ.root",year.Data()));
   //our new SR is: SR (old) + mJJ > mJJCut
-  TH1F *hTT = (TH1F*)infTTfile->Get("hSignal_chi");
+  TH1F *hTT = (TH1F*)infTTfile->Get("hSignal_mJJ");
   //hTT->Scale(ttbarSigStrength[year]); //only to be used when looking at ttbar from mc
 
   //get qcd
@@ -37,7 +37,7 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 2000)
   //TH1F *hQCD = (TH1F*)infQCDfile->Get(histoName);
   //I have written also the extracted qcd signal in the signal extraction file so take it from there
   //our new SR is: SR (old) + mJJ > mJJCut
-  TH1F *hQCD = (TH1F*)infTTfile->Get("hQCD_chi");
+  TH1F *hQCD = (TH1F*)infTTfile->Get("hQCD_mJJ");
 
   //move on to subdominant
   TFile *infSubFile = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_%d.root",year.Data(), mJJCut));
@@ -51,9 +51,9 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 2000)
 
   TFile *outf_processes = new TFile(TString::Format("%s/Datacard/ProcessesFile_%d.root", year.Data(),mJJCut), "RECREATE");
   outf_processes->cd();
-  hTT->Write("h_chi_ttbar");
-  hQCD->Write("h_chi_qcd");
-  hSub->Write("h_chi_Subdominant");
+  hTT->Write("h_mJJ_ttbar");
+  hQCD->Write("h_mJJ_qcd");
+  hSub->Write("h_mJJ_Subdominant");
 
 
   //get the Zprime files:
@@ -79,11 +79,11 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 2000)
       else infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
 
       infZprime->cd();
-      hZprime = (TH1F*)infZprime->Get(TString::Format("hReco_chi_%d", mJJCut));
+      hZprime = (TH1F*)infZprime->Get(TString::Format("hReco_mJJ_%d", mJJCut));
       outf_Zprime = new TFile(TString::Format("%s/Datacard/ZprimeFile_%d_%d_massCut%d.root",
                               year.Data(), masses[imass], (int)width, mJJCut), "RECREATE");
       outf_Zprime->cd();
-      hZprime->Write("h_chi_Zprime");
+      hZprime->Write("h_mJJ_Zprime");
     }
   }
 
