@@ -222,32 +222,31 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
                                        TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
                                        TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
 
-        /*
-        cout<<"bin: "<<i+1<<endl;
+        /*cout<<"bin: "<<i+1<<endl;
         cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
-        cout<<"oldContent * SF: "<<oldContent *SF[i]<<endl;
+        cout<<"oldContent * SF: "<<oldContent *SF[i]<<" with oldError * SF:"<<oldError*SF[i]<<endl;
         cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
-        cout<<"scale factor: "<<SF[i]<<endl; */
-
+        cout<<"scale factor: "<<SF[i]<<endl;
+        cout<<"new Content: "<<newContent<<" with error: "<<newError<<endl;*/
+        
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
-        //cout<<"newContent: "<<newContent<<" ± "<<newError<<endl;
     }
     //cout<<"-----"<<endl;
     hSignal->Add(hQ_rebinned,-1);
     hSignal->Add(hSub_rebinned,-1);
-    //cout<<hD_rebinned->Integral()<<endl;
-    /*
+
+    cout<<hD_rebinned->Integral()<<endl;
     cout<<"hSub int: "<<hSub_rebinned->Integral()<<endl;
     cout<<"hSub entries: "<<hSub_rebinned->GetEntries()<<endl;
     cout<<"hQCD int: "<<hQ_rebinned->Integral()<<endl;
     cout<<"hQCD entries: "<<hQ_rebinned->GetEntries()<<endl;
 
     cout<<"INTEGRAL FOR "<<variable<<" is: "<<hSignal->Integral()<<endl;
-    //cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl;
+    cout<<"ENTRIES FOR "<<variable<<" is: "<<hSignal->GetEntries()<<endl;
 
-    cout<<"-------"<<endl; */
+    cout<<"-------"<<endl;
     hSignal->SetLineColor(kBlue);
     //hSMC->SetLineColor(kRed);
     hSignal->SetMarkerStyle(20);
@@ -333,7 +332,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TString strNorm = "";
     if(normalised) strNorm = "_Norm";
     //path = TString::Format("%s/FiducialMeasurement/UnequalBinning/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
-    //can->Print(path,"pdf");
+    can->Print(path,"pdf");
 
 
     if(!normalised)
