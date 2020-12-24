@@ -38,7 +38,8 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
   cout<<"XSEC: "<<XSEC<<endl;
   std::vector< std::vector <Float_t> > const BND = {{1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                    {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+                                                    {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1},//|cosTheta*| subleading
+                                                    {1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}}; //mJJ 
 
   int NBINS[BND.size()];
   const int NVAR = 4;
@@ -48,34 +49,22 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
   TString varParticle[NVAR] = {"chiParticle", "cosThetaParticle_0", "cosThetaParticle_1", "mTTbarParton"};
 
   const int NWINDOWS=6;
-  int massWindows[NWINDOWS] = {1000,1500,2000,3000,4000,5000};
+  int massWindows[NWINDOWS] = {1000,1200,1400,1600,1800,2000};
 
   float weights;
   TH1F *hParton[NVAR][NWINDOWS], *hParticle[NVAR][NWINDOWS], *hReco[NVAR][NWINDOWS];
 
-  const int mJJbins = 50;
-  const int MJJ_UPPERLIMIT = 5500;
   	//declare the histograms
-
   for(int ivar =0; ivar<NVAR; ivar++)
   {
     for(int iwind =0; iwind<NWINDOWS; iwind++)
     {
-  		if(ivar<3)
-      {
-        int sizeBins = NBINS[ivar];
-        float tempBND[NBINS[ivar]+1];
-        std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
-  		  hParton[ivar][iwind] = new TH1F(TString::Format("hParton_%s_%d", varParton[ivar].Data(), massWindows[iwind]), TString::Format("hParton_%s_%d",varParton[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
-        hReco[ivar][iwind] = new TH1F(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]), TString::Format("hReco_%s_%d",varReco[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
-        hParticle[ivar][iwind] = new TH1F(TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
-      }
-      else
-      {
-        hParton[ivar][iwind] = new TH1F(TString::Format("hParton_%s_%d", varParton[ivar].Data(),massWindows[iwind]), TString::Format("hParton_%s_%d", varParton[ivar].Data(),massWindows[iwind]), mJJbins,massWindows[iwind], MJJ_UPPERLIMIT );
-        hReco[ivar][iwind] = new TH1F(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]), TString::Format("hReco_%s_%d",varReco[ivar].Data(),massWindows[iwind]), mJJbins,massWindows[iwind], MJJ_UPPERLIMIT );
-        hParticle[ivar][iwind] = new TH1F(TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), TString::Format("hParticle_%s_%d",varParticle[ivar].Data(),massWindows[iwind]), mJJbins,massWindows[iwind], MJJ_UPPERLIMIT );
-      }
+      int sizeBins = NBINS[ivar];
+      float tempBND[NBINS[ivar]+1];
+      std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
+  		hParton[ivar][iwind] = new TH1F(TString::Format("hParton_%s_%d", varParton[ivar].Data(), massWindows[iwind]), TString::Format("hParton_%s_%d",varParton[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
+      hReco[ivar][iwind] = new TH1F(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]), TString::Format("hReco_%s_%d",varReco[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
+      hParticle[ivar][iwind] = new TH1F(TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
 
       hParton[ivar][iwind]->Sumw2();
       hReco[ivar][iwind]->Sumw2();
