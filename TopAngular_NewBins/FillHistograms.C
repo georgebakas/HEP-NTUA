@@ -218,6 +218,7 @@ void FillHistograms(TString y="2016", int sel = 0, int massWindow =1000)
   const int NVAR = 4;
   const int chiSize =11;
   const int cosSize = 10;
+  const int mJJSize = 7;
 
   float selMvaCut=topTaggerCuts[year];
 
@@ -226,10 +227,11 @@ void FillHistograms(TString y="2016", int sel = 0, int massWindow =1000)
   cout<<"topTagger: "<<selMvaCut<<endl;
   cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
 
-  int NBINS[NVAR] = {chiSize, cosSize, cosSize};
+  int NBINS[NVAR] = {chiSize, cosSize, cosSize, mJJSize};
   std::vector< std::vector <Float_t> > const BND = {{1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                    {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+                                                    {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| subleading
+                                                    {1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}}; //mJJ
 
   TString varReco[NVAR]   = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
 
@@ -237,8 +239,6 @@ void FillHistograms(TString y="2016", int sel = 0, int massWindow =1000)
   TFile *inf;
   vector<float> weights(0);
 
- //number of checks: one for Top Tagger and one for DAK8
- const int nChecks = 2;
  //initialize the required histograms
  TH1F *hCR[listOfFiles.size()][NVAR];
  TH1F *hSR[listOfFiles.size()][NVAR];
@@ -331,25 +331,13 @@ void FillHistograms(TString y="2016", int sel = 0, int massWindow =1000)
   float xParton(0), xReco(0);
   std::vector<float> xRecoAll(0);
   //book the histograms
-  //histograms for Signal/QCD in CR
-  const int mJJbins = 50;
-  const int MJJ_UPPERLIMIT = 5500;
-
   for(int ivar =0; ivar< NVAR; ivar++)
   {
-    if(ivar < 3)
-    {
-      int sizeBins = NBINS[ivar];
-      float tempBND[NBINS[ivar]+1];
-      std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
-      hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-      hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
-    }
-    else
-    {
-      hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), mJJbins,massWindow, MJJ_UPPERLIMIT);
-      hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), mJJbins,massWindow, MJJ_UPPERLIMIT);
-    }
+    int sizeBins = NBINS[ivar];
+    float tempBND[NBINS[ivar]+1];
+    std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
+    hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
+    hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
   }
   //for matching
   std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
