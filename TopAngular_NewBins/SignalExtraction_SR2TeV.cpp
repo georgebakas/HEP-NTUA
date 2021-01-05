@@ -35,7 +35,7 @@ using std::endl;
 using namespace RooFit;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N);
-void SignalExtractionSpecific(TString year = "2016", TString variable = "chi");
+void SignalExtractionSpecific(TString year = "2016", TString variable = "chi", int mJJCut = 1200);
 bool normalised;
 
 TH1F *getRebinned(TH1F *h, float BND[], int N)
@@ -63,7 +63,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 }
 
-void SignalExtraction_SR2TeV(TString year, bool isNormalised)
+void SignalExtraction_SR2TeV(TString year, bool isNormalised, int mJJCut)
 {
     setTDRStyle();
     normalised = isNormalised;
@@ -76,13 +76,13 @@ void SignalExtraction_SR2TeV(TString year, bool isNormalised)
 
     for(int i=0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
-        SignalExtractionSpecific(year, vars[i]);
+        SignalExtractionSpecific(year, vars[i], mJJCut);
         //break;
     }
 }
 
 
-void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
+void SignalExtractionSpecific(TString year = "2016", TString variable = "chi", int mJJCut = 1200)
 {
     initFilesMapping();
     cout<<luminosity[year]<<endl;
@@ -92,7 +92,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
 
     gStyle->SetOptStat(0);
     //open the signal file: get D(x) and Q(x) for every variable
-    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1500.root", year.Data(), year.Data()));
+    TFile *infDataMedium = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_%d.root", year.Data(), year.Data(), mJJCut));
     //cout<<TString::Format("%s/Histo_Data_%s_100_reduced.root", year.Data(), year.Data())<<endl;
     TH1F *hD = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_2btag", variable.Data()));
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
@@ -129,7 +129,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     //------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     //open the file to get the Ryield for the SRA--> SR regions
-    TFile *infRyield_2TeV = TFile::Open(TString::Format("%s/Ryield/TransferFactor_%s_1.5TeV.root",year.Data(),variable.Data()));
+    TFile *infRyield_2TeV = TFile::Open(TString::Format("%s/Ryield/TransferFactor_%s_%d.root",year.Data(),variable.Data(), mJJCut));
     TH1F *hRyield_2TeV = (TH1F*)infRyield->Get("dataTransferFactor");
 
     float Ryield_2TeV = hRyield->GetBinContent(1);
@@ -165,13 +165,13 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     float NQCD_error = value->getError();
 
     //Subdominant bkgs files
-      TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_1500.root", year.Data()));
+      TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_%d.root", year.Data(), mJJCut));
     TH1F *hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSub_0 = (TH1F*)infSub->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //here I will import correction factors for QCD if needed...
 
     TFile *infSignalMC;
-    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_1500.root", year.Data()));
+    infSignalMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_%d.root", year.Data(), mJJCut));
     TH1F *hSMC = (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_2btag_expYield", variable.Data()));
     TH1F *hSMC_0= (TH1F*)infSignalMC->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
 
@@ -323,14 +323,14 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     TString method = "simpleMassFit";
     TString strNorm = "";
     if(normalised) strNorm = "_Norm";
-    path = TString::Format("%s/FiducialMeasurement_1.5TeV/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
+    path = TString::Format("%s/FiducialMeasurement/EqualBinning/fiducial_%s%s_%d.pdf", year.Data(), variable.Data(), strNorm.Data(), mJJCut);
     //can->Print(path,"pdf");
 
 
     if(!normalised)
     {
       TFile *outf;
-      outf = new TFile(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
+      outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms_%s_%d.root", year.Data(), variable.Data(), mJJCut), "RECREATE");
       hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
       hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
       hQ->Write(TString::Format("hQCD_%s", variable.Data())); //this is expected yield for QCD so I can use it with my stack

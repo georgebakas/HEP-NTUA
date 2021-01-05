@@ -14,7 +14,7 @@ using std::endl;
 
 
 
-void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
+void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1000)
 {
   initFilesMapping();
   //read the data file and get the histogram for our new SR
@@ -26,7 +26,7 @@ void ComposeHistogramsForDatacard(TString year="2016", int mJJCut = 1500)
   //move on to ttbar
   //TFile *infTTfile = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_%d.root",year.Data(), mJJCut));
   //select the ttbar from extracted signal
-  TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_mJJ.root",year.Data()));
+  TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms_mJJ_%d.root",year.Data(), mJJCut));
   //our new SR is: SR (old) + mJJ > mJJCut
   TH1F *hTT = (TH1F*)infTTfile->Get("hSignal_mJJ");
   //hTT->Scale(ttbarSigStrength[year]); //only to be used when looking at ttbar from mc

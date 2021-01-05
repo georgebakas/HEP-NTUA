@@ -13,21 +13,21 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-void graphTransferFactorsSpecific(TString year = "2016", TString variable = "jetPt0");
+void graphTransferFactorsSpecific(TString year = "2016", TString variable = "jetPt0", int mJJCut = 1200);
 
-void graphTransferFactors_2TeV(TString year = "2016")
+void graphTransferFactors_2TeV(TString year = "2016", int mJJCut = 1200)
 {
   const int NVAR = 4;
   TString vars[] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
   for(int ivar =0; ivar<sizeof(vars)/sizeof(vars[0]); ivar++)
   {
-    graphTransferFactorsSpecific(year, vars[ivar]);
+    graphTransferFactorsSpecific(year, vars[ivar], mJJCut);
     //break;
   }
 }
 
 
-void graphTransferFactorsSpecific(TString year = "2016", TString variable = "chi")
+void graphTransferFactorsSpecific(TString year = "2016", TString variable = "chi", int mJJCut = 1200)
 {
   gStyle->SetOptStat(0);
   TH1F *hfData;
@@ -40,11 +40,11 @@ void graphTransferFactorsSpecific(TString year = "2016", TString variable = "chi
   //_reduced_ is for mTop cut --> [120,220]GeV!!!!!!
    //extended is mJJ > 1000 GeV
 	infData = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1000.root", str.Data(),str.Data()));
-  //my Signal region, is the reduced with mJJ > 1500 GeV
-	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_1500.root", str.Data(),str.Data()));
+  //my Signal region, is the reduced with mJJ > %d GeV
+	infDataReduced = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_%d.root", str.Data(),str.Data(), mJJCut));
 
 	infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_reduced_1000.root", str.Data())); //this is now my SR
-	infQCDReduced = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_reduced_1500.root",str.Data())); //this is SR extension
+	infQCDReduced = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_reduced_%d.root",str.Data(), mJJCut)); //this is SR extension
 
 	TH1F *hData[2], *hDataReduced[2];
 	TH1F *hQCD[2], *hQCDReduced[2];
@@ -156,17 +156,17 @@ void graphTransferFactorsSpecific(TString year = "2016", TString variable = "chi
   	  //int year = 2016+i;
   	  //TString year = "2016";
   	  //now plot them Data
-  	  outF = new TFile(TString::Format("%s/Ryield/TransferFactor_%s_1.5TeV.root",year.Data(), variable.Data()), "RECREATE");
+  	  outF = new TFile(TString::Format("%s/Ryield/TransferFactor_%s_%d.root",year.Data(), variable.Data(), mJJCut), "RECREATE");
   	  hfData->SetTitle(TString::Format("R_{yield} transfer factor %s %s", year.Data(),variable.Data()));
 	     hfData->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
       hfData->SetMarkerStyle(marker[i]);
 	  hfData->SetMarkerColor(col[i]);
 	  hfData->SetLineColor(col[i]);
 	  hfData->GetYaxis()->SetTitleOffset(1.25);
-      hfData->GetYaxis()->SetRangeUser(0,.5);
+      hfData->GetYaxis()->SetRangeUser(0,1);
 	  can = new TCanvas(TString::Format("can_%s_%s", year.Data(),variable.Data()),TString::Format("can_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfData->Draw("hist e");
-	  can->Print(TString::Format("%s/Ryield/TransferFactor_%s_1.5TeV.pdf",year.Data(),variable.Data()),"pdf");
+	  can->Print(TString::Format("%s/Ryield/TransferFactor_%s_%d.pdf",year.Data(),variable.Data(), mJJCut),"pdf");
 
 	  hfData->Write("dataTransferFactor");
 	  //now plot them QCD
@@ -176,10 +176,10 @@ void graphTransferFactorsSpecific(TString year = "2016", TString variable = "chi
 	  hfQCD->SetMarkerColor(col[i]);
 	  hfQCD->SetLineColor(col[i]);
 	  hfQCD->GetYaxis()->SetTitleOffset(1.25);
-      hfQCD->GetYaxis()->SetRangeUser(0,.5);
+      hfQCD->GetYaxis()->SetRangeUser(0,1);
 	  canQCD = new TCanvas(TString::Format("canQCD_%s_%s", year.Data(),variable.Data()),TString::Format("canQCD_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfQCD->Draw("hist e");
-	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral_%s_1.5TeV.pdf",year.Data(), variable.Data()),"pdf");
+	  canQCD->Print(TString::Format("%s/Ryield/TransferFactor_ClosureIntegral_%s_%d.pdf",year.Data(), variable.Data(), mJJCut),"pdf");
 
 	  hfQCD->Write("ClosureTest_TransferFactor");
 
