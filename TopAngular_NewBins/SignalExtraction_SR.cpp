@@ -64,7 +64,7 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 void SignalExtraction_SR(TString year, bool isNormalised)
 {
     normalised = isNormalised;
-    TString vars[] = {"chi", "cosTheta_0", "cosTheta_1"};
+    TString vars[] = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
 
     int selectedYear;
     if(year.EqualTo("2016")) selectedYear = 0;
@@ -309,16 +309,17 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "chi")
     TString method = "simpleMassFit";
     TString strNorm = "";
     if(normalised) strNorm = "_Norm";
-    path = TString::Format("%s/FiducialMeasurement/EqualBinning/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
+    path = TString::Format("%s/FiducialMeasurement/EqualBinning/fiducial_%s%s_1000.pdf",year.Data(),variable.Data(), strNorm.Data());
     can->Print(path,"pdf");
 
 
     if(!normalised)
     {
       TFile *outf;
-      outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
+      outf = new TFile(TString::Format("%s/FiducialMeasurement/EqualBinning/SignalHistograms_%s_1000.root",year.Data(),variable.Data()), "RECREATE");
       hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
       hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
+      hQ->Write(TString::Format("hQCD_%s", variable.Data())); //this is expected yield for QCD so I can use it with my stack
       outf->Close();
     }
     cout<<variable.Data()<<endl;
