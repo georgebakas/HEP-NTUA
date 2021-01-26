@@ -14,15 +14,15 @@ tdrstyle.setTDRStyle()
 
 
 # CREATE datacards
-def createDataCardsThetaB(masses):
+def createDataCardsThetaB(masses, mass_cut):
 
     datacard_lines = [ "imax * number of bins",
                        "jmax * number of processes minus 1",
                        "kmax * number of nuisance parameters",
                        "----------------------------------------------------------------------------",
-                       "shapes *         SR_C       ProcessesFile_1500.root h_chi_$PROCESS",
+                       "shapes *         SR_C       ProcessesFile_"+mass_cut+".root h_chi_$PROCESS",
                        "shapes Zprime    SR_C       ",
-                       "shapes data_obs  SR_C       DataFile_1500.root h_Data",
+                       "shapes data_obs  SR_C       DataFile_"+mass_cut+".root h_Data",
                        "----------------------------------------------------------------------------",
                        "bin          SR_C",
                        "observation  -1.0",
@@ -41,17 +41,17 @@ def createDataCardsThetaB(masses):
 
     # make datacards for differents values of theta_B
     for mass in masses:
-        datacard = open("datacard_chi_SR_"+mass+".txt", 'w')
+        datacard = open("datacard_chi_SR_"+mass+"_cut_"+mass_cut+".txt", 'w')
         for iline, line in enumerate(datacard_lines):
             if(iline == 5):
-                 rootfile = "ZprimeFile"+mass+"_massCut1500.root"
+                 rootfile = "ZprimeFile"+mass+"_massCut"+mass_cut+".root"
                  rootfile = rootfile.replace("ZprimeFilemZ", "ZprimeFile")
                  print rootfile
                  datacard.write(line+"\t"+rootfile+" h_chi_$PROCESS \n")
             else:
                 datacard.write(line+"\n")
         datacard.close()
-        print "datacard_chi_SR_"+mass+".txt"
+        print "datacard_chi_SR_"+mass+"_cut_"+mass_cut+".txt"
 
     return 1
 
@@ -69,11 +69,11 @@ def executFitDiagnostics(masses):
         retval = p.wait()
 
 # EXECUTE datacards
-def executeDataCards(masses):
+def executeDataCards(masses, mass_cut):
 
     for mass in masses:
-        file_name = "datacard_chi_SR_"+mass+".txt"
-        combine_command = "combine -M AsymptoticLimits -d "+file_name+" -n ."+mass
+        file_name = "datacard_chi_SR_"+mass+"_cut_"+mass_cut+".txt"
+        combine_command = "combine -M AsymptoticLimits -d "+file_name+" -n ."+mass+"Cut"+mass_cut
         print ""
         print ">>> " + combine_command
         p = subprocess.Popen(combine_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -97,7 +97,7 @@ def getLimits(file_name):
 
 
 # PLOT upper limits
-def plotUpperLimits(file_names, values, width):
+def plotUpperLimits(file_names, values, width, mass_cut):
     # see CMS plot guidelines: https://ghm.web.cern.ch/ghm/plots/
 
     if width == 1:
@@ -121,7 +121,7 @@ def plotUpperLimits(file_names, values, width):
         if width == 30 and i ==1:
             continue
 
-        file_name = "higgsCombine."+file_names[i]+".AsymptoticLimits.mH120.root"
+        file_name = "higgsCombine."+file_names[i]+"Cut"+mass_cut+".AsymptoticLimits.mH120.root"
         limit = getLimits(file_name)
         limit = [x * cross_section[i] for x in limit]
 
@@ -169,8 +169,9 @@ def plotUpperLimits(file_names, values, width):
     #frame.GetYaxis().SetTitle("95% upper limit on #sigma #times BR / (#sigma #times BR)_{SM}")
     #frame.GetXaxis().SetTitle("background systematic uncertainty [%]")
     frame.GetXaxis().SetTitle("M_{Z} (GeV)")
-    frame.SetMinimum(0.01)
-    frame.SetMaximum(max(up2s)*10.5)
+    frame.SetMinimum(0.05)
+    #frame.SetMaximum(max(up2s))
+    frame.SetMaximum(5)
     frame.GetXaxis().SetLimits(min(values),max(values))
 
     yellow.SetFillColor(ROOT.kOrange)
@@ -199,10 +200,10 @@ def plotUpperLimits(file_names, values, width):
     ROOT.gPad.SetTicks(1,1)
     frame.Draw('sameaxis')
 
-    x1 = 0.15
+    x1 = 0.6
     x2 = x1 + 0.24
-    y2 = 0.76
-    y1 = 0.60
+    y2 = 0.81
+    y1 = 0.65
     legend = TLegend(x1,y1,x2,y2)
     legend.SetFillStyle(0)
     legend.SetBorderSize(0)
@@ -229,7 +230,7 @@ def frange(start, stop, step):
         i += step
 
 # MAIN
-def main(width):
+def main(width, mass_cut):
 
     #labels = [ ]
     #values = [ ]
@@ -241,17 +242,35 @@ def main(width):
     else:
         file_names = ["mZ_2000_600", "mZ_3000_900", "mZ_4000_1200"]
 
-    values = [2000, 2500, 3000, 4000];
+    values = [2000, 2500, 3000, 4000]
 
     print(file_names)
-    #createDataCardsThetaB(file_names)
-    executFitDiagnostics(file_names)
-    #executeDataCards(file_names)
-    #plotUpperLimits(file_names, values, width)
+    #createDataCardsThetaB(file_names, mass_cut)
+    #executFitDiagnostics(file_names)
+    #executeDataCards(file_names, mass_cut)
+    plotUpperLimits(file_names, values, width, mass_cut)
 
+def execute_all_masses(width):
+
+    if width == 1:
+        file_names=["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_4000_40"]
+    elif width == 10:
+        file_names=["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_4000_400"]
+    else:
+        file_names = ["mZ_2000_600", "mZ_3000_900", "mZ_4000_1200"]
+
+    values = [2000, 2500, 3000, 4000];
+
+    mJJ_cuts = ['1000', '1200', '1400', '1600', '1800']
+
+    for mJJCut in mJJ_cuts:
+        executeDataCards(file_names, mJJCut)
 
 
 if __name__ == '__main__':
    width = int(sys.argv[1])
+   mass_cut = sys.argv[2]
    print type(width)
-   main(width)
+   print mass_cut
+   main(width, mass_cut)
+   #execute_all_masses(width)
