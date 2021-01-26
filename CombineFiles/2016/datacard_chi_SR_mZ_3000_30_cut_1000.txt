@@ -1,0 +1,21 @@
+imax * number of bins
+jmax * number of processes minus 1
+kmax * number of nuisance parameters
+----------------------------------------------------------------------------
+shapes *         SR_C       ProcessesFile_1000.root h_chi_$PROCESS
+shapes Zprime    SR_C       	ZprimeFile_3000_30_massCut1000.root h_chi_$PROCESS 
+shapes data_obs  SR_C       DataFile_1000.root h_Data
+----------------------------------------------------------------------------
+bin          SR_C
+observation  -1.0
+----------------------------------------------------------------------------
+bin                               SR_C        SR_C        SR_C         SR_C
+process                           Zprime      qcd         Subdominant  ttbar
+process                           0           1           2            3
+rate                              -1.0        -1.0        -1.0         -1.0
+----------------------------------------------------------------------------
+yield_ttbar            lnN         -           -           -            1.5
+yield_qcd              lnN        -           1.5         -            -
+yield_Subdominant      lnN        -           -          1.5            -
+lumi_13TeV             lnN         -         1.025      1.025        1.025
+*  autoMCStats  10  1

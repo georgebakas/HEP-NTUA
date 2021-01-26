@@ -3,7 +3,7 @@ jmax * number of processes minus 1
 kmax * number of nuisance parameters
 ----------------------------------------------------------------------------
 shapes *         SR_C       ProcessesFile_1500.root h_chi_$PROCESS
-shapes Zprime    SR_C       ZprimeFile_3500_1050_massCut1500.root h_chi_$PROCESS
+shapes Zprime    SR_C       	ZprimeFile_3500_1050_massCut1500.root h_chi_$PROCESS 
 shapes data_obs  SR_C       DataFile_1500.root h_Data
 ----------------------------------------------------------------------------
 bin          SR_C
@@ -17,4 +17,5 @@ rate                              -1.0        -1.0        -1.0         -1.0
 yield_ttbar           lnN         -           -           -            1.5
 yield_qcd              lnN        -           1.5         -            -
 yield_Subdominant      lnN        -           -          1.5            -
-* autoMCStats 10 0 1
+lumi_13TeV             lnN         -         1.025      1.025        1.025
+*  autoMCStats  10  1
