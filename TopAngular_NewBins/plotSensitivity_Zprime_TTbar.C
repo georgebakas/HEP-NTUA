@@ -16,7 +16,7 @@ using std::endl;
 #include "TemplateConstants.h"
 int mass, width;
 
-void plotStackSensitivity_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
+void plotStackSensitivity_Variable(TString year, TFile *infTT, TString variable, int mJJCut);
 
 void plotSensitivity_Zprime_TTbar(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
 {
@@ -36,12 +36,12 @@ void plotSensitivity_Zprime_TTbar(TString year, int mJJCut = 2000, int selMass= 
 
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
-    plotStackSensitivity_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], mJJCut);
+    plotStackSensitivity_Variable(year, infTT, varReco[ivar], mJJCut);
   }
 }
 
 
-void plotStackSensitivity_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut)
+void plotStackSensitivity_Variable(TString year, TFile *infTT, TString variable, int mJJCut)
 {
   initFilesMapping();
   //now get the histograms
