@@ -15,7 +15,7 @@ using std::endl;
 void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "partonPt0", TString particleVar = "genjetPt0",
 					 bool isEqual = true, bool isNominal = true);
 
-void compare16_17_18(bool isEqual, bool isNominal)
+void compare16_17_18(bool isEqual = false, bool isNominal = true)
 {
   const int NVAR =7;
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"};
@@ -49,8 +49,8 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    //TEfficiency *eff16[2];
 
    eff[0] = TFile::Open(TString::Format("./2016/%s/ResponsesEfficiency%s_2016.root",binning.Data(), nominal.Data()));
-   eff[1] = TFile::Open(TString::Format("./2017/%s/ResponsesEfficiency%s_2017.root",binning.Data(), nominal.Data()));
-   eff[2] = TFile::Open(TString::Format("./2018/%s/ResponsesEfficiency%s_2018.root",binning.Data(), nominal.Data()));
+   eff[1] = TFile::Open(TString::Format("./UL2017/%s/ResponsesEfficiency%s_2017.root",binning.Data(), nominal.Data()));
+   eff[2] = TFile::Open(TString::Format("./UL2018/%s/ResponsesEfficiency%s_2018.root",binning.Data(), nominal.Data()));
 
    TFile *oldInf[2];
    oldInf[0] = TFile::Open("PartonEfficiencyAll_July19.root");
@@ -163,7 +163,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
       //if(i==0)gPad->Range(xmin,0,xmax,0.2);
       //else gPad->Range(xmin,0,xmax,0.4);
-	   can_eff[i]->Print(TString::Format("plots%s/%s/%s/Efficiency_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+	   can_eff[i]->Print(TString::Format("plots%s_UL/%s/%s/Efficiency_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
 
 	   can_acc[i] = new TCanvas(TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   acc18[i]->SetTitle(TString::Format("%s Acceptance '16,'17,'18 %s;%s (GeV);Acceptance",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));
@@ -179,7 +179,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 		graphAcc->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 		gPad->Update();
 
-	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
+	   can_acc[i]->Print(TString::Format("plots%s_UL/%s/%s/Acceptance_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
    }
 
 
@@ -211,7 +211,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
-   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrixBtaggingSF%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
+   		canResponse[iy][i]->Print(TString::Format("UL%s/%s/%s/%sResponseMatrixBtaggingSF%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
    	}
    }
 

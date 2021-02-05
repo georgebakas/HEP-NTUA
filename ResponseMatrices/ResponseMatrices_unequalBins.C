@@ -77,7 +77,7 @@ void initHistoNames()
   }
 }
 
-void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
+void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=true)
 {
   globalIsNominalMC = isNominalMC;
   globalYear = year;
@@ -665,7 +665,7 @@ for(int f=0; f<fileNames.size(); f++)
   TFile *outFile;
   TString nominal ="";
   if(isNominalMC) nominal = "NominalMC";
-  outFile = TFile::Open(TString::Format("%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("UL%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
