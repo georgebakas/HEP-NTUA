@@ -23,9 +23,9 @@ map<TString, float>BNDmax;
 void initFilesMapping()
 {
 
-	map<TString, TString> files2016 = {{"TTHadronic_0","TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-									   {"TTSemiLeptonic_0","TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-									   {"TTTo2L2Nu_0","TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root"}};
+	map<TString, TString> files2016 = {{"TTHadronic_0","TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									   {"TTSemiLeptonic_0","TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									   {"TTTo2L2Nu_0","TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
 
 	map<TString, TString> files2017 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
@@ -35,26 +35,31 @@ void initFilesMapping()
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"}};
 
-	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016/Signal/"));
+	eospath.insert(pair<TString,TString>("2016_postVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/"));
+	eospath.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Signal/"));
 	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/"));
 	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/"));
 
-	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
+	files.insert(pair<TString, map<TString, TString>>("2016_postVFP", files2016));
+	files.insert(pair<TString, map<TString, TString>>("2016_preVFP", files2016));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
 
 
 	//these are btagging Working points for each year Medium WP
-	floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
+	floatConstants.insert(pair<TString, float>("btagWP2016_postVFP", 0.6321));
+	floatConstants.insert(pair<TString, float>("btagWP2016_preVFP", 0.6321));
 	floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
 	floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
 
 	//these are btagging Working points for each year Loose WP
-	//floatConstants.insert(pair<TString, float>("btagWP2016", 0.2217));
+	//floatConstants.insert(pair<TString, float>("btagWP2016_postVFP", 0.2217));
+	//floatConstants.insert(pair<TString, float>("btagWP2016_preVFP", 0.2217));
 	//floatConstants.insert(pair<TString, float>("btagWP2017", 0.1522));
 	//floatConstants.insert(pair<TString, float>("btagWP2018", 0.1241));
 
-	topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.2));
+	topTaggerConstants.insert(pair<TString, float>("topTagger2016_postVFP", 0.2));
+	topTaggerConstants.insert(pair<TString, float>("topTagger2016_preVFP", 0.2));
 	topTaggerConstants.insert(pair<TString, float>("topTagger2017", 0.0));
 	topTaggerConstants.insert(pair<TString, float>("topTagger2018", 0.1));
 
@@ -82,7 +87,8 @@ void initFilesMapping()
 	variableConstantParticle.insert(pair<TString, int>("genjetY0", 5));
 	variableConstantParticle.insert(pair<TString, int>("genjetY1", 6));
 
-	luminosity.insert(pair<TString,float>("luminosity2016", 35920));
+	luminosity.insert(pair<TString,float>("luminosity2016_postVFP", 16500));
+	luminosity.insert(pair<TString,float>("luminosity2016_preVFP", 19500));
 	luminosity.insert(pair<TString,float>("luminosity2017", 41530));
 	luminosity.insert(pair<TString,float>("luminosity2018", 59740));
 

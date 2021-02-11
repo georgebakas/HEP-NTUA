@@ -33,44 +33,16 @@ TString eosDataPath, eosPathMC;
 
 void initFilesMapping(bool isLoose)
 {
-	eosPathMC = "/eos/cms/store/user/gbakas/ttbar/topTagger/mc-";
+	eosPathMC = "/eos/cms/store/user/gbakas/ttbar/topTagger/ul-";
 	//files to be used from eos:
-//----------------------------------------------------------------------------------------------------------------
-	//Mtt files (MC):
-	map<TString, TString> eosMtt16 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
-
-    map<TString, TString> eosMtt17 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};
-
-    map<TString, TString> eosMtt18 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-	                                  {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"}};
-
-	map<TString, float> eosMttXSEC16 = {{"700-1000",80.78},
-	                                    {"1000-Inf",21.43}};
-
-    map<TString, float> eosMttXSEC17 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74}};
-
-    map<TString, float> eosMttXSEC18 = {{"700-1000",69.64},
-	                                  {"1000-Inf",16.74}};
-
-    mttFiles.insert(pair<TString, map<TString, TString>>("2016", eosMtt16));
-	mttFiles.insert(pair<TString, map<TString, TString>>("2017", eosMtt17));
-	mttFiles.insert(pair<TString, map<TString, TString>>("2018", eosMtt18));
-
-	mttXSEC.insert(pair<TString, map<TString, float>>("2016",eosMttXSEC16));
-	mttXSEC.insert(pair<TString, map<TString, float>>("2017",eosMttXSEC17));
-	mttXSEC.insert(pair<TString, map<TString, float>>("2018",eosMttXSEC18));
-//----------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------
 	//data files:
 	eosDataPath = "/eos/cms/store/user/gbakas/ttbar/JetHT/";
 	dataFiles.insert(pair<TString, TString>("2016","JetHT_Run2016-17Jul2018.root"));
+	dataFiles.insert(pair<TString, TString>("2016","JetHT_Run2016-17Jul2018.root"));
 	dataFiles.insert(pair<TString, TString>("2017","JetHT_Run2017-31Mar2018-v1.root"));
 	dataFiles.insert(pair<TString, TString>("2018","JetHT_Run2018-17Sep2018-v1.root"));
-
 //----------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------
@@ -118,9 +90,11 @@ void initFilesMapping(bool isLoose)
 	                               {"2000-Inf",20.2}};
 
 	qcdBkgFiles.insert(pair<TString, map<TString, TString>>("2016", qcd16));
+	qcdBkgFiles.insert(pair<TString, map<TString, TString>>("2016", qcd16));
 	qcdBkgFiles.insert(pair<TString, map<TString, TString>>("2017", qcd17));
 	qcdBkgFiles.insert(pair<TString, map<TString, TString>>("2018", qcd18));
 
+	qcdBkgXSEC.insert(pair<TString, map<TString, float>>("2016",qcd16XSEC));
 	qcdBkgXSEC.insert(pair<TString, map<TString, float>>("2016",qcd16XSEC));
 	qcdBkgXSEC.insert(pair<TString, map<TString, float>>("2017",qcd17XSEC));
 	qcdBkgXSEC.insert(pair<TString, map<TString, float>>("2018",qcd18XSEC));
@@ -180,18 +154,19 @@ void initFilesMapping(bool isLoose)
 	                           	   {"ST_t-channel_top_5f",119.7}};
 
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016",sub16));
+	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016",sub16));
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2017",sub17));
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2018",sub18));
 
+	subdominantBkgXSEC.insert(pair<TString, map<TString, float>>("2016",sub16XSEC));
 	subdominantBkgXSEC.insert(pair<TString, map<TString, float>>("2016",sub16XSEC));
 	subdominantBkgXSEC.insert(pair<TString, map<TString, float>>("2017",sub17XSEC));
 	subdominantBkgXSEC.insert(pair<TString, map<TString, float>>("2018",sub18XSEC));
 //----------------------------------------------------------------------------------------------------------------
 	//Nominal TT files (MC):
-	map<TString, TString> eosNomTT16 = {{"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-																			{"TTHadronic_0", "TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-																	 		{"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-																	 		{"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root"}};
+	map<TString, TString> eosNomTT16 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+										{"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
+										{"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root"}};
 
     map<TString, TString> eosNomTT17 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
@@ -201,10 +176,9 @@ void initFilesMapping(bool isLoose)
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root"}};
 
-	map<TString, float> eosNomTTXSEC16 = {{"TTNominal",832.},
-																				{"TTHadronic_0",377.96},
-																				{"TTSemiLeptonic_0",365.34},
-																				{"TTTo2L2Nu_0",88.29}};
+	map<TString, float> eosNomTTXSEC16 = {{"TTHadronic_0",377.96},
+										{"TTSemiLeptonic_0",365.34},
+										{"TTTo2L2Nu_0",88.29}};
 
     map<TString, float> eosNomTTXSEC17 = {{"TTHadronic_0",377.96},
 	                                    {"TTSemiLeptonic_0",365.34},
@@ -215,9 +189,11 @@ void initFilesMapping(bool isLoose)
 	                                    {"TTTo2L2Nu_0",88.29}};
 
     ttNominalFiles.insert(pair<TString, map<TString, TString>>("2016", eosNomTT16));
+	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2016", eosNomTT16));
 	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2017", eosNomTT17));
 	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2018", eosNomTT18));
 
+	ttNominalXSEC.insert(pair<TString, map<TString, float>>("2016",eosNomTTXSEC16));
 	ttNominalXSEC.insert(pair<TString, map<TString, float>>("2016",eosNomTTXSEC16));
 	ttNominalXSEC.insert(pair<TString, map<TString, float>>("2017",eosNomTTXSEC17));
 	ttNominalXSEC.insert(pair<TString, map<TString, float>>("2018",eosNomTTXSEC18));
@@ -226,10 +202,10 @@ void initFilesMapping(bool isLoose)
 
 
 	//thsese will be used either for naming the files for FillHistograms, or either for getting the histo names
-	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
-	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2016/Histo_SubdominantBkgs_100.root"},
-	                               	   {"qcd"  , "2016/Histo_QCD_HT300toInf_100.root"}};
+	map<TString, TString> files2016 = {{"data",  "2016_preVF/Histo_Data_2016_100.root"},
+	                                   {"mcSig", "2016_preVF/Histo_Data_2016_100.root"},
+	                                   {"mcSub", "2016_preVF/Histo_SubdominantBkgs_100.root"},
+	                               	   {"qcd"  , "2016_preVF/Histo_QCD_HT300toInf_100.root"}};
 
 	map<TString, TString> files2016Loose = {{"data",  "2016/Histo_Data_2016_100_Loose.root"},
 	                                   		{"mcSig", "2016/Histo_TT_Mtt-700toInf_100_Loose.root"},

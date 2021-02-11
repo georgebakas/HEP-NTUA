@@ -18,68 +18,27 @@ std::vector<TString> fileNames;
 
 #include "TemplateConstants.h"
 TString globalYear;
-bool globalIsNominalMC;
 
 void initXsections()
 {
-  if(!globalIsNominalMC)
-  {
-  	if(globalYear.EqualTo("2016"))
-  	{
-  		//XSEC.push_back(80.73);
-  		//XSEC.push_back(21.35);
-  		XSEC.push_back(80.78);
-        XSEC.push_back(21.43);
-  	}
-  	else if(globalYear.EqualTo("2017"))
-  	{
-  		//XSEC.push_back(231.01);
-  		//XSEC.push_back(61.08);
-  	 	XSEC.push_back(0.);
-       	XSEC.push_back(20.09);
-  	}
-  	else if(globalYear.EqualTo("2018"))
-  	{
-  		//XSEC.push_back(114.66);
-  		//XSEC.push_back(30.32);
-  		XSEC.push_back(0.);
-        XSEC.push_back(20.09);
-  	}
-  }
-  else
-  {
- 		XSEC.push_back(377.96);
- 		XSEC.push_back(365.34);
- 		XSEC.push_back(88.29);
-  }
+ 	XSEC.push_back(377.96);
+ 	XSEC.push_back(365.34);
+ 	XSEC.push_back(88.29);
 }
 
 void initHistoNames()
 {
-  if(!globalIsNominalMC)
-  {
-	  histoNames.push_back("Signal_histo_Mtt_700_1000");
-	  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+	fileNames.push_back("TTHadronic_0");
+	fileNames.push_back("TTSemiLeptonic_0");
+	fileNames.push_back("TTTo2L2Nu_0");
 
-	  fileNames.push_back("700-1000");
-	  fileNames.push_back("1000-Inf");
-  }
-  else
-  {
-	  	fileNames.push_back("TTHadronic_0");
-	  	fileNames.push_back("TTSemiLeptonic_0");
-	  	fileNames.push_back("TTTo2L2Nu_0");
-
-	  	histoNames.push_back("Signal_histo_TTHadronic_0");
-	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
-	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
-
-  }
+	histoNames.push_back("Signal_histo_TTHadronic_0");
+	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
+	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
 }
 
-void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=true)
+void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC=true)
 {
-  globalIsNominalMC = isNominalMC;
   globalYear = year;
   initFilesMapping();
   initHistoNames();
@@ -100,8 +59,6 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=true)
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
-
-
 
 
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
