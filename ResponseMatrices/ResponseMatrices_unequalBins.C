@@ -18,10 +18,10 @@ std::vector<TString> fileNames;
 
 #include "TemplateConstants.h"
 TString globalYear;
-bool globalIsNominalMC;
 
 void initXsections()
 {
+<<<<<<< HEAD
   if(!globalIsNominalMC)
   {
   	if(globalYear.EqualTo("2016"))
@@ -52,15 +52,20 @@ void initXsections()
  		XSEC.push_back(365.34);
  		XSEC.push_back(88.29);
   }
+=======
+ 	XSEC.push_back(377.96);
+ 	XSEC.push_back(365.34);
+ 	XSEC.push_back(88.29);
+>>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
 }
 
 void initHistoNames()
 {
-  if(!globalIsNominalMC)
-  {
-	  histoNames.push_back("Signal_histo_Mtt_700_1000");
-	  histoNames.push_back("Signal_histo_Mtt_1000_Inf");
+	fileNames.push_back("TTHadronic_0");
+	fileNames.push_back("TTSemiLeptonic_0");
+	fileNames.push_back("TTTo2L2Nu_0");
 
+<<<<<<< HEAD
 	  fileNames.push_back("700-1000");
 	  fileNames.push_back("1000-Inf");
   }
@@ -75,11 +80,15 @@ void initHistoNames()
 	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
 
   }
+=======
+	histoNames.push_back("Signal_histo_TTHadronic_0");
+	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
+	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
+>>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
 }
 
-void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
+void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC=true)
 {
-  globalIsNominalMC = isNominalMC;
   globalYear = year;
   initFilesMapping();
   initHistoNames();
@@ -102,8 +111,11 @@ void ResponseMatrices_unequalBins(TString year = "2016", bool isNominalMC=false)
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
                                                 {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
@@ -665,7 +677,7 @@ for(int f=0; f<fileNames.size(); f++)
   TFile *outFile;
   TString nominal ="";
   if(isNominalMC) nominal = "NominalMC";
-  outFile = TFile::Open(TString::Format("%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("UL%s/UnequalBins/ResponsesEfficiency%s_%s.root", year.Data(),nominal.Data(),year.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
