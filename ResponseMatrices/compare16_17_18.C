@@ -106,7 +106,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    acc18[1] = (TEfficiency*)eff[3]->Get(TString::Format("AcceptanceParticle_%s", recoVar.Data()));
 
 
-   for(int i =0; i<sizeof(eff16_pre)/sizeof(eff16_pre[0]); i++)
+   for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
    {
 	   eff16_pre[i]->SetMarkerStyle(21);
 	   eff16_post[i]->SetMarkerStyle(22);
@@ -155,9 +155,9 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
    TCanvas *can_eff[2], *can_acc[2];
    TString phaseSpace[] = {"Parton", "Particle"};
-   TString years[] = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
+   TString years[] = {"2016 preVFP", "2016 postVFP", "2017", "2018"};
 
-   for(int i =0; i<sizeof(eff16_pre)/sizeof(eff16_pre[0]); i++)
+   for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
    {
 	   can_eff[i] = new TCanvas(TString::Format("Efficiency can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Efficiency can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   eff18[i]->SetTitle(TString::Format("%s Efficiency '16,'17,'18 %s;%s (GeV);Efficiency",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));
@@ -217,7 +217,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    TCanvas *canResponse[4][2];
    for(int iy = 0; iy<sizeof(years)/sizeof(years[0]); iy++)
    {
-   	for(int i =0; i<sizeof(eff16_pre)/sizeof(eff16_pre[0]); i++)
+   	for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
    	{
    		canResponse[iy][i] = new TCanvas(TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),
    		 								 TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),800,600);
