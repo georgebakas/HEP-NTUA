@@ -18,42 +18,88 @@ map<TString, float> ttbarSigStrengthError_noBTagSF;
 
 void initFilesMapping()
 {
-	map<TString, TString> files2016 = {{"data",  "2016/Histo_Data_2016_100.root"},
-	                                   {"mcSig", "2016/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2016/Histo_SubdominantBkgs_100.root"}};
+	//thsese will be used either for naming the files for FillHistograms, or either for getting the histo names
+	map<TString, TString> files2016_pre = {{"data",  "2016_preVFP/Histo_Data_2016_preVFP_100.root"},
+	                                       {"mcSig", "2016_preVFP/Histo_TT_Mtt-700toInf_100.root"},
+	                                       {"mcSub", "2016_preVFP/Histo_SubdominantBkgs_100.root"},
+	                               	       {"qcd"  , "2016_preVFP/Histo_QCD_HT300toInf_100.root"}};
+	
+	map<TString, TString> files2016_post = {{"data",  "2016_postVFP/Histo_Data_2016_preVFP_100.root"},
+	                                   		{"mcSig", "2016_postVFP/Histo_TT_Mtt-700toInf_100.root"},
+	                                   		{"mcSub", "2016_postVFP/Histo_SubdominantBkgs_100.root"},
+	                               	  		{"qcd"  , "2016_postVFP/Histo_QCD_HT300toInf_100.root"}};
 
 	map<TString, TString> files2017 = {{"data",  "2017/Histo_Data_2017_100.root"},
 	                                   {"mcSig", "2017/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2017/Histo_SubdominantBkgs_100.root"}};
+	                                   {"mcSub", "2017/Histo_SubdominantBkgs_100.root"},
+	                                   {"qcd"  , "2017/Histo_QCD_HT300toInf_100.root"}};
 
 	map<TString, TString> files2018 = {{"data",  "2018/Histo_Data_2018_100.root"},
 	                                   {"mcSig", "2018/Histo_TT_Mtt-700toInf_100.root"},
-	                                   {"mcSub", "2018/Histo_SubdominantBkgs_100.root"}};
+	                                   {"mcSub", "2018/Histo_SubdominantBkgs_100.root"},
+	                                   {"qcd"  , "2018/Histo_QCD_HT300toInf_100.root"}};
 
-	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
+
+	files.insert(pair<TString, map<TString, TString>>("2016_preVFP", files2016_pre));
+	files.insert(pair<TString, map<TString, TString>>("2016_postVFP", files2016_post));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
 
-	map<TString, TString> files2016Reduced = {{"data",  "2016/Histo_Data_2016_100_reduced.root"},
-	                                   		  {"mcSig", "2016/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2016/Histo_SubdominantBkgs_100_reduced.root"}};
+
+	map<TString, TString> files2016Reduced_pre = {{"data", "2016_preVFP/Histo_Data_2016_preVFP_100_reduced.root"},
+	                                   		  {"mcSig", "2016_preVFP/Histo_TT_Mtt-700toInf_100_reduced.root"},
+	                                   		  {"mcSub", "2016_preVFP/Histo_SubdominantBkgs_100_reduced.root"},
+	                                   		  {"qcd"  , "2016_preVFP/Histo_QCD_HT300toInf_100_reduced.root"}};
+
+	map<TString, TString> files2016Reduced_post = {{"data", "2016_postVFP/Histo_Data_2016_postVFP_100_reduced.root"},
+	                                   		  {"mcSig", "2016_postVFP/Histo_TT_Mtt-700toInf_100_reduced.root"},
+	                                   		  {"mcSub", "2016_postVFP/Histo_SubdominantBkgs_100_reduced.root"},
+	                                   		  {"qcd"  , "2016_postVFP/Histo_QCD_HT300toInf_100_reduced.root"}};
 
 	map<TString, TString> files2017Reduced = {{"data",  "2017/Histo_Data_2017_100_reduced.root"},
 	                                   		  {"mcSig", "2017/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced.root"}};
+	                                   		  {"mcSub", "2017/Histo_SubdominantBkgs_100_reduced.root"},
+	                                   		  {"qcd"  , "20167Histo_QCD_HT300toInf_100_reduced.root"}};
 
 	map<TString, TString> files2018Reduced = {{"data",  "2018/Histo_Data_2018_100_reduced.root"},
 	                                   	      {"mcSig", "2018/Histo_TT_Mtt-700toInf_100_reduced.root"},
-	                                   		  {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced.root"}};
+	                                   		  {"mcSub", "2018/Histo_SubdominantBkgs_100_reduced.root"},
+	                                   		  {"qcd"  , "2018/Histo_QCD_HT300toInf_100_reduced.root"}};
 
-	filesReduced.insert(pair<TString, map<TString, TString>>("2016", files2016Reduced));
+	filesReduced.insert(pair<TString, map<TString, TString>>("2016_preVFP", files2016Reduced_pre));
+	filesReduced.insert(pair<TString, map<TString, TString>>("2016_postVFP", files2016Reduced_post));
 	filesReduced.insert(pair<TString, map<TString, TString>>("2017", files2017Reduced));
 	filesReduced.insert(pair<TString, map<TString, TString>>("2018", files2018Reduced));
 
-
-	luminosity.insert(pair<TString, float>("2016",35920));
+	luminosity.insert(pair<TString, float>("2016_preVFP", 19500));
+	luminosity.insert(pair<TString, float>("2016_postVFP", 16500));
 	luminosity.insert(pair<TString, float>("2017",41530));
 	luminosity.insert(pair<TString, float>("2018",59740));
+
+	luminosityCR.insert(pair<TString, float>("2016_preVFP", 1670));
+	luminosityCR.insert(pair<TString, float>("2016_postVFP", 1670));
+	luminosityCR.insert(pair<TString, float>("2017",41530));
+	luminosityCR.insert(pair<TString, float>("2018",59740));
+
+	topTaggerCuts.insert(pair<TString, float>("2016_preVFP", 0.2));
+	topTaggerCuts.insert(pair<TString, float>("2016_postVFP", 0.2));
+	topTaggerCuts.insert(pair<TString, float>("2017", 0.0));
+	topTaggerCuts.insert(pair<TString, float>("2018", 0.1));
+
+	deepCSVFloatMap.insert(pair<TString, float>("2016_preVFP", 0.6321));
+	deepCSVFloatMap.insert(pair<TString, float>("2016_postVFP", 0.6321));
+	deepCSVFloatMap.insert(pair<TString, float>("2017",0.4506));
+	deepCSVFloatMap.insert(pair<TString, float>("2018",0.4168));
+
+	triggerSRConst.insert(pair<TString, int>("2016_preVFP",2));
+	triggerSRConst.insert(pair<TString, int>("2016_postVFP",2));
+	triggerSRConst.insert(pair<TString, int>("2017",5));
+	triggerSRConst.insert(pair<TString, int>("2018",5));
+
+	triggerCRConst.insert(pair<TString, int>("2016_preVFP",4));
+	triggerCRConst.insert(pair<TString, int>("2016_postVFP",4));
+	triggerCRConst.insert(pair<TString, int>("2017",5));
+	triggerCRConst.insert(pair<TString, int>("2018",5));
 
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));
@@ -62,40 +108,5 @@ void initFilesMapping()
 	variableConstant.insert(pair<TString, int>("jetPt1", 4));
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
-
-	//these are fit results from mixed medium wp and loose wp
-	//Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.9886e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2016", 2.9890e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2017", 2.1662e+03));
-	Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 5.0444e+03));
-	//Nbkg2Constants.insert(pair<TString, float>("Nbkg2018", 4.7747e+03));
-
-
-	//Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.73e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2016_error", 1.74e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2017_error", 3.11e+02));
-	//Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 3.04e+02));
-	Nbkg2ConstantsErrors.insert(pair<TString, float>("Nbkg2018_error", 2.83e+02));
-
-	floatConstants.insert(pair<TString, float>("bTagEff2016", 0.629909));
-	floatConstants.insert(pair<TString, float>("bTagEff2017", 0.605622));
-	floatConstants.insert(pair<TString, float>("bTagEff2018", 0.633934));
-
-	ttbarSigStrength.insert(pair<TString, float>("2016", 0.641241));
-	ttbarSigStrength.insert(pair<TString, float>("2017", 0.644361));
-	ttbarSigStrength.insert(pair<TString, float>("2018", 0.683382));
-
-	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2016", 0.671244));
-	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2017", 0.553099));
-	ttbarSigStrength_noBTagSF.insert(pair<TString, float>("2018", 0.615816));
-
-	ttbarSigStrengthError.insert(pair<TString, float>("2016", 0.0238714));
-	ttbarSigStrengthError.insert(pair<TString, float>("2017", 0.023851));
-	ttbarSigStrengthError.insert(pair<TString, float>("2018", 0.0200866));
-
-	ttbarSigStrengthError_noBTagSF.insert(pair<TString, float>("2016", 0.0252439));
-	ttbarSigStrengthError_noBTagSF.insert(pair<TString, float>("2017", 0.0198563));
-	ttbarSigStrengthError_noBTagSF.insert(pair<TString, float>("2018", 0.017298));
-
 
 }
