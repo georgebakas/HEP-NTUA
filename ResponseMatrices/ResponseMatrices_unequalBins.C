@@ -21,42 +21,9 @@ TString globalYear;
 
 void initXsections()
 {
-<<<<<<< HEAD
-  if(!globalIsNominalMC)
-  {
-  	if(globalYear.EqualTo("2016"))
-  	{
-  		//XSEC.push_back(80.73);
-  		//XSEC.push_back(21.35);
-  		XSEC.push_back(80.78);
-        XSEC.push_back(21.43);
-  	}
-  	else if(globalYear.EqualTo("2017"))
-  	{
-  		//XSEC.push_back(231.01);
-  		//XSEC.push_back(61.08);
-  	 	XSEC.push_back(0.);
-       	XSEC.push_back(20.09);
-  	}
-  	else if(globalYear.EqualTo("2018"))
-  	{
-  		//XSEC.push_back(114.66);
-  		//XSEC.push_back(30.32);
-  		XSEC.push_back(0.);
-        XSEC.push_back(20.09);
-  	}
-  }
-  else
-  {
- 		XSEC.push_back(377.96);
- 		XSEC.push_back(365.34);
- 		XSEC.push_back(88.29);
-  }
-=======
  	XSEC.push_back(377.96);
  	XSEC.push_back(365.34);
  	XSEC.push_back(88.29);
->>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
 }
 
 void initHistoNames()
@@ -65,26 +32,9 @@ void initHistoNames()
 	fileNames.push_back("TTSemiLeptonic_0");
 	fileNames.push_back("TTTo2L2Nu_0");
 
-<<<<<<< HEAD
-	  fileNames.push_back("700-1000");
-	  fileNames.push_back("1000-Inf");
-  }
-  else
-  {
-	  	fileNames.push_back("TTHadronic_0");
-	  	fileNames.push_back("TTSemiLeptonic_0");
-	  	fileNames.push_back("TTTo2L2Nu_0");
-
-	  	histoNames.push_back("Signal_histo_TTHadronic_0");
-	  	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
-	  	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
-
-  }
-=======
 	histoNames.push_back("Signal_histo_TTHadronic_0");
 	histoNames.push_back("Signal_histo_TTSemiLeptonic_0");
 	histoNames.push_back("Signal_histo_TTTo2L2Nu_0");
->>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
 }
 
 void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC=true)
@@ -110,12 +60,6 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
 
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
                                                 {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
@@ -133,7 +77,7 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
 
   int NBINSParton[BND_reco.size()];
   for(int i =0; i<BND_reco.size(); i++) NBINSParton[i] = BND_gen[i].size()-1;
-  
+
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"};
   TString varParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"};
   TString varParticle[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"};

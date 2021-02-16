@@ -42,7 +42,7 @@ void initFilesMapping(bool isLoose)
 //----------------------------------------------------------------------------------------------------------------
 	eosPathMC = "/eos/cms/store/user/gbakas/ttbar/topTagger/ul-";
 	//qcd files MC:
-	
+
 	map<TString, TString> qcd16 = {{"300-500", "QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root"},
 	                               {"500-700", "QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root"},
 	                               {"700-1000", "QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root"},
@@ -110,21 +110,21 @@ void initFilesMapping(bool isLoose)
 	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
 	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
 	map<TString, TString> sub17 = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	                               //{"ST_t-channel_antitop_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
 	map<TString, TString> sub18 = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
 	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
 
@@ -146,7 +146,7 @@ void initFilesMapping(bool isLoose)
 	map<TString, float> sub17XSEC = {{"ST_tW_top_5f", 38.09},
 	                                 {"ST_tW_antitop_5f", 38.09},
 	                                 {"ST_t-channel_top_4f", 35.6},
-	                                 {"ST_t-channel_antitop_4f", 35.6},
+	                                 //{"ST_t-channel_antitop_4f", 35.6},
 									 {"ST_t-channel_top_5f", 119.7},
 									 {"ST_t-channel_antitop_5f", 82.52}};
 
@@ -175,10 +175,10 @@ void initFilesMapping(bool isLoose)
 	map<TString, TString> eosNomTT17 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
-	
-	map<TString, TString> eosNomTT18 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"},
-	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"},
-	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"}};
+
+	map<TString, TString> eosNomTT18 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
 
 	map<TString, float> eosNomTTXSEC16 = {{"TTHadronic_0",377.96},
 										{"TTSemiLeptonic_0",365.34},
@@ -215,7 +215,7 @@ void initFilesMapping(bool isLoose)
 	                                   		    {"mcSig", "2016_preVFP/Histo_TT_Mtt-700toInf_100_Loose.root"},
 	                                   		    {"mcSub", "2016_preVFP/Histo_SubdominantBkgs_100_Loose.root"},
 	                                   			{"qcd"  , "2016_preVFP/Histo_QCD_HT300toInf_100_Loose.root"}};
-	
+
 	map<TString, TString> files2016_post = {{"data",  "2016_postVFP/Histo_Data_2016_preVFP_100.root"},
 	                                   		{"mcSig", "2016_postVFP/Histo_TT_Mtt-700toInf_100.root"},
 	                                   		{"mcSub", "2016_postVFP/Histo_SubdominantBkgs_100.root"},
@@ -281,7 +281,7 @@ void initFilesMapping(bool isLoose)
 	                                   		       {"mcSig", "2016_preVFP/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
 	                                   		       {"mcSub", "2016_preVFP/Histo_SubdominantBkgs_100_reduced_Loose.root"},
 	                                   		       {"qcd"  , "2016_preVFP/Histo_QCD_HT300toInf_100_reduced_Loose.root"}};
-	
+
 	map<TString, TString> files2016ReducedLoose_post = {{"data", "2016_postVFP/Histo_Data_2016_postVFP_100_reduced_Loose.root"},
 	                                   		       {"mcSig", "2016_postVFP/Histo_TT_Mtt-700toInf_100_reduced_Loose.root"},
 	                                   		       {"mcSub", "2016_postVFP/Histo_SubdominantBkgs_100_reduced_Loose.root"},
@@ -306,16 +306,19 @@ void initFilesMapping(bool isLoose)
 	filesReduced.insert(pair<TString, map<TString, TString>>("2017_Loose", files2017ReducedLoose));
 	filesReduced.insert(pair<TString, map<TString, TString>>("2018_Loose", files2018ReducedLoose));
 
+//---------------------------------------------------------------------------------------------------------------------------------
 
 	luminosity.insert(pair<TString, float>("2016_preVFP", 19500));
 	luminosity.insert(pair<TString, float>("2016_postVFP", 16500));
-	luminosity.insert(pair<TString, float>("2017",41530));
-	luminosity.insert(pair<TString, float>("2018",59740));
+	luminosity.insert(pair<TString, float>("2017", 41480));
+	luminosity.insert(pair<TString, float>("2018", 59830));
 
-	luminosityCR.insert(pair<TString, float>("2016_preVFP", 1670));
-	luminosityCR.insert(pair<TString, float>("2016_postVFP", 1670));
-	luminosityCR.insert(pair<TString, float>("2017",41530));
-	luminosityCR.insert(pair<TString, float>("2018",59740));
+	luminosityCR.insert(pair<TString, float>("2016_preVFP", 1134));
+	//luminosityCR.insert(pair<TString, float>("2016_preVFP", 904.58));
+	luminosityCR.insert(pair<TString, float>("2016_postVFP", 564));
+	//luminosityCR.insert(pair<TString, float>("2016_postVFP", 765.42));
+	luminosityCR.insert(pair<TString, float>("2017", 41480));
+	luminosityCR.insert(pair<TString, float>("2018", 59830));
 
 	topTaggerCuts.insert(pair<TString, float>("2016_preVFP", 0.2));
 	topTaggerCuts.insert(pair<TString, float>("2016_postVFP", 0.2));

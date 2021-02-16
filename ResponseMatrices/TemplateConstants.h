@@ -30,9 +30,9 @@ void initFilesMapping()
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
-	map<TString, TString> files2018 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"},
-	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"},
-	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL_new.root"}};
+	map<TString, TString> files2018 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
 
 	eospath.insert(pair<TString,TString>("2016_postVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/"));
 	eospath.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Signal/"));
@@ -46,7 +46,6 @@ void initFilesMapping()
 
 
 	//these are btagging Working points for each year Medium WP
-
 	floatConstants.insert(pair<TString, float>("btagWP2016_postVFP", 0.6321));
 	floatConstants.insert(pair<TString, float>("btagWP2016_preVFP", 0.6321));
 	floatConstants.insert(pair<TString, float>("btagWP2017", 0.4506));
@@ -89,8 +88,8 @@ void initFilesMapping()
 
 	luminosity.insert(pair<TString,float>("luminosity2016_preVFP", 19500));
 	luminosity.insert(pair<TString,float>("luminosity2016_postVFP", 16500));
-	luminosity.insert(pair<TString,float>("luminosity2017", 41530));
-	luminosity.insert(pair<TString,float>("luminosity2018", 59740));
+	luminosity.insert(pair<TString,float>("luminosity2017", 41480));
+	luminosity.insert(pair<TString,float>("luminosity2018", 59830));
 
 	float fluc[7][2] = {{1000, 5000}, //mjj
 				    {0, 1300}, //ptjj

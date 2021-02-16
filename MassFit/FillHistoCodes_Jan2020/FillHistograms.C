@@ -26,7 +26,7 @@ int selection;
 
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
 
-void initFileNames()
+void initFileNames(TString year)
 {
 
   if(selection ==0) //data
@@ -55,30 +55,12 @@ void initFileNames()
   else if(selection ==3) //subdominant bkgs
   {
     eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());
-    if(year.EqualTo("2016"))
-    {
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT180"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
-    }
-    else
-    {
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT400"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT600"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
-      if(year.EqualTo("2018"))
-      {
-        listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
-        listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
-      }
-    }
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
+    //listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
   }
   else if(selection ==4) //signal ttbar mc nominal
   {
@@ -91,7 +73,7 @@ void initFileNames()
   }
 }
 
-void initXsections()
+void initXsections(TString year)
 {
   if(selection ==1) //signal ttbar mc
   {
@@ -109,30 +91,12 @@ void initXsections()
   }
   else if(selection ==3) //subdominant bkgs
   {
-    if(year.EqualTo("2016"))
-    {
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["DY"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT180"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
-    }
-    else
-    {
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["DY"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT400"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT600"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
-      if(year.EqualTo("2018"))
-      {
-        XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
-        XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
-      }
-    }
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
+    //XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
   }
   else if(selection ==4)
   {
@@ -144,7 +108,7 @@ void initXsections()
 
 }
 
-void initHistoNames()
+void initHistoNames(TString year)
 {
 
   if(selection ==0) histoNames.push_back(TString::Format("Data_%s", year.Data()));
@@ -164,31 +128,12 @@ void initHistoNames()
   }
   else if(selection ==3)
   {
-
-    if(year.EqualTo("2016"))
-    {
-       histoNames.push_back("DYJetsToQQ_HT180");
-       histoNames.push_back("WJetsToQQ_HT180");
-       histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-       histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
-    }
-    else
-    {
-       histoNames.push_back("DYJetsToQQ_HT180");
-       histoNames.push_back("WJetsToQQ_HT400");
-       histoNames.push_back("WJetsToQQ_HT600");
-       histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-       histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
-      if(year.EqualTo("2018"))
-      {
-        histoNames.push_back("ST_t-channel_top_5f");
-        histoNames.push_back("ST_t-channel_antitop_5f");
-      }
-    }
+    histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
+    histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
+    //histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_top_5f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_antitop_5f_inclusiveDecays");
   }
   else if(selection ==4)
   {
@@ -199,11 +144,11 @@ void initHistoNames()
 
 }
 
-void initGlobals()
+void initGlobals(TString year)
 {
-  initFileNames();
-  initXsections();
-  initHistoNames();
+  initFileNames(year);
+  initXsections(year);
+  initHistoNames(year);
 }
 
 void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
@@ -214,7 +159,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   selection = sel;
   LUMI = luminosity[year.Data()];
   LUMI_CR = luminosityCR[year.Data()];
-  initGlobals();
+  initGlobals(year);
   gStyle->SetOptStat(0);
   const int NVAR =11;
   const int N_MJJ = 8;
@@ -432,7 +377,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
   bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;
   bool btagCut, revertBtag, btag1;
-
   if (nJets >1)
   {
     //matching only if we have Signal ttbar MC
@@ -502,12 +446,13 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     }//----end of for on all jets for mathching
 
     //---------------------------------------END OF MATCHING------------------------------------------------------
+    if( pt_->size() <= 0) continue;
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
     dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0];
     dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1];
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
-   // cout<<"right before the cut init"<<endl;
+
     recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
@@ -523,6 +468,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
    //0 btag category with deepCSV
     revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+
     if(isMatched > 1)
     {
      // cout<<"entered isMatched > 1"<<endl;
@@ -702,15 +648,15 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   TString loose = "";
   if(isLoose) loose = "_Loose";
   if(selection ==0)
-    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_Data_%s_100%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
   else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_TT_Mtt-700toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_QCD_HT300toInf_100%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_SubdominantBkgs_100%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==4)
-    outFile = new TFile(TString::Format("%s/Histo_TT_NominalMC_100%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_TT_NominalMC_100%s.root",year.Data(),loose.Data()), "RECREATE");
 
 
   for(int ivar = 0; ivar<NVAR; ivar++)

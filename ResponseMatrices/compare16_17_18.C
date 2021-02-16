@@ -106,7 +106,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    acc18[1] = (TEfficiency*)eff[3]->Get(TString::Format("AcceptanceParticle_%s", recoVar.Data()));
 
 
-   for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
+   for(int i =0; i<sizeof(eff16_post)/sizeof(eff16_post[0]); i++)
    {
 	   eff16_pre[i]->SetMarkerStyle(21);
 	   eff16_post[i]->SetMarkerStyle(22);
@@ -157,7 +157,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    TString phaseSpace[] = {"Parton", "Particle"};
    TString years[] = {"2016 preVFP", "2016 postVFP", "2017", "2018"};
 
-   for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
+   for(int i =0; i<sizeof(eff16_post)/sizeof(eff16_post[0]); i++)
    {
 	   can_eff[i] = new TCanvas(TString::Format("Efficiency can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Efficiency can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   eff18[i]->SetTitle(TString::Format("%s Efficiency '16,'17,'18 %s;%s (GeV);Efficiency",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));
@@ -185,11 +185,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 
       //if(i==0)gPad->Range(xmin,0,xmax,0.2);
       //else gPad->Range(xmin,0,xmax,0.4);
-<<<<<<< HEAD
-	   can_eff[i]->Print(TString::Format("plots%s/%s/%s/Efficiency_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
-=======
 	   can_eff[i]->Print(TString::Format("plots%s_UL/%s/%s/Efficiency_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
->>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
 
 	   can_acc[i] = new TCanvas(TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), TString::Format("Acceptance can_%s%s",recoVar.Data(),phaseSpace[i].Data()), 700, 600);
 	   acc18[i]->SetTitle(TString::Format("%s Acceptance '16,'17,'18 %s;%s (GeV);Acceptance",phaseSpace[i].Data(), nominal.Data(),recoVar.Data()));
@@ -206,18 +202,15 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
 	   graphAcc->GetXaxis()->SetRangeUser(BNDmin[recoVar],BNDmax[recoVar]);
 	   gPad->Update();
 
-<<<<<<< HEAD
-	   can_acc[i]->Print(TString::Format("plots%s/%s/%s/Acceptance_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
-=======
+
 	   can_acc[i]->Print(TString::Format("plots%s_UL/%s/%s/Acceptance_BTaggingSF%s_%s.pdf",nominal.Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),recoVar.Data()),"pdf");
->>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
    }
 
    TH2F *hResponses[4][2]; //4 is for years , 16_preVFP-0, 16_postVFP-1, 17-2, 18-3 and 2 is for parton particle: parton-0, particle 1
    TCanvas *canResponse[4][2];
    for(int iy = 0; iy<sizeof(years)/sizeof(years[0]); iy++)
    {
-   	for(int i =0; i<sizeof(eff16)/sizeof(eff16[0]); i++)
+   	for(int i =0; i<sizeof(eff16_post)/sizeof(eff16_post[0]); i++)
    	{
    		canResponse[iy][i] = new TCanvas(TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),
    		 								 TString::Format("Response Reco-%s %s %s",phaseSpace[i].Data(), recoVar.Data(), years[iy].Data()),800,600);
@@ -239,11 +232,7 @@ void plotEfficiencyResponse(TString recoVar = "jetPt0",TString partonVar = "part
    			else hResponses[iy][i]->GetXaxis()->SetTitle(TString::Format("%s (GeV)",particleVar.Data()));
   		}
    		hResponses[iy][i]->Draw("colz text");
-<<<<<<< HEAD
-   		canResponse[iy][i]->Print(TString::Format("%s/%s/%s/%sResponseMatrixBtaggingSF%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
-=======
    		canResponse[iy][i]->Print(TString::Format("UL%s/%s/%s/%sResponseMatrixBtaggingSF%s_%s.pdf",years[iy].Data(),binning.Data(), recoVar.Data() ,phaseSpace[i].Data(),nominal.Data(),recoVar.Data()),"pdf");
->>>>>>> 9f561e5a5dcd08bb10ed9c7b77ceb119c18806f2
    	}
    }
 

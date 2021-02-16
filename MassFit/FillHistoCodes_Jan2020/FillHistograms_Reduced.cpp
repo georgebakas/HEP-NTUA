@@ -55,30 +55,12 @@ void initFileNames()
   else if(selection ==3) //subdominant bkgs
   {
     eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());
-    if(year.EqualTo("2016"))
-    {
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT180"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
-    }
-    else
-    {
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT400"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT600"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
-      if(year.EqualTo("2018"))
-      {
-        listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
-        listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
-      }
-    }
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
   }
   else if(selection ==4) //signal ttbar mc nominal
   {
@@ -109,30 +91,12 @@ void initXsections()
   }
   else if(selection ==3) //subdominant bkgs
   {
-    if(year.EqualTo("2016"))
-    {
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["DY"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT180"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
-    }
-    else
-    {
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["DY"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT400"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT600"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
-      if(year.EqualTo("2018"))
-      {
-        XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
-        XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
-      }
-    }
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
   }
   else if(selection ==4)
   {
@@ -163,31 +127,12 @@ void initHistoNames()
   }
   else if(selection ==3)
   {
-
-    if(year.EqualTo("2016"))
-    {
-       histoNames.push_back("DYJetsToQQ_HT180");
-       histoNames.push_back("WJetsToQQ_HT180");
-       histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-       histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
-    }
-    else
-    {
-       histoNames.push_back("DYJetsToQQ_HT180");
-       histoNames.push_back("WJetsToQQ_HT400");
-       histoNames.push_back("WJetsToQQ_HT600");
-       histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-       histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
-      if(year.EqualTo("2018"))
-      {
-        histoNames.push_back("ST_t-channel_top_5f");
-        histoNames.push_back("ST_t-channel_antitop_5f");
-      }
-    }
+    histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
+    histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_top_5f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_antitop_5f_inclusiveDecays");
   }
   else if(selection ==4)
   {
@@ -698,15 +643,15 @@ cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
   if(isLoose) loose = "_Loose";
 
   if(selection ==0)
-    outFile = new TFile(TString::Format("%s/Histo_Data_%s_100_reduced%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_Data_%s_100_reduced%s.root",year.Data(),year.Data(),loose.Data()), "RECREATE");
   else if(selection ==1)
-    outFile = new TFile(TString::Format("%s/Histo_TT_Mtt-700toInf_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_TT_Mtt-700toInf_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==2)
-    outFile = new TFile(TString::Format("%s/Histo_QCD_HT300toInf_100_reduced%s.root",year.Data(), loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_QCD_HT300toInf_100_reduced%s.root",year.Data(), loose.Data()), "RECREATE");
   else if(selection ==3)
-    outFile = new TFile(TString::Format("%s/Histo_SubdominantBkgs_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_SubdominantBkgs_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
   else if(selection ==4)
-    outFile = new TFile(TString::Format("%s/Histo_TT_NominalMC_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/Histo_TT_NominalMC_100_reduced%s.root",year.Data(),loose.Data()), "RECREATE");
 
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
