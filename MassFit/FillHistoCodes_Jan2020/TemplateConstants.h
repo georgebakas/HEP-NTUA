@@ -143,19 +143,19 @@ void initFilesMapping(bool isLoose)
 									 {"ST_t-channel_top_5f", 119.7},
 									 {"ST_t-channel_antitop_5f", 82.52}};
 
-	map<TString, float> sub17XSEC = {{"ST_tW_top_5f", 38.09},
-	                                 {"ST_tW_antitop_5f", 38.09},
-	                                 {"ST_t-channel_top_4f", 35.6},
-	                                 //{"ST_t-channel_antitop_4f", 35.6},
+	map<TString, float> sub17XSEC = {{"ST_tW_top_5f", 34.91},
+	                                 {"ST_tW_antitop_5f", 34.97},
+	                                 {"ST_t-channel_top_4f", 115.3	},
+	                                 //{"ST_t-channel_antitop_4f", 69.09},
 									 {"ST_t-channel_top_5f", 119.7},
-									 {"ST_t-channel_antitop_5f", 82.52}};
+									 {"ST_t-channel_antitop_5f", 71.74}};
 
-	map<TString, float> sub18XSEC = {{"ST_tW_top_5f", 38.09},
-	                                 {"ST_tW_antitop_5f", 38.09},
-	                                 {"ST_t-channel_top_4f", 35.6},
-	                                 {"ST_t-channel_antitop_4f", 35.6},
+	map<TString, float> sub18XSEC = {{"ST_tW_top_5f", 34.91},
+	                                 {"ST_tW_antitop_5f", 34.97},
+	                                 {"ST_t-channel_top_4f", 115.3},
+	                                 {"ST_t-channel_antitop_4f", 69.09},
 									 {"ST_t-channel_top_5f", 119.7},
-									 {"ST_t-channel_antitop_5f", 82.52}};
+									 {"ST_t-channel_antitop_5f", 71.74}};
 
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016_preVFP",sub16_pre));
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016_postVFP",sub16_post));
@@ -181,8 +181,8 @@ void initFilesMapping(bool isLoose)
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
 
 	map<TString, float> eosNomTTXSEC16 = {{"TTHadronic_0",377.96},
-										{"TTSemiLeptonic_0",365.34},
-										{"TTTo2L2Nu_0",88.29}};
+																			{"TTSemiLeptonic_0",365.34},
+																			{"TTTo2L2Nu_0",88.29}};
 
     map<TString, float> eosNomTTXSEC17 = {{"TTHadronic_0",377.96},
 	                                    {"TTSemiLeptonic_0",365.34},
