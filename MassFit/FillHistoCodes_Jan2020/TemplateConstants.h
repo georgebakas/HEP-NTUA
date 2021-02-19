@@ -64,21 +64,21 @@ void initFilesMapping(bool isLoose)
 	                               {"1500-2000", "QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root"},
 	                               {"2000-Inf", "QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root"}};
 
-	map<TString, float> qcd16XSEC =    {{"300-500",351400},
+	map<TString, float> qcd16XSEC = {{"300-500",351400},
 	                               {"500-700",32260},
 	                               {"700-1000",6830},
 	                               {"1000-1500",1207},
 	                               {"1500-2000",119.1},
 	                               {"2000-Inf",25.16}};
 
-    map<TString, float> qcd17XSEC =    {{"300-500",322600},
+    map<TString, float> qcd17XSEC = {{"300-500",322600},
 	                               {"500-700",29980},
 	                               {"700-1000",6334},
 	                               {"1000-1500",1088},
 	                               {"1500-2000",99.11},
 	                               {"2000-Inf",20.23}};
 
-	map<TString, float> qcd18XSEC =    {{"300-500",323400},
+	map<TString, float> qcd18XSEC = {{"300-500",323400},
 	                               {"500-700",30140},
 	                               {"700-1000",6310},
 	                               {"1000-1500",1094},
@@ -116,7 +116,7 @@ void initFilesMapping(bool isLoose)
 	map<TString, TString> sub17 = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-	                               //{"ST_t-channel_antitop_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+	                               //{"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
 								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
@@ -145,7 +145,7 @@ void initFilesMapping(bool isLoose)
 
 	map<TString, float> sub17XSEC = {{"ST_tW_top_5f", 34.91},
 	                                 {"ST_tW_antitop_5f", 34.97},
-	                                 {"ST_t-channel_top_4f", 115.3	},
+	                                 {"ST_t-channel_top_4f", 115.3},
 	                                 //{"ST_t-channel_antitop_4f", 69.09},
 									 {"ST_t-channel_top_5f", 119.7},
 									 {"ST_t-channel_antitop_5f", 71.74}};
@@ -181,8 +181,8 @@ void initFilesMapping(bool isLoose)
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
 
 	map<TString, float> eosNomTTXSEC16 = {{"TTHadronic_0",377.96},
-																			{"TTSemiLeptonic_0",365.34},
-																			{"TTTo2L2Nu_0",88.29}};
+										{"TTSemiLeptonic_0",365.34},
+										{"TTTo2L2Nu_0",88.29}};
 
     map<TString, float> eosNomTTXSEC17 = {{"TTHadronic_0",377.96},
 	                                    {"TTSemiLeptonic_0",365.34},
@@ -255,7 +255,6 @@ void initFilesMapping(bool isLoose)
 	files.insert(pair<TString, map<TString, TString>>("2016_postVFP_Loose", files2016Loose_post));
 	files.insert(pair<TString, map<TString, TString>>("2017_Loose", files2017Loose));
 	files.insert(pair<TString, map<TString, TString>>("2018_Loose", files2018Loose));
-
 
 	map<TString, TString> files2016Reduced_pre = {{"data", "2016_preVFP/Histo_Data_2016_preVFP_100_reduced.root"},
 	                                   		  {"mcSig", "2016_preVFP/Histo_TT_Mtt-700toInf_100_reduced.root"},

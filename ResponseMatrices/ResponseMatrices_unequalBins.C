@@ -52,16 +52,16 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   cout<<LUMI<<endl;
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY1
 
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
-                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
+                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
