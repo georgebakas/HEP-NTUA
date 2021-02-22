@@ -65,10 +65,10 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY1
   float triggerFloat;
-  if(year.EqualTo("2016")) triggerFloat = 2;
+  if(year.EqualTo("2016_preVFP") || year.EqualTo("2016_postVFP") ) triggerFloat = 2;
   else triggerFloat = 5;
 
   int NBINS[BND_reco.size()];
