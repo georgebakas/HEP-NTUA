@@ -159,7 +159,7 @@ void Contamination(TString year)
     hRatio[ivar][2]->Draw("hist same");
     //break;
 
-    //c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/Medium/contamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
+    c1[ivar]->Print(TString::Format("./ContaminationPlots/%s/contamination_%s.pdf",year.Data(),recoVar.Data()),"pdf");
 
   }
 
