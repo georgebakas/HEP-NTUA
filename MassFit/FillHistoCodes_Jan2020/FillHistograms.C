@@ -58,7 +58,7 @@ void initFileNames(TString year)
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-    //listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
+    if (!year.EqualTo("2017")) listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
   }
@@ -94,7 +94,7 @@ void initXsections(TString year)
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-    //XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
+    if (!year.EqualTo("2017")) XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
   }
@@ -131,7 +131,7 @@ void initHistoNames(TString year)
     histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
     histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-    //histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+    if (!year.EqualTo("2017")) histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_top_5f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_antitop_5f_inclusiveDecays");
   }

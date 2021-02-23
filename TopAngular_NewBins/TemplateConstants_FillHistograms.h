@@ -27,7 +27,7 @@ map<TString, int> triggerSRConst;
 map<TString, int> triggerCRConst;
 TString eosDataPath, eosPathMC;
 
-void initFilesMapping(bool isLoose)
+void initFilesMapping(bool isLoose = false)
 {
 //----------------------------------------------------------------------------------------------------------------
 	//data files:
