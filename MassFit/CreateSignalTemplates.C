@@ -9,10 +9,6 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   TFile *infMC;
   float normMC;
   float XSEC(832.);
-  float LUMI(0);
-  if (year.EqualTo("2016")) LUMI = 35920;
-  else if (year.EqualTo("2017")) LUMI = 41530;
-  else if (year.EqualTo("2018")) LUMI = 59740;
 
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);

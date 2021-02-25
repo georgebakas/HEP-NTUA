@@ -16,7 +16,7 @@ using std::endl;
 void plotYearVar(TString year, TString recoVar = "jetPt0", bool useScaleFactor= true, TString fitRecoVar= "leadingJetPt");
 void ratioPlot(TString year, TH1F *hNum ,TH1F *hDenom, TString recoVar, TString reason, bool useScaleFactor, TF1 *fitResult);
 
-void plot_QCDClosure_afterFit_combined(TString year = "2016", bool useScaleFactor = true)
+void plot_QCDClosure_afterFit_combined(TString year = "2016_preVFP", bool useScaleFactor = true)
 {
   const int NVAR = 9;
   TString recoVar[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "mTop", "jetMassSoftDrop", "jetY0", "jetY1"};

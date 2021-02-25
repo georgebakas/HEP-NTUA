@@ -228,7 +228,7 @@ void MassFitNew(TString year = "2016", TString ALIAS="",TString CUT="", int REBI
   wOut->import(*yieldTT);
 	wOut->import(*kMassScale);
 	wOut->import(*kMassResol);
-  wOut->writeToFile(TString::Format("%s/MassFitResults_",year.Data())+ALIAS+"_"+CUT+"gbakas.root");
+  wOut->writeToFile(TString::Format("%s/fitResults_%s.root", year.Data(),year.Data()));
   //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
   //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");
 

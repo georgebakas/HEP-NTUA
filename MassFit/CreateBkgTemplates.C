@@ -106,16 +106,12 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   parsQCD->setAttribAll("Constant",true);
   w->import(*qcd);
 
-  float LUMI(0);
-  if (year.EqualTo("2016")) LUMI = 35920;
-  else if (year.EqualTo("2017")) LUMI = 41530;
-  else if (year.EqualTo("2018")) LUMI = 59740;
-  for(int icat= 0; icat<3; icat++)
+  for(int icat= 2; icat<3; icat++)
   {
   cout<<icat<<endl;
   if (icat == 1)
     continue;
-    //infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root", year.Data()));
+    //infBkg_ = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root", year.Data()));
 
     TString CAT = TString::Format("%dbtag", icat);
     TAG = CUT + "_" + CAT;
@@ -123,18 +119,19 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     //---- do the bkg templates -------------
     if (icat == 0)
     {
-      hBkg = (TH1F *)infBkg->Get("hWt_mTop_0btag_expYield");
+      //hBkg = (TH1F *)infBkg->Get("hWt_mTop_0btag_expYield");
+      hBkg = (TH1F*)hCR_MCSubdominant->Clone("hWt_mTop0btag");
     }
     else if (icat == 2)
     {
-      hBkg = (TH1F *)infBkg ->Get("hWt_mTop_2btag_expYield");
+      hBkg = (TH1F *)infBkg->Get("hWt_mTop_2btag_expYield");
     }
     hBkg->Rebin(2);
 
     RooDataHist *roohBkg = new RooDataHist("roohistBkg", "roohistBkg", RooArgList(*x), hBkg);
 
-    RooRealVar mW("bkg_meanW_" + CAT, "meanW_" + CAT, 80, 70, 90);
-    RooRealVar sW("bkg_sigmaW_" + CAT, "sigmaW_" + CAT, 5, 0, 15);
+    RooRealVar mW("bkg_meanW_" + CAT, "meanW_" + CAT, 73, 70, 90);
+    RooRealVar sW("bkg_sigmaW_" + CAT, "sigmaW_" + CAT, 5, 0, 20);
     RooGaussian pdfW("bkg_pdfW_" + CAT, "bkg_pdfW_" + CAT, *x, mW, sW);
 
     RooRealVar mBkgTop("bkg_meanTop_" + CAT, "bkg_meanTop_" + CAT, 172, 150, 180);
@@ -176,6 +173,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
     parsBkg->setAttribAll("Constant", true);
 
     w->import(*bkg);
+    res->Delete();
   }
 
   w->writeToFile(TString::Format("%s/templates_Bkg_"+CUT+"100.root", year.Data()));

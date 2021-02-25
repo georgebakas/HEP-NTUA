@@ -2,7 +2,7 @@
 
 void CreateQCDTemplates(TString year, TString CUT = "")
 {
-  initQCDParams();
+  initQCDParams();    
   gROOT->ForceStyle();
 
   RooMsgService::instance().setSilentMode(kTRUE);

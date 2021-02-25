@@ -8,12 +8,17 @@ map<TString, float> Nbkg2ConstantsErrors;
 map<TString, int> variableConstant;
 TColor color;
 
-map<TString, float> luminosity;
-map<TString, float> floatConstants;
 map<TString, float> ttbarSigStrength;
 map<TString, float> ttbarSigStrength_noBTagSF;
 map<TString, float> ttbarSigStrengthError;
 map<TString, float> ttbarSigStrengthError_noBTagSF;
+
+map<TString, float> luminosity;
+map<TString, float> luminosityCR;
+map<TString, float> deepCSVFloatMap;
+map<TString, float> topTaggerCuts;
+map<TString, int> triggerSRConst;
+map<TString, int> triggerCRConst;
 
 
 void initFilesMapping()
@@ -76,8 +81,8 @@ void initFilesMapping()
 	luminosity.insert(pair<TString, float>("2017",41530));
 	luminosity.insert(pair<TString, float>("2018",59740));
 
-	luminosityCR.insert(pair<TString, float>("2016_preVFP", 1670));
-	luminosityCR.insert(pair<TString, float>("2016_postVFP", 1670));
+	luminosityCR.insert(pair<TString, float>("2016_preVFP", 1134));
+	luminosityCR.insert(pair<TString, float>("2016_postVFP", 564));
 	luminosityCR.insert(pair<TString, float>("2017",41530));
 	luminosityCR.insert(pair<TString, float>("2018",59740));
 

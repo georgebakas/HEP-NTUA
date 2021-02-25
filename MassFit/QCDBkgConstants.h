@@ -73,7 +73,8 @@ void initQCDParams()
 	                              	  {"qcd_mean", 1.5079e+02},
 	                              	  {"qcd_sigma", 2.9477e+01}};
 
-	qcdParams.insert(pair<TString, map<TString, Double_t>>("2016",qcdParams16));
+	qcdParams.insert(pair<TString, map<TString, Double_t>>("2016_preVFP",qcdParams16));
+  qcdParams.insert(pair<TString, map<TString, Double_t>>("2016_postVFP",qcdParams16));
 	qcdParams.insert(pair<TString, map<TString, Double_t>>("2017",qcdParams17));
 	qcdParams.insert(pair<TString, map<TString, Double_t>>("2018",qcdParams18));
 
