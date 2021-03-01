@@ -20,7 +20,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 TString globalYear;
 
-void FillHistograms_massWindow(TString file_name, TString mass_name, TString year = "2016")
+void Correlation_chi_mJJ(TString file_name, TString mass_name, TString year = "2016_preVFP")
 {
   globalYear = year;
   initFilesMapping(false);
@@ -28,7 +28,7 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
   cout<<"file_name: "<<file_name<<endl;
   cout<<"mass_name: "<<mass_name<<endl;
   int triggerFloat;
-  if(year.Contains("2016")) triggerFloat = 2;
+  if(year.EqualTo("2016")) triggerFloat = 2;
   else triggerFloat = 5;
 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
@@ -52,26 +52,30 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
   int massWindows[NWINDOWS] = {1000,1200,1400,1600,1800,2000};
 
   float weights;
-  TH1F *hParton[NVAR][NWINDOWS], *hParticle[NVAR][NWINDOWS], *hReco[NVAR][NWINDOWS];
-
+  TH2F *hCorParton[NWINDOWS], *hCorParticle[NWINDOWS], *hCorReco[NWINDOWS];
   	//declare the histograms
-  for(int ivar =0; ivar<NVAR; ivar++)
+  for(int iwind =0; iwind<NWINDOWS; iwind++)
   {
-    for(int iwind =0; iwind<NWINDOWS; iwind++)
-    {
-      int sizeBins = NBINS[ivar];
-      float tempBND[NBINS[ivar]+1];
-      std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
-  		hParton[ivar][iwind] = new TH1F(TString::Format("hParton_%s_%d", varParton[ivar].Data(), massWindows[iwind]), TString::Format("hParton_%s_%d",varParton[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
-      hReco[ivar][iwind] = new TH1F(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]), TString::Format("hReco_%s_%d",varReco[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
-      hParticle[ivar][iwind] = new TH1F(TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), TString::Format("hParticle_%s_%d", varParticle[ivar].Data(),massWindows[iwind]), sizeBins, tempBND);
+    //book the TH2 histogram 
+    int sizeBins_chi = NBINS[0];
+    int sizeBins_mJJ = NBINS[3];
+    float tempBND_chi[NBINS[0]+1];
+    float tempBND_mJJ[NBINS[3]+1];
+    std::copy(BND[0].begin(), BND[0].end(), tempBND_chi);
+    std::copy(BND[3].begin(), BND[3].end(), tempBND_mJJ);
+    hCorReco[iwind] = new TH2F(TString::Format("hCorReco_chi_mJJ_%d", massWindows[iwind]), 
+                          TString::Format("hCorReco_chi_mJJ_%d", massWindows[iwind]), 
+                          sizeBins_mJJ, tempBND_mJJ, sizeBins_chi, tempBND_chi);
 
-      hParton[ivar][iwind]->Sumw2();
-      hReco[ivar][iwind]->Sumw2();
-      hParticle[ivar][iwind]->Sumw2();
-    }
+    hCorParticle[iwind] = new TH2F(TString::Format("hCorParticle_chi_mJJ_%d", massWindows[iwind]), 
+                          TString::Format("hCorParticle_chi_mJJ_%d", massWindows[iwind]), 
+                          sizeBins_mJJ, tempBND_mJJ, sizeBins_chi, tempBND_chi);
 
-  }//end of ivar loop
+    hCorParton[iwind] = new TH2F(TString::Format("hCorParton_chi_mJJ_%d", massWindows[iwind]), 
+                          TString::Format("hCorParton_chi_mJJ_%d", massWindows[iwind]), 
+                          sizeBins_mJJ, tempBND_mJJ, sizeBins_chi, tempBND_chi);
+  }
+
     int nJets,nLeptons, category(0);
     vector<bool>  *bit(0),*matchedJet(0);
     //reco vars:
@@ -386,10 +390,7 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
           massWindowCut = mJJ > massWindows[iwind];
           if(massWindowCut)
           {
-    		  	for(int ivar = 0; ivar < NVAR; ivar++)
-    	  		{
-              hReco[ivar][iwind]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-    			  }
+            hCorReco[iwind]->Fill(xRecoAll[3], xRecoAll[0], genEvtWeight*bTagEvntWeight);
           }
         }
 		  }
@@ -401,10 +402,7 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
           massWindowCut = mJJGen > massWindows[iwind];
           if(massWindowCut)
           {
-    	      for(int ivar = 0; ivar < NVAR; ivar++)
-    	  	  {
-    	      	hParticle[ivar][iwind]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
-    	      }
+            hCorParticle[iwind]->Fill(xParticleAll[3], xParticleAll[0], genEvtWeight*bTagEvntWeight);
           }
         }
 	    }
@@ -466,44 +464,37 @@ void FillHistograms_massWindow(TString file_name, TString mass_name, TString yea
 	  xPartonAllCnt.push_back(TMath::Cos(p4T_ZMFPartonCnt[1].Theta())); //this is |cos(theta*)| subleading
     xPartonAllCnt.push_back(mTTbarPartonCnt); //mTTbarPartonCnt
     bool massWindowCut;
-	  for(int ivar = 0; ivar < NVAR; ivar++)
-	  {
-      for(int iwind =0; iwind<NWINDOWS; iwind++)
-      {
-        massWindowCut = mTTbarPartonCnt > massWindows[iwind];
-        if(massWindowCut && partonCuts)
-			   hParton[ivar][iwind]->Fill(xPartonAllCnt[ivar], genEvtWeightCnt);
-      }
-	  }
+    for(int iwind =0; iwind<NWINDOWS; iwind++)
+    {
+      massWindowCut = mTTbarPartonCnt > massWindows[iwind];
+      if(massWindowCut && partonCuts)
+        hCorParton[iwind]->Fill(xPartonAllCnt[3], xPartonAllCnt[0], genEvtWeight*bTagEvntWeight);
+    }
+	  
   }
 
   //--------------------------------------------END OF EVENT COUNTER LOOP ------------------------------------------------------------------
 
-
-  for(int ivar =0; ivar<NVAR; ivar++)
-  {
-    for(int iwind= 0; iwind<NWINDOWS; iwind++)
-    {
-      hReco[ivar][iwind]->Scale(weights*LUMI);
-      hParticle[ivar][iwind]->Scale(weights*LUMI);
-      hParton[ivar][iwind]->Scale(weights*LUMI);
-    }
-  }//end of loop on all vars
+  for(int iwind= 0; iwind<NWINDOWS; iwind++)
+  {  
+      hCorReco[iwind]->Scale(weights*LUMI);
+      hCorParticle[iwind]->Scale(weights*LUMI);
+      hCorParton[iwind]->Scale(weights*LUMI);
+    
+  }//end of loop on all mass windows
 
 
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("%s/HistoMassWindows_%s", year.Data(),file_name.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/HistoCorrelationMassWindows_%s", year.Data(),file_name.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
-  for(int ivar = 0; ivar<NVAR; ivar++)
+
+  for(int iwind= 0; iwind<NWINDOWS; iwind++)
   {
-    for(int iwind= 0; iwind<NWINDOWS; iwind++)
-    {
-      hParton[ivar][iwind]->Write(TString::Format("hParton_%s_%d", varReco[ivar].Data(), massWindows[iwind]));
-      hParticle[ivar][iwind]->Write(TString::Format("hParticle_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
-      hReco[ivar][iwind]->Write(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
-    }
-  }//end of ivar
+    hCorParton[iwind]->Write(TString::Format("hCorParton_chi_mJJ_%d", massWindows[iwind]));
+    hCorParticle[iwind]->Write(TString::Format("hCorParticle_chi_mJJ_%d", massWindows[iwind]));
+    hCorReco[iwind]->Write(TString::Format("hCorReco_chi_mJJ_%d", massWindows[iwind]));
+  }
 
  }
 
