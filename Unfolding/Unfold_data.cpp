@@ -73,17 +73,16 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   setTDRStyle();
   gStyle->SetOptStat(0);
 
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY1
 
-
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
-                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
+                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
@@ -92,14 +91,13 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
 
 
 
-
   float LUMI = luminosity[year];
   //get the files:
   //1. the signal file has the fiducial measurements that are going to be used as input
   TFile *signalFile;
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
-  //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
+  //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
 
 
   //whether parton or particle, from the choice of the user
