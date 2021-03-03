@@ -194,7 +194,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
 
 
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1",
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1",
                "mva", "topTagger1", "mTop", "jetMassSoftDrop"};
 
 
@@ -598,7 +598,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
        bTagEvntWeight = 1;
      }
      //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-     if(ivar < 10)
+     if(ivar < 13)
      {
        if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
        {
@@ -617,19 +617,19 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
       //Signal Region with tTagger
       if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
       {
-        hSR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+        hSR[f][13]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
 
       //Control Region with tTagger
       if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
       {
-        hCR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+        hCR[f][13]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
 
       //1 btag region with tTagger
       if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
       {
-        h1Btag[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+        h1Btag[f][13]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
     }
    }
@@ -646,17 +646,15 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   TH1F *hSR_Clone[listOfFiles.size()][NVAR];
   TH1F *h1Btag_Clone[listOfFiles.size()][NVAR];
 
-  cout<<hSR[0][9]->GetEntries()<<endl;
-  hSR[0][9]->Draw();
 
   for(int ivar= 0; ivar<NVAR; ivar++)
   {
     //for every slice
     for(int j=0; j<listOfFiles.size(); j++)
     {
-      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_Clone","tTagger",histoNames[j].Data()));
+      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_%s_Clone","tTagger",histoNames[j].Data(), varReco[ivar].Data()));
+      hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_%s_Clone","tTagger",histoNames[j].Data(), varReco[ivar].Data()));
+      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_%s_Clone","tTagger",histoNames[j].Data(), varReco[ivar].Data()));
 
         if(selection !=0)
         {
@@ -730,7 +728,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
 
 
 
-  if(ivar == 8)
+  if(ivar == 11)
   {
     hSR[0][ivar-1]->Add(hSR[0][ivar]);
     hCR[0][ivar-1]->Add(hCR[0][ivar]);

@@ -180,7 +180,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   cout<<"topTagger: "<<selMvaCut<<endl;
   cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
 
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1",
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1",
                "mva", "topTagger1", "mTop", "jetMassSoftDrop"};
 
 
@@ -600,7 +600,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
        bTagEvntWeight = 1;
      }
      //for the jetMassSoftDrop just keep it simple from 50 to 300 GeV
-     if(ivar < 10)
+     if(ivar < 13)
      {
        if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
        {
@@ -619,19 +619,19 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       //Signal Region with tTagger
       if(recoCuts && btagCut && massCut && tTaggerCut && triggerSR)
       {
-        hSR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+        hSR[f][13]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
 
       //Control Region with tTagger
       if(recoCuts && revertBtag && massCut && tTaggerCut && triggerCR)
       {
-        hCR[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+        hCR[f][13]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
 
       //1 btag region with tTagger
       if(recoCuts && massCut && tTaggerCut && btag1 && triggerSR)
       {
-        h1Btag[f][10]->Fill(xReco,genEvtWeight*bTagEvntWeight);
+        h1Btag[f][13]->Fill(xReco,genEvtWeight*bTagEvntWeight);
       }
     }
    }
@@ -656,9 +656,9 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     //for every slice
     for(int j=0; j<listOfFiles.size(); j++)
     {
-      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_Clone","tTagger",histoNames[j].Data()));
-      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_Clone","tTagger",histoNames[j].Data()));
+      hCR_Clone[j][ivar]=(TH1F*)hCR[j][ivar]->Clone(TString::Format("hCR_%s_%s_%s_Clone","tTagger",histoNames[j].Data(), varReco[ivar].Data()));
+      hSR_Clone[j][ivar]=(TH1F*)hSR[j][ivar]->Clone(TString::Format("hSR_%s_%s_%s_Clone","tTagger",histoNames[j].Data(), varReco[ivar].Data()));
+      h1Btag_Clone[j][ivar]=(TH1F*)h1Btag[j][ivar]->Clone(TString::Format("h1Btag_%s_%s_%s_Clone","tTagger",histoNames[j].Data(), varReco[ivar].Data()));
 
         if(selection !=0)
         {
@@ -708,7 +708,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
   TString varNameReco = varReco[ivar];
   cout<<varNameReco<<endl;
-    if(ivar ==0 || ivar ==1 || ivar == 3 || ivar == 4 || ivar == 9 || ivar ==10 )
+    if(ivar ==0 || ivar ==1 || ivar == 3 || ivar == 4 || ivar == 12 || ivar == 13 )
   {
     hCR[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
     hSR[0][ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", varNameReco.Data()));
@@ -732,7 +732,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
 
 
-  if(ivar == 8)
+  if(ivar == 11)
   {
     hSR[0][ivar-1]->Add(hSR[0][ivar]);
     hCR[0][ivar-1]->Add(hCR[0][ivar]);
