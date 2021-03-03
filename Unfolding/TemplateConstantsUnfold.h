@@ -40,33 +40,36 @@ void initFilesMapping(bool free_eb = true)
 
 
 	map<TString, TString> files2016 = {{"700-1000", "TT_Mtt-700to1000_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
-	                               	   {"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
+	                                {"1000-Inf", "TT_Mtt-1000toInf_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"},
+	                               	{"TTNominal", "TT_TuneCUETP8M2T4_13TeV-powheg-pythia8.root"}};
 
 	map<TString, TString> files2017 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
+	                                {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	{"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	{"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 	
 	map<TString, TString> files2018 = {{"700-1000", "TT_Mtt-700to1000_TuneCP5_PSweights_13TeV-powheg-pythia8.root"},
-	                                   {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
-	                                   {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
-	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
+	                                {"1000-Inf", "TT_Mtt-1000toInf_TuneCP5_13TeV-powheg-pythia8.root"},
+	                                {"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	{"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	{"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 										
-	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/Signal/"));
-	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/Signal/"));
-	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/Signal/"));   
+	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Signal/"));
+	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/"));
+	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/"));
+	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/"));   
 
-	files.insert(pair<TString, map<TString, TString>>("2016", files2016));
+	files.insert(pair<TString, map<TString, TString>>("2016_preVFP", files2016));
+	files.insert(pair<TString, map<TString, TString>>("2016_postVFP", files2016));
 	files.insert(pair<TString, map<TString, TString>>("2017", files2017));
 	files.insert(pair<TString, map<TString, TString>>("2018", files2018));
 
 	
-	luminosity.insert(pair<TString, float>("2016",35920));
-	luminosity.insert(pair<TString, float>("2017",41530));
-	luminosity.insert(pair<TString, float>("2018",59740));
+	luminosity.insert(pair<TString, float>("2016_preVFP",19500));
+	luminosity.insert(pair<TString, float>("2016_postVFP",16500));
+	luminosity.insert(pair<TString, float>("2017",41480));
+	luminosity.insert(pair<TString, float>("2018",59830));
 
 	variableConstant.insert(pair<TString, int>("mJJ",  0));
 	variableConstant.insert(pair<TString, int>("ptJJ", 1));

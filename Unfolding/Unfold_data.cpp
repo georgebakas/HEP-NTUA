@@ -65,9 +65,9 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod=1)
+void Unfold_data(TString inYear = "2016_preVFP", bool isParton = true, int unfoldMethod=1)
 {
-  bool isNorm = false;
+  bool isNorm = true;
   year = inYear;
   initFilesMapping();
   setTDRStyle();
@@ -97,7 +97,7 @@ void Unfold_data(TString inYear = "2016", bool isParton = true, int unfoldMethod
   TFile *signalFile;
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/EqualBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/UL%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
 
 
   //whether parton or particle, from the choice of the user
