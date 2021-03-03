@@ -162,14 +162,17 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   initGlobals(year);
 
   gStyle->SetOptStat(0);
-  const int NVAR =11;
+  const int NVAR =14;
   const int N_MJJ = 8;
   const int N_PTJJ = 8;
   const int N_YJJ = 8;
-  const int N_PT = 8;
+  const int N_PT_0 = 6;
+  const int N_PT_1 = 8;
   const int N_JETY = 11;
   const int N_JETMASS = 100;
   const int N_MVA = 100;
+  const int N_CHI = 11;
+  const int N_COSTHETASTAR = 10;
 
  float selMvaCut=topTaggerCuts[year];
  cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;
@@ -177,14 +180,17 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   cout<<"topTagger: "<<selMvaCut<<endl;
   cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
 
-  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT, N_PT ,N_JETY, N_JETY,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
+  int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT_0, N_PT_1 ,N_JETY, N_JETY,N_CHI,N_COSTHETASTAR, N_COSTHETASTAR, N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
                        {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                       {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                       {500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                        {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
+                       {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
+                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
+                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading; 
 
 
 
@@ -292,7 +298,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   for(int ivar =0; ivar< NVAR; ivar++)
   {
     int sizeBins = NBINS[ivar];
-    if(ivar < 7)
+    if(ivar < 10)
     {
       float tempBND[NBINS[ivar]+1];
       std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
@@ -300,13 +306,13 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
       hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
       h1Btag[f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, tempBND);
     }
-    else if (ivar == 9 || ivar == 10)
+    else if (ivar == 12 || ivar == 13)
     {
       hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 120,220);
       hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 120,220);
     h1Btag[f][ivar] = new TH1F(TString::Format("h%s_%s_%s", "1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("h%s_%s_%s","1Btag_tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, 120,220);
     }
-    else if (ivar == 7 || ivar == 8)
+    else if (ivar == 10 || ivar == 11)
     {
       hCR[f][ivar] = new TH1F(TString::Format("hCR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hCR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, -1,1);
       hSR[f][ivar] = new TH1F(TString::Format("hSR_%s_%s_%s", "tTagger",histoNames[f].Data(),varReco[ivar].Data()), TString::Format("hSR_%s_%s_%s","tTagger",histoNames[f].Data(),varReco[ivar].Data()), sizeBins, -1,1);
@@ -452,7 +458,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
 
-    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
+    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 500 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
@@ -460,7 +466,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
     //2 btag category with deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
-           (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
+          (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
     //1 btag category with deepCSV
     btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
@@ -477,6 +483,22 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
         leadingPt = 1;
         subleadingPt = 0;
       }
+    TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
+    p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
+    p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
+
+    TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
+
+    p4T_ZMF[0].SetPtEtaPhiM(p4T[leadingPt].Pt(), p4T[leadingPt].Eta(), p4T[leadingPt].Phi(), p4T[leadingPt].M());
+    p4T_ZMF[1].SetPtEtaPhiM(p4T[subleadingPt].Pt(), p4T[subleadingPt].Eta(), p4T[subleadingPt].Phi(), p4T[subleadingPt].M());
+    p4T_ZMF[0].Boost(ttbarBoostVector);
+    p4T_ZMF[1].Boost(ttbarBoostVector);
+
+
+    float chi0(0), chi1(0);
+     //chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+     //chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+     float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
 
     xRecoAll.push_back(mJJ);
     xRecoAll.push_back(ptJJ);
@@ -485,6 +507,9 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     xRecoAll.push_back((*pt_)[subleadingPt]);
     xRecoAll.push_back(fabs((*y_)[leadingPt]));
     xRecoAll.push_back(fabs((*y_)[subleadingPt]));
+    xRecoAll.push_back(yStarExp); //this is chi
+    xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
+    xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
     xRecoAll.push_back((*jetTtag_)[leadingPt]);
     xRecoAll.push_back((*jetTtag_)[subleadingPt]);
     xRecoAll.push_back((*mass_)[leadingPt]);
@@ -505,33 +530,52 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
 
-    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
+    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 500 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
-           (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
+          (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
     //1 btag category with  deepCSV
     btag1DeepCSV  = ((dCSVScoreSub0[0] > deepCSVFloat || dCSVScoreSub1[0] > deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat)) ||
             ((dCSVScoreSub0[0] < deepCSVFloat && dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] > deepCSVFloat || dCSVScoreSub1[1] > deepCSVFloat));
 
     //0 btag category with deepCSV
       revertBtagDeepCSV = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
+  
+  TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
+    p4T[0].SetPtEtaPhiM((*jetPt)[0], (*jetEta)[0], (*jetPhi)[0], (*jetMassSoftDrop)[0]);
+    p4T[1].SetPtEtaPhiM((*jetPt)[1], (*jetEta)[1], (*jetPhi)[1], (*jetMassSoftDrop)[1]);
+
+    TVector3 ttbarBoostVector = getBoostVector(p4T[0], p4T[1], p4TTbar);
+
+    p4T_ZMF[0].SetPtEtaPhiM(p4T[0].Pt(), p4T[0].Eta(), p4T[0].Phi(), p4T[0].M());
+    p4T_ZMF[1].SetPtEtaPhiM(p4T[1].Pt(), p4T[1].Eta(), p4T[1].Phi(), p4T[1].M());
+    p4T_ZMF[0].Boost(ttbarBoostVector);
+    p4T_ZMF[1].Boost(ttbarBoostVector);
+
+    float chi0(0), chi1(0);
+     //chi0 = (1 + fabs(TMath::Cos(p4T_ZMF[0].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[0].Theta())));
+     //chi1 = (1 + fabs(TMath::Cos(p4T_ZMF[1].Theta()))) / ( 1 - fabs(TMath::Cos(p4T_ZMF[1].Theta())));
+    float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())); //this is chi = e^(y*) , y* = 1/2(y1-y0)
 
 
-   xRecoAll.push_back(mJJ);
-   xRecoAll.push_back(ptJJ);
-   xRecoAll.push_back(yJJ);
-   xRecoAll.push_back((*jetPt)[0]);
-   xRecoAll.push_back((*jetPt)[1]);
-   xRecoAll.push_back(fabs((*jetY)[0]));
-   xRecoAll.push_back(fabs((*jetY)[1]));
-   xRecoAll.push_back((*jetTtag)[0]);
-   xRecoAll.push_back((*jetTtag)[1]);
-   xRecoAll.push_back((*jetMassSoftDrop)[0]);
-   for(int ijet=1; ijet<nJets; ijet++)
+  xRecoAll.push_back(mJJ);
+  xRecoAll.push_back(ptJJ);
+  xRecoAll.push_back(yJJ);
+  xRecoAll.push_back((*jetPt)[0]);
+  xRecoAll.push_back((*jetPt)[1]);
+  xRecoAll.push_back(fabs((*jetY)[0]));
+  xRecoAll.push_back(fabs((*jetY)[1]));
+  xRecoAll.push_back(yStarExp); //this is chi
+  xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
+  xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+  xRecoAll.push_back((*jetTtag)[0]);
+  xRecoAll.push_back((*jetTtag)[1]);
+  xRecoAll.push_back((*jetMassSoftDrop)[0]);
+  for(int ijet=1; ijet<nJets; ijet++)
     xRecoAll.push_back((*jetMassSoftDrop)[ijet]);
 
 

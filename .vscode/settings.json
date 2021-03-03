@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "plotStackSensitivity.C": "cpp",
-        "plotSensitivity_Zprime_TTbar.C": "cpp"
+        "plotSensitivity_Zprime_TTbar.C": "cpp",
+        "FillHistograms.C": "cpp",
+        "ostream": "cpp",
+        "ResponseMatrices_unequalBins.C": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
     }
 }

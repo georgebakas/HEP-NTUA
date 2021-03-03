@@ -55,7 +55,7 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
+                                                        {500, 570, 650, 800, 1100, 1500}, //jetpt0
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY1
@@ -63,7 +63,7 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                 {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                                                {500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
@@ -414,7 +414,7 @@ for(int f=0; f<fileNames.size(); f++)
 	  bool recoCuts, partonCuts, particleCuts;
 	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
 	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
+	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 500 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
 	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
 	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) <2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
