@@ -534,7 +534,7 @@ void FillHistograms_massWindow_DY(TString file_name, TString mass_name, TString 
 
 
   TFile *outFile;
-  outFile = TFile::Open(TString::Format("%s/HistoMassWindows_%s", year.Data(),file_name.Data()), "RECREATE");
+  outFile = TFile::Open(TString::Format("%s/HistoMassWindows_DY_%s", year.Data(),file_name.Data()), "RECREATE");
   //outFile->cd();
   //write them to file
   for(int ivar = 0; ivar<NVAR; ivar++)
