@@ -28,7 +28,7 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
   cout<<"file_name: "<<file_name<<endl;
   cout<<"mass_name: "<<mass_name<<endl;
   float triggerFloat;
-  if(year.EqualTo("2016")) triggerFloat = 2;
+  if(year.Contains("2016")) triggerFloat = 2;
   else triggerFloat = 5;
 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
@@ -203,6 +203,7 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
       decade = k;
       trIN->GetEntry(iev);
 		int isMatched =0;
+		/*
 		eta_->clear();
         mass_->clear();
         pt_->clear();
@@ -220,13 +221,13 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 	   jetBtagSub1DCSVbb_->clear();
 	   jetBtagSub0DCSVbbb_->clear();
 	   jetBtagSub1DCSVbbb_->clear();
-
+		*/
 	   xPartonAll.clear();
 	   xRecoAll.clear();
 	   xParticleAll.clear();
 
       //----------------------MATCHING------------------------------------------------------
-
+			/*
 			for(int ijet =0; ijet<nJets; ijet++)
 			{
 				//cout<<"ok"<<endl;
@@ -294,21 +295,21 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 
 			   }
 
-			}
-	if(isMatched > 1)
+			} */
+	if(nJets > 1)
     {
    	   	int leadingPt =0;
       	int subleadingPt = 1;
 
-  		if((*pt_)[0] < (*pt_)[1])
+  		if((*jetPt)[0] < (*jetPt)[1])
   		{
    		    subleadingPt =0;
    		    leadingPt = 1;
    		}
 
 		  TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
-    	p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
-   		p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
+    	p4T[leadingPt].SetPtEtaPhiM((*jetPt)[leadingPt], (*jetEta)[leadingPt], (*jetPhi)[leadingPt], (*jetMassSoftDrop)[leadingPt]);
+   		p4T[subleadingPt].SetPtEtaPhiM((*jetPt)[subleadingPt], (*jetEta)[subleadingPt], (*jetPhi)[subleadingPt], (*jetMassSoftDrop)[subleadingPt]);
 
   	    TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
 
@@ -327,8 +328,8 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 
 		//now parton
 		TLorentzVector p4TParton[2], p4T_ZMFParton[2], p4TTbarParton;
-    	p4TParton[leadingPt].SetPtEtaPhiM((*partonPt_)[leadingPt], (*partonEta_)[leadingPt], (*partonPhi_)[leadingPt], (*partonMass_)[leadingPt]);
-   		p4TParton[subleadingPt].SetPtEtaPhiM((*partonPt_)[subleadingPt], (*partonEta_)[subleadingPt], (*partonPhi_)[subleadingPt], (*partonMass_)[subleadingPt]);
+    	p4TParton[leadingPt].SetPtEtaPhiM((*partonPt)[leadingPt], (*partonEta)[leadingPt], (*partonPhi)[leadingPt], (*partonMass)[leadingPt]);
+   		p4TParton[subleadingPt].SetPtEtaPhiM((*partonPt)[subleadingPt], (*partonEta)[subleadingPt], (*partonPhi)[subleadingPt], (*partonMass)[subleadingPt]);
 
   	    TVector3 ttbarBoostVectorParton = getBoostVector(p4TParton[leadingPt], p4TParton[subleadingPt], p4TTbarParton);
 
@@ -365,14 +366,14 @@ void FillHistograms(TString file_name, TString mass_name, TString year = "2016")
 
 	  //---------------------------end of MATCHING---------------------------------------------------------
 	  bool recoCuts, partonCuts, particleCuts;
-	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
-	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
-	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
+	  bool massCut = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+	  bool tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+	  recoCuts = nJets > 1 && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
+	  partonCuts = fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) <2.4 && (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && mTTbarParton > 1000;
 	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
-	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
-					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
+	  bool deepCSV = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
+					 (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
 
       bool btagCut;
 	  btagCut = deepCSV;

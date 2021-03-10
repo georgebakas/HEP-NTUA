@@ -165,7 +165,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, int massWindow=1000)
   const int NVAR = 4;
   const int chiSize =11;
   const int cosSize = 10;
-  const int mJJSize = 7;
+  const int mJJSize = 20;
 
   float selMvaCut=topTaggerCuts[year];
 
@@ -178,7 +178,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, int massWindow=1000)
   std::vector< std::vector <Float_t> > const BND = {{1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                     {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| subleading
-                                                    {1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}}; //mJJ
+                                                    {1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500,1550,1600,1700,1800,1900,2000,2200,2600,3000,5000}}; //mJJ
   TString varReco[NVAR]   = {"chi", "cosTheta_0", "cosTheta_1", "mJJ"};
 
   int fileSize = listOfFiles.size();
@@ -352,7 +352,7 @@ void FillHistograms_Reduced(TString y="2016", int sel = 0, int massWindow=1000)
   if (nJets >1)
   {
     //matching only if we have Signal ttbar MC
-    if(selection == 1 || selection ==4)
+    if(selection < 0)
     {
     //----------------------MATCHING------------------------------------------------------
 

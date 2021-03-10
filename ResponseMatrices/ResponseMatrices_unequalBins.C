@@ -53,10 +53,11 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   cout<<LUMI<<endl;
+  cout<<"Top Tagger: "<<selMvaCut<<endl;
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                        {500, 570, 650, 800, 1100, 1500}, //jetpt0
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
@@ -67,7 +68,7 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                 {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                {500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                                                 {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
@@ -282,6 +283,7 @@ for(int f=0; f<fileNames.size(); f++)
         cout<<10*k<<" %"<<endl;
       decade = k;
       trIN->GetEntry(iev);
+      /*
 		int isMatched =0;
 		eta_->clear();
         mass_->clear();
@@ -301,7 +303,7 @@ for(int f=0; f<fileNames.size(); f++)
 	   jetBtagSub0DCSVbb_->clear();
 	   jetBtagSub1DCSVbb_->clear();
 	   jetBtagSub0DCSVbbb_->clear();
-	   jetBtagSub1DCSVbbb_->clear();
+	   jetBtagSub1DCSVbbb_->clear(); */
 
 	   xPartonAll.clear();
 	   xRecoAll.clear();
@@ -311,7 +313,7 @@ for(int f=0; f<fileNames.size(); f++)
      //cout<<"weight: "<<genEvtWeight*bTagEvntWeight<<endl;
      if(funcWeight != genEvtWeight*bTagEvntWeight) cout<<"problem at "<<iev<<endl;
       //----------------------MATCHING------------------------------------------------------
-
+      /*
 			for(int ijet =0; ijet<nJets; ijet++)
 			{
 				//cout<<"ok"<<endl;
@@ -381,14 +383,13 @@ for(int f=0; f<fileNames.size(); f++)
 
 			   }
 
-			}
-	if(isMatched > 1)
+			} */
+    if (nJets > 1)
     {
+   	  int leadingPt =0;
+      int subleadingPt = 1;
 
-   	   	int leadingPt =0;
-      	int subleadingPt = 1;
-
-  		if((*pt_)[0] < (*pt_)[1])
+  		if((*jetPt)[0] < (*jetPt)[1])
   		{
    		    subleadingPt =0;
    		    leadingPt = 1;
@@ -396,8 +397,8 @@ for(int f=0; f<fileNames.size(); f++)
     
     //reco for angular
     TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
-    p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
-   	p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
+    p4T[leadingPt].SetPtEtaPhiM((*jetPt)[leadingPt], (*jetEta)[leadingPt], (*jetPhi)[leadingPt], (*jetMassSoftDrop)[leadingPt]);
+   	p4T[subleadingPt].SetPtEtaPhiM((*jetPt)[subleadingPt], (*jetEta)[subleadingPt], (*jetPhi)[subleadingPt], (*jetMassSoftDrop)[subleadingPt]);
 
   	TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
 
@@ -406,23 +407,22 @@ for(int f=0; f<fileNames.size(); f++)
     p4T_ZMF[0].Boost(ttbarBoostVector);
     p4T_ZMF[1].Boost(ttbarBoostVector);
 
-	    float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
+	  float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
 
    	xRecoAll.push_back(mJJ);
 		xRecoAll.push_back(ptJJ);
 		xRecoAll.push_back(yJJ);
-		xRecoAll.push_back((*pt_)[leadingPt]);
-		xRecoAll.push_back((*pt_)[subleadingPt]);
-		xRecoAll.push_back(fabs((*y_)[leadingPt]));
-		xRecoAll.push_back(fabs((*y_)[subleadingPt]));
+		xRecoAll.push_back((*jetPt)[leadingPt]);
+		xRecoAll.push_back((*jetPt)[subleadingPt]);
+		xRecoAll.push_back(fabs((*jetY)[leadingPt]));
+		xRecoAll.push_back(fabs((*jetY)[subleadingPt]));
     xRecoAll.push_back(yStarExp); //this is chi
     xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
     xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
-
     //now parton
 		TLorentzVector p4TParton[2], p4T_ZMFParton[2], p4TTbarParton;
-    p4TParton[leadingPt].SetPtEtaPhiM((*partonPt_)[leadingPt], (*partonEta_)[leadingPt], (*partonPhi_)[leadingPt], (*partonMass_)[leadingPt]);
-   	p4TParton[subleadingPt].SetPtEtaPhiM((*partonPt_)[subleadingPt], (*partonEta_)[subleadingPt], (*partonPhi_)[subleadingPt], (*partonMass_)[subleadingPt]);
+    p4TParton[leadingPt].SetPtEtaPhiM((*partonPt)[leadingPt], (*partonEta)[leadingPt], (*partonPhi)[leadingPt], (*partonMass)[leadingPt]);
+   	p4TParton[subleadingPt].SetPtEtaPhiM((*partonPt)[subleadingPt], (*partonEta)[subleadingPt], (*partonPhi)[subleadingPt], (*partonMass)[subleadingPt]);
 
   	TVector3 ttbarBoostVectorParton = getBoostVector(p4TParton[leadingPt], p4TParton[subleadingPt], p4TTbarParton);
 
@@ -436,10 +436,10 @@ for(int f=0; f<fileNames.size(); f++)
 		xPartonAll.push_back(mTTbarParton);
 		xPartonAll.push_back(ptTTbarParton);
 		xPartonAll.push_back(yTTbarParton);
-		xPartonAll.push_back((*partonPt_)[leadingPt]);
-		xPartonAll.push_back((*partonPt_)[subleadingPt]);
-		xPartonAll.push_back(fabs((*partonY_)[leadingPt]));
-		xPartonAll.push_back(fabs((*partonY_)[subleadingPt]));
+		xPartonAll.push_back((*partonPt)[leadingPt]);
+		xPartonAll.push_back((*partonPt)[subleadingPt]);
+		xPartonAll.push_back(fabs((*partonY)[leadingPt]));
+		xPartonAll.push_back(fabs((*partonY)[subleadingPt]));
     xPartonAll.push_back(yStarExpParton);
 		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[0].Theta())); //this is |cos(theta*)| leading
 		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[1].Theta())); //this is |cos(theta*)| subleading
@@ -469,20 +469,16 @@ for(int f=0; f<fileNames.size(); f++)
 		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[0].Theta())); //this is |cos(theta*)| leading
 		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[1].Theta())); //this is |cos(theta*)| subleading
 
-
-
-
-
 	  //---------------------------end of MATCHING---------------------------------------------------------
 	  bool recoCuts, partonCuts, particleCuts;
-	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
-	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 500 && (*pt_)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
-	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
+	  bool massCut = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+	  bool tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+	  recoCuts = nJets > 1 && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
+	  partonCuts = fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) <2.4 && (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && mTTbarParton > 1000;
 	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) <2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
-	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
-					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
+	  bool deepCSV = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
+					 (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
 
       bool btagCut;
 	  btagCut = deepCSV;
@@ -530,8 +526,7 @@ for(int f=0; f<fileNames.size(); f++)
 	      		hParticle[f][ivar]->Fill(xParticleAll[ivar], funcWeight);
 	      	}
 	      }
-
-	 }//----- end of is matched
+    }//---end the nJets
   }//---end the event for
 
 

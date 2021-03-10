@@ -165,7 +165,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   const int N_MJJ = 8;
   const int N_PTJJ = 8;
   const int N_YJJ = 8;
-  const int N_PT_0 = 6;
+  const int N_PT_0 = 8;
   const int N_PT_1 = 8;
   const int N_JETY = 11;
   const int N_JETMASS = 100;
@@ -189,7 +189,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
                        {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                       {500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
+                       {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
                        {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
@@ -386,7 +386,8 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   if (nJets >1)
   {
     //matching only if we have Signal ttbar MC
-    if(selection == 1 || selection ==4)
+    //if(selection == 1 || selection ==4)
+    if(selection < 0)
     {
     //----------------------MATCHING------------------------------------------------------
 
@@ -459,7 +460,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1];
 
-    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 500 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
+    recoCuts   = fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && nLeptons==0 && mJJ > 1000 && nJets > 1;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > 1000;
@@ -533,7 +534,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
     dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
 
-    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 500 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
+    recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
     massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
