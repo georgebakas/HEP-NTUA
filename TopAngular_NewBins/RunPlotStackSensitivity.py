@@ -20,4 +20,6 @@ for imass in masses:
         if year == '2016' and imass == 2500 and w == 0.3:
             continue
         print('mass', imass, 'width:', iwidth)
-        os.system(f'root -l -b -q \'plotStackSensitivity.C(\"{year}\",1400,{imass},{iwidth})\'')
+        os.system(f'root -l -b -q \'plotStackSensitivity.C(\"{year}\",1600,{imass},{iwidth})\'')
+        #os.system(f'root -l -b -q \'plotSensitivity_Zprime_TTbar.C(\"{year}\",1600,{imass},{iwidth})\'')
+        
