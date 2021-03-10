@@ -16,6 +16,7 @@ map<TString, map<TString, float>> qcdBkgXSEC;
 map<TString, TString> dataFiles;
 map<TString, float> Nbkg2Constants;
 map<TString, float> Nbkg2ConstantsErrors;
+map<TString, float> ttbarSigStrength;
 map<TString, int> variableConstant;
 TColor color;
 
@@ -356,6 +357,11 @@ void initFilesMapping(bool isLoose = false)
 	variableConstant.insert(pair<TString, int>("jetPt1", 4));
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
+
+	ttbarSigStrength.insert(pair<TString, float>("2016_preVFP",0.702314));
+	ttbarSigStrength.insert(pair<TString, float>("2016_postVFP",0.640463));
+	ttbarSigStrength.insert(pair<TString, float>("2017",0.662214));
+	ttbarSigStrength.insert(pair<TString, float>("2018",0.673655));
 
 	/*
 	BND[variableConstant["mJJ"]].push_back({1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3200, 4000, 5000}); //mjj

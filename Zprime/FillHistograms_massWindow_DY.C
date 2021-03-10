@@ -541,13 +541,13 @@ void FillHistograms_massWindow_DY(TString file_name, TString mass_name, TString 
   {
     for(int iwind= 0; iwind<NWINDOWS; iwind++)
     {
-      hParton_Lo1[ivar][iwind]->Write(TString::Format("hParton_%s_%d", varReco[ivar].Data(), massWindows[iwind]));
-      hParticle_Lo1[ivar][iwind]->Write(TString::Format("hParticle_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
-      hReco_Lo1[ivar][iwind]->Write(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
+      hParton_Lo1[ivar][iwind]->Write(TString::Format("hParton_Lo1_%s_%d", varReco[ivar].Data(), massWindows[iwind]));
+      hParticle_Lo1[ivar][iwind]->Write(TString::Format("hParticle_Lo1_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
+      hReco_Lo1[ivar][iwind]->Write(TString::Format("hReco_Lo1_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
 
-      hParton_Gr1[ivar][iwind]->Write(TString::Format("hParton_%s_%d", varReco[ivar].Data(), massWindows[iwind]));
-      hParticle_Gr1[ivar][iwind]->Write(TString::Format("hParticle_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
-      hReco_Gr1[ivar][iwind]->Write(TString::Format("hReco_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
+      hParton_Gr1[ivar][iwind]->Write(TString::Format("hParton_Gr1_%s_%d", varReco[ivar].Data(), massWindows[iwind]));
+      hParticle_Gr1[ivar][iwind]->Write(TString::Format("hParticle_Gr1_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
+      hReco_Gr1[ivar][iwind]->Write(TString::Format("hReco_Gr1_%s_%d", varReco[ivar].Data(),massWindows[iwind]));
     }
   }//end of ivar
 
