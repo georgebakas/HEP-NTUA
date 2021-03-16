@@ -21,9 +21,18 @@ libBlue.so: $(objs)
 
 clean:
 	rm -f $(objs) BlueDict.cxx BlueDict_rdict.pcm libBlue.so
+	rm -f CombineMeasurements_cxx*
 
 BlueDict.cxx: Blue.h BlueLinkDef.h
 	rootcling -f $@ -c $^
+
+Combine:
+	$(CXX) -ggdb /afs/cern.ch/work/g/gbakas/public/HEP-NTUA/2.4.0/main.cpp -o /afs/cern.ch/work/g/gbakas/public/HEP-NTUA/2.4.0/main \
+	Blue.o BlueDict.o -I/usr/include/root -I/usr/include/root/Math \
+	-I/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/2.4.0 -L/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/2.4.0 \
+	-L/usr/lib64/root -lGui -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree \
+	-lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -lROOTDataFrame -pthread -lm \
+	-ldl -lMathMore -rdynamic -m64 -lBlue -fPIC
 
 .cxx.o:
 	$(CXX) $(CXXFLAGS) -o $@ -c $<

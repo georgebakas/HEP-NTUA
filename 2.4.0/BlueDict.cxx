@@ -140,8 +140,8 @@ namespace {
 0
     };
     static const char* includePaths[] = {
-"/Applications/root_v6.22.02/include/",
-"/Users/georgebakas/Documents/HEP-NTUA/2.4.0/",
+"/usr/include/root",
+"/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/2.4.0/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(

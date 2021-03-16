@@ -1,20 +1,22 @@
-#include "../../BASE.h"
+#include "BASE.h"
 
 #include <iostream>
 
 #include <TString.h>
 #include <TFile.h>
 #include <TH1F.h>
+#include <TGraph.h>
 
 #include "Blue.h"
 
-void CombineMeasurements()
+void CombineMeasurements(TFile *outFile, bool normalized = false)
 {
-  //gSystem->Load("2.4.0/libBlue.so");
+  gSystem->Load("libBlue.so");
+  cout<<"here"<<endl;
   AnalysisConstants::initConstants();
-  TFile *outFile = new TFile("outFile.root", "RECREATE");
-  TString baseInputDir = AnalysisConstants::baseDir;
-  baseInputDir = TString::Format("%s/Unfolding/results", baseInputDir.Data());
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  baseInputDir = TString::Format("%s/Unfolding", baseInputDir.Data());
+  std::cout<<"years SIZE: "<<  AnalysisConstants::years.size() << std::endl;
 
   // Define formats for Figures and Latex file
   const TString ForVal = "%1.6f";
@@ -24,8 +26,9 @@ void CombineMeasurements()
   const TString ForPul = ForRho;
   const TString ForUni = "pb";
 
-  static const Int_t NumEst = AnalysisConstants::years.size();
   std::cout << "Skata" << std::endl;
+  static const Int_t NumEst = AnalysisConstants::years.size();
+  
   TString NamEst[NumEst];
   for (unsigned int i = 0; i < AnalysisConstants::years.size(); i++)
   {
@@ -39,30 +42,55 @@ void CombineMeasurements()
   static const Int_t LenXEst = NumEst * (NumUnc + 1);
   Double_t XEst[LenXEst];
 
-  Int_t IWhichObs[NumEst] = {0, 0, 0};
+  Int_t IWhichObs[NumEst] = {0, 0, 0, 0};
 
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
     NamObs[0] = AnalysisConstants::unfoldingVariables[var];
+    std::cout<< "size: "<< AnalysisConstants::unfoldingVariables.size() << endl;
+    std::cout<< "name: "<<NamObs[0]<<std::endl;
 
     std::vector<TH1F *> originalHistograms;
     std::vector<TH1F *> uncHistograms;
+    std::vector<TGraph *> weightGraphs;
     TString variable = AnalysisConstants::unfoldingVariables[var];
-    std::cout << "variable: " << variable << std::endl;
+    std::cout << "variable: " << variable.Data() << std::endl;
 
+    TString partonParticleStr = "Parton";
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
       NamEst[y] = AnalysisConstants::years[y];
-      TFile *file = TFile::Open(TString::Format("%s/%s/Nominal%s%s/UnfoldingResults_%s.root",
+      TString fileName = TString::Format("%s/%s/%sMeasurements/Data%s/OutputFile.root",
                                                 baseInputDir.Data(),
                                                 AnalysisConstants::years[y].Data(),
-                                                (AnalysisConstants::isUL ? "/UL" : ""),
-                                                AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                                AnalysisConstants::years[y].Data()));
-      TH1F *f = (TH1F *)file->Get(TString::Format("unfoldedHistogram_%s", variable.Data()));
+                                                partonParticleStr.Data(),
+                                                (normalized ? "_Norm" : ""));
+      std::cout << "year: " << NamEst[y] << endl;
+      std::cout << "fileName: "<< fileName << std::endl;
+      TFile *file = TFile::Open(TString::Format("%s/%s/%sMeasurements/Data%s/OutputFile.root",
+                                                baseInputDir.Data(),
+                                                AnalysisConstants::years[y].Data(),
+                                                partonParticleStr.Data(),
+                                                (normalized ? "_Norm" : "")));
+      std::cout << file->GetName() <<std::endl;
+      std::cout << TString::Format("hUnfold_%s",
+                                   variable.Data() )<< std::endl;
+                                   //(normalized ? "_normalized" : ""))
+      TH1F *f = (TH1F *)file->Get(TString::Format("hUnfold_%s",
+                                                  variable.Data()));
       f->SetDirectory(0);
-      f->SetName(TString::Format("%s_%s", f->GetName(), AnalysisConstants::years[y].Data()));
+      f->SetName(TString::Format("%s_%s",
+                                 f->GetName(),
+                                 AnalysisConstants::years[y].Data()));
+      
       originalHistograms.push_back(f);
+      TGraph *g = new TGraph(f->GetNbinsX());
+      g->SetName(TString::Format("weights_%s%s_%s",
+                                 AnalysisConstants::unfoldingVariables[var].Data(),
+                                 (normalized ? "_normalized" : ""),
+                                 AnalysisConstants::years[y].Data()));
+      weightGraphs.push_back(g);
+
       file->Close();
 
       for (unsigned int i = 0; i < AnalysisConstants::variations.size(); i++)
@@ -74,12 +102,25 @@ void CombineMeasurements()
                                            AnalysisConstants::variations[i].Data(),
                                            AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
                                            AnalysisConstants::years[y].Data()));
-        f = (TH1F *)file->Get(TString::Format("unfoldedHistogram_%s", AnalysisConstants::unfoldingVariables[var].Data()));
+        f = (TH1F *)file->Get(TString::Format("unfoldedHistogram_%s%s",
+                                              AnalysisConstants::unfoldingVariables[var].Data(),
+                                              (normalized ? "_normalized" : "")));
+        std::cout << TString::Format("unfoldedHistogram_%s%s",
+                                     AnalysisConstants::unfoldingVariables[var].Data(),
+                                     (normalized ? "_normalized" : ""))
+                  << std::endl;
         f->SetDirectory(0);
-        f->SetName(TString::Format("%s_%s_%s",
+        f->SetName(TString::Format("%s_%s_%s%s",
                                    f->GetName(),
                                    AnalysisConstants::variations[i].Data(),
-                                   AnalysisConstants::years[y].Data()));
+                                   AnalysisConstants::years[y].Data(),
+                                   (normalized ? "_normalized" : "")));
+        std::cout << TString::Format("%s_%s_%s%s",
+                                     f->GetName(),
+                                     AnalysisConstants::variations[i].Data(),
+                                     AnalysisConstants::years[y].Data(),
+                                     (normalized ? "_normalized" : ""))
+                  << std::endl;
         uncHistograms.push_back(f);
         file->Close();
       }
@@ -87,10 +128,16 @@ void CombineMeasurements()
 
     Float_t *bins = GetHistogramBins(originalHistograms[0]);
 
-    TH1F *resultsHisto = new TH1F(TString::Format("combined_%s", AnalysisConstants::unfoldingVariables[var].Data()),
-                                  TString::Format("combined_%s", AnalysisConstants::unfoldingVariables[var].Data()),
+    TH1F *resultsHisto = new TH1F(TString::Format("combined_%s%s",
+                                                  AnalysisConstants::unfoldingVariables[var].Data(),
+                                                  (normalized ? "_normalized" : "")),
+                                  TString::Format("combined_%s%s",
+                                                  AnalysisConstants::unfoldingVariables[var].Data(),
+                                                  (normalized ? "_normalized" : "")),
                                   originalHistograms[0]->GetNbinsX(),
                                   bins);
+
+    std::cout << resultsHisto->GetName() << std::endl;
 
     for (int bin = 1; bin <= originalHistograms[0]->GetNbinsX(); bin++)
     {
@@ -159,6 +206,16 @@ void CombineMeasurements()
       //myBlue->PrintResult();
       resultsHisto->SetBinContent(bin, result->operator()(0, 0));
       resultsHisto->SetBinError(bin, unc->operator()(0, 0));
+      std::cout << "results:" << std::endl;
+
+      TMatrixD *weights = new TMatrixD(NumEst, NumObs);
+      myBlue->GetWeight(weights);
+      weights->Print();
+
+      for (unsigned int i = 0; i < weightGraphs.size(); i++)
+      {
+        weightGraphs[i]->SetPoint(bin - 1, resultsHisto->GetBinCenter(bin), weights->operator()(i, 0));
+      }
 
       delete result;
       delete unc;
@@ -167,10 +224,16 @@ void CombineMeasurements()
     }
     outFile->cd();
     resultsHisto->Write();
+    for (unsigned int i = 0; i < weightGraphs.size(); i++)
+    {
+      weightGraphs[i]->Write();
+    }
+
     delete bins;
     delete resultsHisto;
 
-    //std::cout << "Done with: " << AnalysisConstants::unfoldingVariables[var].Data() << std::endl;
+    std::cout<< "S K A T A RE MALAKA!!!!!"<<std::endl;
   }
-  outFile->Close();
+
+  
 }

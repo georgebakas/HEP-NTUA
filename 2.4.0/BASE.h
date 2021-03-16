@@ -11,7 +11,7 @@ namespace AnalysisConstants = AnalysisConstants_UL;
 
 #include "AnalysisUtilities.h"
 
-#include "CMS_lumi.C"
-#include "tdrstyle.C"
+#include "../CMS_plots/CMS_lumi.h"
+#include "../CMS_plots/tdrstyle.C"
 
 #endif

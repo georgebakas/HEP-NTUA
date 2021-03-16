@@ -5,6 +5,7 @@
 #include <TSystem.h>
 #include <TSystemDirectory.h>
 #include <TSystemFile.h>
+#include <TStyle.h>
 
 #include <map>
 #include <vector>
@@ -14,7 +15,8 @@
 namespace AnalysisConstants_UL
 {
   std::vector<TString> years = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
-  bool debug = false;
+  //std::vector<TString> years = {"2018"};
+  bool debug = true;
 
   std::map<TString, float> floatConstants;
   std::map<TString, float> luminositiesSR, luminositiesCR;
@@ -42,7 +44,8 @@ namespace AnalysisConstants_UL
   std::vector<float> axisLowValues;
   std::vector<float> axisHighValues;
 
-  const TString lxplusPath = "/afs/cern.ch/work/i/ipapakri/private/analysis/TopAnalysis";
+  //const TString lxplusPath = "/afs/cern.ch/work/i/ipapakri/private/analysis/TopAnalysis";
+  const TString lxplusPath = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA";
   const TString localPath = "/home/ipapakri/CERN/PHD/TopAnalysis";
 
   std::map<TString, std::map<TString, Double_t>> qcdFitInitValues;
@@ -103,9 +106,38 @@ namespace AnalysisConstants_UL
     }
   }
 
+  void clearConstants()
+  {
+    floatConstants.clear();
+    luminositiesCR.clear();
+    luminositiesSR.clear();
+    fitConstants.clear();
+    fitConstantsErrors.clear();
+    unfoldingVariables.clear();
+    variables.clear();
+    axisTitles.clear();
+    partonVariables.clear();
+    partonAxisTitles.clear();
+
+    axisInLogScale.clear();
+    extractedSignalFiles.clear();
+    closureScaleFactors.clear();
+    crossSections.clear();
+
+    variations.clear();
+
+    qcdFitInitValues.clear();
+  }
+
   void initConstants()
   {
     std::cout << "Skata" << std::endl;
+
+    gStyle->SetOptStat(0);
+    gStyle->SetPaintTextFormat("2.2f");
+    clearConstants();
+    baseDir = lxplusPath;
+    /*
     if (!gSystem->AccessPathName(lxplusPath))
     {
       baseDir = lxplusPath;
@@ -117,7 +149,7 @@ namespace AnalysisConstants_UL
     else
     {
       std::cout << "Not in lxplus or ipapakri laptop, analysis will not run correctly." << std::endl;
-    }
+    } */
 
     extractedSignalFiles.insert(std::pair<TString, TString>("2016", baseDir + "/SignalExtraction/results/2016" + currentlyWorkingDirectory["2016"] + "/ExtractedSignal.root"));
     extractedSignalFiles.insert(std::pair<TString, TString>("2017", baseDir + "/SignalExtraction/results/2017/ExtractedSignal.root"));
@@ -141,24 +173,44 @@ namespace AnalysisConstants_UL
     luminositiesCR.insert(std::pair<TString, float>("2017", 41480));
     luminositiesCR.insert(std::pair<TString, float>("2018", 59830));
 
-    unfoldingVariables.push_back("leadingJetPt");
-    unfoldingVariables.push_back("subleadingJetPt");
+    //unfoldingVariables.push_back("leadingJetPt");
+    //unfoldingVariables.push_back("subleadingJetPt");
+    unfoldingVariables.push_back("jetPt0");
+    unfoldingVariables.push_back("jetPt1");
     unfoldingVariables.push_back("yJJ");
     unfoldingVariables.push_back("ptJJ");
     unfoldingVariables.push_back("mJJ");
-    unfoldingVariables.push_back("leadingJetY");
-    unfoldingVariables.push_back("subleadingJetY");
+    //unfoldingVariables.push_back("leadingJetY");
+    //unfoldingVariables.push_back("subleadingJetY");
+    unfoldingVariables.push_back("jetY0");
+    unfoldingVariables.push_back("jetY1");
+    //unfoldingVariables.push_back("leadingJetCosThetaStar");
+    //unfoldingVariables.push_back("subleadingJetCosThetaStar");
+    //unfoldingVariables.push_back("YStar");
+    unfoldingVariables.push_back("cosTheta_0");
+    unfoldingVariables.push_back("cosTheta_1");
+    unfoldingVariables.push_back("chi");
 
-    variables.push_back("leadingJetPt");
-    variables.push_back("subleadingJetPt");
+    //variables.push_back("leadingJetPt");
+    //variables.push_back("subleadingJetPt");
+    variables.push_back("jetPt0");
+    variables.push_back("jetPt1");
     variables.push_back("yJJ");
     variables.push_back("ptJJ");
     variables.push_back("mJJ");
-    variables.push_back("leadingJetY");
-    variables.push_back("subleadingJetY");
+    //variables.push_back("leadingJetY");
+    //variables.push_back("subleadingJetY");
+    variables.push_back("jetY0");
+    variables.push_back("jetY1");
+    //variables.push_back("leadingJetCosThetaStar");
+    //variables.push_back("subleadingJetCosThetaStar");
+    //variables.push_back("YStar");
+    variables.push_back("cosTheta_0");
+    variables.push_back("cosTheta_1");
+    variables.push_back("chi");
     variables.push_back("leadingJetMassSoftDrop");
     variables.push_back("subleadingJetMassSoftDrop");
-
+    
     partonVariables.push_back("leadingPartonPt");
     partonVariables.push_back("subleadingPartonPt");
     partonVariables.push_back("yJJ");
@@ -166,6 +218,9 @@ namespace AnalysisConstants_UL
     partonVariables.push_back("mJJ");
     partonVariables.push_back("leadingPartonY");
     partonVariables.push_back("subleadingPartonY");
+    partonVariables.push_back("leadingPartonCosThetaStar");
+    partonVariables.push_back("subleadingPartonCosThetaStar");
+    partonVariables.push_back("YStar");
     partonVariables.push_back("leadingPartonMass");
     partonVariables.push_back("subleadingPartonMass");
 
@@ -176,6 +231,9 @@ namespace AnalysisConstants_UL
     axisTitles.push_back("mJJ (GeV)");
     axisTitles.push_back("Leading jet Y");
     axisTitles.push_back("Subleading jet Y");
+    axisTitles.push_back("leadingPartonCosThetaStar");
+    axisTitles.push_back("subleadingPartonCosThetaStar");
+    axisTitles.push_back("YStar");
     axisTitles.push_back("Leading jet mass (GeV)");
     axisTitles.push_back("Subleading jet mass (GeV)");
 
@@ -186,6 +244,9 @@ namespace AnalysisConstants_UL
     partonAxisTitles.push_back("mTTbarParton (GeV)");
     partonAxisTitles.push_back("Leading parton Y");
     partonAxisTitles.push_back("Subleading parton Y");
+    partonAxisTitles.push_back("leadingPartonCosThetaStar");
+    partonAxisTitles.push_back("subleadingPartonCosThetaStar");
+    partonAxisTitles.push_back("YStar");
     partonAxisTitles.push_back("Leading parton mass (GeV)");
     partonAxisTitles.push_back("Subleading parton mass (GeV)");
 
@@ -378,29 +439,6 @@ namespace AnalysisConstants_UL
                                                                            .5, 1., .5,
                                                                            .5, .5, 1.}));
                                                                            */
-  }
-
-  void clearConstants()
-  {
-    floatConstants.clear();
-    luminositiesCR.clear();
-    luminositiesSR.clear();
-    fitConstants.clear();
-    fitConstantsErrors.clear();
-    unfoldingVariables.clear();
-    variables.clear();
-    axisTitles.clear();
-    partonVariables.clear();
-    partonAxisTitles.clear();
-
-    axisInLogScale.clear();
-    extractedSignalFiles.clear();
-    closureScaleFactors.clear();
-    crossSections.clear();
-
-    variations.clear();
-
-    qcdFitInitValues.clear();
   }
 } // namespace AnalysisConstants
 

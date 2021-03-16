@@ -76,7 +76,7 @@ void ComposeHistogramsForDatacard(TString year="2017", int mJJCut = 1000)
 
       if(year.EqualTo("2016")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
       else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), masses[imass],(int)width));
-      else infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraphMLM-pythia8.root", year.Data(), masses[imass],(int)width));
+      else infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), masses[imass],(int)width));
 
       infZprime->cd();
       hZprime = (TH1F*)infZprime->Get(TString::Format("hReco_chi_%d", mJJCut));

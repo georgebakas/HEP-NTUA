@@ -9,20 +9,17 @@
 
 //#include <vector>
 
-void draw()
+void draw(bool data, bool normalized)
 {
-}
-
-void ComparePlots(bool data = true)
-{
-  gStyle->SetOptStat(0);
-  AnalysisConstants::initConstants();
-  AnalysisConstants::debug = true;
   std::vector<Color_t> colors = {kRed, kGreen, kBlue, kMagenta};
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
-    TCanvas *c1 = new TCanvas(TString::Format("canvas_%s", AnalysisConstants::unfoldingVariables[var].Data()),
-                              TString::Format("canvas_%s", AnalysisConstants::unfoldingVariables[var].Data()),
+    TCanvas *c1 = new TCanvas(TString::Format("canvas_%s%s",
+                                              AnalysisConstants::unfoldingVariables[var].Data(),
+                                              (normalized ? "_normalized" : "")),
+                              TString::Format("canvas_%s%s",
+                                              AnalysisConstants::unfoldingVariables[var].Data(),
+                                              (normalized ? "_normalized" : "")),
                               600, 600);
     TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.4, 1, 1.0);
     if (!data)
@@ -47,15 +44,21 @@ void ComparePlots(bool data = true)
     {
       leg = new TLegend(0.6, 0.6, 0.9, 0.9);
     }
-    TH1F *comb = (TH1F *)file->Get(TString::Format("combined_%s",
-                                                   AnalysisConstants::unfoldingVariables[var].Data()));
-    std::cout << comb->GetName() << " " << comb->GetYaxis()->GetLabelFont() << std::endl;
-    std::cout << comb->GetYaxis()->GetLabelOffset() << std::endl;
-    std::cout << comb->GetYaxis()->GetLabelSize() << std::endl;
+    TH1F *comb = (TH1F *)file->Get(TString::Format("combined_%s%s",
+                                                   AnalysisConstants::unfoldingVariables[var].Data(),
+                                                   (normalized ? "_normalized" : "")));
+
     comb->SetTitle("");
     comb->SetMarkerStyle(20);
     comb->SetMarkerColor(kBlack);
-    comb->GetYaxis()->SetTitle("#frac{d#sigma}{dx}");
+    if (normalized)
+    {
+      comb->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{dx}");
+    }
+    else
+    {
+      comb->GetYaxis()->SetTitle("#frac{d#sigma}{dx}");
+    }
 
     if (data)
     {
@@ -76,7 +79,6 @@ void ComparePlots(bool data = true)
       comb->GetYaxis()->SetLabelSize(0.05);
       comb->GetYaxis()->SetTitleFont(42);
       comb->GetYaxis()->SetTitleSize(0.05);
-      std::cout << "offset: " << comb->GetYaxis()->GetTitleOffset() << std::endl;
       comb->GetYaxis()->SetTitleOffset(0.5);
 
       comb->GetXaxis()->SetLabelSize(0);
@@ -105,8 +107,9 @@ void ComparePlots(bool data = true)
       TH1F *h;
       if (data)
       {
-        h = (TH1F *)file->Get(TString::Format("unfoldedHistogram_%s",
-                                              AnalysisConstants::unfoldingVariables[var].Data()));
+        h = (TH1F *)file->Get(TString::Format("unfoldedHistogram_%s%s",
+                                              AnalysisConstants::unfoldingVariables[var].Data(),
+                                              (normalized ? "_normalized" : "")));
 
         h->SetLineColor(colors[y]);
         h->Draw("lsame");
@@ -116,13 +119,16 @@ void ComparePlots(bool data = true)
       {
         c1->cd();
         upperPad->cd();
-        h = (TH1F *)file->Get(TString::Format("theory_%s",
-                                              AnalysisConstants::unfoldingVariables[var].Data()));
+        h = (TH1F *)file->Get(TString::Format("theory_%s%s",
+                                              AnalysisConstants::unfoldingVariables[var].Data(),
+                                              (normalized ? "_normalized" : "")));
         h->SetLineColor(colors[y]);
         h->Draw("lsame");
         leg->AddEntry(h, AnalysisConstants::years[y], "l");
 
-        TH1F *ratio = (TH1F *)comb->Clone(TString::Format("ratio_%s", AnalysisConstants::years[y].Data()));
+        TH1F *ratio = (TH1F *)comb->Clone(TString::Format("ratio_%s%s",
+                                                          AnalysisConstants::years[y].Data(),
+                                                          (normalized ? "_normalized" : "")));
         ratio->SetLineColor(colors[y]);
         ratio->SetMarkerStyle(1);
 
@@ -174,8 +180,17 @@ void ComparePlots(bool data = true)
       CMS_lumi(upperPad, 13, 0);
     }
 
-    c1->SaveAs(TString::Format("results/%s%s.png",
+    c1->SaveAs(TString::Format("results/%s%s%s.png",
                                AnalysisConstants::unfoldingVariables[var].Data(),
-                               (data ? "" : "_MC")));
+                               (data ? "" : "_MC"),
+                               (normalized ? "_normalized" : "")));
   }
+}
+
+void ComparePlots(bool data = true, bool normalised = false)
+{
+  gStyle->SetOptStat(0);
+  AnalysisConstants::initConstants();
+
+  draw(data, normalised);
 }
