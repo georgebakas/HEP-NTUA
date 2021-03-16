@@ -355,6 +355,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
       outf = new TFile(TString::Format("%s/FiducialMeasurement/UnequalBinning/SignalHistograms_%s.root",year.Data(),variable.Data()), "RECREATE");
       hSignal_noScale->Write(TString::Format("hSignal_%s", variable.Data()));
       hSMC_noScale->Write(TString::Format("hSMC_%s", variable.Data()));
+      hQ->Write(TString::Format("hQCD_%s", variable.Data())); //this is expected yield for QCD so I can use it with my stack
       outf->Close();
     }
     cout<<variable.Data()<<endl;
