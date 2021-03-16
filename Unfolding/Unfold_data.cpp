@@ -113,7 +113,7 @@ void Unfold_data(TString inYear = "2016_preVFP", bool isParton = true, int unfol
   //get the number of bins for each
   int NBINS[BND_reco.size()];
   int NBINS_GEN[BND_gen.size()];
-  const int NVAR = 7;
+  const int NVAR = 10;
   for (int i = 0; i<BND_reco.size(); i++)
   	NBINS[i] = BND_reco[i].size()-1;
   for (int i = 0; i<BND_gen.size(); i++)
