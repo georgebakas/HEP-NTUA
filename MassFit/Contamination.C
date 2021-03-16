@@ -15,8 +15,8 @@ void Contamination(TString year)
 
 
   //get the histograms for all the variables:
-  const int NVAR = 9;
-  TString recoVarAll[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "jetY0","jetY1", "mTop", "jetMassSoftDrop"};
+  const int NVAR = 12;
+  TString recoVarAll[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "jetY0","jetY1","chi", "cosTheta_0", "cosTheta_1", "mTop", "jetMassSoftDrop"};
 
 
   TH1F *hData[NVAR], *hCR_tt[NVAR], *hCR_Subdominant[NVAR], *hDataBefore[NVAR], *hCR_QCD[NVAR];

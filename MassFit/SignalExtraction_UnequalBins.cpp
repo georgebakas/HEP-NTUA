@@ -64,15 +64,15 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 void SignalExtraction_UnequalBins(TString year, bool isNormalised)
 {
     normalised = isNormalised;
-    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
-    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
+    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
+    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY", "chi", "cosTheta_0", "cosTheta_1"};
     float r_yield_errors[3][7] = {{0.028927, 0.0289228, 0.0289145, 0.0289403, 0.0289288, 0.0289145, 0.0289145},
                                   {0.0207961, 0.0208046, 0.0207949, 0.0208042, 0.0207968, 0.0207949, 0.0207949},
                                   {0.0247692, 0.024771, 0.0247676, 0.0247779, 0.0247679, 0.0247675, 0.0247675}};
     int selectedYear;
-    if(year.EqualTo("2016")) selectedYear = 0;
+    if(year.EqualTo("2018")) selectedYear = 2;
     else if(year.EqualTo("2017")) selectedYear = 1;
-    else selectedYear =2;
+    else selectedYear =0;
 
     for(int i=0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
@@ -155,7 +155,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
   		   	                                            {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}, //jetPt0 21
   													                          {400,450,500,570,650,750,850,1000,1200,1500}, //jetPt1
   													                          {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                                      {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+                                                      {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY1
+                                                      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
+                                                      {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
+                                                      {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
 
     int nBins[BND.size()];

@@ -17,8 +17,8 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 
 void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 {
-  const int NVAR = 8;
-  TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "mTop"};
+  const int NVAR = 11;
+  TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1", "mTop"};
   for(int ivar =0; ivar<sizeof(vars)/sizeof(vars[0]); ivar++)
   {
     graphTransferFactorsSpecific(year, bEnriched, vars[ivar]);

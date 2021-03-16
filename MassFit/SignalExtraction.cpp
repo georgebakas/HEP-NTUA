@@ -61,8 +61,8 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 
 void SignalExtraction(TString year)
 {
-    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1"};
-    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY"};
+    TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
+    TString fitRecoVar[] = {"mJJ", "ptJJ", "yJJ", "leadingJetPt","subleadingJetPt", "leadingJetY", "subleadingJetY", "chi", "cosTheta_0", "cosTheta_1"};
     for(int i =0; i<sizeof(vars)/sizeof(vars[0]); i++)
     {
         SignalExtractionSpecific(year, vars[i], fitRecoVar[i]);
@@ -137,7 +137,10 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
                                              {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt0
                                              {400,450,500,570,650,750,850,950,1100,1300,1500}, //jetPt1
                                              {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}, //jetY0
-                                             {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}}; //jetY1
+                                             {0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4},
+                                             {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
+                                             {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
+                                             {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
     int nBins[BND.size()];
     for (int i = 0; i<BND.size(); i++) nBins[i] = BND[i].size()-1;

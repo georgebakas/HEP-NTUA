@@ -10,6 +10,12 @@ void CreateSignalTemplates(TString year, TString CUT = "")
   float normMC;
   float XSEC(832.);
 
+  float LUMI;
+  if (year.EqualTo("2016_preVFP")) LUMI = 19500;
+  else if (year.EqualTo("2016_postVFP")) LUMI = 16500;
+  else if (year.EqualTo("2017")) LUMI = 41530;
+  else if (year.EqualTo("2018")) LUMI = 59740;
+
   RooRealVar *kMassScale = new RooRealVar("kMassScale","kMassScale",1.0,0.5,1.5);
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);
