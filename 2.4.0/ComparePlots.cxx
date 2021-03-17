@@ -12,10 +12,10 @@
 
 void draw(bool data, bool normalized)
 {
-  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
   TString partonParticleStr = "Parton";
   float extraTextFactor = 0;
-  std::cout<< "skata "<<std::endl;
 
   std::vector<Color_t> colors = {kRed, kGreen, kBlue, kMagenta};
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
@@ -50,8 +50,8 @@ void draw(bool data, bool normalized)
       leg = new TLegend(0.6, 0.6, 0.9, 0.9);
     }
     TH1F *comb = (TH1F*)file->Get(TString::Format("combined_%s%s",
-                                                   AnalysisConstants::unfoldingVariables[var].Data(),
-                                                   (normalized ? "_normalized" : "")));
+                                                  AnalysisConstants::unfoldingVariables[var].Data(),
+                                                  (normalized ? "_normalized" : "")));
 
     comb->SetTitle("");
     comb->SetMarkerStyle(20);
@@ -90,7 +90,6 @@ void draw(bool data, bool normalized)
     }
     comb->SetLineColor(kBlack);
     comb->Draw("pehist");
-    std::cout<< "ok here malaka"<<std::endl;
     leg->AddEntry(comb, "comb", "ple");
     TPad *lowerPad = new TPad("lowerPad", "lowerPad", 0, 0.05, 1, 0.4);
     if (!data)
@@ -101,8 +100,11 @@ void draw(bool data, bool normalized)
       lowerPad->Draw();
     }
     //file->Close();
+    std::cout<< AnalysisConstants::years.size()<<std::endl;
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
+      std::cout<< "ok here malaka"<< y<<std::endl;
+
       file = TFile::Open(TString::Format("%s/Unfolding/%s/%sMeasurements/Data%s/OutputFile.root",
                                           baseInputDir.Data(),
                                           AnalysisConstants::years[y].Data(),
@@ -115,6 +117,7 @@ void draw(bool data, bool normalized)
         h = (TH1F *)file->Get(TString::Format("hUnfold_%s",AnalysisConstants::unfoldingVariables[var].Data()));
 
         h->SetLineColor(colors[y]);
+        h->SetMarkerColor(colors[y]);
         h->Draw("lsame");
         leg->AddEntry(h, AnalysisConstants::years[y], "l");
       }
@@ -125,6 +128,7 @@ void draw(bool data, bool normalized)
         h = (TH1F *)file->Get(TString::Format("hTheory_%s", AnalysisConstants::unfoldingVariables[var].Data()));
 
         h->SetLineColor(colors[y]);
+        h->SetMarkerColor(colors[y]);
         h->Draw("lsame");
         leg->AddEntry(h, AnalysisConstants::years[y], "l");
 
@@ -133,6 +137,7 @@ void draw(bool data, bool normalized)
                                                           (normalized ? "_normalized" : "")));
         ratio->SetLineColor(colors[y]);
         ratio->SetMarkerStyle(1);
+        ratio->SetMarkerColor(colors[y]);
 
         ratio->GetXaxis()->SetLabelFont(42);
         ratio->GetXaxis()->SetTitleFont(42);
@@ -182,10 +187,11 @@ void draw(bool data, bool normalized)
       CMS_lumi(upperPad, 13, 0);
     }
 
-    c1->SaveAs(TString::Format("results/%s%s%s.png",
-                               AnalysisConstants::unfoldingVariables[var].Data(),
-                               (data ? "" : "_MC"),
-                               (normalized ? "_normalized" : "")));
+    c1->SaveAs(TString::Format("results/%s/%s%s%s.png",
+                              partonParticleStr.Data(),
+                              AnalysisConstants::unfoldingVariables[var].Data(),
+                              (data ? "" : "_MC"),
+                              (normalized ? "_normalized" : "")));
   }
 }
 
@@ -193,6 +199,6 @@ void ComparePlots(bool data = true, bool normalised = false)
 {
   gStyle->SetOptStat(0);
   AnalysisConstants::initConstants();
-  std::cout<< "edw"<<std::endl;
+  std::cout<< AnalysisConstants::years.size()<<std::endl;
   draw(data, normalised);
 }

@@ -13,7 +13,8 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
 {
   gSystem->Load("libBlue.so");
   AnalysisConstants::initConstants();
-  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul";
   baseInputDir = TString::Format("%s/Unfolding", baseInputDir.Data());
 
   // Define formats for Figures and Latex file
@@ -54,7 +55,8 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
     TString variable = AnalysisConstants::unfoldingVariables[var];
     std::cout << "variable: " << variable.Data() << std::endl;
 
-    TString partonParticleStr = "Parton";
+    //TString partonParticleStr = "Parton";
+    TString partonParticleStr = "Particle";
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
       NamEst[y] = AnalysisConstants::years[y];

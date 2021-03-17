@@ -14,8 +14,8 @@
 
 namespace AnalysisConstants_UL
 {
-  std::vector<TString> years = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
   //std::vector<TString> years = {"2018"};
+  std::vector<TString> years;
   bool debug = true;
 
   std::map<TString, float> floatConstants;
@@ -44,9 +44,8 @@ namespace AnalysisConstants_UL
   std::vector<float> axisLowValues;
   std::vector<float> axisHighValues;
 
-  //const TString lxplusPath = "/afs/cern.ch/work/i/ipapakri/private/analysis/TopAnalysis";
   const TString lxplusPath = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA";
-  const TString localPath = "/home/ipapakri/CERN/PHD/TopAnalysis";
+  const TString localPath = "/Users/georgebakas/Documents/HEP-NTUA_ul";
 
   std::map<TString, std::map<TString, Double_t>> qcdFitInitValues;
 
@@ -75,8 +74,8 @@ namespace AnalysisConstants_UL
       variations.push_back(TString::Format("pdfVariation%i", i));
       correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("pdfVariation%i", i),
                                                                 {1., 1., 1.,
-                                                                 1., 1., 1.,
-                                                                 1., 1., 1.}));
+                                                                1., 1., 1.,
+                                                                1., 1., 1.}));
     }
   }
 
@@ -87,8 +86,8 @@ namespace AnalysisConstants_UL
       variations.push_back(TString::Format("scaleWeight%i", i));
       correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
                                                                 {1., 1., 1.,
-                                                                 1., 1., 1.,
-                                                                 1., 1., 1.}));
+                                                                1., 1., 1.,
+                                                                1., 1., 1.}));
     }
   }
 
@@ -136,7 +135,9 @@ namespace AnalysisConstants_UL
     gStyle->SetOptStat(0);
     gStyle->SetPaintTextFormat("2.2f");
     clearConstants();
-    baseDir = lxplusPath;
+    //baseDir = lxplusPath;
+    baseDir = localPath;
+    years = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
     /*
     if (!gSystem->AccessPathName(lxplusPath))
     {
@@ -284,77 +285,77 @@ namespace AnalysisConstants_UL
     
 
     std::map<TString, float> XS2016 = {{"QCD-HT300to500", 315400},
-                                       {"QCD-HT500to700", 32260},
-                                       {"QCD-HT700to1000", 6830},
-                                       {"QCD-HT1000to1500", 1207},
-                                       {"QCD-HT1500to2000", 119.1},
-                                       {"QCD-HT2000toInf", 25.16},
+                                      {"QCD-HT500to700", 32260},
+                                      {"QCD-HT700to1000", 6830},
+                                      {"QCD-HT1000to1500", 1207},
+                                      {"QCD-HT1500to2000", 119.1},
+                                      {"QCD-HT2000toInf", 25.16},
                                        //{"Mtt-700to1000", 69.64},
                                        //{"Mtt-1000toInf", 16.74},
-                                       {"Mtt-700to1000", 80.78},
-                                       {"Mtt-1000toInf", 21.43},
-                                       {"nominal", 832},
-                                       {"Hadronic", 377.96},
-                                       {"SemiLeptonic", 365.34},
-                                       {"Dilepton", 88.29},
-                                       {"DYJetsToQQ", 1208},
-                                       {"WJetsToQQ", 3105},
-                                       {"ST-tW-top-5f", 38.09},
-                                       {"ST-tW-antitop-5f", 38.09},
-                                       {"ST-t-channel-top-4f", 35.6},
-                                       {"ST-t-channel-antitop-4f", 35.6},
-                                       {"ST-t-channel-top-5f", 119.7},
-                                       {"ST-t-channel-antitop-5f", 82.52}};
+                                      {"Mtt-700to1000", 80.78},
+                                      {"Mtt-1000toInf", 21.43},
+                                      {"nominal", 832},
+                                      {"Hadronic", 377.96},
+                                      {"SemiLeptonic", 365.34},
+                                      {"Dilepton", 88.29},
+                                      {"DYJetsToQQ", 1208},
+                                      {"WJetsToQQ", 3105},
+                                      {"ST-tW-top-5f", 38.09},
+                                      {"ST-tW-antitop-5f", 38.09},
+                                      {"ST-t-channel-top-4f", 35.6},
+                                      {"ST-t-channel-antitop-4f", 35.6},
+                                      {"ST-t-channel-top-5f", 119.7},
+                                      {"ST-t-channel-antitop-5f", 82.52}};
 
     std::map<TString, float> XS2017 = {{"QCD-HT300to500", 322600},
-                                       {"QCD-HT500to700", 29980},
-                                       {"QCD-HT700to1000", 6334},
-                                       {"QCD-HT1000to1500", 1088},
-                                       {"QCD-HT1500to2000", 99.11},
-                                       {"QCD-HT2000toInf", 20.23},
-                                       {"Mtt-700to1000", 69.64},
-                                       {"Mtt-1000toInf", 16.74},
-                                       {"nominal", 832},
-                                       {"Hadronic", 377.96},
-                                       {"SemiLeptonic", 365.34},
-                                       {"Dilepton", 88.29},
-                                       {"DYJetsToQQ", 1728},
-                                       {"WJetsToQQ-HT400to600", 1447},
-                                       {"WJetsToQQ-HT600to800", 318.8},
-                                       {"ST-tW-top-5f", 34.91},
-                                       {"ST-tW-antitop-5f", 34.97},
-                                       {"ST-t-channel-top-4f", 115.3},
-                                       {"ST-t-channel-antitop-4f", 69.09},
-                                       {"ST-t-channel-top-5f", 119.7},
-                                       {"ST-t-channel-antitop-5f", 71.74},
-                                       {"amcatnlo", 832},
-                                       {"madgraph", 832},
-                                       {"herwig", 832}};
+                                      {"QCD-HT500to700", 29980},
+                                      {"QCD-HT700to1000", 6334},
+                                      {"QCD-HT1000to1500", 1088},
+                                      {"QCD-HT1500to2000", 99.11},
+                                      {"QCD-HT2000toInf", 20.23},
+                                      {"Mtt-700to1000", 69.64},
+                                      {"Mtt-1000toInf", 16.74},
+                                      {"nominal", 832},
+                                      {"Hadronic", 377.96},
+                                      {"SemiLeptonic", 365.34},
+                                      {"Dilepton", 88.29},
+                                      {"DYJetsToQQ", 1728},
+                                      {"WJetsToQQ-HT400to600", 1447},
+                                      {"WJetsToQQ-HT600to800", 318.8},
+                                      {"ST-tW-top-5f", 34.91},
+                                      {"ST-tW-antitop-5f", 34.97},
+                                      {"ST-t-channel-top-4f", 115.3},
+                                      {"ST-t-channel-antitop-4f", 69.09},
+                                      {"ST-t-channel-top-5f", 119.7},
+                                      {"ST-t-channel-antitop-5f", 71.74},
+                                      {"amcatnlo", 832},
+                                      {"madgraph", 832},
+                                      {"herwig", 832}};
 
     std::map<TString, float> XS2018 = {{"QCD-HT300to500", 323400},
-                                       {"QCD-HT500to700", 30140},
-                                       {"QCD-HT700to1000", 6310},
-                                       {"QCD-HT1000to1500", 1094},
-                                       {"QCD-HT1500to2000", 99.38},
-                                       {"QCD-HT2000toInf", 20.2},
-                                       {"Mtt-700to1000", 69.64},
-                                       {"Mtt-1000toInf", 16.74},
-                                       {"nominal", 832},
-                                       {"Hadronic", 377.96},
-                                       {"SemiLeptonic", 365.34},
-                                       {"Dilepton", 88.29},
-                                       {"DYJetsToQQ", 1728},
-                                       {"WJetsToQQ-HT400to600", 1447},
-                                       {"WJetsToQQ-HT600to800", 318.8},
-                                       {"ST-tW-top-5f", 34.91},
-                                       {"ST-tW-antitop-5f", 34.97},
-                                       {"channel-top-4f", 115.3},
-                                       {"channel-antitop-4f", 69.09},
-                                       {"channel-antitop-5f", 71.74},
-                                       {"channel-top-5f", 119.7},
-                                       {"amcatnlo", 832},
-                                       {"madgraph", 832},
-                                       {"herwig", 832}};
+                                      {"QCD-HT500to700", 30140},
+                                      {"QCD-HT700to1000", 6310},
+                                      {"QCD-HT1000to1500", 1094},
+                                      {"QCD-HT1500to2000", 99.38},
+                                      {"QCD-HT2000toInf", 20.2},
+                                      {"Mtt-700to1000", 69.64},
+                                      {"Mtt-1000toInf", 16.74},
+                                      {"nominal", 832},
+                                      {"Hadronic", 377.96},
+                                      {"SemiLeptonic", 365.34},
+                                      {"Dilepton", 88.29},
+                                      {"DYJetsToQQ", 1728},
+                                      {"WJetsToQQ-HT400to600", 1447},
+                                      {"WJetsToQQ-HT600to800", 318.8},
+                                      {"ST-tW-top-5f", 34.91},
+                                      {"ST-tW-antitop-5f", 34.97},
+                                      {"channel-top-4f", 115.3},
+                                      {"channel-antitop-4f", 69.09},
+                                      {"channel-antitop-5f", 71.74},
+                                      {"channel-top-5f", 119.7},
+                                      {"amcatnlo", 832},
+                                      {"madgraph", 832},
+                                      {"herwig", 832}};
 
     crossSections.insert(std::pair<TString, std::map<TString, float>>("2016_preVFP", XS2016));
     crossSections.insert(std::pair<TString, std::map<TString, float>>("2016_postVFP", XS2016));

@@ -6,7 +6,8 @@ int main()
   {
     std::cout << "Start!!" << std::endl;
 
-    TFile *outFile = new TFile("outFile.root", "RECREATE");
+    //TFile *outFile = new TFile("outFileParton.root", "RECREATE");
+    TFile *outFile = new TFile("outFileParticle.root", "RECREATE");
     CombineMeasurements(outFile);
     CombineMeasurements(outFile, true);
     outFile->Close();
