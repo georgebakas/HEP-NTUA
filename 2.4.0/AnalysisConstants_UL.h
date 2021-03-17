@@ -149,8 +149,9 @@ namespace AnalysisConstants_UL
     else
     {
       std::cout << "Not in lxplus or ipapakri laptop, analysis will not run correctly." << std::endl;
-    } */
-
+    } */ 
+    std::cout<<"initialized everything..."<<std::endl;
+    /*
     extractedSignalFiles.insert(std::pair<TString, TString>("2016", baseDir + "/SignalExtraction/results/2016" + currentlyWorkingDirectory["2016"] + "/ExtractedSignal.root"));
     extractedSignalFiles.insert(std::pair<TString, TString>("2017", baseDir + "/SignalExtraction/results/2017/ExtractedSignal.root"));
     extractedSignalFiles.insert(std::pair<TString, TString>("2018", baseDir + "/SignalExtraction/results/2018/ExtractedSignal.root"));
@@ -158,7 +159,7 @@ namespace AnalysisConstants_UL
     closureScaleFactors.insert(std::pair<TString, TString>("2016", baseDir + "/ClosureTests/results/2016" + currentlyWorkingDirectory["2016"] + "/reduced/fitted/closureTest_fitResults_2016.root"));
     closureScaleFactors.insert(std::pair<TString, TString>("2017", baseDir + "/ClosureTests/results/2017" + currentlyWorkingDirectory["2017"] + "/reduced/fitted/closureTest_fitResults_2017.root"));
     closureScaleFactors.insert(std::pair<TString, TString>("2018", baseDir + "/ClosureTests/results/2018" + currentlyWorkingDirectory["2018"] + "/reduced/fitted/closureTest_fitResults_2018.root"));
-
+    */
     floatConstants.insert(std::pair<TString, float>("bTagEff2016", 0.62990543));
     floatConstants.insert(std::pair<TString, float>("bTagEff2017", 0.60554176));
     floatConstants.insert(std::pair<TString, float>("bTagEff2018", 0.63387173));
@@ -172,7 +173,7 @@ namespace AnalysisConstants_UL
     luminositiesCR.insert(std::pair<TString, float>("2016_postVFP", 564));
     luminositiesCR.insert(std::pair<TString, float>("2017", 41480));
     luminositiesCR.insert(std::pair<TString, float>("2018", 59830));
-
+    std::cout<<"initialized everything..."<<std::endl;
     //unfoldingVariables.push_back("leadingJetPt");
     //unfoldingVariables.push_back("subleadingJetPt");
     unfoldingVariables.push_back("jetPt0");
@@ -190,7 +191,7 @@ namespace AnalysisConstants_UL
     unfoldingVariables.push_back("cosTheta_0");
     unfoldingVariables.push_back("cosTheta_1");
     unfoldingVariables.push_back("chi");
-
+    std::cout<<"initialized everything..."<<std::endl;
     //variables.push_back("leadingJetPt");
     //variables.push_back("subleadingJetPt");
     variables.push_back("jetPt0");
@@ -279,6 +280,8 @@ namespace AnalysisConstants_UL
     axisHighValues.push_back(3.5);
     axisHighValues.push_back(-10);
     axisHighValues.push_back(-10);
+
+    
 
     std::map<TString, float> XS2016 = {{"QCD-HT300to500", 315400},
                                        {"QCD-HT500to700", 32260},
@@ -406,7 +409,7 @@ namespace AnalysisConstants_UL
     qcdFitInitValues.insert(std::pair<TString, std::map<TString, Double_t>>("2016_postVFP", qcdFitInitValues2016));
     qcdFitInitValues.insert(std::pair<TString, std::map<TString, Double_t>>("2017", qcdFitInitValues2017));
     qcdFitInitValues.insert(std::pair<TString, std::map<TString, Double_t>>("2018", qcdFitInitValues2018));
-
+    
     /*
     correlations.insert(std::pair<TString, correlationMatrix>("hdampdown", {1., .0, .0,
                                                                             .0, 1., .0,

@@ -1,4 +1,4 @@
-#include "../BASE.h"
+#include "BASE.h"
 #include "Settings.h"
 
 #include <TCanvas.h>
@@ -7,10 +7,16 @@
 #include <TFile.h>
 #include <TStyle.h>
 
+
 //#include <vector>
 
 void draw(bool data, bool normalized)
 {
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  TString partonParticleStr = "Parton";
+  float extraTextFactor = 0;
+  std::cout<< "skata "<<std::endl;
+
   std::vector<Color_t> colors = {kRed, kGreen, kBlue, kMagenta};
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
@@ -31,8 +37,7 @@ void draw(bool data, bool normalized)
     }
 
     c1->SetLogy();
-    TFile *file = TFile::Open(TString::Format("%s/Blue/2.4.0/outFile.root",
-                                              AnalysisConstants::baseDir.Data()));
+    TFile *file = TFile::Open("outFile.root");
     TLegend *leg;
     if (AnalysisConstants::unfoldingVariables[var].EqualTo("yJJ") ||
         AnalysisConstants::unfoldingVariables[var].EqualTo("subleadingJetY") ||
@@ -44,7 +49,7 @@ void draw(bool data, bool normalized)
     {
       leg = new TLegend(0.6, 0.6, 0.9, 0.9);
     }
-    TH1F *comb = (TH1F *)file->Get(TString::Format("combined_%s%s",
+    TH1F *comb = (TH1F*)file->Get(TString::Format("combined_%s%s",
                                                    AnalysisConstants::unfoldingVariables[var].Data(),
                                                    (normalized ? "_normalized" : "")));
 
@@ -85,7 +90,7 @@ void draw(bool data, bool normalized)
     }
     comb->SetLineColor(kBlack);
     comb->Draw("pehist");
-
+    std::cout<< "ok here malaka"<<std::endl;
     leg->AddEntry(comb, "comb", "ple");
     TPad *lowerPad = new TPad("lowerPad", "lowerPad", 0, 0.05, 1, 0.4);
     if (!data)
@@ -98,18 +103,16 @@ void draw(bool data, bool normalized)
     //file->Close();
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
-      file = TFile::Open(TString::Format("%s/Unfolding/results/%s/Nominal%s%s/UnfoldingResults_%s.root",
-                                         AnalysisConstants::baseDir.Data(),
-                                         AnalysisConstants::years[y].Data(),
-                                         (AnalysisConstants::isUL ? "/UL" : ""),
-                                         AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                         AnalysisConstants::years[y].Data()));
+      file = TFile::Open(TString::Format("%s/Unfolding/%s/%sMeasurements/Data%s/OutputFile.root",
+                                          baseInputDir.Data(),
+                                          AnalysisConstants::years[y].Data(),
+                                          partonParticleStr.Data(),
+                                          (normalized ? "_Norm" : "")));
       TH1F *h;
       if (data)
       {
-        h = (TH1F *)file->Get(TString::Format("unfoldedHistogram_%s%s",
-                                              AnalysisConstants::unfoldingVariables[var].Data(),
-                                              (normalized ? "_normalized" : "")));
+        std::cout<<"data: "<< AnalysisConstants::years[y]<<std::endl;
+        h = (TH1F *)file->Get(TString::Format("hUnfold_%s",AnalysisConstants::unfoldingVariables[var].Data()));
 
         h->SetLineColor(colors[y]);
         h->Draw("lsame");
@@ -119,9 +122,8 @@ void draw(bool data, bool normalized)
       {
         c1->cd();
         upperPad->cd();
-        h = (TH1F *)file->Get(TString::Format("theory_%s%s",
-                                              AnalysisConstants::unfoldingVariables[var].Data(),
-                                              (normalized ? "_normalized" : "")));
+        h = (TH1F *)file->Get(TString::Format("hTheory_%s", AnalysisConstants::unfoldingVariables[var].Data()));
+
         h->SetLineColor(colors[y]);
         h->Draw("lsame");
         leg->AddEntry(h, AnalysisConstants::years[y], "l");
@@ -191,6 +193,6 @@ void ComparePlots(bool data = true, bool normalised = false)
 {
   gStyle->SetOptStat(0);
   AnalysisConstants::initConstants();
-
+  std::cout<< "edw"<<std::endl;
   draw(data, normalised);
 }

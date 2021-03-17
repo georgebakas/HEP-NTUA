@@ -12,11 +12,9 @@
 void CombineMeasurements(TFile *outFile, bool normalized = false)
 {
   gSystem->Load("libBlue.so");
-  cout<<"here"<<endl;
   AnalysisConstants::initConstants();
   TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
   baseInputDir = TString::Format("%s/Unfolding", baseInputDir.Data());
-  std::cout<<"years SIZE: "<<  AnalysisConstants::years.size() << std::endl;
 
   // Define formats for Figures and Latex file
   const TString ForVal = "%1.6f";
@@ -42,12 +40,12 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
   static const Int_t LenXEst = NumEst * (NumUnc + 1);
   Double_t XEst[LenXEst];
 
-  Int_t IWhichObs[NumEst] = {0, 0, 0, 0};
+  Int_t IWhichObs[] = {0, 0, 0, 0};
 
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
     NamObs[0] = AnalysisConstants::unfoldingVariables[var];
-    std::cout<< "size: "<< AnalysisConstants::unfoldingVariables.size() << endl;
+    std::cout<< "size: "<< AnalysisConstants::unfoldingVariables.size() << std::endl;
     std::cout<< "name: "<<NamObs[0]<<std::endl;
 
     std::vector<TH1F *> originalHistograms;
@@ -65,7 +63,7 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
                                                 AnalysisConstants::years[y].Data(),
                                                 partonParticleStr.Data(),
                                                 (normalized ? "_Norm" : ""));
-      std::cout << "year: " << NamEst[y] << endl;
+      std::cout << "year: " << NamEst[y] << std::endl;
       std::cout << "fileName: "<< fileName << std::endl;
       TFile *file = TFile::Open(TString::Format("%s/%s/%sMeasurements/Data%s/OutputFile.root",
                                                 baseInputDir.Data(),
