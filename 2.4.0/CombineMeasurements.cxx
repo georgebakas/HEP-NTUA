@@ -13,8 +13,8 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
 {
   gSystem->Load("libBlue.so");
   AnalysisConstants::initConstants();
-  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul";
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA";
+  //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul";
   baseInputDir = TString::Format("%s/Unfolding", baseInputDir.Data());
 
   // Define formats for Figures and Latex file
@@ -27,7 +27,7 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
 
   std::cout << "Skata" << std::endl;
   static const Int_t NumEst = AnalysisConstants::years.size();
-  
+
   TString NamEst[NumEst];
   for (unsigned int i = 0; i < AnalysisConstants::years.size(); i++)
   {
@@ -82,7 +82,7 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
       f->SetName(TString::Format("%s_%s",
                                  f->GetName(),
                                  AnalysisConstants::years[y].Data()));
-      
+
       originalHistograms.push_back(f);
       TGraph *g = new TGraph(f->GetNbinsX());
       g->SetName(TString::Format("weights_%s%s_%s",
@@ -136,7 +136,6 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
                                                   (normalized ? "_normalized" : "")),
                                   originalHistograms[0]->GetNbinsX(),
                                   bins);
-
     std::cout << resultsHisto->GetName() << std::endl;
 
     for (int bin = 1; bin <= originalHistograms[0]->GetNbinsX(); bin++)
@@ -219,7 +218,7 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
 
       delete result;
       delete unc;
-      delete myBlue;
+      //delete myBlue;
       delete rho;
     }
     outFile->cd();
@@ -235,5 +234,5 @@ void CombineMeasurements(TFile *outFile, bool normalized = false)
     std::cout<< "S K A T A RE MALAKA!!!!!"<<std::endl;
   }
 
-  
+
 }

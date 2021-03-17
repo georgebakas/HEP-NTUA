@@ -12,9 +12,10 @@
 
 void draw(bool data, bool normalized)
 {
-  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
-  TString partonParticleStr = "Parton";
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA";
+  //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+  //TString partonParticleStr = "Parton";
+  TString partonParticleStr = "Particle";
   float extraTextFactor = 0;
 
   std::vector<Color_t> colors = {kRed, kGreen, kBlue, kMagenta};
@@ -37,7 +38,7 @@ void draw(bool data, bool normalized)
     }
 
     c1->SetLogy();
-    TFile *file = TFile::Open("outFile.root");
+    TFile *file = TFile::Open(TString::Format("outFile%s.root", partonParticleStr.Data()));
     TLegend *leg;
     if (AnalysisConstants::unfoldingVariables[var].EqualTo("yJJ") ||
         AnalysisConstants::unfoldingVariables[var].EqualTo("subleadingJetY") ||
