@@ -57,8 +57,8 @@ void ComposeHistogramsForDatacard(TString year="2017", int mJJCut = 1000)
 
 
   //get the Zprime files:
-  const int number_of_masses = 6;
-  int masses[] = {2000,2500,3000,3500,4000, 4500};
+  const int number_of_masses = 10;
+  int masses[] = {1200,1400,1600,1800,2000,2500,3000,3500,4000, 4500};
   float widths[] = {.01, .1, .3};
   TFile *infZprime;
   TFile *outf_Zprime;
@@ -66,7 +66,7 @@ void ComposeHistogramsForDatacard(TString year="2017", int mJJCut = 1000)
 
   for (int imass = 0; imass<number_of_masses; imass++)
   {
-    if (masses[imass] == 3500 && year.Contains("2016")) continue;
+    if (masses[imass] == 1400 && year.Contains("2016")) continue;
     for(int iw = 0; iw<1; iw++)
     {
 
