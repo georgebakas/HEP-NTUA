@@ -122,7 +122,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->GetYaxis()->SetTitleFont(43);
   hData->GetYaxis()->SetTitleOffset(1.4);
   hData->GetYaxis()->SetRangeUser(0.01, hData->GetMaximum() * 1.2);
-
+  
   //add the Zprime contribution
   TFile *infZprime;
   if(year.EqualTo("2016_preVFP")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), mass, width));
@@ -149,7 +149,10 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hZ->Draw("hist same E");
   hData->Draw("hist same E");
   hs->GetYaxis()->SetTitle("Number of Events");
-  hs->SetMaximum(hs->GetMaximum()* 2);
+  
+  if (variable.EqualTo("chi")) hs->SetMaximum(hs->GetMaximum());
+  else hs->SetMaximum(hs->GetMaximum()* 2);
+  hs->SetMinimum(0.001);
   leg->Draw();
 
 

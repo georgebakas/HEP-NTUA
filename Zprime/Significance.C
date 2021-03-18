@@ -47,7 +47,7 @@ void Significance_ZprimeMass_Width(TString year="2016", int z_mass=2000, float z
     int mJJCut = (int)mJJCuts[icut];
     //read the data file and get the histogram for our new SR
     TString histoName = "hWt_chi_2btag_expYield";
-    TFile *infDataFile = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_%d.root",year.Data(), year.Data(), mJJCut));
+    TFile *infDataFile = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_reduced_%d.root",year.Data(), year.Data(), mJJCut));
     //our new SR is: SR (old) + mJJ > mJJCut
     TH1F *hData = (TH1F*)infDataFile->Get(histoName);
 
