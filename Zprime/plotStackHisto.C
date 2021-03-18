@@ -13,32 +13,32 @@
 using std::cin;
 using std::cout;
 using std::endl;
-#include "TemplateConstants_FillHistograms.h"
+#include "TemplateConstants.h"
 int mass, width;
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
 
-void plotStackHisto(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
+void plotStackHisto(TString year, int mJJCut = 1000, int selMass= 2500, int selWidth=25)
 {
   setTDRStyle();
-  initFilesMapping();
+  initFilesMapping(false);
   mass = selMass;
   width = selWidth;
   //get the files from the directory
   //data file
-  TFile *infData = TFile::Open(TString::Format("%s/Histo_Data_%s_reduced_%d.root",year.Data(), year.Data(), mJJCut));
+  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_100_reduced_UnequalBinning.root",year.Data(), year.Data()));
   //tt nominal file: or should I take it from signal extractions??
   //ttnominal because we believe that the signal strength will not be modified with a further mass cut
   //this is nominal
-  TFile *infTT = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_%d.root",year.Data(), mJJCut));
+  TFile *infTT = TFile::Open(TString::Format("../MassFit/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root",year.Data()));
   //TFile *infTT = TFile::Open(TString::Format("%s/FiducialMeasurement_2TeV/EqualBinning/SignalHistograms_%s.root",year.Data(),"chi"));
 
   //qcd mc file
   //thake qcd from mc and scale it accordingly
-  TFile *infQCD = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_reduced_%d.root",year.Data(), mJJCut));
+  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/Histo_QCD_HT300toInf_100_reduced_UnequalBinning.root",year.Data()));
 
   //subdominant file:
-  TFile *infSub = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_%d.root",year.Data(), mJJCut));
+  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/Histo_SubdominantBkgs_100_reduced_UnequalBinning.root",year.Data()));
 
   const int NVAR =4;
   TString varReco[NVAR]   = {"chi","cosTheta_0", "cosTheta_1", "mJJ"};
@@ -125,9 +125,9 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   //add the Zprime contribution
   TFile *infZprime;
-  if(year.EqualTo("2016")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
-  else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_19UL.root", year.Data(), mass, width));  
-  else infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
+  if(year.EqualTo("2016_preVFP")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), mass, width));
+  else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), mass, width));  
+  else infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), mass, width));
   //TFile *infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(), mass, width));
   TH1F *hZ = (TH1F*)infZprime->Get(TString::Format("hReco_%s_%d", variable.Data(), mJJCut));
   hZ->SetLineColor(kGray);
@@ -173,7 +173,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetLabelSize(13);
   hNum->Draw();
 
-  TString lumi_str = TString::Format("%0.1f", luminosity[year]/1000);
+  TString lumi_str = TString::Format("%0.1f", luminosity["luminosity"+year]/1000);
   lumi_13TeV = lumi_str+" fb^{-1}";
 
   //lumi_sqrtS = "13 TeV";

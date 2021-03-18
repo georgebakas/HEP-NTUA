@@ -6,6 +6,7 @@ map<TString, map<TString, float>> XSECAll;
 map<TString, float> floatConstants;
 map<TString, float> topTaggerConstants;
 map<TString, float> luminosity;
+map<TString, float> ttbarSigStrength;
 map<TString, TString> eospath;
 
 void initFilesMapping(bool isTTbar)
@@ -252,5 +253,10 @@ void initFilesMapping(bool isTTbar)
 	luminosity.insert(pair<TString,float>("luminosity2016_postVFP", 16500));
 	luminosity.insert(pair<TString,float>("luminosity2017", 41480));
 	luminosity.insert(pair<TString,float>("luminosity2018", 59830));
+
+	ttbarSigStrength.insert(pair<TString,float>("2016_preVFP", 0.68));
+	ttbarSigStrength.insert(pair<TString,float>("2016_postVFP", 0.64));
+	ttbarSigStrength.insert(pair<TString,float>("2017", 0.65));
+	ttbarSigStrength.insert(pair<TString,float>("2018", 0.67));
 
 }
