@@ -11,7 +11,11 @@
 using std::cin;
 using std::cout;
 using std::endl;
-
+/*
+  Here I use the QCD and Signal from signal extraction:
+  1. Signal is the output signal coming from the signal extraction process
+  2. QCD is what we obtain again from the signal extraction process 
+*/
 
 
 void ComposeHistogramsForDatacard(TString year="2017", int mJJCut = 1000)
