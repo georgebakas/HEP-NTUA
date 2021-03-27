@@ -16,9 +16,9 @@ void Significance_ZprimeMass_Width(TString year="2016", int z_mass=2000, float z
 
 void Significance(TString year="2016")
 {
-  const int number_of_masses = 5;
-  int masses[] = {2000,2500,3000,3500,4000};
-  float widths[] = {.01, .1, .3};
+  const int number_of_masses = 10;
+  int masses[] = {1200, 1400, 1600, 1800, 2000, 2500, 3000, 3500, 4000, 4500};
+  float widths[] = {.01};//, .1, .3};
   TFile *infZprime;
   TFile *outf_Zprime;
   TH1F *hZprime;
@@ -26,9 +26,9 @@ void Significance(TString year="2016")
   for (int imass = 0; imass<number_of_masses; imass++)
   {
     if (masses[imass] == 3500 && year.EqualTo("2016")) continue;
-    for(int iw = 0; iw<3; iw++)
+    for(int iw = 0; iw<1; iw++)
     {
-      if(imass==1 && iw ==2) continue;
+      //if(imass==1 && iw ==2) continue;
       Significance_ZprimeMass_Width(year, masses[imass], widths[iw]);
     }
   }
@@ -36,7 +36,7 @@ void Significance(TString year="2016")
 
 void Significance_ZprimeMass_Width(TString year="2016", int z_mass=2000, float z_width=0.01)
 {
-  initFilesMapping();
+  initFilesMapping(false);
   int n = 6;
   float significance_values[6];
   float mJJCuts[] = {1000,1200,1400,1600,1800,2000};
@@ -45,32 +45,55 @@ void Significance_ZprimeMass_Width(TString year="2016", int z_mass=2000, float z
   for (int icut=0; icut<n; icut++)
   {
     int mJJCut = (int)mJJCuts[icut];
+    //---------------------------------- START OF DATA --------------------------------------------
     //read the data file and get the histogram for our new SR
     TString histoName = "hWt_chi_2btag_expYield";
-    TFile *infDataFile = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_reduced_%d.root",year.Data(), year.Data(), mJJCut));
+    TFile *infDataFile = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_Data_%s_reduced_%d.root",year.Data(), year.Data(), mJJCut));
     //our new SR is: SR (old) + mJJ > mJJCut
     TH1F *hData = (TH1F*)infDataFile->Get(histoName);
 
+    //---------------------------------- END OF DATA --------------------------------------------
+
+    //---------------------------------- START OF TTBAR --------------------------------------------
     //move on to ttbar
-    //TFile *infTTfile = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_reduced_%d.root",year.Data(), mJJCut));
+    TFile *infTTfile = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_TT_NominalMC_reduced_%d.root",year.Data(), mJJCut));
     //select the ttbar from extracted signal
-    TFile *infTTfile = TFile::Open(TString::Format("%s/FiducialMeasurement_1.5TeV/SignalHistograms_chi.root",year.Data()));
+    //TFile *infTTfile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms_chi.root",year.Data()));
     //our new SR is: SR (old) + mJJ > mJJCut
-    TH1F *hTT = (TH1F*)infTTfile->Get("hSignal_chi");
-    //hTT->Scale(ttbarSigStrength[year]); //only to be used when looking at ttbar from mc
+    TH1F *hTT = (TH1F*)infTTfile->Get(histoName);
+    hTT->Scale(ttbarSigStrength[year]); //only to be used when looking at ttbar from mc
 
-    //get qcd
-    //mc file
-    //TFile *infQCDfile = TFile::Open(TString::Format("%s/Histo_QCD_HT300ToInf_reduced_%d.root",year.Data(), mJJCut));
-    //TH1F *hQCD = (TH1F*)infQCDfile->Get(histoName);
-    //I have written also the extracted qcd signal in the signal extraction file so take it from there
-    //our new SR is: SR (old) + mJJ > mJJCut
-    TH1F *hQCD = (TH1F*)infTTfile->Get("hQCD_chi");
+    //---------------------------------- END OF TTBAR --------------------------------------------
 
+    //---------------------------------- START OF SUBDOMINANT --------------------------------------------
     //move on to subdominant
-    TFile *infSubFile = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_reduced_%d.root",year.Data(), mJJCut));
+    TFile *infSubFile = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_SubdominantBkgs_reduced_%d.root",year.Data(), mJJCut));
     //our new SR is: SR (old) + mJJ > mJJCut
     TH1F *hSub = (TH1F*)infSubFile->Get(histoName);
+    //---------------------------------- END OF SUBDOMINANT --------------------------------------------
+
+    //---------------------------------- START OF QCD --------------------------------------------
+
+    //mc file
+    TFile *infQCDfile = TFile::Open(TString::Format("../TopAngular_NewBins/%s/Histo_QCD_HT300ToInf_reduced_%d.root",year.Data(), mJJCut));
+    TH1F *hQCD = (TH1F*)infQCDfile->Get("hWt_chi_2btag_expYield");
+    //I have written also the extracted qcd signal in the signal extraction file so take it from there
+    //our new SR is: SR (old) + mJJ > mJJCut
+    //TH1F *hQCD = (TH1F*)infTTfile->Get("hQCD_chi");
+
+    //scale qcd with Data
+    //we use a k-factor
+    TH1F *hQCD_tempFromData = (TH1F*)hData->Clone("hQCD_tempFromData");
+    hQCD_tempFromData->Add(hTT, -1);
+    hQCD_tempFromData->Add(hSub, -1);
+
+    float qcdScaleFactor = hQCD_tempFromData->Integral()/hQCD->Integral();
+    cout<<"qcdScaleFactor: "<<qcdScaleFactor<<endl;
+    hQCD->Scale(qcdScaleFactor);
+
+
+    //---------------------------------- END OF QCD --------------------------------------------
+
 
     // get integral from ttbar, qcd, and subdomint -->bkgs
     float total_bkg_integral = hTT->Integral();
@@ -84,12 +107,11 @@ void Significance_ZprimeMass_Width(TString year="2016", int z_mass=2000, float z
     TH1F *hZprime;
 
     //cout<<"mass: "<<masses[imass]<<" width:"<<(int)width<<endl;
+    if(year.EqualTo("2016_preVFP")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), z_mass, (int)width));
+    else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), z_mass, (int)width));
+    else infZprime = TFile::Open(TString::Format("%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraph-pythiaMLM-pythia8_20UL.root", year.Data(), z_mass, (int)width));
 
-    if(year.EqualTo("2016")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M-%d_W-%d_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.root", year.Data(),z_mass,(int)width));
-    else if (year.EqualTo("2017")) infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_13TeV-madgraphMLM-pythia8.root", year.Data(), z_mass,(int)width));
-    else infZprime = TFile::Open(TString::Format("../Zprime/%s/HistoMassWindows_ZprimeToTT_M%d_W%d_TuneCP2_PSweights_13TeV-madgraphMLM-pythia8.root", year.Data(), z_mass,(int)width));
-
-    infZprime->cd();
+    //infZprime->cd();
     hZprime = (TH1F*)infZprime->Get(TString::Format("hReco_chi_%d", mJJCut));
 
     float signal = hZprime->Integral();
