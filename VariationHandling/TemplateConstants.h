@@ -16,9 +16,10 @@ map<int, TString> vars;
 void initFilesMapping()
 {
 
-	eospath.insert(pair<TString,TString>("2016","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2016/variations/combined/"));
-	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2017/variations/combined/"));
-	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/mc-2018/variations/combined/"));
+	eospath.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/variations/"));
+	eospath.insert(pair<TString,TString>("2016_postVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/variations/"));
+	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/variations/"));
+	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/variations/"));
 
 	map<TString, float> XSEC_ = {{"TT", 832.},
 															{"TTJets", 832.},
@@ -26,26 +27,32 @@ void initFilesMapping()
 															{"TTToSemiLeptonic", 365.34},
 															{"TTTo2L2Nu", 88.29}};
 
-	XSECAll.insert(pair<TString, map<TString, float>>("2016", XSEC_));
+	XSECAll.insert(pair<TString, map<TString, float>>("2016_preVFP", XSEC_));
+	XSECAll.insert(pair<TString, map<TString, float>>("2016_postVFP", XSEC_));
 	XSECAll.insert(pair<TString, map<TString, float>>("2017", XSEC_));
 	XSECAll.insert(pair<TString, map<TString, float>>("2018", XSEC_));
 
 	//these are btagging Working points for each year Medium WP
-	floatConstants.insert(pair<TString, float>("btagWP2016", 0.6321));
-	floatConstants.insert(pair<TString, float>("btagWP2017", 0.4941));
-	floatConstants.insert(pair<TString, float>("btagWP2018", 0.4184));
+	floatConstants.insert(pair<TString, float>("btagWP2016_preVFP", 0.6321));
+	floatConstants.insert(pair<TString, float>("btagWP2016_postVFP", 0.6321));
+	floatConstants.insert(pair<TString, float>("btagWP2017",0.4506));
+	floatConstants.insert(pair<TString, float>("btagWP2018",0.4168));
 
-	topTaggerConstants.insert(pair<TString, float>("topTagger2016", 0.2));
+	topTaggerConstants.insert(pair<TString, float>("topTagger2016_preVFP", 0.2));
+	topTaggerConstants.insert(pair<TString, float>("topTagger2016_postVFP", 0.2));
 	topTaggerConstants.insert(pair<TString, float>("topTagger2017", 0.0));
 	topTaggerConstants.insert(pair<TString, float>("topTagger2018", 0.1));
 
-	luminosity.insert(pair<TString,float>("luminosity2016", 35920));
-	luminosity.insert(pair<TString,float>("luminosity2017", 41530));
-	luminosity.insert(pair<TString,float>("luminosity2018", 59740));
+	luminosity.insert(pair<TString, float>("luminosity2016_preVFP", 19500));
+	luminosity.insert(pair<TString, float>("luminosity2016_postVFP", 16500));
+	luminosity.insert(pair<TString, float>("luminosity2017", 41480));
+	luminosity.insert(pair<TString, float>("luminosity2018", 59830));
 
-	luminosityCR.insert(pair<TString,float>("luminosity2016", 1670));
-	luminosityCR.insert(pair<TString,float>("luminosity2017", 41530));
-	luminosityCR.insert(pair<TString,float>("luminosity2018", 59740));
+
+	luminosityCR.insert(pair<TString, float>("luminosity2016_preVFP", 1134));
+	luminosityCR.insert(pair<TString, float>("luminosity2016_postVFP", 564));
+	luminosityCR.insert(pair<TString, float>("luminosity2017", 41480));
+	luminosityCR.insert(pair<TString, float>("luminosity2018", 59830));
 
 	//ps weights
 	ps_weights.insert(pair<int, TString>(0, "nom0"));
