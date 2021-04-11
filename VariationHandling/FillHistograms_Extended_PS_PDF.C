@@ -304,7 +304,7 @@ void FillHistograms_Extended_PS_PDF(TString file_name, TString ttbar_process, TS
     else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
     else weightName = scale_weights[iweight];
 
-    outFile[iweight] = TFile::Open(TString::Format("%s/%s/Histo_%d_%s_%s.root", year.Data(),(int)mJJCut, weightType.Data() ,ttbar_process.Data(), weightName.Data()), "RECREATE");
+    outFile[iweight] = TFile::Open(TString::Format("%s/%s/Histo_%d_%s_%s.root", year.Data(), weightType.Data(), (int)mJJCut, ttbar_process.Data(), weightName.Data()), "RECREATE");
     outFile[iweight]->cd();
     //write them to file
     for(int ivar = 0; ivar<NVAR; ivar++)
