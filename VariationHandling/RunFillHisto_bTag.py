@@ -23,7 +23,7 @@ all_files = {"2016_preVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root
 
 eospath = '/eos/cms/store/user/gbakas/ttbar/topTagger/ul-{}/Signal/'.format(year)
 
-variations = ['up', 'down']
+variations = ['down']#['up', 'down']
 mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
 
 for var in variations:
@@ -34,7 +34,7 @@ for var in variations:
         print(ifile)
         for mjj_cut in mJJCuts:
             print('Current mjj cut:', mjj_cut)
-            os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
-            #os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
+           # os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
+            os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
        #break
     #break
