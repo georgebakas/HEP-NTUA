@@ -100,8 +100,10 @@ def plotUpperLimits(file_names, values, width, mass_cut):
     # see CMS plot guidelines: https://ghm.web.cern.ch/ghm/plots/
 
     if width == 1:
-        #here you have 2000_20, 2500_25, 3000_30, 3500_35, 4000_40
-        cross_section = [0.1617, 0.04753, 0.01505, 0.005014, 0.001917]
+        #here you have 1200_12, 1400_14, 1600_16, 1800_18, 2000_20,
+        #              2500_25, 3000_30, 3500_35, 4000_40, 4500_45
+        cross_section = [1.730e+00, 9.095e-01, 5.002e-01, 2.833e-01, 1.662e-01,
+                        4.749e-02, 1.494e-02, 5.105e-03, 1.900e-03, 7.613e-04]
     elif width == 10:
         #here we got 2000_200, 2500_250, 3000_300, 3500_350, 4000_400
         cross_section = [0.01842, 0.00563, 0.002006, 0.0008262, 0.0003791]
@@ -120,7 +122,7 @@ def plotUpperLimits(file_names, values, width, mass_cut):
         file_name = "higgsCombine."+file_names[i]+"Cut"+mass_cut+".AsymptoticLimits.mH120.root"
         limit = getLimits(file_name)
         limit = [x * cross_section[i] for x in limit]
-
+        print 'cross_section:', cross_section[i]
         for ilim in range(6):
             print i, values[i], limit[ilim]
 
@@ -165,9 +167,11 @@ def plotUpperLimits(file_names, values, width, mass_cut):
     #frame.GetYaxis().SetTitle("95% upper limit on #sigma #times BR / (#sigma #times BR)_{SM}")
     #frame.GetXaxis().SetTitle("background systematic uncertainty [%]")
     frame.GetXaxis().SetTitle("m_{Z} (GeV)")
-    frame.SetMinimum(0.05)
+    #frame.SetMinimum(0.05)
     #frame.SetMaximum(max(up2s)*10.5)
-    frame.SetMaximum(5)
+    #frame.SetMaximum(5)
+    frame.SetMinimum(0.01)
+    frame.SetMaximum(max(up2s)*50.5)
     frame.GetXaxis().SetLimits(min(values),max(values))
 
     yellow.SetFillColor(ROOT.kOrange)
@@ -196,10 +200,10 @@ def plotUpperLimits(file_names, values, width, mass_cut):
     ROOT.gPad.SetTicks(1,1)
     frame.Draw('sameaxis')
 
-    x1 = 0.15
+    x1 = 0.40
     x2 = x1 + 0.24
-    y2 = 0.81
-    y1 = 0.65
+    y1 = 0.70
+    y2 = y1 + 0.16
     legend = TLegend(x1,y1,x2,y2)
     legend.SetFillStyle(0)
     legend.SetBorderSize(0)
@@ -233,25 +237,27 @@ def main(width, mass_cut):
     #values = [ ]
 
     if width == 1:
-        file_names = ["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_3500_35", "mZ_4000_40"]
+        file_names = ["mZ_1200_12", "mZ_1400_14", "mZ_1600_16", "mZ_1800_18", "mZ_2000_20",
+                    "mZ_2500_25", "mZ_3000_30", "mZ_3500_35", "mZ_4000_40", "mZ_4500_45"]
     elif width ==10:
         file_names = ["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_3500_350", "mZ_4000_400"]
     else:
         file_names = ["mZ_2000_600", "mZ_2500_750", "mZ_3000_900", "mZ_3500_1050", "mZ_4000_1200"];
 
-    values = [2000, 2500, 3000, 3500, 4000];
+    values = [1200, 1400, 1600, 1800, 2000, 2500, 3000, 3500, 4000, 4500];
 
     print(file_names)
-    createDataCardsThetaB(file_names, mass_cut)
+    #createDataCardsThetaB(file_names, mass_cut)
     #executFitDiagnostics(file_names)
-    executeDataCards(file_names, mass_cut)
+    #executeDataCards(file_names, mass_cut)
     plotUpperLimits(file_names, values, width, mass_cut)
 
 
 def execute_all_masses(width):
 
     if width == 1:
-        file_names=["mZ_2000_20", "mZ_2500_25", "mZ_3000_30", "mZ_3500_35", "mZ_4000_40"]
+        file_names = ["mZ_1200_12", "mZ_1400_14", "mZ_1600_16", "mZ_1800_18", "mZ_2000_20",
+                    "mZ_2500_25", "mZ_3000_30", "mZ_3500_35", "mZ_4000_40", "mZ_4500_45"]
     elif width == 10:
         file_names=["mZ_2000_200", "mZ_2500_250", "mZ_3000_300", "mZ_3500_350", "mZ_4000_400"]
     else:
