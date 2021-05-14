@@ -30,14 +30,20 @@ void initFilesMapping()
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
+	/*
 	map<TString, TString> files2018 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
+	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}}; */
+
+	map<TString, TString> files2018 = {{"TTHadronic_0", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTSemiLeptonic_0", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTTo2L2Nu_0", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 
 	eospath.insert(pair<TString,TString>("2016_postVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/"));
 	eospath.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Signal/"));
 	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/"));
-	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/"));
+	//eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/"));
+	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/"));
 
 	files.insert(pair<TString, map<TString, TString>>("2016_postVFP", files2016));
 	files.insert(pair<TString, map<TString, TString>>("2016_preVFP", files2016));

@@ -69,7 +69,7 @@ void ComposeHistograms_MC(TString year="2017", int mJJCut = 1000)
   TFile *infTTfile_shifted_up = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedUp.root",year.Data(), mJJCut));
   TH1F *h_TT_shifted_up = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
 
-  TFile *infTTfile_shifted_down = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedUp.root",year.Data(), mJJCut));
+  TFile *infTTfile_shifted_down = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedDown.root",year.Data(), mJJCut));
   TH1F *h_TT_shifted_down = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
 
   // Scale Weights 2,3,4,5,7,9

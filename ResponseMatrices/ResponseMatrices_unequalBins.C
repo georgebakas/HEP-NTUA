@@ -65,13 +65,13 @@ void ResponseMatrices_unequalBins(TString year = "2016_preVFP", bool isNominalMC
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
-                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //ptJJ
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
+                                                {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
+                                                {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
+                                                {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt1
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                                                 {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                 {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                 {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
@@ -226,16 +226,16 @@ for(int f=0; f<fileNames.size(); f++)
 	trIN->SetBranchAddress("partonPhi"      ,&partonPhi);
 	trIN->SetBranchAddress("partonY"        ,&partonY);
 
-    //particle
-    trIN->SetBranchAddress("mJJGen"			,&mJJGen);
-    trIN->SetBranchAddress("ptJJGen"		,&ptJJGen);
-    trIN->SetBranchAddress("yJJGen"			,&yJJGen);
-    trIN->SetBranchAddress("genjetPt"		,&genjetPt);
-    trIN->SetBranchAddress("genjetPhi"		,&genjetPhi);
-    trIN->SetBranchAddress("genjetY"		,&genjetY);
-    trIN->SetBranchAddress("genjetEta"		,&genjetEta);
-    trIN->SetBranchAddress("nJetsGen"		,&nJetsGen);
-    trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
+  //particle
+  trIN->SetBranchAddress("mJJGen"			,&mJJGen);
+  trIN->SetBranchAddress("ptJJGen"		,&ptJJGen);
+  trIN->SetBranchAddress("yJJGen"			,&yJJGen);
+  trIN->SetBranchAddress("genjetPt"		,&genjetPt);
+  trIN->SetBranchAddress("genjetPhi"	,&genjetPhi);
+  trIN->SetBranchAddress("genjetY"		,&genjetY);
+  trIN->SetBranchAddress("genjetEta"	,&genjetEta);
+  trIN->SetBranchAddress("nJetsGen"		,&nJetsGen);
+  trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
 
 
     float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
@@ -391,9 +391,27 @@ for(int f=0; f<fileNames.size(); f++)
 
   		if((*jetPt)[0] < (*jetPt)[1])
   		{
-   		    subleadingPt =0;
-   		    leadingPt = 1;
+   		  subleadingPt =0;
+   		  leadingPt = 1;
    		}
+
+      int leadingPt_parton =0;
+      int subleadingPt_parton = 1;
+      if((*partonPt)[0] < (*partonPt)[1])
+  		{
+   		  subleadingPt_parton =0;
+   		  leadingPt_parton = 1;
+   		}
+
+      int leadingPt_particle =0;
+      int subleadingPt_particle = 1;
+      if((*genjetPt)[0] < (*genjetPt)[1])
+  		{
+          
+   		  subleadingPt_particle =0;
+   		  leadingPt_particle = 1;
+   		}
+
     
     //reco for angular
     TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
@@ -421,13 +439,13 @@ for(int f=0; f<fileNames.size(); f++)
     xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
     //now parton
 		TLorentzVector p4TParton[2], p4T_ZMFParton[2], p4TTbarParton;
-    p4TParton[leadingPt].SetPtEtaPhiM((*partonPt)[leadingPt], (*partonEta)[leadingPt], (*partonPhi)[leadingPt], (*partonMass)[leadingPt]);
-   	p4TParton[subleadingPt].SetPtEtaPhiM((*partonPt)[subleadingPt], (*partonEta)[subleadingPt], (*partonPhi)[subleadingPt], (*partonMass)[subleadingPt]);
+    p4TParton[leadingPt_parton].SetPtEtaPhiM((*partonPt)[leadingPt_parton], (*partonEta)[leadingPt_parton], (*partonPhi)[leadingPt_parton], (*partonMass)[leadingPt_parton]);
+   	p4TParton[subleadingPt_parton].SetPtEtaPhiM((*partonPt)[subleadingPt_parton], (*partonEta)[subleadingPt_parton], (*partonPhi)[subleadingPt_parton], (*partonMass)[subleadingPt_parton]);
 
   	TVector3 ttbarBoostVectorParton = getBoostVector(p4TParton[leadingPt], p4TParton[subleadingPt], p4TTbarParton);
 
-    p4T_ZMFParton[0].SetPtEtaPhiM(p4TParton[leadingPt].Pt(), p4TParton[leadingPt].Eta(), p4TParton[leadingPt].Phi(), p4TParton[leadingPt].M());
-    p4T_ZMFParton[1].SetPtEtaPhiM(p4TParton[subleadingPt].Pt(), p4TParton[subleadingPt].Eta(), p4TParton[subleadingPt].Phi(), p4TParton[subleadingPt].M());
+    p4T_ZMFParton[0].SetPtEtaPhiM(p4TParton[leadingPt_parton].Pt(), p4TParton[leadingPt_parton].Eta(), p4TParton[leadingPt_parton].Phi(), p4TParton[leadingPt_parton].M());
+    p4T_ZMFParton[1].SetPtEtaPhiM(p4TParton[subleadingPt_parton].Pt(), p4TParton[subleadingPt_parton].Eta(), p4TParton[subleadingPt_parton].Phi(), p4TParton[subleadingPt_parton].M());
     p4T_ZMFParton[0].Boost(ttbarBoostVectorParton);
     p4T_ZMFParton[1].Boost(ttbarBoostVectorParton);
 
@@ -436,23 +454,23 @@ for(int f=0; f<fileNames.size(); f++)
 		xPartonAll.push_back(mTTbarParton);
 		xPartonAll.push_back(ptTTbarParton);
 		xPartonAll.push_back(yTTbarParton);
-		xPartonAll.push_back((*partonPt)[leadingPt]);
-		xPartonAll.push_back((*partonPt)[subleadingPt]);
-		xPartonAll.push_back(fabs((*partonY)[leadingPt]));
-		xPartonAll.push_back(fabs((*partonY)[subleadingPt]));
+		xPartonAll.push_back((*partonPt)[leadingPt_parton]);
+		xPartonAll.push_back((*partonPt)[subleadingPt_parton]);
+		xPartonAll.push_back(fabs((*partonY)[leadingPt_parton]));
+		xPartonAll.push_back(fabs((*partonY)[subleadingPt_parton]));
     xPartonAll.push_back(yStarExpParton);
 		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[0].Theta())); //this is |cos(theta*)| leading
 		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[1].Theta())); //this is |cos(theta*)| subleading
 
     //now particle
 		TLorentzVector p4TParticle[2], p4T_ZMFParticle[2], p4TTbarParticle;
-    p4TParticle[leadingPt].SetPtEtaPhiM((*genjetPt)[leadingPt], (*genjetEta)[leadingPt], (*genjetPhi)[leadingPt], (*genjetMassSoftDrop)[leadingPt]);
-   	p4TParticle[subleadingPt].SetPtEtaPhiM((*genjetPt)[subleadingPt], (*genjetEta)[subleadingPt], (*genjetPhi)[subleadingPt], (*genjetMassSoftDrop)[subleadingPt]);
+    p4TParticle[leadingPt_particle].SetPtEtaPhiM((*genjetPt)[leadingPt_particle], (*genjetEta)[leadingPt_particle], (*genjetPhi)[leadingPt_particle], (*genjetMassSoftDrop)[leadingPt_particle]);
+   	p4TParticle[subleadingPt_particle].SetPtEtaPhiM((*genjetPt)[subleadingPt_particle], (*genjetEta)[subleadingPt_particle], (*genjetPhi)[subleadingPt_particle], (*genjetMassSoftDrop)[subleadingPt_particle]);
 
-  	TVector3 ttbarBoostVectorParticle = getBoostVector(p4TParticle[leadingPt], p4TParticle[subleadingPt], p4TTbarParticle);
+  	TVector3 ttbarBoostVectorParticle = getBoostVector(p4TParticle[leadingPt_particle], p4TParticle[subleadingPt_particle], p4TTbarParticle);
 
-    p4T_ZMFParticle[0].SetPtEtaPhiM(p4TParticle[leadingPt].Pt(), p4TParticle[leadingPt].Eta(), p4TParticle[leadingPt].Phi(), p4TParticle[leadingPt].M());
-    p4T_ZMFParticle[1].SetPtEtaPhiM(p4TParticle[subleadingPt].Pt(), p4TParticle[subleadingPt].Eta(), p4TParticle[subleadingPt].Phi(), p4TParticle[subleadingPt].M());
+    p4T_ZMFParticle[0].SetPtEtaPhiM(p4TParticle[leadingPt_particle].Pt(), p4TParticle[leadingPt_particle].Eta(), p4TParticle[leadingPt_particle].Phi(), p4TParticle[leadingPt_particle].M());
+    p4T_ZMFParticle[1].SetPtEtaPhiM(p4TParticle[subleadingPt_particle].Pt(), p4TParticle[subleadingPt_particle].Eta(), p4TParticle[subleadingPt_particle].Phi(), p4TParticle[subleadingPt_particle].M());
     p4T_ZMFParticle[0].Boost(ttbarBoostVectorParticle);
     p4T_ZMFParticle[1].Boost(ttbarBoostVectorParticle);
 
@@ -461,10 +479,10 @@ for(int f=0; f<fileNames.size(); f++)
 		xParticleAll.push_back(mJJGen);
 		xParticleAll.push_back(ptJJGen);
 		xParticleAll.push_back(yJJGen);
-		xParticleAll.push_back((*genjetPt)[leadingPt]);
-		xParticleAll.push_back((*genjetPt)[subleadingPt]);
-		xParticleAll.push_back(fabs((*genjetY)[leadingPt]));
-		xParticleAll.push_back(fabs((*genjetY)[subleadingPt]));
+		xParticleAll.push_back((*genjetPt)[leadingPt_particle]);
+		xParticleAll.push_back((*genjetPt)[subleadingPt_particle]);
+		xParticleAll.push_back(fabs((*genjetY)[leadingPt_particle]));
+		xParticleAll.push_back(fabs((*genjetY)[subleadingPt_particle]));
     xParticleAll.push_back(yStarExpParticle);
 		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[0].Theta())); //this is |cos(theta*)| leading
 		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[1].Theta())); //this is |cos(theta*)| subleading
@@ -685,10 +703,59 @@ for(int f=0; f<fileNames.size(); f++)
 
 
   }
-  //WARNING !!!
-  //for purity and stability: when we have unequal binning we cannot find purity and stability but only when we have a
-  //square matrx
+  
+  //for purity and stability
+  //purity: sum all over the columns and find binContent(i,j)/SumOfColumn(j) for all vars
+  //stability: sum all over the lines and find binContent/SumOfLine(i) for all vars
+  TH1F *purityParton[NVAR], *stabilityParton[NVAR];
+  TH1F *purityParticle[NVAR], *stabilityParticle[NVAR];
 
+  for(int ivar = 0; ivar<NVAR; ivar++)
+  {
+	int sizeBins = NBINS[ivar];
+  	float tempBND[NBINS[ivar]+1];
+    std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBND);
+  	purityParton[ivar] 	  = new TH1F(TString::Format("PurityParton_%s", varReco[ivar].Data()),TString::Format("PurityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
+  	stabilityParton[ivar] = new TH1F(TString::Format("StabilityParton_%s", varReco[ivar].Data()),TString::Format("StabilityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
+
+  	purityParticle[ivar] 	  = new TH1F(TString::Format("PurityParticle_%s", varReco[ivar].Data()),TString::Format("PurityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
+  	stabilityParticle[ivar] = new TH1F(TString::Format("StabilityParticle_%s", varReco[ivar].Data()),TString::Format("StabilityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
+  	//this is now for purity and stability for each variable
+	//first find sums
+	float bins[sizeBins+1];
+	for(int i=0; i<sizeBins+1; i++)
+	{
+	  	bins[i]=i+1;
+	}
+
+	float sumOfRowsParton[sizeBins], sumOfColsParton[sizeBins];
+	float sumOfRowsParticle[sizeBins], sumOfColsParticle[sizeBins];
+	for(int i=1; i<=sizeBins; i++)
+	{
+	    sumOfColsParton[i] = ((TH1D*)hPartonResponse[0][ivar]->ProjectionX())->GetBinContent(i);
+	    sumOfRowsParton[i] = ((TH1D*)hPartonResponse[0][ivar]->ProjectionY())->GetBinContent(i);
+
+		  sumOfColsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionX())->GetBinContent(i);
+	    sumOfRowsParticle[i] = ((TH1D*)hParticleResponse[0][ivar]->ProjectionY())->GetBinContent(i);
+
+	    for(int j=1; j<=sizeBins; j++)
+	    {
+	    	if(i==j)
+	        {
+	            float initContentParton = hPartonResponse[0][ivar]->GetBinContent(i,j);
+	            purityParton[ivar]->SetBinContent(i,initContentParton/sumOfColsParton[i]);
+	            stabilityParton[ivar]->SetBinContent(i,initContentParton/sumOfRowsParton[i]);
+
+	            float initContentParticle = hParticleResponse[0][ivar]->GetBinContent(i,j);
+	            purityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfColsParticle[i]);
+	            stabilityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfRowsParticle[i]);
+	        }
+	    }
+	}
+
+
+
+  }
 
   TFile *outFile;
   TString nominal ="";

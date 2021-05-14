@@ -16,7 +16,7 @@ def CreateCondorSubmitFile(executable, arguments, inputFiles, outputFile, flavou
     f.write("output = " + jobName + ".out\n")
     f.write("log = " + jobName + ".log\n")
     f.write("+JobFlavour = \""+flavour+"\"\n")
-    f.write("+AccountingGroup = \"group_u_CMS.u_zh.users.gbakas\"\n")
+    f.write("+AccountingGroup = \"group_u_CMS.u_zh.users\"\n")
     f.write("\n")
     f.write("should_transfer_files = yes\n")
     f.write("transfer_input_files = " + inputFiles + "\n")
