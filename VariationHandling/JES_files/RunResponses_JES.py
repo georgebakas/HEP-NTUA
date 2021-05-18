@@ -31,5 +31,6 @@ for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/ipapakri/ttbar
         argument = f'-l -b -q ResponseMatrices_JES.C(\\\"{file_name}\\\",\\\"{split_file_underscore[0]}\\\",\\\"{jes_variation}\\\",\\\"{year}\\\",{mjj_cut})'
         output_file = f'ResponsesEfficiency_{split_file_underscore[0]}_{jes_variation}.root'
         scj.submitCondorJobs('submit_.sh', argument, 'ResponseMatrices_JES.C, TemplateConstants.h', output_file)
+        #os.system(f'root -l -b -q \'ResponseMatrices_JES.C(\"{file_name}\",\"{split_file_underscore[0]}\", \"{jes_variation}\",\"{year}\",{mjj_cut})\'')
         #break
     #break

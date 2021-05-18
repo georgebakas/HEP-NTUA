@@ -19,7 +19,7 @@ TString globalYear;
 bool globalIsNominalMC;
 
 
-void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString jes_variation, TString year = "2016", float mJJCut=1000)
+void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_variation, TString year = "2016", float mJJCut=1000)
 {
   globalYear = year;
   initFilesMapping();
@@ -141,7 +141,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 
     TFile *file = TFile::Open(file_name.Data());
 
-    TTree *trIN = (TTree*)file->Get("boosted/events");
+    TTree *trIN = (TTree*)file->Get(TString::Format("%s/events", jes_variation.Data()));
 
 	//------- input tree --------------
     trIN->SetBranchAddress("nJets"          ,&nJets);
@@ -234,7 +234,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 	std::vector<float> xPartonAll(0);
 	std::vector<float> xParticleAll(0);
 
-    for(int iev=0;iev<NN;iev++)
+    for(int iev=0;iev<10000;iev++)
     {
 		double progress = 10.0*iev/(1.0*NN);
       int k = TMath::FloorNint(progress);
