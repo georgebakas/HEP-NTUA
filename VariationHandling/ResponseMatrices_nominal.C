@@ -37,29 +37,27 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   float XSEC = XSECAll[year.Data()][ttbar_process.Data()];
   cout<<"XSEC: "<<XSEC<<endl;
   const int NVAR = 10;
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},//mJJ
-                       {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //ptJJ
-                       {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                       {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
-                       {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
-                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
-                       {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
-
-
-
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                                                         {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading};
+                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2300, 3000, 5000}, //mJJ
+                                                {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
+                                                {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
+                                                {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt1
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
+                                                {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
+                                                {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
+                                                {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
   int NBINS[BND_reco.size()];
   for (int i = 0; i<BND_reco.size(); i++) NBINS[i] = BND_reco[i].size()-1;
@@ -244,7 +242,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
         cout<<10*k<<" %"<<endl;
       decade = k;
       trIN->GetEntry(iev);
-		int isMatched =0;
+		/* int isMatched =0;
 		eta_->clear();
         mass_->clear();
         pt_->clear();
@@ -263,7 +261,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 	   jetBtagSub0DCSVbb_->clear();
 	   jetBtagSub1DCSVbb_->clear();
 	   jetBtagSub0DCSVbbb_->clear();
-	   jetBtagSub1DCSVbbb_->clear();
+	   jetBtagSub1DCSVbbb_->clear(); */
 
 	   xPartonAll.clear();
 	   xRecoAll.clear();
@@ -271,7 +269,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 
 
       //----------------------MATCHING------------------------------------------------------
-
+  /*
 			for(int ijet =0; ijet<nJets; ijet++)
 			{
 				//cout<<"ok"<<endl;
@@ -340,104 +338,122 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 
 			   }
 
-			}
-	if(isMatched > 1)
+			} */
+	if(nJets > 1)
     {
 
    	   	int leadingPt =0;
       	int subleadingPt = 1;
 
-  		if((*pt_)[0] < (*pt_)[1])
+  		if((*jetPt)[0] < (*jetPt)[1])
   		{
    		    subleadingPt =0;
    		    leadingPt = 1;
    		}
 
-		TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
-    	p4T[leadingPt].SetPtEtaPhiM((*pt_)[leadingPt], (*eta_)[leadingPt], (*phi_)[leadingPt], (*mass_)[leadingPt]);
-   		p4T[subleadingPt].SetPtEtaPhiM((*pt_)[subleadingPt], (*eta_)[subleadingPt], (*phi_)[subleadingPt], (*mass_)[subleadingPt]);
+      int leadingPt_parton =0;
+      int subleadingPt_parton = 1;
+      if((*partonPt)[0] < (*partonPt)[1])
+  		{
+   		  subleadingPt_parton =0;
+   		  leadingPt_parton = 1;
+   		}
 
-  	    TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
+      int leadingPt_particle =0;
+      int subleadingPt_particle = 1;
+      if((*genjetPt)[0] < (*genjetPt)[1])
+  		{
 
-    	p4T_ZMF[0].SetPtEtaPhiM(p4T[leadingPt].Pt(), p4T[leadingPt].Eta(), p4T[leadingPt].Phi(), p4T[leadingPt].M());
-    	p4T_ZMF[1].SetPtEtaPhiM(p4T[subleadingPt].Pt(), p4T[subleadingPt].Eta(), p4T[subleadingPt].Phi(), p4T[subleadingPt].M());
-     	p4T_ZMF[0].Boost(ttbarBoostVector);
-     	p4T_ZMF[1].Boost(ttbarBoostVector);
+   		  subleadingPt_particle =0;
+   		  leadingPt_particle = 1;
+   		}
 
-	    float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
+		//reco for angular
+    TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;
+    p4T[leadingPt].SetPtEtaPhiM((*jetPt)[leadingPt], (*jetEta)[leadingPt], (*jetPhi)[leadingPt], (*jetMassSoftDrop)[leadingPt]);
+   	p4T[subleadingPt].SetPtEtaPhiM((*jetPt)[subleadingPt], (*jetEta)[subleadingPt], (*jetPhi)[subleadingPt], (*jetMassSoftDrop)[subleadingPt]);
+
+  	TVector3 ttbarBoostVector = getBoostVector(p4T[leadingPt], p4T[subleadingPt], p4TTbar);
+
+    p4T_ZMF[0].SetPtEtaPhiM(p4T[leadingPt].Pt(), p4T[leadingPt].Eta(), p4T[leadingPt].Phi(), p4T[leadingPt].M());
+    p4T_ZMF[1].SetPtEtaPhiM(p4T[subleadingPt].Pt(), p4T[subleadingPt].Eta(), p4T[subleadingPt].Phi(), p4T[subleadingPt].M());
+    p4T_ZMF[0].Boost(ttbarBoostVector);
+    p4T_ZMF[1].Boost(ttbarBoostVector);
+
+	  float yStarExp  = TMath::Exp(fabs(p4T_ZMF[0].Rapidity() - p4T_ZMF[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
+
+   	xRecoAll.push_back(mJJ);
+		xRecoAll.push_back(ptJJ);
+		xRecoAll.push_back(yJJ);
+		xRecoAll.push_back((*jetPt)[leadingPt]);
+		xRecoAll.push_back((*jetPt)[subleadingPt]);
+		xRecoAll.push_back(fabs((*jetY)[leadingPt]));
+		xRecoAll.push_back(fabs((*jetY)[subleadingPt]));
+    xRecoAll.push_back(yStarExp); //this is chi
+    xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
+    xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
 
 
-      xRecoAll.push_back(mJJ);
-      xRecoAll.push_back(ptJJ);
-      xRecoAll.push_back(yJJ);
-      xRecoAll.push_back((*pt_)[leadingPt]);
-      xRecoAll.push_back((*pt_)[subleadingPt]);
-      xRecoAll.push_back(fabs((*y_)[leadingPt]));
-      xRecoAll.push_back(fabs((*y_)[subleadingPt]));
-     	xRecoAll.push_back(yStarExp); //this is chi
-     	xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
-     	xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
-
-
-		//now parton
+		 //now parton
 		TLorentzVector p4TParton[2], p4T_ZMFParton[2], p4TTbarParton;
-    	p4TParton[leadingPt].SetPtEtaPhiM((*partonPt_)[leadingPt], (*partonEta_)[leadingPt], (*partonPhi_)[leadingPt], (*partonMass_)[leadingPt]);
-   		p4TParton[subleadingPt].SetPtEtaPhiM((*partonPt_)[subleadingPt], (*partonEta_)[subleadingPt], (*partonPhi_)[subleadingPt], (*partonMass_)[subleadingPt]);
+    p4TParton[leadingPt_parton].SetPtEtaPhiM((*partonPt)[leadingPt_parton], (*partonEta)[leadingPt_parton], (*partonPhi)[leadingPt_parton], (*partonMass)[leadingPt_parton]);
+   	p4TParton[subleadingPt_parton].SetPtEtaPhiM((*partonPt)[subleadingPt_parton], (*partonEta)[subleadingPt_parton], (*partonPhi)[subleadingPt_parton], (*partonMass)[subleadingPt_parton]);
 
-  	    TVector3 ttbarBoostVectorParton = getBoostVector(p4TParton[leadingPt], p4TParton[subleadingPt], p4TTbarParton);
+  	TVector3 ttbarBoostVectorParton = getBoostVector(p4TParton[leadingPt], p4TParton[subleadingPt], p4TTbarParton);
 
-    	p4T_ZMFParton[0].SetPtEtaPhiM(p4TParton[leadingPt].Pt(), p4TParton[leadingPt].Eta(), p4TParton[leadingPt].Phi(), p4TParton[leadingPt].M());
-    	p4T_ZMFParton[1].SetPtEtaPhiM(p4TParton[subleadingPt].Pt(), p4TParton[subleadingPt].Eta(), p4TParton[subleadingPt].Phi(), p4TParton[subleadingPt].M());
-     	p4T_ZMFParton[0].Boost(ttbarBoostVectorParton);
-     	p4T_ZMFParton[1].Boost(ttbarBoostVectorParton);
+    p4T_ZMFParton[0].SetPtEtaPhiM(p4TParton[leadingPt_parton].Pt(), p4TParton[leadingPt_parton].Eta(), p4TParton[leadingPt_parton].Phi(), p4TParton[leadingPt_parton].M());
+    p4T_ZMFParton[1].SetPtEtaPhiM(p4TParton[subleadingPt_parton].Pt(), p4TParton[subleadingPt_parton].Eta(), p4TParton[subleadingPt_parton].Phi(), p4TParton[subleadingPt_parton].M());
+    p4T_ZMFParton[0].Boost(ttbarBoostVectorParton);
+    p4T_ZMFParton[1].Boost(ttbarBoostVectorParton);
 
-	    float yStarExpParton  = TMath::Exp(fabs(p4T_ZMFParton[0].Rapidity() - p4T_ZMFParton[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
+	  float yStarExpParton  = TMath::Exp(fabs(p4T_ZMFParton[0].Rapidity() - p4T_ZMFParton[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
 
-      xPartonAll.push_back(mTTbarParton);
-  		xPartonAll.push_back(ptTTbarParton);
-  		xPartonAll.push_back(yTTbarParton);
-  		xPartonAll.push_back((*partonPt_)[leadingPt]);
-  		xPartonAll.push_back((*partonPt_)[subleadingPt]);
-  		xPartonAll.push_back(fabs((*partonY_)[leadingPt]));
-  		xPartonAll.push_back(fabs((*partonY_)[subleadingPt]));
-		  xPartonAll.push_back(yStarExpParton);
-	 	  xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[0].Theta())); //this is |cos(theta*)| leading
-		  xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[1].Theta())); //this is |cos(theta*)| subleading
+		xPartonAll.push_back(mTTbarParton);
+		xPartonAll.push_back(ptTTbarParton);
+		xPartonAll.push_back(yTTbarParton);
+		xPartonAll.push_back((*partonPt)[leadingPt_parton]);
+		xPartonAll.push_back((*partonPt)[subleadingPt_parton]);
+		xPartonAll.push_back(fabs((*partonY)[leadingPt_parton]));
+		xPartonAll.push_back(fabs((*partonY)[subleadingPt_parton]));
+    xPartonAll.push_back(yStarExpParton);
+		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[0].Theta())); //this is |cos(theta*)| leading
+		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[1].Theta())); //this is |cos(theta*)| subleading
 
-		//now particle
+    //now particle
 		TLorentzVector p4TParticle[2], p4T_ZMFParticle[2], p4TTbarParticle;
-    	p4TParticle[leadingPt].SetPtEtaPhiM((*genjetPt)[leadingPt], (*genjetEta)[leadingPt], (*genjetPhi)[leadingPt], (*genjetMassSoftDrop)[leadingPt]);
-   		p4TParticle[subleadingPt].SetPtEtaPhiM((*genjetPt)[subleadingPt], (*genjetEta)[subleadingPt], (*genjetPhi)[subleadingPt], (*genjetMassSoftDrop)[subleadingPt]);
+    p4TParticle[leadingPt_particle].SetPtEtaPhiM((*genjetPt)[leadingPt_particle], (*genjetEta)[leadingPt_particle], (*genjetPhi)[leadingPt_particle], (*genjetMassSoftDrop)[leadingPt_particle]);
+   	p4TParticle[subleadingPt_particle].SetPtEtaPhiM((*genjetPt)[subleadingPt_particle], (*genjetEta)[subleadingPt_particle], (*genjetPhi)[subleadingPt_particle], (*genjetMassSoftDrop)[subleadingPt_particle]);
 
-  	    TVector3 ttbarBoostVectorParticle = getBoostVector(p4TParticle[leadingPt], p4TParticle[subleadingPt], p4TTbarParticle);
+  	TVector3 ttbarBoostVectorParticle = getBoostVector(p4TParticle[leadingPt_particle], p4TParticle[subleadingPt_particle], p4TTbarParticle);
 
-    	p4T_ZMFParticle[0].SetPtEtaPhiM(p4TParticle[leadingPt].Pt(), p4TParticle[leadingPt].Eta(), p4TParticle[leadingPt].Phi(), p4TParticle[leadingPt].M());
-    	p4T_ZMFParticle[1].SetPtEtaPhiM(p4TParticle[subleadingPt].Pt(), p4TParticle[subleadingPt].Eta(), p4TParticle[subleadingPt].Phi(), p4TParticle[subleadingPt].M());
-     	p4T_ZMFParticle[0].Boost(ttbarBoostVectorParticle);
-     	p4T_ZMFParticle[1].Boost(ttbarBoostVectorParticle);
+    p4T_ZMFParticle[0].SetPtEtaPhiM(p4TParticle[leadingPt_particle].Pt(), p4TParticle[leadingPt_particle].Eta(), p4TParticle[leadingPt_particle].Phi(), p4TParticle[leadingPt_particle].M());
+    p4T_ZMFParticle[1].SetPtEtaPhiM(p4TParticle[subleadingPt_particle].Pt(), p4TParticle[subleadingPt_particle].Eta(), p4TParticle[subleadingPt_particle].Phi(), p4TParticle[subleadingPt_particle].M());
+    p4T_ZMFParticle[0].Boost(ttbarBoostVectorParticle);
+    p4T_ZMFParticle[1].Boost(ttbarBoostVectorParticle);
 
-	    float yStarExpParticle  = TMath::Exp(fabs(p4T_ZMFParticle[0].Rapidity() - p4T_ZMFParticle[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
-      xParticleAll.push_back(mJJGen);
-  		xParticleAll.push_back(ptJJGen);
-  		xParticleAll.push_back(yJJGen);
-  		xParticleAll.push_back((*genjetPt)[leadingPt]);
-  		xParticleAll.push_back((*genjetPt)[subleadingPt]);
-  		xParticleAll.push_back(fabs((*genjetY)[leadingPt]));
-  		xParticleAll.push_back(fabs((*genjetY)[subleadingPt]));
-		  xParticleAll.push_back(yStarExpParticle);
-		  xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[0].Theta())); //this is |cos(theta*)| leading
-		  xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[1].Theta())); //this is |cos(theta*)| subleading
+	  float yStarExpParticle  = TMath::Exp(fabs(p4T_ZMFParticle[0].Rapidity() - p4T_ZMFParticle[1].Rapidity())); //this is chi = e^(|y*|) , y* = 1/2(y1-y0)
+
+		xParticleAll.push_back(mJJGen);
+		xParticleAll.push_back(ptJJGen);
+		xParticleAll.push_back(yJJGen);
+		xParticleAll.push_back((*genjetPt)[leadingPt_particle]);
+		xParticleAll.push_back((*genjetPt)[subleadingPt_particle]);
+		xParticleAll.push_back(fabs((*genjetY)[leadingPt_particle]));
+		xParticleAll.push_back(fabs((*genjetY)[subleadingPt_particle]));
+    xParticleAll.push_back(yStarExpParticle);
+		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[0].Theta())); //this is |cos(theta*)| leading
+		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[1].Theta())); //this is |cos(theta*)| subleading
 
 	  //---------------------------end of MATCHING---------------------------------------------------------
 	  bool recoCuts, partonCuts, particleCuts;
-	  bool massCut = (*mass_)[0] > 120 && (*mass_)[0] < 220 && (*mass_)[1] > 120 && (*mass_)[1] < 220;
-	  bool tTaggerCut = (*jetTtag_)[0] > selMvaCut && (*jetTtag_)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*eta_)[0]) < 2.4 && fabs((*eta_)[1]) <2.4 && (*pt_)[0] > 400 && (*pt_)[1] > 400 && mJJ > mJJCut && massCut && nLeptons==0 && (*bit)[triggerFloat];
-	  partonCuts = fabs((*partonEta_)[0]) < 2.4 && fabs((*partonEta_)[1]) <2.4 && (*partonPt_)[0] > 400 && (*partonPt_)[1] > 400 && mTTbarParton > mJJCut;
-	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > mJJCut && nJetsGen >1 &&
+	  bool massCut = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+	  bool tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+	  recoCuts = nJets > 1 && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && mJJ > 1000 && massCut && nLeptons==0 && (*bit)[triggerFloat];
+	  partonCuts = fabs((*partonEta)[0]) < 2.4 && fabs((*partonEta)[1]) <2.4 && (*partonPt)[0] > 400 && (*partonPt)[1] > 400 && mTTbarParton > 1000;
+	  particleCuts = fabs((*genjetEta)[0]) < 2.4 && fabs((*genjetEta)[1]) <2.4 && (*genjetPt)[0] > 400 && (*genjetPt)[1] > 400 && mJJGen > 1000 && nJetsGen >1 &&
 	  				 (*genjetMassSoftDrop)[0] > 120 && (*genjetMassSoftDrop)[0] < 220 && (*genjetMassSoftDrop)[1] > 120 && (*genjetMassSoftDrop)[1] < 220;
-	  bool deepCSV = (((*jetBtagSub0DCSVbb_)[0] + (*jetBtagSub0DCSVbbb_)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[0] + (*jetBtagSub1DCSVbbb_)[0])> deepCSVFloat) &&
-					 (((*jetBtagSub0DCSVbb_)[1] + (*jetBtagSub0DCSVbbb_)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb_)[1] + (*jetBtagSub1DCSVbbb_)[1])> deepCSVFloat);
+	  bool deepCSV = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
+					 (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
 
       bool btagCut;
 	  btagCut = deepCSV;
@@ -486,8 +502,8 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 	      	}
 	      }
 
-	 }//----- end of is matched
-    }//---end the event for
+	 }//----- end of nJets>1
+  }//---end the event for
 
 
 	//--------------------------------------------START OF EVENT COUNTER LOOP -------------------------------------------------------------------
@@ -637,6 +653,56 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 
   }//end of Nvars
 
+  //for purity and stability
+  //purity: sum all over the columns and find binContent(i,j)/SumOfColumn(j) for all vars
+  //stability: sum all over the lines and find binContent/SumOfLine(i) for all vars
+  TH1F *purityParton[NVAR], *stabilityParton[NVAR];
+  TH1F *purityParticle[NVAR], *stabilityParticle[NVAR];
+
+  for(int ivar = 0; ivar<NVAR; ivar++)
+  {
+	int sizeBins = NBINS[ivar];
+  	float tempBND[NBINS[ivar]+1];
+    std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBND);
+  	purityParton[ivar] 	  = new TH1F(TString::Format("PurityParton_%s", varReco[ivar].Data()),TString::Format("PurityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
+  	stabilityParton[ivar] = new TH1F(TString::Format("StabilityParton_%s", varReco[ivar].Data()),TString::Format("StabilityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
+
+  	purityParticle[ivar] 	  = new TH1F(TString::Format("PurityParticle_%s", varReco[ivar].Data()),TString::Format("PurityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
+  	stabilityParticle[ivar] = new TH1F(TString::Format("StabilityParticle_%s", varReco[ivar].Data()),TString::Format("StabilityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
+  	//this is now for purity and stability for each variable
+	//first find sums
+	float bins[sizeBins+1];
+	for(int i=0; i<sizeBins+1; i++)
+	{
+	  	bins[i]=i+1;
+	}
+
+	float sumOfRowsParton[sizeBins], sumOfColsParton[sizeBins];
+	float sumOfRowsParticle[sizeBins], sumOfColsParticle[sizeBins];
+	for(int i=1; i<=sizeBins; i++)
+	{
+	    sumOfColsParton[i] = ((TH1D*)hPartonResponse[ivar]->ProjectionX())->GetBinContent(i);
+	    sumOfRowsParton[i] = ((TH1D*)hPartonResponse[ivar]->ProjectionY())->GetBinContent(i);
+
+		  sumOfColsParticle[i] = ((TH1D*)hParticleResponse[ivar]->ProjectionX())->GetBinContent(i);
+	    sumOfRowsParticle[i] = ((TH1D*)hParticleResponse[ivar]->ProjectionY())->GetBinContent(i);
+
+	    for(int j=1; j<=sizeBins; j++)
+	    {
+	    	if(i==j)
+	        {
+	            float initContentParton = hPartonResponse[ivar]->GetBinContent(i,j);
+	            purityParton[ivar]->SetBinContent(i,initContentParton/sumOfColsParton[i]);
+	            stabilityParton[ivar]->SetBinContent(i,initContentParton/sumOfRowsParton[i]);
+
+	            float initContentParticle = hParticleResponse[ivar]->GetBinContent(i,j);
+	            purityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfColsParticle[i]);
+	            stabilityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfRowsParticle[i]);
+	        }
+	    }
+	}
+
+  } // end of NVAR
 
   TFile *outFile = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_%s.root", year.Data(), ttbar_process.Data()), "RECREATE");
   //outFile->cd();
@@ -652,6 +718,11 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   	hPartonResponse[ivar]->Write(TString::Format("hPartonResponse_%s", varReco[ivar].Data()));
   	hParticleResponse[ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
 
+    stabilityParton[ivar]->Write(TString::Format("StabilityParton_%s",varReco[ivar].Data()));
+    purityParton[ivar]->Write(TString::Format("PurityParton_%s",varReco[ivar].Data()));
+
+    stabilityParticle[ivar]->Write(TString::Format("StabilityParticle_%s",varReco[ivar].Data()));
+    purityParticle[ivar]->Write(TString::Format("PurityParticle_%s",varReco[ivar].Data()));
   }//end of ivar
 
   outFile->Close();

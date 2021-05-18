@@ -26,7 +26,8 @@ void initFilesMapping()
 	eospath_nom.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Signal/"));
 	eospath_nom.insert(pair<TString,TString>("2016_postVFP","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/"));
 	eospath_nom.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/"));
-	eospath_nom.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/"));
+	//eospath_nom.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/"));
+	eospath_nom.insert(pair<TString,TString>("2018","/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/"));
 
 	map<TString, float> XSEC_ = {{"TT", 832.},
 															{"TTJets", 832.},
@@ -114,8 +115,8 @@ void initFilesMapping()
 	// Only for JES
 
 	map<TString, TString> eosNomTT16 = {{"TTToHadronic","TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-									   								{"TTToSemiLeptonic","TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-									   								{"TTTo2L2Nu","TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
+									   	{"TTToSemiLeptonic","TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									   	{"TTTo2L2Nu","TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
 	/*map<TString, TString> eosNomTT16_post = {{"Hadronic","TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 																			{"SemiLeptonic","TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 																			{"Dilepton","TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};*/
@@ -124,9 +125,13 @@ void initFilesMapping()
 	                               	   {"TTToSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
 	                               	   {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
 
-	map<TString, TString> eosNomTT18 = {{"TTToHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+	/* map<TString, TString> eosNomTT18 = {{"TTToHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
 	                               	   {"TTToSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-	                               	   {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}};
+	                               	   {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root"}}; */
+
+	map<TString, TString> eosNomTT18 = {{"TTToHadronic", "TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTToSemiLeptonic", "TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root"},
+	                               	   {"TTTo2L2Nu", "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root"}};
 
 	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2016_preVFP", eosNomTT16));
 	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2016_postVFP", eosNomTT16));

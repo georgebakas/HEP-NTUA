@@ -437,6 +437,7 @@ for(int f=0; f<fileNames.size(); f++)
     xRecoAll.push_back(yStarExp); //this is chi
     xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
     xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+    
     //now parton
 		TLorentzVector p4TParton[2], p4T_ZMFParton[2], p4TTbarParton;
     p4TParton[leadingPt_parton].SetPtEtaPhiM((*partonPt)[leadingPt_parton], (*partonEta)[leadingPt_parton], (*partonPhi)[leadingPt_parton], (*partonMass)[leadingPt_parton]);
@@ -774,6 +775,11 @@ for(int f=0; f<fileNames.size(); f++)
   	hPartonResponse[0][ivar]->Write(TString::Format("hPartonResponse_%s", varReco[ivar].Data()));
   	hParticleResponse[0][ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
 
+    stabilityParton[ivar]->Write(TString::Format("StabilityParton_%s",varReco[ivar].Data()));
+    purityParton[ivar]->Write(TString::Format("PurityParton_%s",varReco[ivar].Data()));
+
+    stabilityParticle[ivar]->Write(TString::Format("StabilityParticle_%s",varReco[ivar].Data()));
+    purityParticle[ivar]->Write(TString::Format("PurityParticle_%s",varReco[ivar].Data()));
   }//end of ivar
   //myFile.close();
   outFile->Close();

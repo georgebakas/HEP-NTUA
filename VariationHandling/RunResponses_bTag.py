@@ -8,17 +8,23 @@ print(f'Argument list: {str(sys.argv)}')
 year = sys.argv[1]
 allFiles = []
 
-all_files = {"2016":['TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8.root',
-                     'TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8.root',
-                     'TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8.root'],
-             "2017":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root'],
+all_files = {"2016_preVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root'],
+             "2016_postVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root'],
+             "2017":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_19UL.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL.root'],
              "2018":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
                      'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
                      'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root']}
 
-eospath = '/eos/cms/store/user/gbakas/ttbar/topTagger/mc-{}/Signal/'.format(year)
+if year!='2018':
+        eospath = '/eos/cms/store/user/gbakas/ttbar/topTagger/ul-{}/Signal/'.format(year)
+else:
+        eospath = '/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/'
 
 variations = ['up', 'down']
 
@@ -30,4 +36,5 @@ for var in variations:
         print(split_file_underscore[0])
         print(ifile)
         os.system(f'root -l -b -q \'ResponseMatrices_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\")\'')
-        #os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\")\'')
+        #break
+    #break
