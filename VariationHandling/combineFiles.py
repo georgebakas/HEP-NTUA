@@ -23,8 +23,8 @@ mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
 
 for mJJCut in mJJCuts:
     for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo{}_{}_TTToHadronic*.root'.format(year,weightType,tof,mJJCut), recursive=True)):
-    #for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*.root'.format(year,weightType,tof), recursive=True)): #for responses
-        #print('file: {}'.format(file_name))
+    #for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/TTToHadronic*.root'.format(year,weightType,tof), recursive=True)): #for responses
+        print('file: {}'.format(file_name))
         split_file_name = file_name.split('/')
         split_file_underscore = split_file_name[-1].split('_')
 
@@ -52,7 +52,7 @@ for mJJCut in mJJCuts:
             weight_sufix = dot_split[0]
             print(weight_sufix)
             os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
-        
+
         elif weightType == 'JES':
             print(ifile, file_name)
             dot_split = split_file_underscore[3].split('.')

@@ -1,0 +1,42 @@
+000 (109040.000.000) 06/02 16:43:17 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (109040.000.000) 06/02 17:14:08 Entered queue to transfer input files
+	Transferring to host: <128.142.74.80:9618?addrs=128.142.74.80-9618+[2001-1458-301-75--100-3e3]-9618&alias=b7s11n4315.cern.ch&noUDP&sock=slot1_1_5065_8027_29593>
+...
+040 (109040.000.000) 06/02 17:14:26 Started transferring input files
+	Seconds spent in queue: 18
+...
+001 (109040.000.000) 06/02 17:14:26 Job executing on host: <128.142.74.80:9618?addrs=128.142.74.80-9618+[2001-1458-301-75--100-3e3]-9618&alias=b7s11n4315.cern.ch&noUDP&sock=startd_4114_70b6>
+...
+040 (109040.000.000) 06/02 17:14:26 Finished transferring input files
+...
+006 (109040.000.000) 06/02 17:14:35 Image size of job updated: 66136
+	65  -  MemoryUsage of job (MB)
+	66136  -  ResidentSetSize of job (KB)
+...
+006 (109040.000.000) 06/02 17:19:36 Image size of job updated: 790792
+	111  -  MemoryUsage of job (MB)
+	113240  -  ResidentSetSize of job (KB)
+...
+040 (109040.000.000) 06/02 17:19:37 Started transferring output files
+	Seconds spent in queue: 329
+...
+040 (109040.000.000) 06/02 17:19:37 Finished transferring output files
+...
+005 (109040.000.000) 06/02 17:19:37 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:57, Sys 0 00:00:24  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:57, Sys 0 00:00:24  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	37144  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	37144  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :  4234451       20    271645 
+	   Memory (MB)          :      111     2000      2000 
+
+	Job terminated of its own accord at 2021-06-02T15:19:37Z.
+...

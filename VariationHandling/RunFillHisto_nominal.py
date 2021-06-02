@@ -8,18 +8,18 @@ print(f'Argument list: {str(sys.argv)}')
 year = sys.argv[1]
 allFiles = []
 
-all_files = {"2016_preVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root '],
-             "2016_postVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root'],
-             "2017":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_19UL.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_19UL.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_19UL.root'],
-             "2018":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root']}
+all_files = {"2016_preVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root '],
+             "2016_postVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root'],
+             "2017":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root'],
+             "2018":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root']}
 
 eospath = '/eos/cms/store/user/gbakas/ttbar/topTagger/ul-{}/Signal/'.format(year)
 mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
