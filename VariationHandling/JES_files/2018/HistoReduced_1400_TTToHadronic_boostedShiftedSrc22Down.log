@@ -1,0 +1,40 @@
+000 (116156.000.000) 06/04 08:58:51 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (116156.000.000) 06/04 09:05:50 Started transferring input files
+	Transferring to host: <188.184.211.101:9618?addrs=188.184.211.101-9618+[2001-1458-301-10b--100-12e]-9618&alias=b7g23n6163.cern.ch&noUDP&sock=slot1_11_5019_16e5_41686>
+...
+001 (116156.000.000) 06/04 09:05:50 Job executing on host: <188.184.211.101:9618?addrs=188.184.211.101-9618+[2001-1458-301-10b--100-12e]-9618&alias=b7g23n6163.cern.ch&noUDP&sock=startd_4065_d492>
+...
+040 (116156.000.000) 06/04 09:05:50 Finished transferring input files
+...
+006 (116156.000.000) 06/04 09:05:59 Image size of job updated: 391176
+	5  -  MemoryUsage of job (MB)
+	5064  -  ResidentSetSize of job (KB)
+...
+006 (116156.000.000) 06/04 09:11:00 Image size of job updated: 790824
+	66  -  MemoryUsage of job (MB)
+	67484  -  ResidentSetSize of job (KB)
+...
+040 (116156.000.000) 06/04 14:00:05 Started transferring output files
+...
+040 (116156.000.000) 06/04 14:00:05 Finished transferring output files
+...
+005 (116156.000.000) 06/04 14:00:05 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:51, Sys 0 00:00:51  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:51, Sys 0 00:00:51  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	60961  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	60961  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.01        1         1 
+	   Disk (KB)            : 3711803          20    363717 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T12:00:05Z.
+...
+000 (123297.000.000) 06/08 10:41:22 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...

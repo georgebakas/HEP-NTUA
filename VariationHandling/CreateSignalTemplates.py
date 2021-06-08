@@ -14,8 +14,16 @@ allFiles = []
 ps_weights = {2:"isrRedHi", 3:"fsrRedHi", 4:"isrRedLo", 5:"fsrRedLo", 6:"isrDefHi", 7:"fsrDefHi",
               8:"isrDefLo", 9:"fsrDefLo", 10:"isrConHi", 11:"fsrConHi", 12:"isrConLo", 13:"fsrConLo"}
 
-for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo_TTToHadronic*.root'.format(year,weightType), recursive=True)):
-    if weightType != 'SystematicsFiles':
+for ifile, file_name in enumerate(glob.iglob('{}/{}/combined/Histo_1000_*.root'.format(year,weightType), recursive=True)):
+    print(ifile)
+    print(weightType)
+    print('----------------')
+    
+
+    if weightType == 'Nominal':
+        weight_sufix = ""
+    
+    elif weightType != 'SystematicsFiles':
         split_file_name = file_name.split('/')
         split_file_underscore = split_file_name[-1].split('_')
 
@@ -25,10 +33,6 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo_TTToHadronic*.root'.fo
         dot_split = split_file_underscore[-1].split('.')
         weight_sufix = dot_split[0]
         print(weight_sufix)
-
-    elif weightType == 'Nominal':
-        weight_sufix = ""
-
     else:
         #TT, and TTJets files are handled below
         split_file_name = file_name.split('/')
@@ -43,6 +47,8 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo_TTToHadronic*.root'.fo
         print(weight_sufix)
 
     os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
+
+exit()
 
 combined_files = ['TT','TTJets']
 #check for files of type TT_Tune

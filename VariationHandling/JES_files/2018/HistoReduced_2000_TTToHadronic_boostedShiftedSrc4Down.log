@@ -1,0 +1,72 @@
+000 (116395.000.000) 06/04 09:02:22 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (116395.000.000) 06/04 09:12:41 Started transferring input files
+	Transferring to host: <128.142.87.54:9618?addrs=128.142.87.54-9618+[2001-1458-301-f6--100-f4]-9618&alias=b7s14n0054.cern.ch&noUDP&sock=slot1_4_14362_1401_97953>
+...
+001 (116395.000.000) 06/04 09:12:42 Job executing on host: <128.142.87.54:9618?addrs=128.142.87.54-9618+[2001-1458-301-f6--100-f4]-9618&alias=b7s14n0054.cern.ch&noUDP&sock=startd_16652_7725>
+...
+040 (116395.000.000) 06/04 09:12:42 Finished transferring input files
+...
+006 (116395.000.000) 06/04 09:12:50 Image size of job updated: 395412
+	7  -  MemoryUsage of job (MB)
+	6256  -  ResidentSetSize of job (KB)
+...
+006 (116395.000.000) 06/04 09:17:50 Image size of job updated: 790820
+	66  -  MemoryUsage of job (MB)
+	67500  -  ResidentSetSize of job (KB)
+...
+040 (116395.000.000) 06/04 10:41:29 Started transferring output files
+...
+040 (116395.000.000) 06/04 10:41:29 Finished transferring output files
+...
+005 (116395.000.000) 06/04 10:41:29 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:44, Sys 0 00:00:22  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:44, Sys 0 00:00:22  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	61019  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	61019  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.01        1         1 
+	   Disk (KB)            : 3707216          20    276572 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T08:41:29Z.
+...
+000 (123540.000.000) 06/08 10:45:15 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (123540.000.000) 06/08 11:18:34 Entered queue to transfer input files
+	Transferring to host: <188.184.213.94:9618?addrs=188.184.213.94-9618+[2001-1458-301-10c--100-16f]-9618&alias=b7g24n0605.cern.ch&noUDP&sock=slot1_11_4310_88e8_38309>
+...
+040 (123540.000.000) 06/08 11:53:57 Started transferring input files
+	Seconds spent in queue: 2123
+...
+040 (123540.000.000) 06/08 11:53:57 Finished transferring input files
+...
+001 (123540.000.000) 06/08 11:53:57 Job executing on host: <188.184.213.94:9618?addrs=188.184.213.94-9618+[2001-1458-301-10c--100-16f]-9618&alias=b7g24n0605.cern.ch&noUDP&sock=startd_3606_fe9a>
+...
+006 (123540.000.000) 06/08 11:54:06 Image size of job updated: 1748
+	2  -  MemoryUsage of job (MB)
+	1748  -  ResidentSetSize of job (KB)
+...
+006 (123540.000.000) 06/08 11:54:52 Image size of job updated: 461588
+	2  -  MemoryUsage of job (MB)
+	1748  -  ResidentSetSize of job (KB)
+...
+040 (123540.000.000) 06/08 11:54:52 Started transferring output files
+	Seconds spent in queue: 2178
+...
+040 (123540.000.000) 06/08 11:54:52 Finished transferring output files
+...
+007 (123540.000.000) 06/08 11:54:52 Shadow exception!
+	Error from slot1_11@b7g24n0605.cern.ch: STARTER at 188.184.213.94 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_15299/HistoReduced_2000_TTToHadronic_boostedShiftedSrc4Down.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.213.94:42514>
+	2159  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+...
+012 (123540.000.000) 06/08 11:54:52 Job was held.
+	Error from slot1_11@b7g24n0605.cern.ch: STARTER at 188.184.213.94 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_15299/HistoReduced_2000_TTToHadronic_boostedShiftedSrc4Down.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.213.94:42514>
+	Code 13 Subcode 2
+...

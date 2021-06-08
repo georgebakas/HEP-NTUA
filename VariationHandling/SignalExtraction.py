@@ -17,5 +17,5 @@ ps_weights = {2:"isrRedHi", 3:"fsrRedHi", 4:"isrRedLo", 5:"fsrRedLo", 6:"isrDefH
 for ifile, file_name in enumerate(glob.iglob('{}/{}/MassFitResults_*.root'.format(year,weightType), recursive=True)):
 
     print(ifile, file_name)
-    split_file_name = file_name.split('/')
+    split_file_name = file_name.split('/')  
     os.system(f'root -l -b -q \'SignalExtraction_UnequalBins.cpp(\"{year}\",\"{weightType}\",\"{split_file_name[-1]}\")\'')

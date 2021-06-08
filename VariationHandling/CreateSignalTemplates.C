@@ -20,14 +20,17 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   if(dir.EqualTo("PDFWeights")) tempFileName = "_pdf_"+inputFile;
   else if (dir.EqualTo("ScaleWeights")) tempFileName = "_scale_"+inputFile;
   else if (dir.EqualTo("Nominal")) tempFileName = "";
+  else if (dir.EqualTo("bTagVariation")) tempFileName = "_bTagVariation_"+inputFile;
+  else if (dir.EqualTo("PSWeights")) tempFileName = "_PSWeights_"+inputFile;
+  else if (dir.EqualTo("JES")) tempFileName = "_JES_"+inputFile;
   else tempFileName = "_"+inputFile;
 
 
   TFile *inf_had, *inf_sem, *inf_dil;
 
-  inf_had = TFile::Open(TString::Format("%s/%s/Histo_TTToHadronic%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal Hadronic
-  inf_sem = TFile::Open(TString::Format("%s/%s/Histo_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal SemiLeptonic
-  inf_dil = TFile::Open(TString::Format("%s/%s/Histo_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal 2L2Nu
+  inf_had = TFile::Open(TString::Format("%s/%s/combined/Histo_1000_TT%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal Hadronic
+  //inf_sem = TFile::Open(TString::Format("%s/%s/Histo_1000_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal SemiLeptonic
+  //inf_dil = TFile::Open(TString::Format("%s/%s/Histo_1000_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal 2L2Nu
 
   //histograms to be added
   TH1F *h_had, *h_sem, *h_dil;
@@ -52,12 +55,12 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   for(int icat=0;icat<3;icat++) {
 
     if(icat ==1) continue;
-    h_had = (TH1F*)inf_had->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
-    h_sem = (TH1F*)inf_sem->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
-    h_dil = (TH1F*)inf_dil->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
+    TH1F *hMC_yield = (TH1F*)inf_had->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
+    //h_sem = (TH1F*)inf_sem->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
+    //h_dil = (TH1F*)inf_dil->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
 
 
-    TH1F *hMC_yield = addHistograms(h_had, h_sem, h_dil);
+    //TH1F *hMC_yield = addHistograms(h_had, h_sem, h_dil);
     TString CAT = TString::Format("%dbtag",icat);
     TAG = CUT+"_"+CAT;
     cout<<TAG<<endl;

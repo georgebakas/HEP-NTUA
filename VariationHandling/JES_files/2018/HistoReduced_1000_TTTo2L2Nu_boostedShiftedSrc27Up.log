@@ -1,0 +1,92 @@
+000 (115525.000.000) 06/04 08:50:51 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (115525.000.000) 06/04 08:57:37 Started transferring input files
+	Transferring to host: <188.184.139.134:9618?addrs=188.184.139.134-9618+[2001-1458-301-45--100-18d]-9618&alias=b7g42n0663.cern.ch&noUDP&sock=slot1_7_12098_e2a5_84928>
+...
+040 (115525.000.000) 06/04 08:57:37 Finished transferring input files
+...
+001 (115525.000.000) 06/04 08:57:37 Job executing on host: <188.184.139.134:9618?addrs=188.184.139.134-9618+[2001-1458-301-45--100-18d]-9618&alias=b7g42n0663.cern.ch&noUDP&sock=startd_5691_2191>
+...
+006 (115525.000.000) 06/04 08:57:43 Image size of job updated: 17800
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+040 (115525.000.000) 06/04 08:57:43 Started transferring output files
+...
+040 (115525.000.000) 06/04 08:57:43 Finished transferring output files
+...
+007 (115525.000.000) 06/04 08:57:43 Shadow exception!
+	Error from slot1_7@b7g42n0663.cern.ch: STARTER at 188.184.139.134 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_3344/HistoReduced_1000_TTTo2L2Nu_boostedShiftedSrc27Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.139.134:35001>
+	2646  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+...
+012 (115525.000.000) 06/04 08:57:43 Job was held.
+	Error from slot1_7@b7g42n0663.cern.ch: STARTER at 188.184.139.134 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_3344/HistoReduced_1000_TTTo2L2Nu_boostedShiftedSrc27Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.139.134:35001>
+	Code 13 Subcode 2
+...
+013 (115525.000.000) 06/04 14:24:58 Job was released.
+	via condor_release (by user gbakas)
+...
+040 (115525.000.000) 06/04 15:56:20 Started transferring input files
+	Transferring to host: <188.184.213.217:9618?addrs=188.184.213.217-9618+[2001-1458-301-10c--100-1ce]-9618&alias=b7g24n0396.cern.ch&noUDP&sock=slot1_10_3075_5d96_42303>
+...
+001 (115525.000.000) 06/04 15:56:20 Job executing on host: <188.184.213.217:9618?addrs=188.184.213.217-9618+[2001-1458-301-10c--100-1ce]-9618&alias=b7g24n0396.cern.ch&noUDP&sock=startd_2558_2759>
+...
+040 (115525.000.000) 06/04 15:56:20 Finished transferring input files
+...
+040 (115525.000.000) 06/04 15:56:27 Started transferring output files
+...
+040 (115525.000.000) 06/04 15:56:27 Finished transferring output files
+...
+007 (115525.000.000) 06/04 15:56:28 Shadow exception!
+	Error from slot1_10@b7g24n0396.cern.ch: STARTER at 188.184.213.217 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_2238/HistoReduced_1000_TTTo2L2Nu_boostedShiftedSrc27Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.213.217:33711>
+	2114  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+...
+012 (115525.000.000) 06/04 15:56:29 Job was held.
+	Error from slot1_10@b7g24n0396.cern.ch: STARTER at 188.184.213.217 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_2238/HistoReduced_1000_TTTo2L2Nu_boostedShiftedSrc27Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.213.217:33711>
+	Code 13 Subcode 2
+...
+009 (115525.000.000) 06/05 16:13:43 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2021-06-04T13:56:27Z (using method 0: OF_ITS_OWN_ACCORD).
+...
+000 (122658.000.000) 06/08 10:29:47 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (122658.000.000) 06/08 10:42:50 Started transferring input files
+	Transferring to host: <188.184.213.101:9618?addrs=188.184.213.101-9618+[2001-1458-301-10c--100-14e]-9618&alias=b7g24n0608.cern.ch&noUDP&sock=slot1_9_3069_2356_32251>
+...
+001 (122658.000.000) 06/08 10:42:50 Job executing on host: <188.184.213.101:9618?addrs=188.184.213.101-9618+[2001-1458-301-10c--100-14e]-9618&alias=b7g24n0608.cern.ch&noUDP&sock=startd_2831_68b4>
+...
+040 (122658.000.000) 06/08 10:42:50 Finished transferring input files
+...
+006 (122658.000.000) 06/08 10:42:58 Image size of job updated: 67772
+	67  -  MemoryUsage of job (MB)
+	67772  -  ResidentSetSize of job (KB)
+...
+006 (122658.000.000) 06/08 10:43:37 Image size of job updated: 791428
+	67  -  MemoryUsage of job (MB)
+	67772  -  ResidentSetSize of job (KB)
+...
+040 (122658.000.000) 06/08 10:43:37 Started transferring output files
+...
+040 (122658.000.000) 06/08 10:43:37 Finished transferring output files
+...
+005 (122658.000.000) 06/08 10:43:37 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:14, Sys 0 00:00:03  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:14, Sys 0 00:00:03  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	20227  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	20227  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :   540968       20    291750 
+	   Memory (MB)          :       67     2000      2000 
+
+	Job terminated of its own accord at 2021-06-08T08:43:37Z.
+...

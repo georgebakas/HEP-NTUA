@@ -1,0 +1,78 @@
+000 (112262.000.000) 06/03 12:46:05 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (112262.000.000) 06/03 13:14:37 Started transferring input files
+	Transferring to host: <188.184.138.104:9618?addrs=188.184.138.104-9618+[2001-1458-301-45--100-3f]-9618&alias=b7g42n0204.cern.ch&noUDP&sock=slot1_12_14571_566a_82016>
+...
+001 (112262.000.000) 06/03 13:14:37 Job executing on host: <188.184.138.104:9618?addrs=188.184.138.104-9618+[2001-1458-301-45--100-3f]-9618&alias=b7g42n0204.cern.ch&noUDP&sock=startd_5590_da80>
+...
+040 (112262.000.000) 06/03 13:14:37 Finished transferring input files
+...
+006 (112262.000.000) 06/03 13:14:46 Image size of job updated: 18276
+	18  -  MemoryUsage of job (MB)
+	18200  -  ResidentSetSize of job (KB)
+...
+006 (112262.000.000) 06/03 13:19:46 Image size of job updated: 790820
+	66  -  MemoryUsage of job (MB)
+	67492  -  ResidentSetSize of job (KB)
+...
+040 (112262.000.000) 06/03 14:27:41 Started transferring output files
+...
+040 (112262.000.000) 06/03 14:27:42 Finished transferring output files
+...
+005 (112262.000.000) 06/03 14:27:42 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:56, Sys 0 00:00:26  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:56, Sys 0 00:00:26  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	67097  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	67097  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.01        1         1 
+	   Disk (KB)            : 4241955          20    287966 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-03T12:27:41Z.
+...
+000 (115867.000.000) 06/04 08:55:02 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (115867.000.000) 06/04 08:59:49 Started transferring input files
+	Transferring to host: <188.184.198.105:9618?addrs=188.184.198.105-9618+[2001-1458-301-c1--100-424]-9618&alias=b7g52n7043.cern.ch&noUDP&sock=slot1_12_27078_a686_87301>
+...
+001 (115867.000.000) 06/04 08:59:49 Job executing on host: <188.184.198.105:9618?addrs=188.184.198.105-9618+[2001-1458-301-c1--100-424]-9618&alias=b7g52n7043.cern.ch&noUDP&sock=startd_19015_4970>
+...
+040 (115867.000.000) 06/04 08:59:49 Finished transferring input files
+...
+006 (115867.000.000) 06/04 08:59:58 Image size of job updated: 624804
+	11  -  MemoryUsage of job (MB)
+	11008  -  ResidentSetSize of job (KB)
+...
+006 (115867.000.000) 06/04 09:04:59 Image size of job updated: 790824
+	66  -  MemoryUsage of job (MB)
+	67500  -  ResidentSetSize of job (KB)
+...
+040 (115867.000.000) 06/04 13:48:38 Started transferring output files
+...
+040 (115867.000.000) 06/04 13:48:38 Finished transferring output files
+...
+005 (115867.000.000) 06/04 13:48:39 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:16, Sys 0 00:00:24  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:16, Sys 0 00:00:24  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	60972  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	60972  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.99        1         1 
+	   Disk (KB)            : 3711639          20    285038 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T11:48:38Z.
+...
+000 (123220.000.000) 06/08 10:39:38 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...

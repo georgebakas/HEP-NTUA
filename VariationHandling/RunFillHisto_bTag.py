@@ -34,7 +34,7 @@ for var in variations:
         print(ifile)
         for mjj_cut in mJJCuts:
             print('Current mjj cut:', mjj_cut)
-            os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
-            #os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
+            #os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
+            os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
        #break
     #break

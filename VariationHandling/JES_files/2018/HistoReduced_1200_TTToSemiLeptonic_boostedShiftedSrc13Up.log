@@ -1,0 +1,84 @@
+000 (116679.000.000) 06/04 09:06:01 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (116679.000.000) 06/04 09:34:25 Started transferring input files
+	Transferring to host: <128.142.161.93:9618?addrs=128.142.161.93-9618&alias=b7g03p8722.cern.ch&noUDP&sock=slot1_56_3546_3a49_44327>
+...
+040 (116679.000.000) 06/04 09:34:25 Finished transferring input files
+...
+001 (116679.000.000) 06/04 09:34:25 Job executing on host: <128.142.161.93:9618?addrs=128.142.161.93-9618&alias=b7g03p8722.cern.ch&noUDP&sock=startd_2825_4b22>
+...
+006 (116679.000.000) 06/04 09:34:33 Image size of job updated: 7528
+	8  -  MemoryUsage of job (MB)
+	7528  -  ResidentSetSize of job (KB)
+...
+006 (116679.000.000) 06/04 09:39:33 Image size of job updated: 790820
+	66  -  MemoryUsage of job (MB)
+	67508  -  ResidentSetSize of job (KB)
+...
+040 (116679.000.000) 06/04 10:43:58 Started transferring output files
+...
+040 (116679.000.000) 06/04 10:43:58 Finished transferring output files
+...
+005 (116679.000.000) 06/04 10:43:58 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:23, Sys 0 00:00:20  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:23, Sys 0 00:00:20  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	50947  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	50947  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.01        1         1 
+	   Disk (KB)            : 2758836          20   1374982 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T08:43:58Z.
+...
+000 (123820.000.000) 06/08 10:49:27 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (123820.000.000) 06/08 11:20:45 Entered queue to transfer input files
+	Transferring to host: <188.184.254.25:9618?addrs=188.184.254.25-9618+[2001-1458-301-8--100-6]-9618&alias=b7g42n0053.cern.ch&noUDP&sock=slot1_2_3168_e47a_38170>
+...
+040 (123820.000.000) 06/08 11:53:58 Started transferring input files
+	Seconds spent in queue: 1993
+...
+040 (123820.000.000) 06/08 11:53:58 Finished transferring input files
+...
+001 (123820.000.000) 06/08 11:53:58 Job executing on host: <188.184.254.25:9618?addrs=188.184.254.25-9618+[2001-1458-301-8--100-6]-9618&alias=b7g42n0053.cern.ch&noUDP&sock=startd_2740_fd96>
+...
+006 (123820.000.000) 06/08 11:54:07 Image size of job updated: 256264
+	3  -  MemoryUsage of job (MB)
+	2096  -  ResidentSetSize of job (KB)
+...
+006 (123820.000.000) 06/08 11:59:08 Image size of job updated: 791456
+	67  -  MemoryUsage of job (MB)
+	67772  -  ResidentSetSize of job (KB)
+...
+006 (123820.000.000) 06/08 13:14:18 Image size of job updated: 791456
+	90  -  MemoryUsage of job (MB)
+	92144  -  ResidentSetSize of job (KB)
+...
+040 (123820.000.000) 06/08 13:15:36 Started transferring output files
+	Seconds spent in queue: 6891
+...
+040 (123820.000.000) 06/08 13:15:36 Finished transferring output files
+...
+005 (123820.000.000) 06/08 13:15:36 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:19, Sys 0 00:00:16  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:19, Sys 0 00:00:16  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	50917  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	50917  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.00        1         1 
+	   Disk (KB)            : 2758835          20    306477 
+	   Memory (MB)          :      90        2000      2000 
+
+	Job terminated of its own accord at 2021-06-08T11:15:36Z.
+...

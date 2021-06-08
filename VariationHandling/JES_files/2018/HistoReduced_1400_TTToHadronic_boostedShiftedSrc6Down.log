@@ -1,0 +1,44 @@
+000 (116438.000.000) 06/04 09:02:54 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (116438.000.000) 06/04 09:14:25 Started transferring input files
+	Transferring to host: <128.142.161.93:9618?addrs=128.142.161.93-9618&alias=b7g03p8722.cern.ch&noUDP&sock=slot1_4_3546_3a49_44312>
+...
+040 (116438.000.000) 06/04 09:14:25 Finished transferring input files
+...
+001 (116438.000.000) 06/04 09:14:25 Job executing on host: <128.142.161.93:9618?addrs=128.142.161.93-9618&alias=b7g03p8722.cern.ch&noUDP&sock=startd_2825_4b22>
+...
+006 (116438.000.000) 06/04 09:14:33 Image size of job updated: 624800
+	6  -  MemoryUsage of job (MB)
+	5232  -  ResidentSetSize of job (KB)
+...
+006 (116438.000.000) 06/04 09:19:34 Image size of job updated: 790820
+	35  -  MemoryUsage of job (MB)
+	35760  -  ResidentSetSize of job (KB)
+...
+006 (116438.000.000) 06/04 09:24:35 Image size of job updated: 790820
+	66  -  MemoryUsage of job (MB)
+	67504  -  ResidentSetSize of job (KB)
+...
+040 (116438.000.000) 06/04 14:04:21 Started transferring output files
+...
+040 (116438.000.000) 06/04 14:04:21 Finished transferring output files
+...
+005 (116438.000.000) 06/04 14:04:22 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:30, Sys 0 00:00:33  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:30, Sys 0 00:00:33  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	60860  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	60860  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.00        1         1 
+	   Disk (KB)            : 3711856          20   1341445 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T12:04:21Z.
+...
+000 (123581.000.000) 06/08 10:45:59 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...

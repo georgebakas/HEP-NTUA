@@ -1,0 +1,78 @@
+000 (112265.000.000) 06/03 12:46:09 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (112265.000.000) 06/03 13:14:40 Started transferring input files
+	Transferring to host: <188.184.213.38:9618?addrs=188.184.213.38-9618+[2001-1458-301-10c--100-144]-9618&alias=b7g24n0549.cern.ch&noUDP&sock=slot1_9_3226_c23c_40656>
+...
+001 (112265.000.000) 06/03 13:14:40 Job executing on host: <188.184.213.38:9618?addrs=188.184.213.38-9618+[2001-1458-301-10c--100-144]-9618&alias=b7g24n0549.cern.ch&noUDP&sock=startd_2840_950e>
+...
+040 (112265.000.000) 06/03 13:14:40 Finished transferring input files
+...
+006 (112265.000.000) 06/03 13:14:48 Image size of job updated: 624804
+	14  -  MemoryUsage of job (MB)
+	14260  -  ResidentSetSize of job (KB)
+...
+006 (112265.000.000) 06/03 13:19:48 Image size of job updated: 790820
+	66  -  MemoryUsage of job (MB)
+	67492  -  ResidentSetSize of job (KB)
+...
+040 (112265.000.000) 06/03 14:28:53 Started transferring output files
+...
+040 (112265.000.000) 06/03 14:28:53 Finished transferring output files
+...
+005 (112265.000.000) 06/03 14:28:54 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:56, Sys 0 00:00:32  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:56, Sys 0 00:00:32  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	67077  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	67077  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.96        1         1 
+	   Disk (KB)            : 4241955          20    296102 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-03T12:28:53Z.
+...
+000 (115871.000.000) 06/04 08:55:07 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (115871.000.000) 06/04 08:59:50 Started transferring input files
+	Transferring to host: <188.184.198.151:9618?addrs=188.184.198.151-9618+[2001-1458-301-c1--100-a0]-9618&alias=b7g52n5484.cern.ch&noUDP&sock=slot1_15_7410_c3e6_34148>
+...
+040 (115871.000.000) 06/04 08:59:50 Finished transferring input files
+...
+001 (115871.000.000) 06/04 08:59:50 Job executing on host: <188.184.198.151:9618?addrs=188.184.198.151-9618+[2001-1458-301-c1--100-a0]-9618&alias=b7g52n5484.cern.ch&noUDP&sock=startd_6460_99e5>
+...
+006 (115871.000.000) 06/04 08:59:59 Image size of job updated: 790744
+	42  -  MemoryUsage of job (MB)
+	42840  -  ResidentSetSize of job (KB)
+...
+006 (115871.000.000) 06/04 09:05:00 Image size of job updated: 790808
+	66  -  MemoryUsage of job (MB)
+	67504  -  ResidentSetSize of job (KB)
+...
+040 (115871.000.000) 06/04 13:38:59 Started transferring output files
+...
+040 (115871.000.000) 06/04 13:38:59 Finished transferring output files
+...
+005 (115871.000.000) 06/04 13:39:00 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:56, Sys 0 00:00:23  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:56, Sys 0 00:00:23  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	60984  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	60984  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.00        1         1 
+	   Disk (KB)            : 3711639          20    277880 
+	   Memory (MB)          :      66        2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T11:38:59Z.
+...
+000 (123222.000.000) 06/08 10:39:41 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...

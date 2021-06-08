@@ -1,0 +1,92 @@
+000 (115664.000.000) 06/04 08:52:22 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (115664.000.000) 06/04 08:58:31 Started transferring input files
+	Transferring to host: <128.142.74.170:9618?addrs=128.142.74.170-9618+[2001-1458-301-75--100-19c]-9618&alias=b7s11n3763.cern.ch&noUDP&sock=slot1_11_5695_6481_34381>
+...
+001 (115664.000.000) 06/04 08:58:31 Job executing on host: <128.142.74.170:9618?addrs=128.142.74.170-9618+[2001-1458-301-75--100-19c]-9618&alias=b7s11n3763.cern.ch&noUDP&sock=startd_4554_3e62>
+...
+040 (115664.000.000) 06/04 08:58:31 Finished transferring input files
+...
+006 (115664.000.000) 06/04 08:58:36 Image size of job updated: 1362588
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+040 (115664.000.000) 06/04 08:58:36 Started transferring output files
+...
+040 (115664.000.000) 06/04 08:58:36 Finished transferring output files
+...
+007 (115664.000.000) 06/04 08:58:36 Shadow exception!
+	Error from slot1_11@b7s11n3763.cern.ch: STARTER at 128.142.74.170 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_25994/HistoReduced_1800_TTTo2L2Nu_boostedShiftedSrc5Down.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <128.142.74.170:40657>
+	2651  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+...
+012 (115664.000.000) 06/04 08:58:36 Job was held.
+	Error from slot1_11@b7s11n3763.cern.ch: STARTER at 128.142.74.170 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_25994/HistoReduced_1800_TTTo2L2Nu_boostedShiftedSrc5Down.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <128.142.74.170:40657>
+	Code 13 Subcode 2
+...
+013 (115664.000.000) 06/04 14:24:59 Job was released.
+	via condor_release (by user gbakas)
+...
+040 (115664.000.000) 06/04 15:57:39 Started transferring input files
+	Transferring to host: <188.184.190.149:9618?addrs=188.184.190.149-9618+[2001-1458-301-4b--100-9a]-9618&alias=b7g42n0322.cern.ch&noUDP&sock=slot1_5_19932_a5a4_89447>
+...
+001 (115664.000.000) 06/04 15:57:39 Job executing on host: <188.184.190.149:9618?addrs=188.184.190.149-9618+[2001-1458-301-4b--100-9a]-9618&alias=b7g42n0322.cern.ch&noUDP&sock=startd_5191_2c36>
+...
+040 (115664.000.000) 06/04 15:57:39 Finished transferring input files
+...
+040 (115664.000.000) 06/04 15:57:47 Started transferring output files
+...
+040 (115664.000.000) 06/04 15:57:47 Finished transferring output files
+...
+007 (115664.000.000) 06/04 15:57:47 Shadow exception!
+	Error from slot1_5@b7g42n0322.cern.ch: STARTER at 188.184.190.149 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_4044/HistoReduced_1800_TTTo2L2Nu_boostedShiftedSrc5Down.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.190.149:36691>
+	2118  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+...
+012 (115664.000.000) 06/04 15:57:47 Job was held.
+	Error from slot1_5@b7g42n0322.cern.ch: STARTER at 188.184.190.149 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_4044/HistoReduced_1800_TTTo2L2Nu_boostedShiftedSrc5Down.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.190.149:36691>
+	Code 13 Subcode 2
+...
+009 (115664.000.000) 06/05 16:13:48 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2021-06-04T13:57:47Z (using method 0: OF_ITS_OWN_ACCORD).
+...
+000 (122793.000.000) 06/08 10:31:45 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (122793.000.000) 06/08 10:46:08 Started transferring input files
+	Transferring to host: <128.142.161.91:9618?addrs=128.142.161.91-9618+[2001-1458-301-b8--100-19]-9618&alias=b7g03p4651.cern.ch&noUDP&sock=slot1_27_253928_ff4f_113613>
+...
+001 (122793.000.000) 06/08 10:46:08 Job executing on host: <128.142.161.91:9618?addrs=128.142.161.91-9618+[2001-1458-301-b8--100-19]-9618&alias=b7g03p4651.cern.ch&noUDP&sock=startd_70632_416c>
+...
+040 (122793.000.000) 06/08 10:46:08 Finished transferring input files
+...
+006 (122793.000.000) 06/08 10:46:17 Image size of job updated: 36080
+	36  -  MemoryUsage of job (MB)
+	36080  -  ResidentSetSize of job (KB)
+...
+006 (122793.000.000) 06/08 10:48:13 Image size of job updated: 791456
+	36  -  MemoryUsage of job (MB)
+	36080  -  ResidentSetSize of job (KB)
+...
+040 (122793.000.000) 06/08 10:48:13 Started transferring output files
+...
+040 (122793.000.000) 06/08 10:48:13 Finished transferring output files
+...
+005 (122793.000.000) 06/08 10:48:13 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:11, Sys 0 00:00:03  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:11, Sys 0 00:00:03  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	20633  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	20633  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :   540980       20    903998 
+	   Memory (MB)          :       36     2000      2000 
+
+	Job terminated of its own accord at 2021-06-08T08:48:13Z.
+...

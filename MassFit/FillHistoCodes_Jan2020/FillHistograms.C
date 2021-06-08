@@ -163,11 +163,11 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   gStyle->SetOptStat(0);
   const int NVAR =14;
   const int N_MJJ = 8;
-  const int N_PTJJ = 8;
+  const int N_PTJJ = 6;
   const int N_YJJ = 8;
-  const int N_PT_0 = 8;
-  const int N_PT_1 = 8;
-  const int N_JETY = 11;
+  const int N_PT_0 = 7;
+  const int N_PT_1 = 7;
+  const int N_JETY = 10;
   const int N_JETMASS = 100;
   const int N_MVA = 100;
   const int N_CHI = 11;
@@ -187,15 +187,15 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
 
   int NBINS[NVAR] = {N_MJJ, N_PTJJ, N_YJJ, N_PT_0, N_PT_1 ,N_JETY, N_JETY,N_CHI,N_COSTHETASTAR,N_COSTHETASTAR,N_MVA, N_MVA ,N_JETMASS, N_JETMASS};
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
-                       {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
+                       {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                       {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
-                       {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
-                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY1
+                       {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
+                       {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt1
+                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading; //jetY1
+                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading; 
 
   TFile *inf;
   int fileSize = listOfFiles.size();

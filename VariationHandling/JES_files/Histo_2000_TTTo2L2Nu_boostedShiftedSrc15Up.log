@@ -1,0 +1,134 @@
+000 (111340.000.000) 06/03 12:30:36 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (111340.000.000) 06/03 12:31:52 Started transferring input files
+	Transferring to host: <188.184.212.179:9618?addrs=188.184.212.179-9618+[2001-1458-301-10c--100-94]-9618&alias=b7g24n0318.cern.ch&noUDP&sock=slot1_6_5350_4f13_83634>
+...
+040 (111340.000.000) 06/03 12:31:52 Finished transferring input files
+...
+001 (111340.000.000) 06/03 12:31:52 Job executing on host: <188.184.212.179:9618?addrs=188.184.212.179-9618+[2001-1458-301-10c--100-94]-9618&alias=b7g24n0318.cern.ch&noUDP&sock=startd_1767_97ef>
+...
+006 (111340.000.000) 06/03 12:32:01 Image size of job updated: 790744
+	42  -  MemoryUsage of job (MB)
+	42400  -  ResidentSetSize of job (KB)
+...
+006 (111340.000.000) 06/03 12:33:48 Image size of job updated: 790808
+	42  -  MemoryUsage of job (MB)
+	42440  -  ResidentSetSize of job (KB)
+...
+040 (111340.000.000) 06/03 12:33:49 Started transferring output files
+...
+040 (111340.000.000) 06/03 12:33:49 Finished transferring output files
+...
+005 (111340.000.000) 06/03 12:33:49 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:18, Sys 0 00:00:04  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:18, Sys 0 00:00:04  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	24849  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	24849  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :   743555       20    295838 
+	   Memory (MB)          :       42     2000      2000 
+
+	Job terminated of its own accord at 2021-06-03T10:33:48Z.
+...
+000 (114997.000.000) 06/04 08:44:07 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (114997.000.000) 06/04 08:51:36 Started transferring input files
+	Transferring to host: <188.184.190.180:9618?addrs=188.184.190.180-9618+[2001-1458-301-4b--100-af]-9618&alias=b7g42n0362.cern.ch&noUDP&sock=slot1_8_26924_24c0_82034>
+...
+001 (114997.000.000) 06/04 08:51:36 Job executing on host: <188.184.190.180:9618?addrs=188.184.190.180-9618+[2001-1458-301-4b--100-af]-9618&alias=b7g42n0362.cern.ch&noUDP&sock=startd_1991_3d26>
+...
+040 (114997.000.000) 06/04 08:51:36 Finished transferring input files
+...
+006 (114997.000.000) 06/04 08:51:43 Image size of job updated: 106472
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+040 (114997.000.000) 06/04 08:51:43 Started transferring output files
+...
+040 (114997.000.000) 06/04 08:51:43 Finished transferring output files
+...
+007 (114997.000.000) 06/04 08:51:43 Shadow exception!
+	Error from slot1_8@b7g42n0362.cern.ch: STARTER at 188.184.190.180 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_4873/Histo_2000_TTTo2L2Nu_boostedShiftedSrc15Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.190.180:43829>
+	2639  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+...
+012 (114997.000.000) 06/04 08:51:43 Job was held.
+	Error from slot1_8@b7g42n0362.cern.ch: STARTER at 188.184.190.180 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_4873/Histo_2000_TTTo2L2Nu_boostedShiftedSrc15Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.190.180:43829>
+	Code 13 Subcode 2
+...
+013 (114997.000.000) 06/04 14:24:56 Job was released.
+	via condor_release (by user gbakas)
+...
+040 (114997.000.000) 06/04 15:50:07 Started transferring input files
+	Transferring to host: <188.184.138.86:9618?addrs=188.184.138.86-9618+[2001-1458-301-45--100-54]-9618&alias=b7g42n0197.cern.ch&noUDP&sock=slot1_3_3821_fd74_43171>
+...
+040 (114997.000.000) 06/04 15:50:07 Finished transferring input files
+...
+001 (114997.000.000) 06/04 15:50:07 Job executing on host: <188.184.138.86:9618?addrs=188.184.138.86-9618+[2001-1458-301-45--100-54]-9618&alias=b7g42n0197.cern.ch&noUDP&sock=startd_3234_d55f>
+...
+006 (114997.000.000) 06/04 15:50:14 Image size of job updated: 493408
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+040 (114997.000.000) 06/04 15:50:14 Started transferring output files
+...
+040 (114997.000.000) 06/04 15:50:14 Finished transferring output files
+...
+007 (114997.000.000) 06/04 15:50:14 Shadow exception!
+	Error from slot1_3@b7g42n0197.cern.ch: STARTER at 188.184.138.86 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_28351/Histo_2000_TTTo2L2Nu_boostedShiftedSrc15Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.138.86:43012>
+	2640  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+...
+012 (114997.000.000) 06/04 15:50:15 Job was held.
+	Error from slot1_3@b7g42n0197.cern.ch: STARTER at 188.184.138.86 failed to send file(s) to <188.185.121.235:9618>: error reading from /pool/condor/dir_28351/Histo_2000_TTTo2L2Nu_boostedShiftedSrc15Up.root: (errno 2) No such file or directory; SHADOW failed to receive file(s) from <188.184.138.86:43012>
+	Code 13 Subcode 2
+...
+009 (114997.000.000) 06/05 15:53:35 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2021-06-04T13:50:14Z (using method 0: OF_ITS_OWN_ACCORD).
+...
+000 (122262.000.000) 06/08 10:19:58 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (122262.000.000) 06/08 10:22:37 Started transferring input files
+	Transferring to host: <128.142.76.51:9618?addrs=128.142.76.51-9618&alias=b7s12n8434.cern.ch&noUDP&sock=slot1_8_2542_d1a0_44915>
+...
+001 (122262.000.000) 06/08 10:22:42 Job executing on host: <128.142.76.51:9618?addrs=128.142.76.51-9618&alias=b7s12n8434.cern.ch&noUDP&sock=startd_2319_3837>
+...
+040 (122262.000.000) 06/08 10:22:42 Finished transferring input files
+...
+006 (122262.000.000) 06/08 10:22:51 Image size of job updated: 625440
+	9  -  MemoryUsage of job (MB)
+	9216  -  ResidentSetSize of job (KB)
+...
+006 (122262.000.000) 06/08 10:26:04 Image size of job updated: 791448
+	10  -  MemoryUsage of job (MB)
+	9288  -  ResidentSetSize of job (KB)
+...
+040 (122262.000.000) 06/08 10:26:04 Started transferring output files
+...
+040 (122262.000.000) 06/08 10:26:04 Finished transferring output files
+...
+005 (122262.000.000) 06/08 10:26:04 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:12, Sys 0 00:00:01  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:12, Sys 0 00:00:01  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	22274  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	22274  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :   540988       20    272363 
+	   Memory (MB)          :       10     2000      2000 
+
+	Job terminated of its own accord at 2021-06-08T08:26:04Z.
+...

@@ -1,0 +1,84 @@
+000 (116801.000.000) 06/04 09:07:44 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (116801.000.000) 06/04 09:41:14 Started transferring input files
+	Transferring to host: <188.184.138.115:9618?addrs=188.184.138.115-9618+[2001-1458-301-45--100-7c]-9618&alias=b7g42n0236.cern.ch&noUDP&sock=slot1_9_5264_b6cf_35511>
+...
+040 (116801.000.000) 06/04 09:41:14 Finished transferring input files
+...
+001 (116801.000.000) 06/04 09:41:14 Job executing on host: <188.184.138.115:9618?addrs=188.184.138.115-9618+[2001-1458-301-45--100-7c]-9618&alias=b7g42n0236.cern.ch&noUDP&sock=startd_3989_b360>
+...
+006 (116801.000.000) 06/04 09:41:23 Image size of job updated: 42412
+	42  -  MemoryUsage of job (MB)
+	42068  -  ResidentSetSize of job (KB)
+...
+006 (116801.000.000) 06/04 09:46:24 Image size of job updated: 790796
+	66  -  MemoryUsage of job (MB)
+	67496  -  ResidentSetSize of job (KB)
+...
+040 (116801.000.000) 06/04 09:50:51 Started transferring output files
+...
+040 (116801.000.000) 06/04 09:50:51 Finished transferring output files
+...
+005 (116801.000.000) 06/04 09:50:51 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:32, Sys 0 00:00:14  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:32, Sys 0 00:00:14  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	49510  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	49510  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :  2759513       20    271165 
+	   Memory (MB)          :       66     2000      2000 
+
+	Job terminated of its own accord at 2021-06-04T07:50:51Z.
+...
+000 (123954.000.000) 06/08 10:51:16 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (123954.000.000) 06/08 11:22:23 Entered queue to transfer input files
+	Transferring to host: <188.184.198.89:9618?addrs=188.184.198.89-9618+[2001-1458-301-c1--100-6e]-9618&alias=b7g52n7097.cern.ch&noUDP&sock=slot1_8_24216_1cd2_89134>
+...
+040 (123954.000.000) 06/08 11:53:59 Started transferring input files
+	Seconds spent in queue: 1896
+...
+001 (123954.000.000) 06/08 11:53:59 Job executing on host: <188.184.198.89:9618?addrs=188.184.198.89-9618+[2001-1458-301-c1--100-6e]-9618&alias=b7g52n7097.cern.ch&noUDP&sock=startd_19338_d687>
+...
+040 (123954.000.000) 06/08 11:53:59 Finished transferring input files
+...
+006 (123954.000.000) 06/08 11:54:07 Image size of job updated: 2100
+	3  -  MemoryUsage of job (MB)
+	2100  -  ResidentSetSize of job (KB)
+...
+006 (123954.000.000) 06/08 11:59:07 Image size of job updated: 791452
+	67  -  MemoryUsage of job (MB)
+	67780  -  ResidentSetSize of job (KB)
+...
+006 (123954.000.000) 06/08 12:29:10 Image size of job updated: 791452
+	90  -  MemoryUsage of job (MB)
+	92104  -  ResidentSetSize of job (KB)
+...
+040 (123954.000.000) 06/08 12:29:41 Started transferring output files
+	Seconds spent in queue: 4038
+...
+040 (123954.000.000) 06/08 12:29:41 Finished transferring output files
+...
+005 (123954.000.000) 06/08 12:29:42 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:52, Sys 0 00:00:14  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:52, Sys 0 00:00:14  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	51007  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	51007  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.02        1         1 
+	   Disk (KB)            : 2759522          20    285102 
+	   Memory (MB)          :      90        2000      2000 
+
+	Job terminated of its own accord at 2021-06-08T10:29:41Z.
+...

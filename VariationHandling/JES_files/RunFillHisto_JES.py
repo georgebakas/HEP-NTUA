@@ -15,7 +15,7 @@ mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
 #        shell=True, stdout=subprocess.PIPE)
 
 
-command = 'xrdfs root://grid02.physics.uoi.gr ls -u /store/user/ipapakri/ttbar/MC/Signal/2017'
+command = f'xrdfs root://grid02.physics.uoi.gr ls -u /store/user/ipapakri/ttbar/MC/Signal/{year}'
 output = subprocess.check_output(command, shell=True)
 
 print(output)
@@ -49,8 +49,8 @@ for ifile, file_name in enumerate(split_files):
         print('Current mjj cut:', mjj_cut)
         #os.system(f'root -l -b -q \'FillHistograms_Reduced_JES.C(\"{file_name}\",\"{split_file_underscore[0]}\", \"{jes_variation}\",\"{year}\",{mjj_cut})\'')
         #os.system(f'root -l -b -q \'FillHistograms_Extended_JES.C(\"{file_name}\",\"{split_file_underscore[0]}\", \"{jes_variation}\",\"{year}\",{mjj_cut})\'')
-        argument = f'-l -b -q FillHistograms_Reduced_JES.C(\\\"{file_name_to_send}\\\",\\\"{split_file_underscore[0]}\\\",\\\"{jes_variation}\\\",\\\"{year}\\\",{mjj_cut}) {file_name}'
-        output_file = f'HistoReduced_{mjj_cut}_{split_file_underscore[0]}_{jes_variation}.root'
-        scj.submitCondorJobs('submit_.sh', argument, 'FillHistograms_Reduced_JES.C, TemplateConstants.h', output_file)
+        argument = f'-l -b -q FillHistograms_Extended_JES.C(\\\"{file_name_to_send}\\\",\\\"{split_file_underscore[0]}\\\",\\\"{jes_variation}\\\",\\\"{year}\\\",{mjj_cut}) {file_name}'
+        output_file = f'Histo_{mjj_cut}_{split_file_underscore[0]}_{jes_variation}.root'
+        scj.submitCondorJobs('submit_.sh', argument, 'FillHistograms_Extended_JES.C, TemplateConstants.h', output_file)
         #break
     #break
