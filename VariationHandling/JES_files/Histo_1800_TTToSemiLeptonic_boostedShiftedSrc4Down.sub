@@ -1,0 +1,14 @@
+universe = vanilla
+executable = submit_.sh
+arguments = -l -b -q FillHistograms_Extended_JES.C(\"TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_boostedShiftedSrc4Down.root\",\"TTToSemiLeptonic\",\"boostedShiftedSrc4Down\",\"2016_preVFP\",1800) root://grid02.physics.uoi.gr:1094//store/user/ipapakri/ttbar/MC/Signal/2016_preVFP/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_boostedShiftedSrc4Down.root
+error = Histo_1800_TTToSemiLeptonic_boostedShiftedSrc4Down.err
+output = Histo_1800_TTToSemiLeptonic_boostedShiftedSrc4Down.out
+log = Histo_1800_TTToSemiLeptonic_boostedShiftedSrc4Down.log
++JobFlavour = "testmatch"
++AccountingGroup = "group_u_CMS.u_zh.users"
+
+should_transfer_files = yes
+transfer_input_files = FillHistograms_Extended_JES.C, TemplateConstants.h
+when_to_transfer_output = ON_EXIT
+transfer_output_files = Histo_1800_TTToSemiLeptonic_boostedShiftedSrc4Down.root
+queue

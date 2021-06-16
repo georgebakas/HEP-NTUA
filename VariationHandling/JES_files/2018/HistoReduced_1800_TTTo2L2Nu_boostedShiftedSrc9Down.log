@@ -1,0 +1,42 @@
+000 (147335.000.000) 06/16 08:25:53 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (147335.000.000) 06/16 08:51:19 Entered queue to transfer input files
+	Transferring to host: <128.142.85.26:9618?addrs=128.142.85.26-9618+[2001-1458-301-f6--100-6de]-9618&alias=b7s14n6571.cern.ch&noUDP&sock=slot1_7_5896_03e9_49392>
+...
+040 (147335.000.000) 06/16 08:51:35 Started transferring input files
+	Seconds spent in queue: 16
+...
+001 (147335.000.000) 06/16 08:51:35 Job executing on host: <128.142.85.26:9618?addrs=128.142.85.26-9618+[2001-1458-301-f6--100-6de]-9618&alias=b7s14n6571.cern.ch&noUDP&sock=startd_4672_2e8f>
+...
+006 (147335.000.000) 06/16 08:51:45 Image size of job updated: 791452
+	53  -  MemoryUsage of job (MB)
+	53260  -  ResidentSetSize of job (KB)
+...
+040 (147335.000.000) 06/16 08:51:45 Finished transferring input files
+...
+006 (147335.000.000) 06/16 08:52:00 Image size of job updated: 791452
+	67  -  MemoryUsage of job (MB)
+	67772  -  ResidentSetSize of job (KB)
+...
+040 (147335.000.000) 06/16 08:52:04 Started transferring output files
+	Seconds spent in queue: 45
+...
+040 (147335.000.000) 06/16 08:52:07 Finished transferring output files
+...
+005 (147335.000.000) 06/16 08:52:10 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:07, Sys 0 00:00:02  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:07, Sys 0 00:00:02  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	16955  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	16955  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :                 1         1 
+	   Disk (KB)            :   465705       20    284785 
+	   Memory (MB)          :       67     2000      2000 
+
+	Job terminated of its own accord at 2021-06-16T06:52:00Z.
+...

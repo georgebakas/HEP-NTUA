@@ -16,5 +16,4 @@ for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/gbakas/ZprimeT
     print(mass_name)
     #print(split_file_name[-1])
     os.system(f'root -l -b -q \'FillHistograms_massWindow.C(\"{split_file_name[-1]}\",\"{mass_name}\",\"{year}\")\'')
-    #os.system(f'root -l -b -q \'FillHistograms_massWindow_DY.C(\"{split_file_name[-1]}\",\"{mass_name}\",\"{year}\")\'')
     #break

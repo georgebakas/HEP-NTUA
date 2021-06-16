@@ -1,0 +1,14 @@
+universe = vanilla
+executable = submit_.sh
+arguments = -l -b -q FillHistograms_Reduced_JES.C(\"TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_boostedSmearedUp.root\",\"TTToSemiLeptonic\",\"boostedSmearedUp\",\"2016_preVFP\",2000) root://grid02.physics.uoi.gr:1094//store/user/ipapakri/ttbar/MC/Signal/2016_preVFP/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_boostedSmearedUp.root
+error = HistoReduced_2000_TTToSemiLeptonic_boostedSmearedUp.err
+output = HistoReduced_2000_TTToSemiLeptonic_boostedSmearedUp.out
+log = HistoReduced_2000_TTToSemiLeptonic_boostedSmearedUp.log
++JobFlavour = "testmatch"
++AccountingGroup = "group_u_CMS.u_zh.users"
+
+should_transfer_files = yes
+transfer_input_files = FillHistograms_Reduced_JES.C, TemplateConstants.h
+when_to_transfer_output = ON_EXIT
+transfer_output_files = HistoReduced_2000_TTToSemiLeptonic_boostedSmearedUp.root
+queue

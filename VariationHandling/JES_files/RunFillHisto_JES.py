@@ -15,7 +15,7 @@ mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
 #        shell=True, stdout=subprocess.PIPE)
 
 
-command = f'xrdfs root://grid02.physics.uoi.gr ls -u /store/user/ipapakri/ttbar/MC/Signal/{year}'
+command = f'xrdfs root://grid02.physics.uoi.gr ls -u /store/user/ipapakri/ttbar/MC/Signal/{year}/'
 output = subprocess.check_output(command, shell=True)
 
 print(output)
@@ -54,3 +54,4 @@ for ifile, file_name in enumerate(split_files):
         scj.submitCondorJobs('submit_.sh', argument, 'FillHistograms_Extended_JES.C, TemplateConstants.h', output_file)
         #break
     #break
+    

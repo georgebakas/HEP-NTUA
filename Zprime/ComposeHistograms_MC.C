@@ -60,18 +60,29 @@ void ComposeHistograms_MC(TString year="2017", int mJJCut = 1000)
 
 
   //get the JES (only nominal Smeared Up, Down and Shifted Up, Down)
-  TFile *infTTfile_smeared_up = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedSmearedUp.root",year.Data(), mJJCut));
-  TH1F *h_TT_smeared_up = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
+  TH1F *h_TT_shifted_down, *h_TT_shifted_up;
+  TH1F *h_TT_smeared_down, *h_TT_smeared_up;
+  if (!year.EqualTo("2016_preVFP"))
+  {
+    TFile *infTTfile_smeared_up = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedSmearedUp.root",year.Data(), mJJCut));
+    h_TT_smeared_up = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
 
-  TFile *infTTfile_smeared_down = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedSmearedDown.root",year.Data(), mJJCut));
-  TH1F *h_TT_smeared_down = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
+    TFile *infTTfile_smeared_down = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedSmearedDown.root",year.Data(), mJJCut));
+    h_TT_smeared_down = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
 
-  TFile *infTTfile_shifted_up = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedUp.root",year.Data(), mJJCut));
-  TH1F *h_TT_shifted_up = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
+    TFile *infTTfile_shifted_up = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedUp.root",year.Data(), mJJCut));
+    h_TT_shifted_up = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
 
-  TFile *infTTfile_shifted_down = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedDown.root",year.Data(), mJJCut));
-  TH1F *h_TT_shifted_down = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
-
+    TFile *infTTfile_shifted_down = TFile::Open(TString::Format("../VariationHandling/%s/JES/combined/HistoReduced_%d_TT_JES_boostedShiftedDown.root",year.Data(), mJJCut));
+    h_TT_shifted_down = (TH1F*)infTTfile_smeared_up->Get("hWt_chi_2btag");
+  }
+  else
+  {
+    h_TT_smeared_up = (TH1F*)infTTfile_isr_lo->Get("hWt_chi_2btag");
+    h_TT_smeared_down = (TH1F*)infTTfile_isr_hi->Get("hWt_chi_2btag");
+    h_TT_shifted_up = (TH1F*)infTTfile_fsr_lo->Get("hWt_chi_2btag");
+    h_TT_shifted_down = (TH1F*)infTTfile_fsr_hi->Get("hWt_chi_2btag");
+  }
   // Scale Weights 2,3,4,5,7,9
   const int N_scale=6;
   int scale_weight_nums[N_scale] = {2,3,4,5,7,9};
@@ -209,20 +220,17 @@ void ComposeHistograms_MC(TString year="2017", int mJJCut = 1000)
   h_TT_isr_def_hi->Write("h_chi_ttbar_isrDown");
   h_TT_fsr_def_lo->Write("h_chi_ttbar_fsrUp");
   h_TT_fsr_def_hi->Write("h_chi_ttbar_fsrDown");
-
   //jes weights
   h_TT_shifted_down->Write("h_chi_ttbar_shiftedDown");
   h_TT_shifted_up->Write("h_chi_ttbar_shiftedUp");
   h_TT_smeared_down->Write("h_chi_ttbar_smearedDown");
   h_TT_smeared_up->Write("h_chi_ttbar_smearedUp");
-
   //scale btag variations
   h_TT_btag_up->Scale(ttbarSigStrength[year]);
   h_TT_btag_down->Scale(ttbarSigStrength[year]);
   //btag variations
   h_TT_btag_up->Write("h_chi_ttbar_btagUp");
   h_TT_btag_down->Write("h_chi_ttbar_btagDown");
-
 
   //get the Zprime files:
   const int number_of_masses = 10;
@@ -237,7 +245,7 @@ void ComposeHistograms_MC(TString year="2017", int mJJCut = 1000)
     if (masses[imass] == 1400 && year.Contains("2016")) continue;
     for(int iw = 0; iw<1; iw++)
     {
-
+      cout<<"here"<<endl;
       if(imass==2 && iw ==2) continue;
       float width = masses[imass]* widths[iw];
       cout<<"mass: "<<masses[imass]<<" width:"<<(int)width<<endl;

@@ -1,0 +1,42 @@
+000 (147349.000.000) 06/16 08:26:30 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (147349.000.000) 06/16 08:51:56 Entered queue to transfer input files
+	Transferring to host: <128.142.149.38:9618?addrs=128.142.149.38-9618+[2001-1458-301-b--100-2af]-9618&alias=b7g41n6533.cern.ch&noUDP&sock=slot1_4_28282_fa37_89867>
+...
+040 (147349.000.000) 06/16 08:51:59 Started transferring input files
+	Seconds spent in queue: 3
+...
+001 (147349.000.000) 06/16 08:51:59 Job executing on host: <128.142.149.38:9618?addrs=128.142.149.38-9618+[2001-1458-301-b--100-2af]-9618&alias=b7g41n6533.cern.ch&noUDP&sock=startd_2108_7dbb>
+...
+040 (147349.000.000) 06/16 08:52:01 Finished transferring input files
+...
+006 (147349.000.000) 06/16 08:52:08 Image size of job updated: 321800
+	38  -  MemoryUsage of job (MB)
+	37952  -  ResidentSetSize of job (KB)
+...
+006 (147349.000.000) 06/16 08:57:09 Image size of job updated: 791428
+	67  -  MemoryUsage of job (MB)
+	67768  -  ResidentSetSize of job (KB)
+...
+040 (147349.000.000) 06/16 09:31:11 Started transferring output files
+	Seconds spent in queue: 2355
+...
+040 (147349.000.000) 06/16 09:31:11 Finished transferring output files
+...
+005 (147349.000.000) 06/16 09:31:12 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:01, Sys 0 00:00:27  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:01, Sys 0 00:00:27  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	51243  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	51243  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.01        1         1 
+	   Disk (KB)            : 3074328          20    353698 
+	   Memory (MB)          :      67        2000      2000 
+
+	Job terminated of its own accord at 2021-06-16T07:31:11Z.
+...

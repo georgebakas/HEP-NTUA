@@ -14,6 +14,7 @@ void initFilesMapping(bool isTTbar)
   if(!isTTbar)
 	{
 	eospath.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ZprimeToTT/ul-2016_preVFP/"));
+	eospath.insert(pair<TString,TString>("2016_preVFP","/eos/cms/store/user/gbakas/ZprimeToTT/ul-2016_preVFP/"));
 	eospath.insert(pair<TString,TString>("2017","/eos/cms/store/user/gbakas/ZprimeToTT/ul-2017/"));
 	eospath.insert(pair<TString,TString>("2018","/eos/cms/store/user/gbakas/ZprimeToTT/ul-2018/"));
 
@@ -48,7 +49,7 @@ void initFilesMapping(bool isTTbar)
 									{"M3000_W300", 0.001809},
 									{"M3000_W900", 0.0008196},
 
-									{"M3500_W35", 5.119e-034},
+									{"M3500_W35", 5.119e-3},
 									{"M3500_W350", 0.0008262},
 									{"M3500_W1050", 0.0004251},
 
@@ -64,7 +65,7 @@ void initFilesMapping(bool isTTbar)
 									{"M1000_W100", 0.314},
 									{"M1000_W300", 0.09429},
 
-                  {"M1200_W12", 1.741e+00},
+                  					{"M1200_W12", 1.741e+00},
 									//{"M1000_W100", 0.3391},
 									//{"M1000_W300", 0.1045},
 

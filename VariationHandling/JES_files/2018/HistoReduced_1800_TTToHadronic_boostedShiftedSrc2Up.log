@@ -1,0 +1,42 @@
+000 (147942.000.000) 06/16 08:39:09 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
+...
+040 (147942.000.000) 06/16 08:58:23 Started transferring input files
+	Transferring to host: <188.184.186.66:9618?addrs=188.184.186.66-9618+[2001-1458-301-f8--100-38]-9618&alias=b7g28n0585.cern.ch&noUDP&sock=slot1_10_3177_3bda_39800>
+...
+040 (147942.000.000) 06/16 08:58:23 Finished transferring input files
+...
+001 (147942.000.000) 06/16 08:58:23 Job executing on host: <188.184.186.66:9618?addrs=188.184.186.66-9618+[2001-1458-301-f8--100-38]-9618&alias=b7g28n0585.cern.ch&noUDP&sock=startd_2793_581b>
+...
+006 (147942.000.000) 06/16 08:58:32 Image size of job updated: 783188
+	39  -  MemoryUsage of job (MB)
+	39148  -  ResidentSetSize of job (KB)
+...
+006 (147942.000.000) 06/16 09:03:33 Image size of job updated: 791428
+	67  -  MemoryUsage of job (MB)
+	67768  -  ResidentSetSize of job (KB)
+...
+006 (147942.000.000) 06/16 09:18:35 Image size of job updated: 791428
+	119  -  MemoryUsage of job (MB)
+	120928  -  ResidentSetSize of job (KB)
+...
+040 (147942.000.000) 06/16 09:18:44 Started transferring output files
+...
+040 (147942.000.000) 06/16 09:18:44 Finished transferring output files
+...
+005 (147942.000.000) 06/16 09:18:44 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:56, Sys 0 00:00:21  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:56, Sys 0 00:00:21  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	54358  -  Run Bytes Sent By Job
+	19195  -  Run Bytes Received By Job
+	54358  -  Total Bytes Sent By Job
+	19195  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       1.00        1         1 
+	   Disk (KB)            : 3075917          20    213327 
+	   Memory (MB)          :     119        2000      2000 
+
+	Job terminated of its own accord at 2021-06-16T07:18:44Z.
+...
