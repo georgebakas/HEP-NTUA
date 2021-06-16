@@ -8,9 +8,9 @@ print(f'Argument list: {str(sys.argv)}')
 year = sys.argv[1]
 allFiles = []
 
-all_files = {"2016_preVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_20UL.root',
-                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_20UL.root '],
+all_files = {"2016_preVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
+                     'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root '],
              "2016_postVFP":['TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root',
                      'TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root',
                      'TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root'],
@@ -34,7 +34,7 @@ for var in variations:
         print(ifile)
         for mjj_cut in mJJCuts:
             print('Current mjj cut:', mjj_cut)
-            #os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
-            os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
+            os.system(f'root -l -b -q \'FillHistograms_Extended_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
+            #os.system(f'root -l -b -q \'FillHistograms_Reduced_bTag.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",\"{var}\",{mjj_cut})\'')
        #break
     #break

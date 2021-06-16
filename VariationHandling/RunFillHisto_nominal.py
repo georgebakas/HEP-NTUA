@@ -30,5 +30,5 @@ for ifile in  all_files[year]:
     print(ifile)
     for mjj_cut in mJJCuts:
         print('Current mjj cut:', mjj_cut)
-        #os.system(f'root -l -b -q \'FillHistograms_Extended_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')
-        os.system(f'root -l -b -q \'FillHistograms_Reduced_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')
+        os.system(f'root -l -b -q \'FillHistograms_Extended_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')
+       # os.system(f'root -l -b -q \'FillHistograms_Reduced_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')
