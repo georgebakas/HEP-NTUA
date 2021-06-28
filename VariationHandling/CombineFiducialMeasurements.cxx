@@ -16,12 +16,33 @@ TH1F *GetCrossSection(TH1F *f)
   f->Scale();
 }
 
+std::vector<TString> listFiles(const char *dirname="", const char *var="", const char *ext=".root")
+{
+  std::vector<TString> list_of_files;
+   TSystemDirectory dir(dirname, dirname);
+   TList *files = dir.GetListOfFiles();
+   if (files) {
+     TSystemFile *file;
+     TString fname;
+     TIter next(files);
+     while ((file=(TSystemFile*)next())) {
+       fname = file->GetName();
+       if (!file->IsDirectory() && fname.EndsWith(ext) && fname.Contains(var)) {
+         //cout << fname.Data() << endl;
+         list_of_files.push_back(fname.Data());
+       }
+     }
+   }
+   return list_of_files;
+}
+
+
 void CombineFiducialMeasurements(TFile *outFile)
 {
   AnalysisConstants::initConstants();
 
-  TString baseInputDir = AnalysisConstants::baseDir;
-  baseInputDir = TString::Format("%s/SignalExtraction/results", baseInputDir.Data());
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
   // Define formats for Figures and Latex file
   const TString ForVal = "%1.6f";
@@ -30,6 +51,8 @@ void CombineFiducialMeasurements(TFile *outFile)
   const TString ForRho = "%1.2f";
   const TString ForPul = ForRho;
   const TString ForUni = "pb";
+  std::vector<TString> variation_dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
+
 
   static const Int_t NumEst = AnalysisConstants::years.size();
   TString NamEst[NumEst];
@@ -60,12 +83,14 @@ void CombineFiducialMeasurements(TFile *outFile)
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
       NamEst[y] = AnalysisConstants::years[y];
-      TFile *file = TFile::Open(TString::Format("%s/%s%s/Nominal%s/ExtractedSignal_%s.root",
+      TFile *file = TFile::Open(TString::Format("%s/%s/Nominal/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_.root",
                                                 baseInputDir.Data(),
                                                 AnalysisConstants::years[y].Data(),
-                                                (AnalysisConstants::isUL ? "/UL" : ""),
-                                                AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                                AnalysisConstants::years[y].Data()));
+                                                variable.Data()));
+
+                                                
+                                                //AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
+                                                //AnalysisConstants::years[y].Data()));
       TH1F *f = (TH1F *)file->Get(TString::Format("Signal_%s",
                                                   variable.Data()));
 
@@ -86,28 +111,29 @@ void CombineFiducialMeasurements(TFile *outFile)
       weightGraphs.push_back(g);
 
       file->Close();
-
-      for (unsigned int i = 0; i < AnalysisConstants::variations.size(); i++)
+      for (unsigned int i = 0; i < variation_dirs.size(); i++)
       {
-        NamUnc[i + 1] = AnalysisConstants::variations[i];
-        file = TFile::Open(TString::Format("%s/%s%s/%s%s/ExtractedSignal_%s.root",
-                                           baseInputDir.Data(),
-                                           AnalysisConstants::years[y].Data(),
-                                           (AnalysisConstants::isUL ? "/UL" : ""),
-                                           AnalysisConstants::variations[i].Data(),
-                                           AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                           AnalysisConstants::years[y].Data()));
-        f = (TH1F *)file->Get(TString::Format("Signal_%s",
-                                              AnalysisConstants::unfoldingVariables[var].Data()));
-        f->Scale(1. / AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]], "width");
+        std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/%s/FiducialMeasurement/%s", baseInputDir.Data(), year.Data(), variation_dirs[i].Data()), variable.Data());
+        for (int jvar=0; jvar<variationFiles.size(); jvar++)
+        {
+          NamUnc[i + 1] = AnalysisConstants::variations[i];
+          TFile *file = TFile::Open(TString::Format("%s/%s/%s/FiducialMeasurement/",
+                                                  baseInputDir.Data(),
+                                                  AnalysisConstants::years[y].Data(),
+                                                  variations[i].Data(),
+                                                  variationFiles[jvar].Data()));
+          f = (TH1F *)file->Get(TString::Format("Signal_%s",
+                                                AnalysisConstants::unfoldingVariables[var].Data()));
+          f->Scale(1. / AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]], "width");
 
-        f->SetDirectory(0);
-        f->SetName(TString::Format("%s_%s_%s",
-                                   f->GetName(),
-                                   AnalysisConstants::variations[i].Data(),
-                                   AnalysisConstants::years[y].Data()));
-        uncHistograms.push_back(f);
-        file->Close();
+          f->SetDirectory(0);
+          f->SetName(TString::Format("%s_%s_%s",
+                                    f->GetName(),
+                                    AnalysisConstants::variations[i].Data(),
+                                    AnalysisConstants::years[y].Data()));
+          uncHistograms.push_back(f);
+          file->Close();
+        }
       }
     }
 

@@ -41,14 +41,13 @@ void Systematics_levels(TString year)
   gStyle->SetOptStat(0);
   TString isParton = "Parton";
   initFilesMapping();
-  TString baseDir = TString::Format("%s//results", year.Data());
   std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
   std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange};
 
   TString outputDirectory = TString::Format("%s/results_fiducial/", year.Data());
   //CheckAndCreateDirectory(outputDirectory);
-  const int NVAR = 7;
+  const int NVAR = 10;
 
 
 
@@ -60,29 +59,29 @@ void Systematics_levels(TString year)
     std::vector<TH1F *> groupHistogramsDown;
     std::vector<TH1F *> groupHistogramsSym;
 
-    //TH1F *hUnfoldedNominal = (TH1F *)fNominal->Get(TString::Format("hUnfold_%s", vars[i].Data()));
+    //TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfold_%s", vars[i].Data()));
     //SignalHistograms_jetPt0_MassFitResults_SignalTemplates_TTToHadronic.
-    TString fileName = TString::Format("%s/Nominal/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_TTToHadronic.root",
+    TString fileName = TString::Format("%s/Nominal/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_.root",
                                        year.Data(),vars[i].Data());
 
     TFile *fNominal = TFile::Open(fileName);
-    TH1F *hUnfoldedNominal = (TH1F *)fNominal->Get(TString::Format("hSignal_%s", vars[i].Data()));
+    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hSignal_%s", vars[i].Data()));
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
     {
-      TH1F *hSystematicsUp = (TH1F *)hUnfoldedNominal->Clone(TString::Format("%s %s Up", groups[group].Data(),
+      TH1F *hSystematicsUp = (TH1F *)hNominal->Clone(TString::Format("%s %s Up", groups[group].Data(),
                                                                              vars[i].Data()));
-      TH1F *hSystematicsDown = (TH1F *)hUnfoldedNominal->Clone(TString::Format("%s %s Down", groups[group].Data(),
+      TH1F *hSystematicsDown = (TH1F *)hNominal->Clone(TString::Format("%s %s Down", groups[group].Data(),
                                                                                vars[i].Data()));
-      TH1F *hSystematicsSym = (TH1F *)hUnfoldedNominal->Clone(TString::Format("%s %s Sym", groups[group].Data(),
+      TH1F *hSystematicsSym = (TH1F *)hNominal->Clone(TString::Format("%s %s Sym", groups[group].Data(),
                                                                               vars[i].Data()));
       hSystematicsUp->Reset();
       hSystematicsDown->Reset();
       hSystematicsSym->Reset();
-      hSystematicsUp->SetLineColor(group);
-      hSystematicsDown->SetLineColor(group);
-      hSystematicsSym->SetLineColor(group);
+      hSystematicsUp->SetLineColor(groupColors[group-1]);
+      hSystematicsDown->SetLineColor(groupColors[group-1]);
+      hSystematicsSym->SetLineColor(groupColors[group-1]);
 
       hSystematicsUp->SetLineWidth(3);
       hSystematicsDown->SetLineWidth(3);
@@ -96,8 +95,8 @@ void Systematics_levels(TString year)
     //Start of nominal handling
     for (int bin = 0; bin < groupHistogramsUp[0]->GetNbinsX(); bin++)
     {
-      double nominalValue = hUnfoldedNominal->GetBinContent(bin + 1);
-      double nominalError = hUnfoldedNominal->GetBinError(bin + 1);
+      double nominalValue = hNominal->GetBinContent(bin + 1);
+      double nominalError = hNominal->GetBinError(bin + 1);
       if (nominalValue != 0)
       {
         groupHistogramsUp[0]->SetBinContent(bin + 1, (nominalError * nominalError) / (nominalValue * nominalValue));
@@ -111,19 +110,20 @@ void Systematics_levels(TString year)
 
     for (int j = 0; j < dirs.size(); j++)
     {
-      std::cout << "Variation: " << dirs[j] << std::endl;
+      //std::cout << "Variation: " << dirs[j] << std::endl;
       TString variation = dirs[j];
       std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/FiducialMeasurement/",year.Data(), dirs[j].Data()), vars[i].Data());
+
       int group = -1;
       if (variation.Contains("Nominal"))
         group = 0;
-      if (variation.Contains("JESSrc") || variation.Contains("JER") || variation.Contains("Pileup"))
+      if (variation.Contains("JES") || variation.Contains("JER") || variation.Contains("Pileup"))
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
       if (variation.Contains("SystematicsFiles") || variation.Contains("PS"))
         group = 3;
-      if (variation.Contains("PDF") || variation.Contains("PS") || variation.Contains("Scale"))
+      if (variation.Contains("PDF") || variation.Contains("Scale"))
         group = 4;
 
       cout<<variation<<" group: "<<group <<endl;
@@ -142,16 +142,17 @@ void Systematics_levels(TString year)
                                    year.Data(),
                                    variation.Data(),
                                    variationFiles[jfile].Data());
-
+        if (!fileName.Contains("Def") && variation.Contains("PS"))
+          continue;
+        
         TFile *f = TFile::Open(fileName);
-        cout<<fileName<<endl;
-        if(fileName.EqualTo("2018/Unfolding_PDFWeights/OutputFileParton_pdf_35.root")) continue;
+        //cout<<fileName<<endl;
         TH1F *hVariation = (TH1F *)f->Get(TString::Format("hSignal_%s", vars[i].Data()));
 
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
         {
-          double nominalValue = hUnfoldedNominal->GetBinContent(bin + 1);
-          double nominalError = hUnfoldedNominal->GetBinError(bin + 1);
+          double nominalValue = hNominal->GetBinContent(bin + 1);
+          double nominalError = hNominal->GetBinError(bin + 1);
           double variationValue = hVariation->GetBinContent(bin + 1);
           double valuePull = (variationValue - nominalValue) / nominalValue;
           double variationErrorUp = groupHistogramsUp[group]->GetBinContent(bin + 1);
@@ -183,27 +184,28 @@ void Systematics_levels(TString year)
           //std::cout << endl;
         }
         //std::cout << endl;
-        //f->Close();
+        f->Close();
       }//end of for loop (over specific variation files)
     } //end of for loop (over all variation types)
 
 
     for (int group = 0; group < groups.size(); group++)
     {
-      //std::cout << "Group: " << groups[group] << std::endl;
+      std::cout << "Group: " << groups[group] << std::endl;
       for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
       {
         double errorUp = TMath::Sqrt(groupHistogramsUp[group]->GetBinContent(bin + 1));
         double errorDown = TMath::Sqrt(groupHistogramsDown[group]->GetBinContent(bin + 1));
-        //std::cout << " " << errorUp << " " << errorDown;
+        std::cout <<"bin "<<bin<<" " << errorUp << " " << errorDown;
         groupHistogramsSym[group]->SetBinContent(bin + 1, 0.5 * 100 * (errorUp + errorDown));
-        //std::cout << " " << groupHistogramsSym[group]->GetBinContent(bin + 1) << std::endl;
+        std::cout << " " << groupHistogramsSym[group]->GetBinContent(bin + 1) << std::endl;
       }
     }
     TCanvas *c1 = new TCanvas(vars[i], vars[i], 800, 600);
 
     groupHistogramsSym[0]->SetFillColor(kGray);
     //groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
+    groupHistogramsSym[0]->SetTitle("");
     groupHistogramsSym[0]->SetLineWidth(0);
     groupHistogramsSym[0]->GetXaxis()->SetTitle(vars[i]);
     groupHistogramsSym[0]->GetXaxis()->SetLabelSize(0.035);

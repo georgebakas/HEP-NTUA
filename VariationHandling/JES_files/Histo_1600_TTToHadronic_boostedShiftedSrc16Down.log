@@ -1,2 +1,42 @@
 000 (147491.000.000) 06/16 08:29:26 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
 ...
+040 (147491.000.000) 06/16 08:55:12 Started transferring input files
+	Transferring to host: <128.142.87.109:9618?addrs=128.142.87.109-9618+[2001-1458-301-f6--100-751]-9618&alias=b7s14n5340.cern.ch&noUDP&sock=slot1_11_4976_cac3_42698>
+...
+040 (147491.000.000) 06/16 08:55:12 Finished transferring input files
+...
+001 (147491.000.000) 06/16 08:55:12 Job executing on host: <128.142.87.109:9618?addrs=128.142.87.109-9618+[2001-1458-301-f6--100-751]-9618&alias=b7s14n5340.cern.ch&noUDP&sock=startd_3921_0eef>
+...
+006 (147491.000.000) 06/16 08:55:21 Image size of job updated: 39744
+	39  -  MemoryUsage of job (MB)
+	39744  -  ResidentSetSize of job (KB)
+...
+006 (147491.000.000) 06/16 09:00:22 Image size of job updated: 791444
+	67  -  MemoryUsage of job (MB)
+	67776  -  ResidentSetSize of job (KB)
+...
+006 (147491.000.000) 06/16 10:20:29 Image size of job updated: 791444
+	119  -  MemoryUsage of job (MB)
+	121044  -  ResidentSetSize of job (KB)
+...
+040 (147491.000.000) 06/16 10:21:03 Started transferring output files
+...
+040 (147491.000.000) 06/16 10:21:03 Finished transferring output files
+...
+005 (147491.000.000) 06/16 10:21:03 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:01:21, Sys 0 00:00:19  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:01:21, Sys 0 00:00:19  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	54379  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	54379  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.00        1         1 
+	   Disk (KB)            : 3074285          20    277387 
+	   Memory (MB)          :     119        2000      2000 
+
+	Job terminated of its own accord at 2021-06-16T08:21:03Z.
+...

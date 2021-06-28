@@ -7,9 +7,9 @@ int main()
     std::cout << "Start!!" << std::endl;
 
     //TFile *outFile = new TFile("outFileParton.root", "RECREATE");
-    TFile *outFile = new TFile("outFileParticle.root", "RECREATE");
+    TFile *outFile = new TFile("outFileFiducial.root", "RECREATE");
     CombineMeasurements(outFile);
-    CombineMeasurements(outFile, true);
+    //CombineFiducialMeasurements(outFile, true);
     outFile->Close();
   }
   catch (const std::exception &e)

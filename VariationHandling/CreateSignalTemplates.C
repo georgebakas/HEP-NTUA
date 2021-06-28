@@ -144,5 +144,6 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
     w->import(*YieldTT);
   }
 
+  //cout<<TString::Format("%s/%s/SignalTemplates_%s.root",year.Data(), dir.Data(), inputFile.Data())<<endl;
   w->writeToFile(TString::Format("%s/%s/SignalTemplates_%s.root",year.Data(), dir.Data(), inputFile.Data()));
 }

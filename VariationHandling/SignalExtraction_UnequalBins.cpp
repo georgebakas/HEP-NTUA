@@ -72,9 +72,9 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TH1F *hQ = (TH1F*)infDataMedium->Get(TString::Format("hWt_%s_0btag_expYield", variable.Data()));
     //hQ has to be scaled to integral, because we need the shape
     cout<<"Data entries: "<<hD->GetEntries()<<endl;
-    
-    
-    
+
+
+
     //open the file to get the Ryield
     TFile *infRyield = TFile::Open(TString::Format("../MassFit/%s/Ryield/TransferFactor_HT300toInf_100_%s.root",year.Data(),variable.Data()));
     //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
@@ -85,7 +85,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
 
     cout<<variable<<endl;
     cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
-    
+
 
     //open the file to get the Nbkg
     cout<<TString::Format("%s/%s/%s",year.Data(), weightType.Data(), inputFitFile.Data())<<endl;
@@ -177,7 +177,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
         cout<<"scale factor: "<<SF[i]<<endl;
         cout<<"new Content: "<<newContent<<" with error: "<<newError<<endl;*/
-        
+
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);
     }
@@ -278,7 +278,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     TString path;
     TString strNorm = "";
     if(normalised) strNorm = "_Norm";
-    //path = TString::Format("%s/FiducialMeasurement/UnequalBinning/fiducial_%s%s.pdf",year.Data(),variable.Data(), strNorm.Data());
+    path = TString::Format("%s/%s/FiducialMeasurement/fiducial_%s%s.pdf",year.Data(), weightType.Data(), variable.Data(), strNorm.Data());
     can->Print(path,"pdf");
 
 

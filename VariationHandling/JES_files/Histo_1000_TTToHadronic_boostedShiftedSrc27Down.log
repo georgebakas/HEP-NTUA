@@ -1,2 +1,42 @@
 000 (147767.000.000) 06/16 08:35:13 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_38044_991d>
 ...
+040 (147767.000.000) 06/16 08:57:10 Started transferring input files
+	Transferring to host: <188.184.196.9:9618?addrs=188.184.196.9-9618+[2001-1458-301-102--100-3]-9618&alias=b7g24n0002.cern.ch&noUDP&sock=slot1_5_2208_7c53_2210>
+...
+001 (147767.000.000) 06/16 08:57:10 Job executing on host: <188.184.196.9:9618?addrs=188.184.196.9-9618+[2001-1458-301-102--100-3]-9618&alias=b7g24n0002.cern.ch&noUDP&sock=startd_2161_d840>
+...
+040 (147767.000.000) 06/16 08:57:10 Finished transferring input files
+...
+006 (147767.000.000) 06/16 08:57:18 Image size of job updated: 9584
+	10  -  MemoryUsage of job (MB)
+	9584  -  ResidentSetSize of job (KB)
+...
+006 (147767.000.000) 06/16 09:02:18 Image size of job updated: 791456
+	67  -  MemoryUsage of job (MB)
+	67772  -  ResidentSetSize of job (KB)
+...
+006 (147767.000.000) 06/16 12:17:38 Image size of job updated: 791456
+	118  -  MemoryUsage of job (MB)
+	120600  -  ResidentSetSize of job (KB)
+...
+040 (147767.000.000) 06/16 12:18:15 Started transferring output files
+...
+040 (147767.000.000) 06/16 12:18:15 Finished transferring output files
+...
+005 (147767.000.000) 06/16 12:18:15 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:02, Sys 0 00:00:30  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:02, Sys 0 00:00:30  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	54574  -  Run Bytes Sent By Job
+	19004  -  Run Bytes Received By Job
+	54574  -  Total Bytes Sent By Job
+	19004  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.01        1         1 
+	   Disk (KB)            : 3074317          20    294205 
+	   Memory (MB)          :     118        2000      2000 
+
+	Job terminated of its own accord at 2021-06-16T10:18:15Z.
+...
