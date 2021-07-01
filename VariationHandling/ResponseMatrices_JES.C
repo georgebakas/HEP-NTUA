@@ -19,7 +19,7 @@ TString globalYear;
 bool globalIsNominalMC;
 
 
-void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString jes_variation, TString year = "2016", float mJJCut=1000)
+void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_variation, TString year = "2016", float mJJCut=1000)
 {
   globalYear = year;
   initFilesMapping();
@@ -37,7 +37,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   float XSEC = XSECAll[year.Data()][ttbar_process.Data()];
   cout<<"XSEC: "<<XSEC<<endl;
   const int NVAR = 10;
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2400, 3000, 5000}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
@@ -48,7 +48,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2400, 3000, 5000}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                 {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                 {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
@@ -141,7 +141,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 
     TFile *file = TFile::Open(file_name.Data());
 
-    TTree *trIN = (TTree*)file->Get("boosted/events");
+    TTree *trIN = (TTree*)file->Get(TString::Format("%s/events", jes_variation.Data());
 
 	//------- input tree --------------
     trIN->SetBranchAddress("nJets"          ,&nJets);

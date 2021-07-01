@@ -38,7 +38,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
   float XSEC = XSECAll[year.Data()][ttbar_process.Data()];
   cout<<"XSEC: "<<XSEC<<endl;
   const int NVAR = 10;
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2400, 3000, 5000}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
@@ -49,7 +49,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
                                                         {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2400, 3000, 5000}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                 {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
                                                 {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                 {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt0

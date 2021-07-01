@@ -10,7 +10,7 @@ print(f'Argument list: {str(sys.argv)}')
 
 year = sys.argv[1]
 allFiles = []
-mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
+mJJCuts = [1000]#, 1200, 1400, 1600, 1800, 2000]
 #output = subprocess.check_output(command_to_run,
 #        shell=True, stdout=subprocess.PIPE)
 
