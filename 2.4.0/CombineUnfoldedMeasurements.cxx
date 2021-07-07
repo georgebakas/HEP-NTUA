@@ -9,12 +9,7 @@
 
 #include "Blue.h"
 
-//Combine cross section ta the fiducial level
-
-TH1F *GetCrossSection(TH1F *f)
-{
-  f->Scale();
-}
+//Combine cross section ta the unfolded level
 
 std::vector<TString> listFiles(const char *dirname="", const char *var="", const char *ext=".root")
 {
@@ -41,8 +36,8 @@ void CombineUnfoldedMeasurements(TFile *outFile, TString isParton = "Parton")
 {
   AnalysisConstants::initConstants();
 
-  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA";
+  baseInputDir = TString::Format("%s/VariationHandling", baseInputDir.Data());
 
   // Define formats for Figures and Latex file
   const TString ForVal = "%1.6f";
@@ -68,7 +63,7 @@ void CombineUnfoldedMeasurements(TFile *outFile, TString isParton = "Parton")
   static const Int_t LenXEst = NumEst * (NumUnc + 1);
   Double_t XEst[LenXEst];
 
-  Int_t IWhichObs[NumEst] = {0, 0, 0, 0};
+  Int_t IWhichObs[] = {0, 0, 0, 0};
 
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
@@ -83,9 +78,10 @@ void CombineUnfoldedMeasurements(TFile *outFile, TString isParton = "Parton")
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
       NamEst[y] = AnalysisConstants::years[y];
+      std::cout<< NamEst[y]<<endl;
       TFile *file = TFile::Open(TString::Format("%s/%s/Unfolding_Nominal/OutputFile%s.root",
                                                 baseInputDir.Data(),
-                                                AnalysisConstants::years[y].Data(),
+                                                NamEst[y].Data(),
                                                 isParton.Data()));
 
 
@@ -111,14 +107,14 @@ void CombineUnfoldedMeasurements(TFile *outFile, TString isParton = "Parton")
       file->Close();
       for (unsigned int i = 0; i < variation_dirs.size(); i++)
       {
-        std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/Unfold_%s/OutputFile%s", baseInputDir.Data(), AnalysisConstants::years[y].Data(), variation_dirs[i].Data()), isParton.Data());
+        std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/Unfold_%s/OutputFile", baseInputDir.Data(), NamEst[y].Data(), variation_dirs[i].Data()), isParton.Data());
         for (int jvar=0; jvar<variationFiles.size(); jvar++)
         {
           NamUnc[i + 1] = AnalysisConstants::variations[i];
           TFile *file = TFile::Open(TString::Format("%s/%s/Unfold_%s/%s",
                                                   baseInputDir.Data(),
                                                   AnalysisConstants::years[y].Data(),
-                                                  variations[i].Data(),
+                                                  variation_dirs[i].Data(),
                                                   variationFiles[jvar].Data()));
           f = (TH1F *)file->Get(TString::Format("hUnf_%s",
                                                 AnalysisConstants::unfoldingVariables[var].Data()));
