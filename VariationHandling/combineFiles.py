@@ -63,3 +63,4 @@ for mJJCut in mJJCuts:
         else:
             print(ifile, file_name)
             os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu.root')
+    break

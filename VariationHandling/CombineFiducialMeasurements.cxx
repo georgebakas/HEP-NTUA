@@ -88,7 +88,7 @@ void CombineFiducialMeasurements(TFile *outFile)
                                                 AnalysisConstants::years[y].Data(),
                                                 variable.Data()));
 
-                                                
+
                                                 //AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
                                                 //AnalysisConstants::years[y].Data()));
       TH1F *f = (TH1F *)file->Get(TString::Format("Signal_%s",

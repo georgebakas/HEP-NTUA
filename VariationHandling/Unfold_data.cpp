@@ -25,6 +25,8 @@
 
 using namespace std;
 
+#include "UseTUnfoldDensity.cpp"
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -80,24 +82,27 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
   else tempFileName = "_"+inputFile;
 
 
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
                                                         {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
+                                                        {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
+                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
+                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
-
-
-
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
-                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
-                                                {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+  std::vector< std::vector <Float_t> > const BND_reco ={{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
+                                                        {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
+                                                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
+                                                        {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
+                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
+                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
 
 
 
@@ -116,17 +121,16 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
   //get the number of bins for each
   int NBINS[BND_reco.size()];
   int NBINS_GEN[BND_gen.size()];
-  const int NVAR = 7;
+  const int NVAR = 10;
   for (int i = 0; i<BND_reco.size(); i++)
   	NBINS[i] = BND_reco[i].size()-1;
   for (int i = 0; i<BND_gen.size(); i++)
   	NBINS_GEN[i] = BND_gen[i].size()-1;
 
   TH1F *inSig[BND_reco.size()], *hSig[BND_reco.size()], *hSig_Init[BND_reco.size()];
-  TString variable[NVAR] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1","jetY0", "jetY1"};
-  TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen", "genjetPt0", "genjetPt1","genjetY0", "genjetY1"};
-  TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton", "partonPt0", "partonPt1","partonY0", "partonY1"};
-
+  TString variable[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
+  TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1","chiParton", "cosThetaParton_0", "cosThetaParton_1"};
+  TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1", "chiParticle", "cosThetaParticle_0", "cosThetaParticle_1"};
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
   //handle responses efficiency, acceptance
   TH2F *hResponse[BND_reco.size()];
@@ -230,7 +234,7 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
   else if(unfoldMethod ==3) unfMethodStr = "_RhoMethod";
   //TFile *gfile = TFile::Open("2016/output_2016_mcSig_nom_reduced.root");
   TFile *outf;
-  if (dir.EqualTo("Nominal")) tempFileName = "_";
+  if (dir.EqualTo("Nominal")) inputFile = "";
 
   if(!isNorm) outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFile%s%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
   else outf = TFile::Open(TString::Format("%s/Unfolding_%s/OutputFileNormalised%s%s.root", year.Data(), dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
@@ -298,6 +302,8 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
     cout<<"entering unfolding method!"<<endl;
 
     hUnf[ivar] = new TH1F(TString::Format("hUnf_%s", variable[ivar].Data()), TString::Format("hUnf_%s", variable[ivar].Data()), NBINS_GEN[ivar], tempBNDGen);
+
+    /*
     if(unfoldMethod ==1)
     	hUnf[ivar] = unfoldedOutput(hResponse[ivar], hSig[ivar], tempBNDGen, NBINS_GEN[ivar], variable[ivar]);
     else if(unfoldMethod ==2)
@@ -311,7 +317,9 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
     	hUnf[ivar]->GetXaxis()->SetTitle("|"+variable[ivar]+"|");
     else
     	hUnf[ivar]->GetXaxis()->SetTitle(TString::Format("%s (GeV)", variable[ivar].Data()));
+    */
 
+    hUnf[ivar] = UnfoldDensity(hResponse[ivar], hSig[ivar], variable[ivar], tempVar);
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 

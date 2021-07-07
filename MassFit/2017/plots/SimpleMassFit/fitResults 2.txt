@@ -1,0 +1,14 @@
+Signal strength: r = 0.650442 ± 0.0215916
+
+  RooFitResult: minimized FCN value: -28463.2, estimated distance to minimum: 3.23381e-05
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0
+
+    Floating Parameter    FinalValue +/-  Error
+  --------------------  --------------------------
+            kMassResol    1.0282e+00 +/-  3.26e-02
+            kMassScale    1.0263e+00 +/-  2.32e-03
+               kQCD_2b    9.9427e-01 +/-  1.47e+00
+            nFitBkg_2b    6.3467e+02 +/-  1.84e+02
+            nFitQCD_2b    2.7499e+03 +/-  2.08e+02
+             nFitSig2b    5.8505e+03 +/-  1.63e+02
