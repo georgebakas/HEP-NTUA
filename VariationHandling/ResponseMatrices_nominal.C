@@ -198,7 +198,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
     trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
 
 
-    float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
+  float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
 	float weights = XSEC/norm;
 
 	//for parton matching

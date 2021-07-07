@@ -172,19 +172,49 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
       hResponse[ivar]->Add(hResponse_sem[ivar]);
       hResponse[ivar]->Add(hResponse_dil[ivar]);
 
+      
       efficiency[ivar] = (TEfficiency*)eff_had[ivar]->Clone();
-      efficiency[ivar]->Add(*eff_sem[ivar]);
-      efficiency[ivar]->Add(*eff_dil[ivar]);
+      *efficiency[ivar] += (*eff_sem[ivar]);
+      *efficiency[ivar] += (*eff_dil[ivar]);
 
       acceptance[ivar] = (TEfficiency*)acc_had[ivar]->Clone();
-      acceptance[ivar]->Add(*acc_sem[ivar]);
-      acceptance[ivar]->Add(*acc_dil[ivar]);
+      *acceptance[ivar] += (*acc_sem[ivar]);
+      *acceptance[ivar] += (*acc_dil[ivar]); 
 
       cout<<"----"<<variable[ivar]<<"----"<<endl;
       cout<<"Integral responses: "<<hResponse[ivar]->Integral()<<endl;
       cout<<"Entries responses: "<<hResponse[ivar]->GetEntries()<<endl;
 
-      TCanvas *can_acc, *can_eff;
+      /*
+      TH1F *hNumerator_eff = (TH1F*)eff_had[ivar]->GetPassedHistogram();
+      hNumerator_eff->Add((TH1F*)eff_sem[ivar]->GetPassedHistogram());
+      hNumerator_eff->Add((TH1F*)eff_dil[ivar]->GetPassedHistogram());
+
+      TH1F *hDenom_eff = (TH1F*)eff_had[ivar]->GetTotalHistogram();
+      hDenom_eff->Add((TH1F*)eff_sem[ivar]->GetTotalHistogram());
+      hDenom_eff->Add((TH1F*)eff_dil[ivar]->GetTotalHistogram());
+
+      TH1F *hNumerator_acc = (TH1F*)acc_had[ivar]->GetPassedHistogram();
+      hNumerator_acc->Add((TH1F*)acc_sem[ivar]->GetPassedHistogram());
+      hNumerator_acc->Add((TH1F*)acc_dil[ivar]->GetPassedHistogram());
+
+      TH1F *hDenom_acc = (TH1F*)acc_had[ivar]->GetTotalHistogram();
+      hDenom_acc->Add((TH1F*)acc_sem[ivar]->GetTotalHistogram());
+      hDenom_acc->Add((TH1F*)acc_dil[ivar]->GetTotalHistogram());
+
+      cout<<eff_had[ivar]->GetWeight()<<endl;
+      cout<<eff_sem[ivar]->GetWeight()<<endl;
+      cout<<eff_dil[ivar]->GetWeight()<<endl;
+      cout<<"entries den"<<hDenom_eff->GetEntries()<<endl;
+      cout<<"integral den"<<hDenom_eff->Integral()<<endl;
+
+      cout<<"entries num"<<hNumerator_eff->GetEntries()<<endl;
+      cout<<"integral num"<<hNumerator_eff->Integral()<<endl; 
+
+      efficiency[ivar] = new TEfficiency(*hNumerator_eff, *hDenom_eff);
+      acceptance[ivar] = new TEfficiency(*hNumerator_acc, *hDenom_acc); */
+
+      TCanvas *can_acc, *can_eff; 
       if(variable[ivar].EqualTo("jetPt0"))
       {
         can_acc = new TCanvas("acc", "acc", 900, 600);
