@@ -1,4 +1,4 @@
-#include "../../BASE.h"
+#include "BASE.h"
 
 #include <iostream>
 
@@ -24,7 +24,6 @@ void DoCombineEfficiency(TFile *outFile)
   const TString ForUni = "pb";
 
   static const Int_t NumEst = AnalysisConstants::years.size();
-  std::cout << "Skata" << std::endl;
   TString NamEst[NumEst];
   for (unsigned int i = 0; i < AnalysisConstants::years.size(); i++)
   {

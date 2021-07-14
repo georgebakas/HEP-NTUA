@@ -1,4 +1,4 @@
-#include "../../BASE.h"
+#include "BASE.h"
 
 #include <iostream>
 
@@ -9,16 +9,6 @@
 
 #include "Blue.h"
 
-#include "../../BASE.h"
-
-#include <iostream>
-
-#include <TString.h>
-#include <TFile.h>
-#include <TH1F.h>
-#include <TGraph.h>
-
-#include "Blue.h"
 
 void DoCombineAcceptance(TFile *outFile)
 {
@@ -35,7 +25,6 @@ void DoCombineAcceptance(TFile *outFile)
   const TString ForUni = "pb";
 
   static const Int_t NumEst = AnalysisConstants::years.size();
-  std::cout << "Skata" << std::endl;
   TString NamEst[NumEst];
   for (unsigned int i = 0; i < AnalysisConstants::years.size(); i++)
   {

@@ -30,6 +30,7 @@ namespace AnalysisConstants_UL
   std::vector<TString> axisTitles;
 
   std::vector<TString> partonVariables;
+  std::vector<TString> particleVariables;
   std::vector<TString> partonAxisTitles;
 
   std::vector<bool> axisInLogScale;
@@ -210,22 +211,30 @@ namespace AnalysisConstants_UL
     //variables.push_back("YStar");
     variables.push_back("cosTheta_0");
     variables.push_back("cosTheta_1");
-    variables.push_back("chi");
-    variables.push_back("leadingJetMassSoftDrop");
-    variables.push_back("subleadingJetMassSoftDrop");
-    
-    partonVariables.push_back("leadingPartonPt");
-    partonVariables.push_back("subleadingPartonPt");
-    partonVariables.push_back("yJJ");
+    variables.push_back("chi"); 
+
+
+    partonVariables.push_back("partonPt0");
+    partonVariables.push_back("partonPt1");
+    partonVariables.push_back("yTTbarParton");
     partonVariables.push_back("ptTTbarParton");
-    partonVariables.push_back("mJJ");
-    partonVariables.push_back("leadingPartonY");
-    partonVariables.push_back("subleadingPartonY");
-    partonVariables.push_back("leadingPartonCosThetaStar");
-    partonVariables.push_back("subleadingPartonCosThetaStar");
-    partonVariables.push_back("YStar");
-    partonVariables.push_back("leadingPartonMass");
-    partonVariables.push_back("subleadingPartonMass");
+    partonVariables.push_back("mTTbarParton");
+    partonVariables.push_back("partonY0");
+    partonVariables.push_back("partonY1");
+    partonVariables.push_back("cosThetaParton_0");
+    partonVariables.push_back("cosThetaParton_1");
+    partonVariables.push_back("chiParton");
+
+    particleVariables.push_back("genjetPt0");
+    particleVariables.push_back("genjetPt1");
+    particleVariables.push_back("yJJGen");
+    particleVariables.push_back("ptJJGen");
+    particleVariables.push_back("mJJGen");
+    particleVariables.push_back("genjetY0");
+    particleVariables.push_back("genjetY1");
+    particleVariables.push_back("cosThetaParticle_0");
+    particleVariables.push_back("cosThetaParticle_1");
+    particleVariables.push_back("chiParticle");
 
     axisTitles.push_back("Leading jet Pt (GeV)");
     axisTitles.push_back("Subleading jet Pt (GeV)");
