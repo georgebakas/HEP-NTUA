@@ -186,6 +186,7 @@ void CombineYearlyFiducialMeasurements(TString variation="Nominal")
       for (Int_t i = 0; i < NumEst; i++)
       {
         myBlue->FillEst(i, &XEst[ind]);
+        cout<< XEst[ind] <<endl;
         ind = ind + NumUnc + 1;
       }
       /*
@@ -215,8 +216,8 @@ void CombineYearlyFiducialMeasurements(TString variation="Nominal")
       myBlue->GetUncert(unc);
       myBlue->GetCov(cov);
       myBlue->GetRho(rho);
-      //myBlue->SetPrintLevel(1);
-      //myBlue->InspectResult();
+      myBlue->SetPrintLevel(1);
+      myBlue->InspectResult();
 
       //rho->Print();
       //std::cout << "Covariance" << std::endl;
