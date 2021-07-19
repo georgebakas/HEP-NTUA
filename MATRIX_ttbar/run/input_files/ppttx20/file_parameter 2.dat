@@ -1,0 +1,65 @@
+process_class                   =       pp-ttx+X
+E                               =       6500.
+coll_choice                     =       1
+N_f                             =       5
+N_f_active                      =       5
+ckm_choice                      =       0
+
+# switch for jet algorithms and corresponding parameters
+
+jet_algorithm                   =       3
+jet_R_definition                =       0
+jet_R                           =       0.4
+parton_y_max                    =       1.e99
+parton_eta_max                  =       1.e99
+
+# defintion of observed particles and cuts in terms of 'number of particles according to definition'
+
+define_pT jet                   =       25.
+define_eta jet                  =       4.5
+define_y jet                    =       1.e99
+n_observed_min jet              =       0
+n_observed_max jet              =       99
+
+# ..._qTcut only used if QT subtraction is used
+
+switch_qTcut                    =       1
+n_qTcut                         =       96
+min_qTcut                       =       0.05
+step_qTcut                      =       0.01
+
+# the following cuts cut_... are only used if defined in 'user/specify.cuts.cxx'
+
+# there are no specific cuts for on-shell ttx production
+
+# factorization and renormalization scales in test integration
+
+scale_fact                      =       173.3
+scale_ren                       =       173.3
+dynamic_scale                   =       0
+
+# factorization and renormalization scales in CV integration (scale variations, cut_pT variation in QT subtraction, results also for distributions)
+
+switch_CV                        =      5                       % default: (5) 7-point variation;  for 9-point variation (6)
+dynamic_scale_CV                 =      0                       % same as dynamic_scale (set by MATRIX to the same anyway)
+prefactor_CV                     =      1                       % change central value by a factor (useful for dynamical scale)
+n_scales_CV                      =      7                       % default: 7-point variation needs 7 scales
+variation_factor_CV             =       2                       % determines the size of the variation; usually (default) central scale are varied by a factor of 2
+
+# switch for distributions, if defined in 'file_distribution.dat' and 'file_dddistribution.dat'
+switch_distribution             =       0
+switch_output_distribution      =       0
+
+
+type_perturbative_order         =       LO
+LHAPDFname                      =       NNPDF30_lo_as_0118
+LHAPDFsubset                    =       0
+
+type_perturbative_order         =       NLO
+LHAPDFname                      =       NNPDF30_nlo_as_0118
+LHAPDFsubset                    =       0
+
+type_perturbative_order         =       NNLO
+LHAPDFname                      =       NNPDF30_nnlo_as_0118
+LHAPDFsubset                    =       0
+

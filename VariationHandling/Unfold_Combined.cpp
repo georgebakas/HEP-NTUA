@@ -110,7 +110,7 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
     TFile *inf_had = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic%s.root", years[iy].Data(), dir.Data(), tempFileName.Data()));
     TFile *inf_sem = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic%s.root", years[iy].Data(), dir.Data(), tempFileName.Data()));
     TFile *inf_dil = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu%s.root", years[iy].Data(), dir.Data(), tempFileName.Data()));
-    
+
     LUMI += luminosity["luminosity"+years[iy]];
     //get response matrix
     for(int ivar = 0; ivar<BND_reco.size(); ivar++)
@@ -138,17 +138,20 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
         */
 
        // read efficiency and acceptance from combined directories
-       TFile *acc_inf = TFile::Open(TString::Format("AcceptanceCombined/%s/CombAcceptance_%s_ResponsesEfficiency_TTToHadronic_%s.root",
-                                    dir.Data(), variable[ivar].Data(), inputFile.Data()));
-       
-       TFile *eff_inf = TFile::Open(TString::Format("EfficiencyCombined/%s/CombEfficiency_%s_ResponsesEfficiency_TTToHadronic_%s.root",
-                                    dir.Data(), variable[ivar].Data(), inputFile.Data()));
+       cout<< TString::Format("AcceptanceCombined/%s/CombAcceptance%s_%s_ResponsesEfficiency_%s.root",
+                                    dir.Data(), varParton.Data(), variable[ivar].Data(), inputFile.Data()) <<endl;
+
+       TFile *acc_inf = TFile::Open(TString::Format("AcceptanceCombined/%s/CombAcceptance%s_%s_ResponsesEfficiency_%s.root",
+                                    dir.Data(), varParton.Data(), variable[ivar].Data(), inputFile.Data()));
+
+       TFile *eff_inf = TFile::Open(TString::Format("EfficiencyCombined/%s/CombEfficiency%s_%s_ResponsesEfficiency_%s.root",
+                                    dir.Data(), varParton.Data(), variable[ivar].Data(), inputFile.Data()));
        acceptance[ivar] = (TH1F*)acc_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
        efficiency[ivar] = (TH1F*)eff_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
 
     }
   }
-  
+
 
   TUnfold *unf[BND_reco.size()];
 
@@ -227,7 +230,7 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
         hUnf[ivar]->SetBinError(i, TMath::Sqrt(sqrt1+sqrt2));
   	  }
     }
-    
+
     //draw the unfolded and extrapolated with the mc result
     can[ivar] = new TCanvas(TString::Format("can_%s",variable[ivar].Data()),TString::Format("can_%s",variable[ivar].Data()) , 800,600);
     can[ivar]->cd();
