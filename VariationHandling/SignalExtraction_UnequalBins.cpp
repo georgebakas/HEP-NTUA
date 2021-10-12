@@ -148,7 +148,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         }
     }
     else
-     for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
+        for(int i=0; i<hQ_rebinned->GetNbinsX(); i++) SF[i] = 1;
 
     hQ_rebinned->Scale(1./hQ_rebinned->Integral());  //this is how you get the shape
     /*
@@ -167,16 +167,16 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
         //cout<<NQCD2_reduced[year.Data()] * oldContent *SF[i]<<endl;
         //cout<<"i: "<<i+1<<", with content: "<<newContent<<endl;
         float newError   = TMath::Sqrt(TMath::Power(oldError*SF[i]*NQCD*corrected_rYield,2)+
-                                       TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
-                                       TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
+                                    TMath::Power(NQCD_error*oldContent*SF[i]*corrected_rYield,2) +
+                                    TMath::Power(corrected_error*NQCD*oldContent*SF[i],2));
 
-        /*cout<<"bin: "<<i+1<<endl;
+        cout<<"bin: "<<i+1<<endl;
         cout<<"oldContent: "<<oldContent<<" ± "<<oldError<<endl;
         cout<<"oldContent * SF: "<<oldContent *SF[i]<<" with oldError * SF:"<<oldError*SF[i]<<endl;
         cout<<"NQCD: "<<NQCD<<" ± "<<NQCD_error<<endl;
         cout<<"corrected_rYield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
         cout<<"scale factor: "<<SF[i]<<endl;
-        cout<<"new Content: "<<newContent<<" with error: "<<newError<<endl;*/
+        cout<<"new Content: "<<newContent<<" with error: "<<newError<<endl;
 
         hQ_rebinned->SetBinContent(i+1, newContent);
         hQ_rebinned->SetBinError(i+1, newError);

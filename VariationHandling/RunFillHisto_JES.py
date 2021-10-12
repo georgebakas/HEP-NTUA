@@ -8,7 +8,7 @@ print(f'Argument list: {str(sys.argv)}')
 
 year = sys.argv[1]
 allFiles = []
-mJJCuts = [1000, 1200, 1400, 1600, 1800, 2000]
+mJJCuts = [1000]#, 1200, 1400, 1600, 1800, 2000]
 
 #for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/ipapakri/ttbar/MC/Signal/{}/*.root'.format(year), recursive=True)):
 #for ifile, file_name in enumerate(glob.iglob('/eos/cms/store/user/gbakas/ttbar/topTagger/ul-{}/Signal/*.root'.format(year), recursive=True)):

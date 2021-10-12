@@ -528,6 +528,10 @@ void ResponseMatrices_bTag(TString file_name, TString ttbar_process, TString yea
   trCnt->SetBranchAddress("genEvtWeight"   ,&genEvtWeightCnt);
   int NNCnt = trCnt->GetEntries();
 
+  /*
+  float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
+	float weights = XSEC/norm;
+  */
   for(int iev = 0; iev < NNCnt; iev++)
   {
 	  trCnt->GetEntry(iev);

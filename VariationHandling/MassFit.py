@@ -12,7 +12,7 @@ weightType = sys.argv[2]
 allFiles = []
 
 ps_weights = {2:"isrRedHi", 3:"fsrRedHi", 4:"isrRedLo", 5:"fsrRedLo", 6:"isrDefHi", 7:"fsrDefHi",
-              8:"isrDefLo", 9:"fsrDefLo", 10:"isrConHi", 11:"fsrConHi", 12:"isrConLo", 13:"fsrConLo"}
+            8:"isrDefLo", 9:"fsrDefLo", 10:"isrConHi", 11:"fsrConHi", 12:"isrConLo", 13:"fsrConLo"}
 
 for ifile, file_name in enumerate(glob.iglob('{}/{}/SignalTemplates_*.root'.format(year,weightType), recursive=True)):
 

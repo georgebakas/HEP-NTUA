@@ -1,4 +1,4 @@
-#include "../../BASE.h"
+#include "BASE.h"
 
 #include <iostream>
 
@@ -7,14 +7,7 @@
 #include <TH1F.h>
 #include <TGraph.h>
 
-#include "Blue.h"
-
-//Combine cross section ta the fiducial level
-
-TH1F *GetCrossSection(TH1F *f)
-{
-  f->Scale();
-}
+//Combine cross section ta the fiducial level without using the Blue method 
 
 std::vector<TString> listFiles(const char *dirname="", const char *var="", const char *ext=".root")
 {
@@ -54,7 +47,7 @@ void CombineFiducialMeasurements(TFile *outFile)
   std::vector<TString> variation_dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
 
 
-  static const Int_t NumEst = AnalysisConstants::years.size();
+  const Int_t NumEst = 4;//AnalysisConstants::years.size();
   TString NamEst[NumEst];
   for (unsigned int i = 0; i < AnalysisConstants::years.size(); i++)
   {
@@ -78,53 +71,62 @@ void CombineFiducialMeasurements(TFile *outFile)
     std::vector<TH1F *> uncHistograms;
     std::vector<TGraph *> weightGraphs;
     TString variable = AnalysisConstants::unfoldingVariables[var];
+
     std::cout << "variable: " << variable << std::endl;
 
     for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
     {
-      NamEst[y] = AnalysisConstants::years[y];
+      NamEst[y] = AnalysisConstants::years[y];        
       TFile *file = TFile::Open(TString::Format("%s/%s/Nominal/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_.root",
                                                 baseInputDir.Data(),
                                                 AnalysisConstants::years[y].Data(),
                                                 variable.Data()));
-
-
-                                                //AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                                //AnalysisConstants::years[y].Data()));
-      TH1F *f = (TH1F *)file->Get(TString::Format("Signal_%s",
+      
+      
+      TH1F *f = (TH1F *)file->Get(TString::Format("hSignal_%s",
                                                   variable.Data()));
-
+      cout << AnalysisConstants::years[y]<< endl;
+      for (int ibin=1; ibin<=f->GetNbinsX(); ibin++ )
+      {
+        cout<< f->GetBinContent(ibin) << " err: "<< f->GetBinError(ibin) <<endl;
+      }
+      cout<<"integral: "<< f->Integral()<<endl;
       //convert to differential cross section
-      f->Scale(1. / AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]], "width");
+      //f->Scale(1. / AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]], "width");
 
       f->SetDirectory(0);
       f->SetName(TString::Format("%s_%s",
-                                 f->GetName(),
-                                 AnalysisConstants::years[y].Data()));
+                                f->GetName(),
+                                AnalysisConstants::years[y].Data()));
       originalHistograms.push_back(f);
 
       TGraph *g = new TGraph(f->GetNbinsX());
       g->SetName(TString::Format("weights_%s_%s",
-                                 AnalysisConstants::unfoldingVariables[var].Data(),
-                                 AnalysisConstants::years[y].Data()));
+                                AnalysisConstants::unfoldingVariables[var].Data(),
+                                AnalysisConstants::years[y].Data()));
 
       weightGraphs.push_back(g);
 
       file->Close();
       for (unsigned int i = 0; i < variation_dirs.size(); i++)
       {
-        std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/%s/FiducialMeasurement/%s", baseInputDir.Data(), year.Data(), variation_dirs[i].Data()), variable.Data());
+        std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/%s/FiducialMeasurement/", 
+                                                    baseInputDir.Data(), 
+                                                    AnalysisConstants::years[y].Data(), 
+                                                    variation_dirs[i].Data()), 
+                                                    variable.Data());
+
         for (int jvar=0; jvar<variationFiles.size(); jvar++)
         {
           NamUnc[i + 1] = AnalysisConstants::variations[i];
-          TFile *file = TFile::Open(TString::Format("%s/%s/%s/FiducialMeasurement/",
+          TFile *file = TFile::Open(TString::Format("%s/%s/%s/FiducialMeasurement/%s",
                                                   baseInputDir.Data(),
                                                   AnalysisConstants::years[y].Data(),
-                                                  variations[i].Data(),
+                                                  variation_dirs[i].Data(),
                                                   variationFiles[jvar].Data()));
-          f = (TH1F *)file->Get(TString::Format("Signal_%s",
+          f = (TH1F *)file->Get(TString::Format("hSignal_%s",
                                                 AnalysisConstants::unfoldingVariables[var].Data()));
-          f->Scale(1. / AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]], "width");
+          //f->Scale(1. / AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]], "width");
 
           f->SetDirectory(0);
           f->SetName(TString::Format("%s_%s_%s",
@@ -136,6 +138,7 @@ void CombineFiducialMeasurements(TFile *outFile)
         }
       }
     }
+    cout<< uncHistograms.size()<<endl;
 
     Float_t *bins = GetHistogramBins(originalHistograms[0]);
 
@@ -146,6 +149,76 @@ void CombineFiducialMeasurements(TFile *outFile)
                                   originalHistograms[0]->GetNbinsX(),
                                   bins);
 
+    cout<< "--------------------------------" << endl;
+    for (int ibin = 1; ibin <=originalHistograms[0]->GetNbinsX(); ibin++)
+    {
+      resultsHisto -> SetBinContent(ibin, originalHistograms[0]->GetBinContent(ibin) + 
+                                  originalHistograms[1]->GetBinContent(ibin) +
+                                  originalHistograms[2]->GetBinContent(ibin) +
+                                  originalHistograms[3]->GetBinContent(ibin));
+
+      resultsHisto -> SetBinError(ibin, TMath::Sqrt(TMath::Power(originalHistograms[0]->GetBinError(ibin), 2) + 
+                                  TMath::Power(originalHistograms[1]->GetBinError(ibin), 2) +
+                                  TMath::Power(originalHistograms[2]->GetBinError(ibin), 2) +
+                                  TMath::Power(originalHistograms[3]->GetBinError(ibin), 2)) + 
+                                  // I have to input here the correlation coefficients 
+                                  2*(AnalysisConstants::correlations["Nominal"]).correlations[1]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[1]->GetBinError(ibin) + 
+                                  2*(AnalysisConstants::correlations["Nominal"]).correlations[2]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[2]->GetBinError(ibin) + 
+                                  2*(AnalysisConstants::correlations["Nominal"]).correlations[3]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
+                                  2*(AnalysisConstants::correlations["Nominal"]).correlations[6]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[2]->GetBinError(ibin) + 
+                                  2*(AnalysisConstants::correlations["Nominal"]).correlations[7]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
+                                  2*(AnalysisConstants::correlations["Nominal"]).correlations[11]*originalHistograms[2]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin));
+    
+      cout<< resultsHisto ->GetBinContent(ibin) << " with error "<<resultsHisto->GetBinError(ibin)<<endl;
+    
+    }
+
+    // now loop on all variations 
+    std::vector<TH1F *> uncHistograms_total;
+    for (int unc = 0; unc<AnalysisConstants::variations.size(); unc++)
+    { 
+      Float_t *bins = GetHistogramBins(originalHistograms[0]);
+      TH1F *f = new TH1F(TString::Format("combined_%s_%s",
+                                AnalysisConstants::variations[unc].Data(),
+                                AnalysisConstants::variables[var].Data()),
+                            TString::Format("combined_%s_%s",
+                                AnalysisConstants::variations[unc].Data(),
+                                AnalysisConstants::variables[var].Data()),
+                                originalHistograms[0]->GetNbinsX(),
+                                bins);
+      uncHistograms_total.push_back(f);
+    }
+
+    // per bin 
+    for (int bin = 1; bin <= originalHistograms[0]->GetNbinsX(); bin++)
+    {
+        // per variation 
+        for (unsigned int i = 0; i < AnalysisConstants::variations.size(); i++)
+        {
+          //this is to get it per year while looping on years
+          uncHistograms_total[i] -> SetBinContent(bin, 
+                                      uncHistograms[(0 * AnalysisConstants::variations.size()) + i]->GetBinContent(bin) +
+                                      uncHistograms[(1 * AnalysisConstants::variations.size()) + i]->GetBinContent(bin) +
+                                      uncHistograms[(2 * AnalysisConstants::variations.size()) + i]->GetBinContent(bin) +
+                                      uncHistograms[(3 * AnalysisConstants::variations.size()) + i]->GetBinContent(bin));
+
+          uncHistograms_total[i] -> SetBinError(bin, TMath::Sqrt(TMath::Power(uncHistograms[(0 * AnalysisConstants::variations.size()) + i]->GetBinError(bin), 2) + 
+                                      TMath::Power(uncHistograms[(1 * AnalysisConstants::variations.size()) + i]->GetBinError(bin), 2) +
+                                      TMath::Power(uncHistograms[(2 * AnalysisConstants::variations.size()) + i]->GetBinError(bin), 2) +
+                                      TMath::Power(uncHistograms[(3 * AnalysisConstants::variations.size()) + i]->GetBinError(bin), 2)) + 
+                                      // I have to input here the correlation coefficients 
+                                      2*(AnalysisConstants::correlations[AnalysisConstants::variations[i]]).correlations[1]*uncHistograms[(0 * AnalysisConstants::variations.size()) + i]->GetBinError(bin)*uncHistograms[(1 * AnalysisConstants::variations.size()) + i]->GetBinError(bin) + 
+                                      2*(AnalysisConstants::correlations[AnalysisConstants::variations[i]]).correlations[2]*uncHistograms[(2 * AnalysisConstants::variations.size()) + i]->GetBinError(bin)*uncHistograms[(2 * AnalysisConstants::variations.size()) + i]->GetBinError(bin) + 
+                                      2*(AnalysisConstants::correlations[AnalysisConstants::variations[i]]).correlations[3]*uncHistograms[(0 * AnalysisConstants::variations.size()) + i]->GetBinError(bin)*uncHistograms[(3 * AnalysisConstants::variations.size()) + i]->GetBinError(bin) + 
+                                      2*(AnalysisConstants::correlations[AnalysisConstants::variations[i]]).correlations[6]*uncHistograms[(1 * AnalysisConstants::variations.size()) + i]->GetBinError(bin)*uncHistograms[(2 * AnalysisConstants::variations.size()) + i]->GetBinError(bin) + 
+                                      2*(AnalysisConstants::correlations[AnalysisConstants::variations[i]]).correlations[7]*uncHistograms[(1 * AnalysisConstants::variations.size()) + i]->GetBinError(bin)*uncHistograms[(3 * AnalysisConstants::variations.size()) + i]->GetBinError(bin) + 
+                                      2*(AnalysisConstants::correlations[AnalysisConstants::variations[i]]).correlations[11]*uncHistograms[(2 * AnalysisConstants::variations.size()) + i]->GetBinError(bin)*uncHistograms[(3 * AnalysisConstants::variations.size()) + i]->GetBinError(bin));
+    
+        } 
+    }
+  
+
+    /*
     for (int bin = 1; bin <= originalHistograms[0]->GetNbinsX(); bin++)
     {
       std::cout << "Bin: " << bin << std::endl;
@@ -227,15 +300,21 @@ void CombineFiducialMeasurements(TFile *outFile)
       delete unc;
       delete myBlue;
       delete rho;
-    }
+    }*/
+
+    
+
     outFile->cd();
     resultsHisto->Write();
-    for (unsigned int i = 0; i < weightGraphs.size(); i++)
+    for (int unc = 0; unc<AnalysisConstants::variations.size(); unc++)
     {
-      weightGraphs[i]->Write();
+      uncHistograms_total[unc]->Write();
     }
 
     delete bins;
     delete resultsHisto;
+    
+
   }
+  outFile->Close();
 }

@@ -7,7 +7,7 @@ std::vector<TCanvas*> correlationCanvases;
 void draw(TString CAT, TString year, RooRealVar *x, RooDataHist &combData, RooSimultaneous &simPdf, RooCategory &sample)
 {
 	TCanvas *can = new TCanvas(TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()),
-	                           TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()), 800, 704);
+	                          TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()), 800, 704);
 	can->cd()->SetBottomMargin(0.32);
 
 	RooPlot* frame2b = x->frame();

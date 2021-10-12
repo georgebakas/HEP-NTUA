@@ -34,15 +34,13 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/combined/Histo_1000_*.root'.
         weight_sufix = dot_split[0]
         print(weight_sufix)
     else:
-        #TT, and TTJets files are handled below
         split_file_name = file_name.split('/')
         split_file_underscore = split_file_name[-1].split('_')
 
         print(split_file_underscore[1])
         tt_process_name = split_file_underscore[1]
 
-        dot_split = split_file_name[-1].replace('Histo_TTToHadronic_', '')
-        dot_split = dot_split.split('.')
+        dot_split = split_file_underscore[-1].split('.')
         weight_sufix = dot_split[0]
         print(weight_sufix)
 

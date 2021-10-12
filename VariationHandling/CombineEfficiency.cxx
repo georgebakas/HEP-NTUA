@@ -2,19 +2,43 @@
 
 #include <iostream>
 
-#include <TString.h>
-#include <TFile.h>
-#include <TH1F.h>
-#include <TGraph.h>
+#include "TString.h"
+#include "TFile.h"
+#include "TH1F.h"
+#include "TGraph.h"
+#include "TEfficiency.h"
 
-#include "Blue.h"
 
-void DoCombineEfficiency(TFile *outFile)
+std::vector<TString> listFiles(const char *dirname="", const char *var="", const char *ext=".root")
 {
-  AnalysisConstants::initConstants();
-  TString baseInputDir = AnalysisConstants::baseDir;
-  baseInputDir = TString::Format("%s/AnalysisFiles", baseInputDir.Data());
+  std::vector<TString> list_of_files;
+   TSystemDirectory dir(dirname, dirname);
+   TList *files = dir.GetListOfFiles();
+   if (files) {
+     TSystemFile *file;
+     TString fname;
+     TIter next(files);
+     while ((file=(TSystemFile*)next())) {
+       fname = file->GetName();
+       if (!file->IsDirectory() && fname.EndsWith(ext) && fname.Contains(var)) {
+         //cout << fname.Data() << endl;
+         list_of_files.push_back(fname.Data());
+       }
+     }
+   }
+   return list_of_files;
+}
 
+
+void CombineEfficiency(TString variation="Nominal", TString varParton="Parton")
+{ 
+
+  AnalysisConstants::initConstants();
+  //gSystem->Load("libBlue.so");
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
+
+  TString outFileDir = TString::Format("%sEfficiencyCombined/%s", baseInputDir.Data(), variation.Data());
   // Define formats for Figures and Latex file
   const TString ForVal = "%1.6f";
   const TString ForUnc = "%1.6f";
@@ -22,6 +46,7 @@ void DoCombineEfficiency(TFile *outFile)
   const TString ForRho = "%1.2f";
   const TString ForPul = ForRho;
   const TString ForUni = "pb";
+  //std::vector<TString> variation_dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
 
   static const Int_t NumEst = AnalysisConstants::years.size();
   TString NamEst[NumEst];
@@ -29,210 +54,150 @@ void DoCombineEfficiency(TFile *outFile)
   {
     NamEst[i] = AnalysisConstants::years[i];
   }
-  static const Int_t NumUnc = AnalysisConstants::variations.size() + 1;
+  static const Int_t NumUnc = 1; //AnalysisConstants::variations.size() + 1;
   TString NamUnc[NumUnc];
   NamUnc[0] = "Stat";
   static const Int_t NumObs = 1;
-  TString NamObs[NumObs];
-  static const Int_t LenXEst = NumEst * (NumUnc + 1);
-  Double_t XEst[LenXEst];
 
-  //Int_t IWhichObs[NumEst];
-  Int_t IWhichObs[NumEst] = {0, 0, 0, 0};
-
-  for (int i = 0; i < NumEst; i++)
-  {
-    IWhichObs[i] = 0;
-  }
-
+  //loop on all variables
   for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
+    TString NamObs[NumObs];
+    static const Int_t LenXEst = NumEst * (NumUnc + 1);
+    Double_t XEst[LenXEst];
+
+    Int_t IWhichObs[] = {0, 0, 0, 0};
     NamObs[0] = AnalysisConstants::unfoldingVariables[var];
-    std::vector<TH1F *> originalHistograms;
-    std::vector<TH1F *> uncHistograms;
-    std::vector<TGraph *> weightGraphs;
-    TString variable = AnalysisConstants::partonVariables[var];
+
+
+    TString variable = AnalysisConstants::unfoldingVariables[var];
+    // use 2018 as reference
+    std::vector<TString> variationFiles_Hadronic = listFiles(TString::Format("%s/2016_postVFP/Responses%s/",
+                                            baseInputDir.Data(), variation.Data()), "TTToHadronic");
+    
+    std::vector<TString> variationFiles_SemiLeptonic = listFiles(TString::Format("%s/2016_postVFP/Responses%s/",
+                                            baseInputDir.Data(), variation.Data()), "TTToSemiLeptonic");
+    
+    std::vector<TString> variationFiles_Dilepton = listFiles(TString::Format("%s/2016_postVFP/Responses%s/",
+                                            baseInputDir.Data(), variation.Data()), "TTTo2L2Nu");
+
     std::cout << "variable: " << variable << std::endl;
+    std::cout << variationFiles_Hadronic.size() << std::endl;
+    std::cout << variationFiles_SemiLeptonic.size() << std::endl;
+    std::cout << variationFiles_Dilepton.size() << std::endl;
 
-    for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
+    // loop on all files (same for each year)
+    for (unsigned int jvar=0; jvar<variationFiles_Hadronic.size(); jvar++)
     {
-      NamEst[y] = AnalysisConstants::years[y];
-      TFile *file = TFile::Open(TString::Format("%s/%s%s%s/EfficiencyAcceptance_Nominal_%s.root",
-                                                baseInputDir.Data(),
-                                                AnalysisConstants::years[y].Data(),
-                                                (AnalysisConstants::isUL ? "/UL" : ""),
-                                                AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                                AnalysisConstants::years[y].Data()));
 
-      //Get numerator and denominator
-      TH1F *numerator = MergeHistograms<TH1F>(file,
-                                              AnalysisConstants::years[y],
-                                              TString::Format("EfficiencyNom_%s", variable.Data()),
-                                              AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]]);
-      numerator->Sumw2();
-      TH1F *denominator = MergeHistograms<TH1F>(file,
-                                                AnalysisConstants::years[y],
-                                                TString::Format("EfficiencyDenom_%s", variable.Data()),
-                                                AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]]);
-      denominator->Sumw2();
-      //Get binning
-      float bins[numerator->GetNbinsX() + 1];
-      for (int bin = 0; bin < numerator->GetNbinsX(); bin++)
+      std::vector<TH1F *> originalHistograms;
+      //std::vector<TH1F *> uncHistograms;
+      std::vector<TGraph *> weightGraphs;
+      TFile *outFile = TFile::Open(TString::Format("%s/CombEfficiency%s_%s_%s",
+                                    outFileDir.Data(),
+                                    varParton.Data(),
+                                    variable.Data(), variationFiles_Hadronic[jvar].Data()), "RECREATE");
+      
+      //find each file per year
+      for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
       {
-        bins[bin] = numerator->GetBinLowEdge(bin + 1);
-      }
-      bins[numerator->GetNbinsX()] = numerator->GetBinLowEdge(numerator->GetNbinsX() + 1);
-      //efficiency
-      TH1F *f = new TH1F("Efficiency", "Efficiency", numerator->GetNbinsX(), bins);
-      f->Divide(numerator, denominator, 1., 1., "B");
+        NamEst[y] = AnalysisConstants::years[y];
+        TFile *inf_had = TFile::Open(TString::Format("%s/%s/Responses%s/%s",
+                                  baseInputDir.Data(),
+                                  AnalysisConstants::years[y].Data(),
+                                  variation.Data(),
+                                  variationFiles_Hadronic[jvar].Data()));
 
-      f->SetDirectory(0);
-      f->SetName(TString::Format("%s_%s",
-                                 f->GetName(),
-                                 AnalysisConstants::years[y].Data()));
-      originalHistograms.push_back(f);
+        TFile *inf_sem = TFile::Open(TString::Format("%s/%s/Responses%s/%s",
+                                  baseInputDir.Data(),
+                                  AnalysisConstants::years[y].Data(),
+                                  variation.Data(),
+                                  variationFiles_SemiLeptonic[jvar].Data()));
 
-      TGraph *g = new TGraph(f->GetNbinsX());
-      g->SetName(TString::Format("weights_Efficiency_%s_%s",
-                                 variable.Data(),
-                                 AnalysisConstants::years[y].Data()));
-      weightGraphs.push_back(g);
-      file->Close();
+        TFile *inf_dil = TFile::Open(TString::Format("%s/%s/Responses%s/%s",
+                                  baseInputDir.Data(),
+                                  AnalysisConstants::years[y].Data(),
+                                  variation.Data(),
+                                  variationFiles_Dilepton[jvar].Data()));
+        TString tempVar;
+        if (varParton.EqualTo("Parton")) tempVar = AnalysisConstants::partonVariables[var];
+        else tempVar = AnalysisConstants::particleVariables[var];
 
-      for (unsigned int i = 0; i < AnalysisConstants::variations.size(); i++)
-      {
-        NamUnc[i + 1] = AnalysisConstants::variations[i];
-        file = TFile::Open(TString::Format("%s/%s%s%s/EfficiencyAcceptance_%s_%s.root",
-                                           baseInputDir.Data(),
-                                           AnalysisConstants::years[y].Data(),
-                                           (AnalysisConstants::isUL ? "/UL" : ""),
-                                           AnalysisConstants::currentlyWorkingDirectory[AnalysisConstants::years[y]].Data(),
-                                           AnalysisConstants::variations[i].Data(),
-                                           AnalysisConstants::years[y].Data()));
+        TEfficiency *eff_had = (TEfficiency*)inf_had->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+        TEfficiency *eff_sem = (TEfficiency*)inf_sem->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
+        TEfficiency *eff_dil = (TEfficiency*)inf_dil->Get(TString::Format("Efficiency%s_%s",varParton.Data(), tempVar.Data()));
 
-        numerator = MergeHistograms<TH1F>(file,
-                                          AnalysisConstants::years[y],
-                                          TString::Format("EfficiencyNom_%s", variable.Data()),
-                                          AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]]);
+        TEfficiency *efficiency = (TEfficiency*)eff_had->Clone();
+        *efficiency += (*eff_sem);
+        *efficiency += (*eff_dil); 
+
+        //Get numerator and denominator
+        TH1F *numerator = (TH1F*)efficiency->GetPassedHistogram();
         numerator->Sumw2();
-        denominator = MergeHistograms<TH1F>(file,
-                                            AnalysisConstants::years[y],
-                                            TString::Format("EfficiencyDenom_%s", variable.Data()),
-                                            AnalysisConstants::luminositiesSR[AnalysisConstants::years[y]]);
+        TH1F *denominator = (TH1F*)efficiency->GetTotalHistogram();
         denominator->Sumw2();
-        f = new TH1F("Efficiency", "Efficiency", numerator->GetNbinsX(), bins);
+        
+        //Get binning
+        float bins[numerator->GetNbinsX() + 1];
+        for (int bin = 0; bin < numerator->GetNbinsX(); bin++)
+        {
+          bins[bin] = numerator->GetBinLowEdge(bin + 1);
+        }
+        bins[numerator->GetNbinsX()] = numerator->GetBinLowEdge(numerator->GetNbinsX() + 1);
+        //Efficiency
+        TH1F *f = new TH1F("Efficiency", "Efficiency", numerator->GetNbinsX(), bins);
         f->Divide(numerator, denominator, 1., 1., "B");
 
         f->SetDirectory(0);
-        f->SetName(TString::Format("%s_%s_%s",
-                                   f->GetName(),
-                                   AnalysisConstants::variations[i].Data(),
-                                   AnalysisConstants::years[y].Data()));
-        std::cout << TString::Format("%s_%s_%s",
-                                     f->GetName(),
-                                     AnalysisConstants::variations[i].Data(),
-                                     AnalysisConstants::years[y].Data())
-                  << std::endl;
-        uncHistograms.push_back(f);
-        file->Close();
+        f->SetName(TString::Format("%s_%s",
+                                  f->GetName(),
+                                  AnalysisConstants::years[y].Data()));
+        originalHistograms.push_back(f);
+
+        TGraph *g = new TGraph(f->GetNbinsX());
+        g->SetName(TString::Format("weights_Efficiency_%s_%s",
+                                  variable.Data(),
+                                  AnalysisConstants::years[y].Data()));
+        weightGraphs.push_back(g);
+
+        inf_had->Close();
+        inf_sem->Close();
+        inf_dil->Close();
+       
       }
-    }
+
 
     Float_t *bins = GetHistogramBins(originalHistograms[0]);
 
-    TH1F *resultsHisto = new TH1F(TString::Format("Efficiency_%s",
-                                                  variable.Data()),
-                                  TString::Format("Efficiency_%s",
-                                                  variable.Data()),
+    TH1F *resultsHisto = new TH1F(TString::Format("combined_%s",
+                                                  AnalysisConstants::unfoldingVariables[var].Data()),
+                                  TString::Format("combined_%s",
+                                                  AnalysisConstants::unfoldingVariables[var].Data()),
                                   originalHistograms[0]->GetNbinsX(),
                                   bins);
-
-    std::cout << resultsHisto->GetName() << std::endl;
-
-    for (int bin = 1; bin <= originalHistograms[0]->GetNbinsX(); bin++)
+    cout<< "--------------------------------" << endl;
+    for (int ibin = 1; ibin <=originalHistograms[0]->GetNbinsX(); ibin++)
     {
-      for (unsigned int h = 0; h < originalHistograms.size(); h++)
-      {
-        XEst[(NumUnc + 1) * h] = originalHistograms[h]->GetBinContent(bin);
-        XEst[(NumUnc + 1) * h + 1] = originalHistograms[h]->GetBinError(bin);
-        std::cout << "Value: " << (NumUnc + 1) * h << " " << XEst[(NumUnc + 1) * h] << std::endl;
-        std::cout << "Statistical uncertainty: " << (NumUnc + 1) * h + 1 << " " << XEst[(NumUnc + 1) * h + 1] << std::endl;
-        for (unsigned int i = 0; i < AnalysisConstants::variations.size(); i++)
-        {
-          XEst[(NumUnc + 1) * h + (i + 2)] = TMath::Abs((uncHistograms[(h * AnalysisConstants::variations.size()) + i]->GetBinContent(bin) - originalHistograms[h]->GetBinContent(bin)));
-          std::cout << AnalysisConstants::variations[i] << " " << (NumUnc + 1) * h + (i + 2) << " " << XEst[(NumUnc + 1) * h + (i + 2)] << std::endl;
-        }
-        std::cout << std::endl;
-      }
+    resultsHisto -> SetBinContent(ibin, originalHistograms[0]->GetBinContent(ibin) + 
+                                originalHistograms[1]->GetBinContent(ibin) +
+                                originalHistograms[2]->GetBinContent(ibin) +
+                                originalHistograms[3]->GetBinContent(ibin));
 
-      // Construct Object
-
-      Blue *myBlue = new Blue(NumEst, NumUnc, NumObs, &IWhichObs[0]);
-      myBlue->SetFormat(ForVal, ForUnc, ForWei, ForRho, ForPul, ForUni);
-      myBlue->FillNamObs(&NamObs[0]);
-      myBlue->FillNamEst(&NamEst[0]);
-      myBlue->FillNamUnc(&NamUnc[0]);
-      // Fill estimates
-      Int_t ind = 0;
-      for (Int_t i = 0; i < NumEst; i++)
-      {
-        myBlue->FillEst(i, &XEst[ind]);
-        ind = ind + NumUnc + 1;
-      }
-
-      // Fill correlations
-      for (int k = 0; k < NumUnc; k++)
-      {
-        if (k == 0)
-        {
-          myBlue->FillCor(k, 0.0);
-        }
-        else
-        {
-          myBlue->FillCor(k, &(AnalysisConstants::correlations[AnalysisConstants::variations[k - 1]].correlations[0]));
-        }
-      }
-
-      myBlue->FixInp();
-      //myBlue->PrintCor();
-      myBlue->PrintCov();
-      myBlue->PrintCov();
-      //myBlue->PrintStatus();
-      myBlue->Solve();
-
-      TMatrixD *result = new TMatrixD(NumObs, NumUnc + 1);
-      TMatrixD *unc = new TMatrixD(NumObs, 1);
-      TMatrixD *cov = new TMatrixD(NumEst, NumEst);
-      TMatrixD *rho = new TMatrixD(NumEst, NumEst);
-      myBlue->PrintResult();
-      myBlue->GetResult(result);
-      myBlue->GetUncert(unc);
-      myBlue->GetCov(cov);
-      myBlue->GetRho(rho);
-      //result->Print();
-      //unc->Print();
-      //rho->Print();
-      //cov->Print();
-      //myBlue->PrintResult();
-      resultsHisto->SetBinContent(bin, result->operator()(0, 0));
-      resultsHisto->SetBinError(bin, unc->operator()(0, 0));
-      std::cout << "results:" << std::endl;
-
-      TMatrixD *weights = new TMatrixD(NumEst, NumObs);
-      myBlue->GetWeight(weights);
-      weights->Print();
-
-      for (unsigned int i = 0; i < weightGraphs.size(); i++)
-      {
-        weightGraphs[i]->SetPoint(bin - 1, resultsHisto->GetBinCenter(bin), weights->operator()(i, 0));
-      }
-
-      delete result;
-      delete unc;
-      delete myBlue;
-      delete rho;
+    resultsHisto -> SetBinError(ibin, TMath::Sqrt(TMath::Power(originalHistograms[0]->GetBinError(ibin), 2) + 
+                                TMath::Power(originalHistograms[1]->GetBinError(ibin), 2) +
+                                TMath::Power(originalHistograms[2]->GetBinError(ibin), 2) +
+                                TMath::Power(originalHistograms[3]->GetBinError(ibin), 2)) + 
+                                  // I have to input here the correlation coefficients 
+                                2*(AnalysisConstants::correlations["Nominal"]).correlations[1]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[1]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations["Nominal"]).correlations[2]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[2]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations["Nominal"]).correlations[3]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations["Nominal"]).correlations[6]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[2]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations["Nominal"]).correlations[7]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations["Nominal"]).correlations[11]*originalHistograms[2]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin));
+    
+    cout<< resultsHisto ->GetBinContent(ibin) << " with error "<<resultsHisto->GetBinError(ibin)<<endl;
+    
     }
-
     outFile->cd();
     resultsHisto->Write();
     for (unsigned int i = 0; i < weightGraphs.size(); i++)
@@ -242,10 +207,6 @@ void DoCombineEfficiency(TFile *outFile)
 
     delete bins;
     delete resultsHisto;
+    }
   }
-}
-
-void CombineEfficiency(TFile *outFile)
-{
-  DoCombineEfficiency(outFile);
 }

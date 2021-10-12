@@ -163,7 +163,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
     trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
 
 
-    float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
+  float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
 	float weights = XSEC/norm;
 
 
@@ -496,7 +496,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
             else extra_weight = (*scaleWeights)[iweight];
 				    hReco[iweight][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*extra_weight);
           }
-			}
+			  }
 		  }
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
 		  //fill also response matrix
@@ -563,6 +563,8 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
   float partonPtCnt[2], partonEtaCnt[2],partonYCnt[2];
   float genEvtWeightCnt;
   float partonPhiCnt[2], partonMCnt[2];
+  //ps_weights
+  std::vector<float> *psWeightsCnt(0),*pdfWeightsCnt(0), *scaleWeightsCnt(0);
   //tree for eventCounter
   trCnt->SetBranchAddress("ptTopParton"    ,&partonPtCnt);
   trCnt->SetBranchAddress("phiTopParton"   ,&partonPhiCnt);
@@ -573,6 +575,10 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
   trCnt->SetBranchAddress("yTTbarParton"   ,&yTTbarPartonCnt);
   trCnt->SetBranchAddress("ptTTbarParton"  ,&ptTTbarPartonCnt);
   trCnt->SetBranchAddress("genEvtWeight"   ,&genEvtWeightCnt);
+  trCnt->SetBranchAddress("psWeights"      ,&psWeightsCnt);
+  trCnt->SetBranchAddress("pdfWeights"     ,&pdfWeightsCnt);
+  trCnt->SetBranchAddress("scaleWeights"   ,&scaleWeightsCnt);
+  // I need to read once again the type of weight, etc
   int NNCnt = trCnt->GetEntries();
 
   for(int iev = 0; iev < NNCnt; iev++)
@@ -589,6 +595,8 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
 	  	leadingPt = 1;
 	  	subleadingPt = 0;
 	  }
+    float extra_weight(1);
+
 	  TLorentzVector p4TParton[2], p4T_ZMFPartonCnt[2], p4TTbarParton;
       p4TParton[leadingPt].SetPtEtaPhiM(partonPtCnt[leadingPt], partonEtaCnt[leadingPt], partonPhiCnt[leadingPt], partonMCnt[leadingPt]);
    	  p4TParton[subleadingPt].SetPtEtaPhiM(partonPtCnt[subleadingPt], partonEtaCnt[subleadingPt], partonPhiCnt[subleadingPt], partonMCnt[subleadingPt]);
@@ -618,7 +626,10 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
       {
 	  	  if(partonCuts)
         {
-			   hParton[iweight][ivar]->Fill(xPartonAllCnt[ivar], genEvtWeightCnt);
+          if(weightType.EqualTo("PSWeights")) extra_weight = (*psWeightsCnt)[iweight];
+          else if(weightType.EqualTo("PDFWeights")) extra_weight = (*pdfWeightsCnt)[iweight];
+          else extra_weight = (*scaleWeightsCnt)[iweight];
+			    hParton[iweight][ivar]->Fill(xPartonAllCnt[ivar], genEvtWeightCnt*extra_weight);
         }
       }
 	  }

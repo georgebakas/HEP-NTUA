@@ -127,7 +127,8 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
 
         // add all (regardless of ttbar process) to the hResponse per variable
         // responses are already scaled to XSEC and lumi
-        hResponse[ivar] = (TH2F*)hResponse_had[iy][ivar]->Clone();
+        if (iy == 0) hResponse[ivar] = (TH2F*)hResponse_had[iy][ivar]->Clone();
+        else hResponse[ivar] ->Add(hResponse_had[iy][ivar]);
         hResponse[ivar]->Add(hResponse_sem[iy][ivar]);
         hResponse[ivar]->Add(hResponse_dil[iy][ivar]);
 
@@ -140,11 +141,11 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
        // read efficiency and acceptance from combined directories
        TFile *acc_inf = TFile::Open(TString::Format("AcceptanceCombined/%s/CombAcceptance_%s_ResponsesEfficiency_TTToHadronic_%s.root",
                                     dir.Data(), variable[ivar].Data(), inputFile.Data()));
-       
-       TFile *eff_inf = TFile::Open(TString::Format("EfficiencyCombined/%s/CombEfficiency_%s_ResponsesEfficiency_TTToHadronic_%s.root",
+      
+      TFile *eff_inf = TFile::Open(TString::Format("EfficiencyCombined/%s/CombEfficiency_%s_ResponsesEfficiency_TTToHadronic_%s.root",
                                     dir.Data(), variable[ivar].Data(), inputFile.Data()));
-       acceptance[ivar] = (TH1F*)acc_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
-       efficiency[ivar] = (TH1F*)eff_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
+      acceptance[ivar] = (TH1F*)acc_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
+      efficiency[ivar] = (TH1F*)eff_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
 
     }
   }
@@ -162,8 +163,9 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
-    signalFile = TFile::Open(TString::Format("FiducialCombined/%s/Comb_%s_SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
-                      dir.Data(), variable[ivar].Data(), variable[ivar].Data(), inputFile.Data()));
+    signalFile = TFile::Open("testFile_.root");
+    //signalFile = TFile::Open(TString::Format("FiducialCombined/%s/Comb_%s_SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
+    //                  dir.Data(), variable[ivar].Data(), variable[ivar].Data(), inputFile.Data()));
 
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
@@ -173,7 +175,9 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
     std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBNDGen);
 
     //from signal file get the initial S_j with j bins ~ 2* parton bins (i)
-    hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("combined_%s",variable[ivar].Data()));
+    hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("combined_%s_%s",
+                                    inputFile.Data(),
+                                    variable[ivar].Data()));
 
     //set the new content and get acceptance
 

@@ -28,9 +28,17 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
   cout<<"file_name: "<<file_name<<endl;
   cout<<"ttbar_process: "<<ttbar_process<<endl;
   float triggerFloat;
-  if(year.Contains("2016")) triggerFloat = 2;
-  else triggerFloat = 5;
-
+  float triggerFloatCR;
+  if(year.Contains("2016"))
+  {
+    triggerFloatCR = 4;
+    triggerFloat = 2;
+  } 
+  else
+  {
+    triggerFloat = 5;
+    triggerFloatCR = 5;
+  } 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
@@ -224,7 +232,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
 	  bool recoCuts;
 	  bool massCut = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
 	  bool tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
-	  recoCuts = nJets > 1 && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && mJJ> mJJCut && massCut && nLeptons==0 && (*bit)[triggerFloat];
+	  recoCuts = nJets > 1 && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 400 && (*jetPt)[1] > 400 && mJJ> mJJCut && massCut && nLeptons==0;
 	  bool deepCSV = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
 					 (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
 
@@ -233,7 +241,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
     bool btagCut;
 	  btagCut = deepCSV;
     //Signal Region 2btags
-		if(recoCuts && btagCut && tTaggerCut)
+		if(recoCuts && btagCut && tTaggerCut && (*bit)[triggerFloat])
 		{
 		  for(int ivar = 0; ivar < NVAR; ivar++)
 	  	{
@@ -243,7 +251,7 @@ void FillHistograms_Reduced_bTag(TString file_name, TString ttbar_process, TStri
 		  }
 	  }
     //Control Region 0btag
-    if(recoCuts && revertBtag && tTaggerCut)
+    if(recoCuts && revertBtag && tTaggerCut && (*bit)[triggerFloatCR])
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{

@@ -27,7 +27,7 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
 
 
   TFile *inf_had, *inf_sem, *inf_dil;
-
+  cout<< TString::Format("%s/%s/combined/Histo_1000_TT%s.root", year.Data(), dir.Data(), tempFileName.Data()) << endl;
   inf_had = TFile::Open(TString::Format("%s/%s/combined/Histo_1000_TT%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal Hadronic
   //inf_sem = TFile::Open(TString::Format("%s/%s/Histo_1000_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal SemiLeptonic
   //inf_dil = TFile::Open(TString::Format("%s/%s/Histo_1000_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data())); //nominal 2L2Nu
@@ -39,7 +39,7 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   RooRealVar *kMassResol = new RooRealVar("kMassResol","kMassResol",1.0,0.5,1.5);
   kMassScale->setConstant(kTRUE);
   kMassResol->setConstant(kTRUE);
-
+  
   RooRealVar *YieldTT;
   RooDataHist *roohMC;
 
@@ -52,8 +52,8 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   w->import(*x);
 
 
-  for(int icat=0;icat<3;icat++) {
-
+  for(int icat=2;icat<3;icat++) 
+  {
     if(icat ==1) continue;
     TH1F *hMC_yield = (TH1F*)inf_had->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
     //h_sem = (TH1F*)inf_sem->Get(TString::Format("hWt_mTop_Leading_%dbtag", icat));
