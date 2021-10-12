@@ -33,9 +33,9 @@ void CreateBkgTemplates(TString year, TString CUT = "")
   cout<<"CR Entries from data: "<<hData->GetEntries()<<endl;
   //because of contamination we need to substract the ttbar from the CR.
   //we do that by extracting the 0btag th1 using nominal or mtt mc
-  TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data()));  //nominal
+  TFile *infTTMC = TFile::Open(TString::Format("../VariationHandling/%s/Nominal/combined/Histo_1000_TT.root",year.Data()));  //nominal
   //TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt
-  TH1F *hCR_MC = (TH1F*)infTTMC->Get("hWt_mTop_0btag_expYield");
+  TH1F *hCR_MC = (TH1F*)infTTMC->Get("hWt_mTop_Leading_0btag");
 
   TFile *infBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));
   TH1F *hCR_MCSubdominant = (TH1F*)infBkg->Get("hWt_mTop_0btag_expYield");
@@ -130,8 +130,8 @@ void CreateBkgTemplates(TString year, TString CUT = "")
 
     RooDataHist *roohBkg = new RooDataHist("roohistBkg", "roohistBkg", RooArgList(*x), hBkg);
 
-    RooRealVar mW("bkg_meanW_" + CAT, "meanW_" + CAT, 73, 70, 90);
-    RooRealVar sW("bkg_sigmaW_" + CAT, "sigmaW_" + CAT, 5, 0, 20);
+    RooRealVar mW("bkg_meanW_" + CAT, "meanW_" + CAT, 80, 70, 90);
+    RooRealVar sW("bkg_sigmaW_" + CAT, "sigmaW_" + CAT, 5, 0, 15);
     RooGaussian pdfW("bkg_pdfW_" + CAT, "bkg_pdfW_" + CAT, *x, mW, sW);
 
     RooRealVar mBkgTop("bkg_meanTop_" + CAT, "bkg_meanTop_" + CAT, 172, 150, 180);
