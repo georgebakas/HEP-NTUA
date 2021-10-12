@@ -197,6 +197,12 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
     if(dir.EqualTo("PDFWeights")) tempFileName_signal = "_pdfVariation"+inputFile;
     else if (dir.EqualTo("ScaleWeights")) tempFileName_signal = "_scaleWeight"+inputFile;
     else if (dir.EqualTo("Nominal")) tempFileName_signal = "";
+    else if (dir.EqualTo("bTagVariation"))
+    {
+      if (inputFile.EqualTo("up")) inputFile = "Up";
+      else inputFile = "Down";
+      tempFileName_signal = "_bTag"+inputFile;
+    } 
     else tempFileName_signal = "_"+inputFile;
     if (dir.EqualTo("Nominal"))
     {

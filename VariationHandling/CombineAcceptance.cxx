@@ -34,7 +34,8 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
 
   AnalysisConstants::initConstants();
   //gSystem->Load("libBlue.so");
-  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
   baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
   TString outFileDir = TString::Format("%sAcceptanceCombined/%s", baseInputDir.Data(), variation.Data());
@@ -201,7 +202,7 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
     {
       weightGraphs[i]->Write();
     }
-
+    outFile->Close();
     delete bins;
     delete resultsHisto;
     }
