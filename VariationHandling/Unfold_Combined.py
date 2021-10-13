@@ -7,7 +7,7 @@ allFiles = []
 ps_weights = {2:"isrRedHi", 3:"fsrRedHi", 4:"isrRedLo", 5:"fsrRedLo", 6:"isrDefHi", 7:"fsrDefHi",
             8:"isrDefLo", 9:"fsrDefLo", 10:"isrConHi", 11:"fsrConHi", 12:"isrConLo", 13:"fsrConLo"}
 
-def unfold(year, weightType):
+def unfold(year, weightType, isParton):
     for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*TTToHadronic*.root'.format(year,weightType), recursive=True)):
         print(file_name)
         if weightType != 'SystematicsFiles':
@@ -38,7 +38,7 @@ def unfold(year, weightType):
             print('weight_suffix', weight_sufix)
             #(TString inYear, TString dir, TString inputFile, bool isThreeProcesses, bool isParton = true, int unfoldMethod=1)
 
-        os.system(f'root -l -b -q \'Unfold_Combined.cpp(\"{weightType}\",\"{weight_sufix}\", true)\'')
+        os.system(f'root -l -b -q \'Unfold_Combined.cpp(\"{weightType}\",\"{weight_sufix}\", "{isParton}")\'')
         #break
 
 
@@ -67,5 +67,6 @@ if __name__ == '__main__':
     parton_particle_types = ['Parton', 'Particle']
 
     for itype in types:
-        if 'ScaleWeights' in itype: 
-            unfold(year, itype)
+        #if 'ScaleWeights' in itype: 
+        unfold(year, itype, 'true')
+        unfold(year, itype, 'false')

@@ -35,7 +35,7 @@ using std::endl;
 
 TString varParton;
 
-void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
+void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
 {
   bool isNorm = false;
   initFilesMapping();
@@ -77,7 +77,7 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
 
   //whether parton or particle, from the choice of the user
   varParton = "Parton";
-  if(!isParton) varParton = "Particle";
+  if(isParton.EqualTo("false")) varParton = "Particle";
 
   //get the number of bins for each
   int NBINS[BND_reco.size()];
@@ -161,8 +161,8 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
       }
 
       
-      acceptance[ivar] = (TH1F*)acc_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
-      efficiency[ivar] = (TH1F*)eff_inf->Get(TString::Format("combined_%s", variable[ivar].Data()));
+      acceptance[ivar] = (TH1F*)acc_inf->Get("acceptance");
+      efficiency[ivar] = (TH1F*)eff_inf->Get("efficiency");
 
     }
   }
@@ -219,6 +219,7 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
                                     tempFileName_signal.Data(),
                                     variable[ivar].Data()));
     }
+    TH1F *hSignal_init = (TH1F*)hSig[ivar]->Clone(TString::Format("hSig_init_%s", variable[ivar].Data()));
     //set the new content and get acceptance
 
     cout<<"The variable is: "<<variable[ivar]<<endl;
@@ -234,12 +235,12 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
 
       hSig[ivar]->SetBinContent(j, acc*oldContent);
       //error propagation
-      if(accError > 0)
-        hSig[ivar]->SetBinError(j,TMath::Sqrt(TMath::Power(accError*oldContent,2) + TMath::Power(oldContentError*acc,2)));
-  	  else
-  	  	hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
+      if(accError > 0) hSig[ivar]->SetBinError(j,TMath::Sqrt(TMath::Power(accError*oldContent,2) + TMath::Power(oldContentError*acc,2)));
+      else hSig[ivar]->SetBinError(j, hSig[ivar]->GetBinError(j));
 
     }
+    TH1F *hSignal_acceptance = (TH1F*)hSig[ivar]->Clone(TString::Format("hSig_acceptance_%s", variable[ivar].Data()));
+    
     TString tempVar;
     if(isParton)
       tempVar = variableParton[ivar];
@@ -252,7 +253,9 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
 
-    for(int i =1; i<hUnf[ivar]->GetNbinsX()+1; i++)
+    TH1F *hUnf_init = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnf_init_%s", variable[ivar].Data()));
+
+    for(int i=1; i<hUnf[ivar]->GetNbinsX()+1; i++)
     {
       float eff = efficiency[ivar]->GetBinContent(i);
       /* If eff --> TEfficiency object: GetEfficiency(i); */
@@ -287,25 +290,26 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
     closure_pad1->SetBottomMargin(0.005);
     closure_pad1->cd();
 
-    hUnfFinal[ivar]= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s", variable[ivar].Data()));
+    TH1F *hUnfFinal_notScaled= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s_notScaled", variable[ivar].Data()));
     //this is differential cross section dsigma / dX  = S_i / L * dXi
     hUnf[ivar]->Scale(1/LUMI, "width");
+    hUnfFinal[ivar]= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s", variable[ivar].Data()));
+    
 
-    if(isNorm)
-      hUnf[ivar]->Scale(LUMI/hUnfFinal[ivar]->Integral());
+    hUnf[ivar]->Scale(LUMI/hUnfFinal[ivar]->Integral());
 
     hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s",varParton.Data(),variable[ivar].Data()));
+
+    TH1F *hUnf_norm = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfNorm_%s", variable[ivar].Data()));
+    hUnf_norm->Scale(1./hUnf[ivar]->Integral());
     /*
     cout<<"-----Integral------"<<endl;
     Double_t error, integral;
     integral = hUnf[ivar]->IntegralAndError(1,hUnf[ivar]->GetNbinsX(), error);
     cout<<variable[ivar].Data()<<" hUnfolded: "<<integral<<" ± "<<error<<endl; */
 
-
-    if(!isNorm)
-      hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
-    else
-      hUnf[ivar]->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{d#chi}");
+    hUnf[ivar]->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi}");
+    hUnf_norm->GetYaxis()->SetTitle("#frac{1}{#sigma} #frac{d#sigma}{d#chi}");
 
   	hUnf[ivar]->Draw("same");
 
@@ -338,12 +342,24 @@ void Unfold_Combined(TString dir, TString inputFile, bool isParton = true)
     CMS_lumi(closure_pad1, iPeriod, iPos);
 
     outf->cd();
+    // fiducial signal
+    hSignal_init->Write(TString::Format("hSigInit_%s", variable[ivar].Data()));
 
-    hUnf[ivar]->Write(TString::Format("hUnfoldNorm_%s", variable[ivar].Data()));
+    // fiducial times acceptance 
+    hSignal_acceptance->Write(TString::Format("hSigAcceptance_%s", variable[ivar].Data()));
+
+    // unfolded before efficiency 
+    hUnf_init->Write(TString::Format("hUnfInit_%s", variable[ivar].Data()));
+
+    //unfolded after efficiency (not scaled)
+    hUnfFinal_notScaled->Write(TString::Format("hUnfoldFinal_NoScaled_%s", variable[ivar].Data()));
+
+    //unfolded after efficiency (scaled)
     hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
-    //if(!isNorm) can[ivar]->Print(TString::Format("%s/%sMeasurements/Data/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    //else can[ivar]->Print(TString::Format("%s/%sMeasurements/Data_Norm/Unfold_%s%s.pdf",year.Data(),varParton.Data(),variable[ivar].Data(), unfMethodStr.Data()), "pdf");
-    //outf->Close();
+    
+    // normalised result
+    hUnf_norm->Write(TString::Format("hUnfoldNorm_%s", variable[ivar].Data()));
+    
     signalFile->Close();
   }
 

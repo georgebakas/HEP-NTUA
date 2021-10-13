@@ -90,7 +90,8 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
     for (unsigned int jvar=0; jvar<variationFiles_Hadronic.size(); jvar++)
     {
 
-      std::vector<TH1F *> originalHistograms;
+      std::vector<TH1F *> originalHistograms_numerator;
+      std::vector<TH1F *> originalHistograms_denominator;
       //std::vector<TH1F *> uncHistograms;
       std::vector<TGraph *> weightGraphs;
       TFile *outFile = TFile::Open(TString::Format("%s/CombAcceptance%s_%s_%s",
@@ -141,67 +142,85 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
           bins[bin] = numerator->GetBinLowEdge(bin + 1);
         }
         bins[numerator->GetNbinsX()] = numerator->GetBinLowEdge(numerator->GetNbinsX() + 1);
-        //Acceptance
-        TH1F *f = new TH1F("Acceptance", "Acceptance", numerator->GetNbinsX(), bins);
-        f->Divide(numerator, denominator, 1., 1., "B");
+        //f->Divide(numerator, denominator, 1., 1., "B");
 
-        f->SetDirectory(0);
-        f->SetName(TString::Format("%s_%s",
-                                  f->GetName(),
+        numerator->SetDirectory(0);
+        numerator->SetName(TString::Format("%s_%s",
+                                  numerator->GetName(),
                                   AnalysisConstants::years[y].Data()));
-        originalHistograms.push_back(f);
 
-        TGraph *g = new TGraph(f->GetNbinsX());
-        g->SetName(TString::Format("weights_Acceptance_%s_%s",
-                                  variable.Data(),
+        denominator->SetName(TString::Format("%s_%s",
+                                  denominator->GetName(),
                                   AnalysisConstants::years[y].Data()));
-        weightGraphs.push_back(g);
+
+        originalHistograms_numerator.push_back(numerator);
+        originalHistograms_denominator.push_back(denominator);
 
         inf_had->Close();
         inf_sem->Close();
         inf_dil->Close();
-       
       }
 
-
-    Float_t *bins = GetHistogramBins(originalHistograms[0]);
+    Float_t *bins = GetHistogramBins(originalHistograms_numerator[0]);
 
     TH1F *resultsHisto = new TH1F(TString::Format("combined_%s",
                                                   AnalysisConstants::unfoldingVariables[var].Data()),
                                   TString::Format("combined_%s",
                                                   AnalysisConstants::unfoldingVariables[var].Data()),
-                                  originalHistograms[0]->GetNbinsX(),
+                                  originalHistograms_numerator[0]->GetNbinsX(),
                                   bins);
-    cout<< "--------------------------------" << endl;
-    for (int ibin = 1; ibin <=originalHistograms[0]->GetNbinsX(); ibin++)
-    {
-    resultsHisto -> SetBinContent(ibin, originalHistograms[0]->GetBinContent(ibin) + 
-                                originalHistograms[1]->GetBinContent(ibin) +
-                                originalHistograms[2]->GetBinContent(ibin) +
-                                originalHistograms[3]->GetBinContent(ibin));
-
-    resultsHisto -> SetBinError(ibin, TMath::Sqrt(TMath::Power(originalHistograms[0]->GetBinError(ibin), 2) + 
-                                TMath::Power(originalHistograms[1]->GetBinError(ibin), 2) +
-                                TMath::Power(originalHistograms[2]->GetBinError(ibin), 2) +
-                                TMath::Power(originalHistograms[3]->GetBinError(ibin), 2)) + 
-                                  // I have to input here the correlation coefficients 
-                                2*(AnalysisConstants::correlations[variation]).correlations[1]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[1]->GetBinError(ibin) + 
-                                2*(AnalysisConstants::correlations[variation]).correlations[2]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[2]->GetBinError(ibin) + 
-                                2*(AnalysisConstants::correlations[variation]).correlations[3]*originalHistograms[0]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
-                                2*(AnalysisConstants::correlations[variation]).correlations[6]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[2]->GetBinError(ibin) + 
-                                2*(AnalysisConstants::correlations[variation]).correlations[7]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
-                                2*(AnalysisConstants::correlations[variation]).correlations[11]*originalHistograms[2]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin));
     
-    cout<< resultsHisto ->GetBinContent(ibin) << " with error "<<resultsHisto->GetBinError(ibin)<<endl;
+    cout<< "--------------------------------" << endl;
+    TH1F *numerator_all = new TH1F("numerator_all", "numerator_all", originalHistograms_numerator[0]->GetNbinsX(), bins);
+    TH1F *denominator_all = new TH1F("denominator_all", "denominator_all", originalHistograms_numerator[0]->GetNbinsX(), bins);
+
+    for (int ibin = 1; ibin <=originalHistograms_numerator[0]->GetNbinsX(); ibin++)
+    {
+    
+    float numerator_content = originalHistograms_numerator[0]->GetBinContent(ibin) + 
+                                originalHistograms_numerator[1]->GetBinContent(ibin) +
+                                originalHistograms_numerator[2]->GetBinContent(ibin) +
+                                originalHistograms_numerator[3]->GetBinContent(ibin);
+    float denominator_content = originalHistograms_denominator[0]->GetBinContent(ibin) + 
+                                originalHistograms_denominator[1]->GetBinContent(ibin) +
+                                originalHistograms_denominator[2]->GetBinContent(ibin) +
+                                originalHistograms_denominator[3]->GetBinContent(ibin);
+
+    float numerator_error = TMath::Sqrt(TMath::Power(originalHistograms_numerator[0]->GetBinError(ibin), 2) + 
+                                TMath::Power(originalHistograms_numerator[1]->GetBinError(ibin), 2) +
+                                TMath::Power(originalHistograms_numerator[2]->GetBinError(ibin), 2) +
+                                TMath::Power(originalHistograms_numerator[3]->GetBinError(ibin), 2)) + 
+                                  // I have to input here the correlation coefficients 
+                                2*(AnalysisConstants::correlations[variation]).correlations[1]*originalHistograms_numerator[0]->GetBinError(ibin)*originalHistograms_numerator[1]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[2]*originalHistograms_numerator[0]->GetBinError(ibin)*originalHistograms_numerator[2]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[3]*originalHistograms_numerator[0]->GetBinError(ibin)*originalHistograms_numerator[3]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[6]*originalHistograms_numerator[1]->GetBinError(ibin)*originalHistograms_numerator[2]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[7]*originalHistograms_numerator[1]->GetBinError(ibin)*originalHistograms_numerator[3]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[11]*originalHistograms_numerator[2]->GetBinError(ibin)*originalHistograms_numerator[3]->GetBinError(ibin);
+    
+    float denominator_error = TMath::Sqrt(TMath::Power(originalHistograms_denominator[0]->GetBinError(ibin), 2) + 
+                                TMath::Power(originalHistograms_denominator[1]->GetBinError(ibin), 2) +
+                                TMath::Power(originalHistograms_denominator[2]->GetBinError(ibin), 2) +
+                                TMath::Power(originalHistograms_denominator[3]->GetBinError(ibin), 2)) + 
+                                  // I have to input here the correlation coefficients 
+                                2*(AnalysisConstants::correlations[variation]).correlations[1]*originalHistograms_denominator[0]->GetBinError(ibin)*originalHistograms_denominator[1]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[2]*originalHistograms_denominator[0]->GetBinError(ibin)*originalHistograms_denominator[2]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[3]*originalHistograms_denominator[0]->GetBinError(ibin)*originalHistograms_denominator[3]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[6]*originalHistograms_denominator[1]->GetBinError(ibin)*originalHistograms_denominator[2]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[7]*originalHistograms_denominator[1]->GetBinError(ibin)*originalHistograms_denominator[3]->GetBinError(ibin) + 
+                                2*(AnalysisConstants::correlations[variation]).correlations[11]*originalHistograms_denominator[2]->GetBinError(ibin)*originalHistograms_denominator[3]->GetBinError(ibin);
+    
+    numerator_all->SetBinContent(ibin, numerator_content);
+    denominator_all->SetBinContent(ibin, denominator_content);
+    numerator_all->SetBinError(ibin, numerator_error);
+    denominator_all->SetBinError(ibin, denominator_error);
     
     }
+    numerator_all->Divide(denominator_all);
 
     outFile->cd();
-    resultsHisto->Write();
-    for (unsigned int i = 0; i < weightGraphs.size(); i++)
-    {
-      weightGraphs[i]->Write();
-    }
+    numerator_all->Write("acceptance");
+
     outFile->Close();
     delete bins;
     delete resultsHisto;

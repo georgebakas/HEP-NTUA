@@ -62,7 +62,7 @@ void Systematics_levels(TString year)
     //TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfold_%s", vars[i].Data()));
     //SignalHistograms_jetPt0_MassFitResults_SignalTemplates_TTToHadronic.
     TString fileName = TString::Format("%s/Nominal/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_.root",
-                                       year.Data(),vars[i].Data());
+                                      year.Data(),vars[i].Data());
 
     TFile *fNominal = TFile::Open(fileName);
     TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hSignal_%s", vars[i].Data()));
@@ -71,9 +71,9 @@ void Systematics_levels(TString year)
     for (int group = 0; group < groups.size(); group++)
     {
       TH1F *hSystematicsUp = (TH1F *)hNominal->Clone(TString::Format("%s %s Up", groups[group].Data(),
-                                                                             vars[i].Data()));
+                                                                            vars[i].Data()));
       TH1F *hSystematicsDown = (TH1F *)hNominal->Clone(TString::Format("%s %s Down", groups[group].Data(),
-                                                                               vars[i].Data()));
+                                                                            vars[i].Data()));
       TH1F *hSystematicsSym = (TH1F *)hNominal->Clone(TString::Format("%s %s Sym", groups[group].Data(),
                                                                               vars[i].Data()));
       hSystematicsUp->Reset();
@@ -139,9 +139,9 @@ void Systematics_levels(TString year)
                                    variationFiles[jfile].Data()); */
 
         fileName = TString::Format("%s/%s/FiducialMeasurement/%s",
-                                   year.Data(),
-                                   variation.Data(),
-                                   variationFiles[jfile].Data());
+                                  year.Data(),
+                                  variation.Data(),
+                                  variationFiles[jfile].Data());
         if (!fileName.Contains("Def") && variation.Contains("PS"))
           continue;
         

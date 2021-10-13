@@ -62,7 +62,7 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
     std::vector<TH1F *> groupHistogramsDown;
     std::vector<TH1F *> groupHistogramsSym;
 
-    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfoldNorm_%s", vars[i].Data()));
+    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfoldFinal_%s", vars[i].Data()));
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
@@ -148,7 +148,7 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
         if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_100.root")) continue;
         if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
         if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
-        TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfoldNorm_%s", vars[i].Data()));
+        TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfoldFinal_%s", vars[i].Data()));
         
 
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
@@ -159,9 +159,9 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
           double valuePull = (variationValue - nominalValue) / nominalValue;
           double variationErrorUp = groupHistogramsUp[group]->GetBinContent(bin + 1);
           double variationErrorDown = groupHistogramsDown[group]->GetBinContent(bin + 1);
-          //std::cout << nominalValue << " " << nominalError;
-          //std::cout << " " << variationValue << " " << valuePull;
-          //std::cout << " " << variationErrorUp << " " << variationErrorDown;
+          std::cout << nominalValue << " " << nominalError;
+          std::cout << " " << variationValue << " " << valuePull;
+          std::cout << " " << variationErrorUp << " " << variationErrorDown;
           if (nominalValue != 0)
           {
             if (valuePull >= 0)
