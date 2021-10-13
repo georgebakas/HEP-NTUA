@@ -36,7 +36,7 @@ std::vector<TString> listFiles(const char *dirname="", const char *var="", const
    return list_of_files;
 }
 
-void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
+void SystematicsUnfolding_levels(TString isParton = "Parton")
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
@@ -44,12 +44,15 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
   std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange};
 
-  TString outputDirectory = TString::Format("%s/results_unfolding_unc/", year.Data());
+  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling/";
+  TString outputDirectory = TString::Format("/UnfoldedCombined/results");
   //CheckAndCreateDirectory(outputDirectory);
+  
   const int NVAR = 10;
 
-  TString fileName = TString::Format("%s/Unfolding_Nominal/OutputFile%s.root",
-                                      year.Data(), isParton.Data());
+  TString fileName = TString::Format("%sUnfoldedCombined/Nominal/OutputFile%s.root", baseInputDir.Data(), isParton.Data());
+  TFile *fNominal = TFile::Open(fileName);
 
   for (int i = 0; i<NVAR; i++)
   {
@@ -59,18 +62,15 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
     std::vector<TH1F *> groupHistogramsDown;
     std::vector<TH1F *> groupHistogramsSym;
 
-    
-
-    TFile *fNominal = TFile::Open(fileName);
-    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfold_%s", vars[i].Data()));
+    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfoldNorm_%s", vars[i].Data()));
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
     {
       TH1F *hSystematicsUp = (TH1F *)hNominal->Clone(TString::Format("%s %s Up", groups[group].Data(),
-                                                                             vars[i].Data()));
+                                                                            vars[i].Data()));
       TH1F *hSystematicsDown = (TH1F *)hNominal->Clone(TString::Format("%s %s Down", groups[group].Data(),
-                                                                               vars[i].Data()));
+                                                                              vars[i].Data()));
       TH1F *hSystematicsSym = (TH1F *)hNominal->Clone(TString::Format("%s %s Sym", groups[group].Data(),
                                                                               vars[i].Data()));
       hSystematicsUp->Reset();
@@ -109,7 +109,7 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
     {
       //std::cout << "Variation: " << dirs[j] << std::endl;
       TString variation = dirs[j];
-      std::vector<TString> variationFiles = listFiles(TString::Format("%s/Unfolding_%s/",year.Data(), dirs[j].Data()), isParton.Data());
+      std::vector<TString> variationFiles = listFiles(TString::Format("UnfoldedCombined/%s/", dirs[j].Data()), isParton.Data());
 
       int group = -1;
       if (variation.Contains("Nominal"))
@@ -130,21 +130,26 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
 
       for(int jfile=0; jfile<variationFiles.size(); jfile++)
       {
-        /* fileName = TString::Format("%s/Unfolding_%s/%s",
-                                   year.Data(),
-                                   variation.Data(),
+        /* fileName = TString::Format("UnfoldedCombined/%s/%s",
+                                  variation.Data(),
                                    variationFiles[jfile].Data()); */
 
-        fileName = TString::Format("%s/Unfolding_%s/%s",
-                                   year.Data(),
-                                   variation.Data(),
-                                   variationFiles[jfile].Data());
+        fileName = TString::Format("UnfoldedCombined/%s/%s",
+                                  variation.Data(),
+                                  variationFiles[jfile].Data());
+        
         if (!fileName.Contains("Def") && variation.Contains("PS"))
           continue;
         
         TFile *f = TFile::Open(fileName);
-        //cout<<fileName<<endl;
-        TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfold_%s", vars[i].Data()));
+        
+        cout<<fileName<<endl;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_0.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_100.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
+        TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfoldNorm_%s", vars[i].Data()));
+        
 
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
         {
@@ -215,7 +220,7 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
     {
       groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
     }
-    TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.9);
+    TLegend *leg = new TLegend(0.7, 0.75, 0.9, 0.9);
     leg->AddEntry(groupHistogramsSym[0], groups[0], "f");
 
     for (int group = 1; group < groups.size(); group++)
@@ -226,9 +231,9 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
 
     leg->Draw();
 
-    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosity"+year]/1000);
+    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
     writeExtraText = true;
     CMS_lumi(c1, 4, 10);
-    c1->SaveAs(TString::Format("%s/Systematics%s_%s.png", outputDirectory.Data(), isParton.Data(), vars[i].Data()));
+    c1->SaveAs(TString::Format("%s%s/Systematics%s_%s.png", baseInputDir.Data(), outputDirectory.Data(), isParton.Data(), vars[i].Data()));
   }
 }

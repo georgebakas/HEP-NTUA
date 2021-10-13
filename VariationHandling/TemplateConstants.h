@@ -56,6 +56,7 @@ void initFilesMapping()
 	luminosity.insert(pair<TString, float>("luminosity2016_postVFP", 16500));
 	luminosity.insert(pair<TString, float>("luminosity2017", 41480));
 	luminosity.insert(pair<TString, float>("luminosity2018", 59830));
+	luminosity.insert(pair<TString, float>("luminosityAll", 137310));
 
 
 	luminosityCR.insert(pair<TString, float>("luminosity2016_preVFP", 1134));
