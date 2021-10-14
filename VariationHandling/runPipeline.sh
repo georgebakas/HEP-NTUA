@@ -9,7 +9,7 @@
 #./runAllResponses.sh
 
 # Create all combined files for reduced and extended 
-#./runCombineFiles.sh
+./runCombineFiles.sh
 
 # Create the mass fit signal templates from ttbar
 ./runCreateSignalTemplates.sh
