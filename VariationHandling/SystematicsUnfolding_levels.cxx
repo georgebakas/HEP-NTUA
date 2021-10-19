@@ -48,6 +48,8 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
   TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling/";
   TString outputDirectory = TString::Format("/UnfoldedCombined/results");
   //CheckAndCreateDirectory(outputDirectory);
+  TString histo_name = "hUnfoldFinal_";
+  //TString histo_name = "hSigInit_";
   
   const int NVAR = 10;
 
@@ -62,7 +64,7 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
     std::vector<TH1F *> groupHistogramsDown;
     std::vector<TH1F *> groupHistogramsSym;
 
-    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("hUnfoldFinal_%s", vars[i].Data()));
+    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
@@ -145,12 +147,22 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
         
         cout<<fileName<<endl;
         if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_0.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_1.root")) continue;
         if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_100.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
-        TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfoldFinal_%s", vars[i].Data()));
-        
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_56.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_57.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_35.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_42.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_76.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_59.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_58.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_86.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_93.root")) continue;
+        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
+        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
 
+
+        TH1F *hVariation = (TH1F *)f->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
         {
           double nominalValue = hNominal->GetBinContent(bin + 1);
@@ -159,9 +171,14 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
           double valuePull = (variationValue - nominalValue) / nominalValue;
           double variationErrorUp = groupHistogramsUp[group]->GetBinContent(bin + 1);
           double variationErrorDown = groupHistogramsDown[group]->GetBinContent(bin + 1);
-          std::cout << nominalValue << " " << nominalError;
-          std::cout << " " << variationValue << " " << valuePull;
-          std::cout << " " << variationErrorUp << " " << variationErrorDown;
+
+          //std::cout << nominalValue << " " << nominalError << endl;
+          //std::cout << " " << variationValue << " " << valuePull << endl;
+          std::cout << fabs(variationValue - nominalValue) /nominalValue << endl;
+          if (fabs(variationValue - nominalValue) /nominalValue > 0.7 ) 
+            std::cout << fileName <<endl;
+          
+          //std::cout << " " << variationErrorUp << " " << variationErrorDown;
           if (nominalValue != 0)
           {
             if (valuePull >= 0)
@@ -170,7 +187,7 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
               //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1);
               //std::cout << " " << groupHistogramsDown[group]->GetBinContent(bin + 1);
               groupHistogramsUp[group]->SetBinContent(bin + 1, variationErrorUp + (valuePull * valuePull));
-              //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1);
+              //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1) <<endl;
               //std::cout << " " << groupHistogramsDown[group]->GetBinContent(bin + 1);
             }
             else
@@ -179,7 +196,7 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
               //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1);
               //std::cout << " " << groupHistogramsDown[group]->GetBinContent(bin + 1);
               groupHistogramsDown[group]->SetBinContent(bin + 1, variationErrorDown + (valuePull * valuePull));
-              //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1);
+              //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1) <<endl;
               //std::cout << " " << groupHistogramsDown[group]->GetBinContent(bin + 1);
             }
           }
@@ -234,6 +251,8 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
     lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
     writeExtraText = true;
     CMS_lumi(c1, 4, 10);
-    c1->SaveAs(TString::Format("%s%s/Systematics%s_%s.png", baseInputDir.Data(), outputDirectory.Data(), isParton.Data(), vars[i].Data()));
+    c1->SaveAs(TString::Format("%s%s/Systematics%s%s_%s.png", 
+                        baseInputDir.Data(), outputDirectory.Data(), 
+                        histo_name.Data(), isParton.Data(), vars[i].Data()));
   }
 }

@@ -116,10 +116,9 @@ namespace AnalysisConstants_UL
 
   void appendScaleVariations(std::vector<TString> &variations)
   {
-    for (int i = 1; i < 6; i++)
+    for (int i = 2; i < 10; i++)
     {
-      //if (i == 3 || i == 5)
-      //  continue;
+      if (i == 6) continue;
       variations.push_back(TString::Format("scaleWeight%i", i));
       /*correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
                                                                 {1., 1., 1., 1.,

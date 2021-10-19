@@ -177,12 +177,12 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
 
   //if (dir.EqualTo("Nominal")) inputFile = "";
   TFile *outf = TFile::Open(TString::Format("UnfoldedCombined/%s/OutputFile%s%s.root", dir.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
+  
 
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
   {
+    // this is the file that contains all combined fiducial measurements
     signalFile = TFile::Open("testFile_.root");
-    //signalFile = TFile::Open(TString::Format("FiducialCombined/%s/Comb_%s_SignalHistograms_%s_MassFitResults_SignalTemplates_%s.root",
-    //                  dir.Data(), variable[ivar].Data(), variable[ivar].Data(), inputFile.Data()));
 
     int sizeBins = NBINS[ivar];
     float tempBND[NBINS[ivar]+1];
@@ -199,11 +199,12 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     else if (dir.EqualTo("Nominal")) tempFileName_signal = "";
     else if (dir.EqualTo("bTagVariation"))
     {
-      if (inputFile.EqualTo("up")) inputFile = "Up";
-      else inputFile = "Down";
+      if (inputFile.Contains("up")) inputFile = "up";
+      else if (inputFile.Contains("down")) inputFile = "down";
       tempFileName_signal = "_bTag"+inputFile;
     } 
     else tempFileName_signal = "_"+inputFile;
+
     if (dir.EqualTo("Nominal"))
     {
       hSig[ivar] = (TH1F*)signalFile->Get(TString::Format("combined_%s",
@@ -219,9 +220,10 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
                                     tempFileName_signal.Data(),
                                     variable[ivar].Data()));
     }
+    
     TH1F *hSignal_init = (TH1F*)hSig[ivar]->Clone(TString::Format("hSig_init_%s", variable[ivar].Data()));
+    cout <<"before "<< hSignal_init->Integral() <<endl;
     //set the new content and get acceptance
-
     cout<<"The variable is: "<<variable[ivar]<<endl;
 
     for(int j =1; j<hSig[ivar]->GetNbinsX()+1; j++)
@@ -341,6 +343,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     writeExtraText=true;
     CMS_lumi(closure_pad1, iPeriod, iPos);
 
+    cout <<"after "<< hSignal_init->Integral() <<endl;
     outf->cd();
     // fiducial signal
     hSignal_init->Write(TString::Format("hSigInit_%s", variable[ivar].Data()));

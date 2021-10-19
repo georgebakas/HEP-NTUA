@@ -154,14 +154,14 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
           double valuePull = (variationValue - nominalValue) / nominalValue;
           double variationErrorUp = groupHistogramsUp[group]->GetBinContent(bin + 1);
           double variationErrorDown = groupHistogramsDown[group]->GetBinContent(bin + 1);
-          //std::cout << nominalValue << " " << nominalError;
-          //std::cout << " " << variationValue << " " << valuePull;
-          //std::cout << " " << variationErrorUp << " " << variationErrorDown;
+          std::cout << nominalValue << " ± " << nominalError;
+          std::cout << " Variation Value: " << variationValue << " Value Pull: " << valuePull;
+          std::cout << " Variation Error Up" << variationErrorUp << " Variation Error Down" << variationErrorDown;
           if (nominalValue != 0)
           {
             if (valuePull >= 0)
             {
-              //std::cout << " Variation up:";
+              std::cout << " Variation up:";
               //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1);
               //std::cout << " " << groupHistogramsDown[group]->GetBinContent(bin + 1);
               groupHistogramsUp[group]->SetBinContent(bin + 1, variationErrorUp + (valuePull * valuePull));
@@ -170,7 +170,7 @@ void SystematicsUnfolding_levels(TString year, TString isParton = "Parton")
             }
             else
             {
-              //std::cout << " Variation down:";
+              std::cout << " Variation down:";
               //std::cout << " " << groupHistogramsUp[group]->GetBinContent(bin + 1);
               //std::cout << " " << groupHistogramsDown[group]->GetBinContent(bin + 1);
               groupHistogramsDown[group]->SetBinContent(bin + 1, variationErrorDown + (valuePull * valuePull));

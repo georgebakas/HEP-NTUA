@@ -40,10 +40,10 @@ python3 SignalExtraction.py 2018 PDFWeights
 
 # JES Weights
 
-#python3 SignalExtraction.py 2016_preVFP JES
-#python3 SignalExtraction.py 2016_postVFP JES
-#python3 SignalExtraction.py 2017 JES
-#python3 SignalExtraction.py 2018 JES
+python3 SignalExtraction.py 2016_preVFP JES
+python3 SignalExtraction.py 2016_postVFP JES
+python3 SignalExtraction.py 2017 JES
+python3 SignalExtraction.py 2018 JES
 
 # Mass Variation and hdamp files 
 

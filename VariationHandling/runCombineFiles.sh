@@ -45,8 +45,6 @@ python3 combineFiles.py 2017 SystematicsFiles True
 python3 combineFiles.py 2018 SystematicsFiles True
 
 
-#!/bin/sh
-
 # Create Combined Files (Reduced)
 
 # Nominal files

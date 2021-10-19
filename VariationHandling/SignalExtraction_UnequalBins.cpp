@@ -237,7 +237,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     }
     else
     {
-      hSignal->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
+        hSignal->GetYaxis()->SetTitle("#frac{d#sigma}{d#chi} [pb]");
     }
 
     //hSMC->SetTitle(TString::Format("Data vs MC %s for %s ",year.Data(), variable.Data()));
@@ -249,7 +249,7 @@ void SignalExtractionSpecific(TString year = "2016", TString variable = "jetPt0"
     hSignal->Draw("same");
     leg->Draw();
 
-    //theory - data)/data.
+    //(theory - data)/data.
     /*
     closure_padRatio->cd();
     TH1F *hMCClone[2];

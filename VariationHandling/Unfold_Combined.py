@@ -38,10 +38,10 @@ def unfold(year, weightType, isParton):
             print('weight_suffix', weight_sufix)
             #(TString inYear, TString dir, TString inputFile, bool isThreeProcesses, bool isParton = true, int unfoldMethod=1)
 
-        os.system(f'root -l -b -q \'Unfold_Combined.cpp(\"{weightType}\",\"{weight_sufix}\", "{isParton}")\'')
+        os.system(f'root -l -b -q \'Unfold_Combined.cpp(\"{weightType}\",\"{weight_sufix}\",\"{isParton}\")\'')
         #break
 
-
+    '''
     combined_files = ['TT','TTJets']
     #check for files of type TT_Tune
     if weightType == 'SystematicsFiles':
@@ -59,13 +59,16 @@ def unfold(year, weightType, isParton):
                 print('weight_suffix', weight_sufix)
                 os.system(f'root -l -b -q \'Unfold_Combined.cpp(\"{year}\",\"{weightType}\",\"{weight_sufix}\", false)\'')
     #eof
+    '''
 
 if __name__ == '__main__':
     
     types = ['Nominal', 'bTagVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
     year = '2017'
     parton_particle_types = ['Parton', 'Particle']
-
+    
+    #unfold('2017', 'PDFWeights', 'true')
+    #exit()
     for itype in types:
         #if 'ScaleWeights' in itype: 
         unfold(year, itype, 'true')
