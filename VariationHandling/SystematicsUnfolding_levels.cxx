@@ -36,13 +36,13 @@ std::vector<TString> listFiles(const char *dirname="", const char *var="", const
    return list_of_files;
 }
 
-void SystematicsUnfolding_levels(TString isParton = "Parton")
+void SystematicsUnfolding_levels(TString isParton = "Particle")
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
+  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
-  std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange};
+  std::vector<int> groupColors = {kBlack, kRed, kGreen, kBlue, kOrange};
 
   //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
   TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling/";
@@ -120,10 +120,12 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("SystematicsFiles") || variation.Contains("PS"))
+      if (variation.Contains("PS"))
         group = 3;
       if (variation.Contains("PDF") || variation.Contains("Scale"))
         group = 4;
+      if (variation.Contains("SystematicsFiles"))
+        group = -1;
 
       cout<<variation<<" group: "<<group <<endl;
 
@@ -146,18 +148,18 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
         TFile *f = TFile::Open(fileName);
         
         cout<<fileName<<endl;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_0.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_1.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_100.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_56.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_57.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_35.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_42.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_76.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_59.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_58.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_86.root")) continue;
-        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_93.root")) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_0.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_56.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_57.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_35.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_42.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_76.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_59.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_58.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_86.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_93.root", isParton.Data()))) continue;
         //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
         //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
 
@@ -230,7 +232,7 @@ void SystematicsUnfolding_levels(TString isParton = "Parton")
     groupHistogramsSym[0]->GetXaxis()->SetLabelSize(0.035);
     std::cout << groupHistogramsSym[0]->GetYaxis()->GetLabelSize() << std::endl;
     groupHistogramsSym[0]->Draw("hist");
-    groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 180);
+    groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
     groupHistogramsSym[0]->GetYaxis()->SetTitle("Relative Uncertainty [%]");
     //groupHistogramsSym[0]->Draw();
     if (groupHistogramsSym[0]->GetMaximum() < 120)

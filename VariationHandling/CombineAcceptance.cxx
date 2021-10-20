@@ -72,13 +72,13 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
 
     TString variable = AnalysisConstants::unfoldingVariables[var];
     // use 2018 as reference
-    std::vector<TString> variationFiles_Hadronic = listFiles(TString::Format("%s/2018/Responses%s/",
+    std::vector<TString> variationFiles_Hadronic = listFiles(TString::Format("%s/2016_postVFP/Responses%s/",
                                             baseInputDir.Data(), variation.Data()), "TTToHadronic");
     
-    std::vector<TString> variationFiles_SemiLeptonic = listFiles(TString::Format("%s/2018/Responses%s/",
+    std::vector<TString> variationFiles_SemiLeptonic = listFiles(TString::Format("%s/2016_postVFP/Responses%s/",
                                             baseInputDir.Data(), variation.Data()), "TTToSemiLeptonic");
     
-    std::vector<TString> variationFiles_Dilepton = listFiles(TString::Format("%s/2018/Responses%s/",
+    std::vector<TString> variationFiles_Dilepton = listFiles(TString::Format("%s/2016_postVFP/Responses%s/",
                                             baseInputDir.Data(), variation.Data()), "TTTo2L2Nu");
 
     std::cout << "variable: " << variable << std::endl;
