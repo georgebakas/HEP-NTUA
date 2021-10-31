@@ -72,7 +72,6 @@ void GetHistograms_nominal(TString file_name, TString ttbar_process, TString yea
   TH1F *hParton[NVAR], *hParticle[NVAR], *hReco[NVAR];
   TH1F *hRecoParton[NVAR], *hPartonReco[NVAR];
   TH1F *hRecoParticle[NVAR], *hParticleReco[NVAR];
-  TH2F *hPartonResponse[NVAR], *hParticleResponse[NVAR];
 
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR; ivar++)

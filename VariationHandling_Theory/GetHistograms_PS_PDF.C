@@ -178,7 +178,6 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
   TH1F *hParton[weightsSize][NVAR], *hParticle[weightsSize][NVAR], *hReco[weightsSize][NVAR];
   TH1F *hRecoParton[weightsSize][NVAR], *hPartonReco[weightsSize][NVAR];
   TH1F *hRecoParticle[weightsSize][NVAR], *hParticleReco[weightsSize][NVAR];
-  TH2F *hPartonResponse[weightsSize][NVAR], *hParticleResponse[weightsSize][NVAR];
 
   for(int ivar =0; ivar<NVAR; ivar++)
   {

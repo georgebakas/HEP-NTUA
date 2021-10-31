@@ -72,8 +72,6 @@ void GetHistograms_bTag(TString file_name, TString ttbar_process, TString year =
   TH1F *hParton[NVAR], *hParticle[NVAR], *hReco[NVAR];
   TH1F *hRecoParton[NVAR], *hPartonReco[NVAR];
   TH1F *hRecoParticle[NVAR], *hParticleReco[NVAR];
-  TH2F *hPartonResponse[NVAR], *hParticleResponse[NVAR];
-
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR; ivar++)
   	{
@@ -376,9 +374,7 @@ void GetHistograms_bTag(TString file_name, TString ttbar_process, TString year =
 	  			{
 				   hPartonReco[ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight);
 				   hRecoParton[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-
-				   hPartonResponse[ivar]->Fill(xPartonAll[ivar],xRecoAll[ivar], genEvtWeight *weights*LUMI*bTagEvntWeight);
-				}//---- end of the ivar loop
+  				}//---- end of the ivar loop
 
 	      }//----- end of selection cuts parton and reco
 
@@ -386,11 +382,9 @@ void GetHistograms_bTag(TString file_name, TString ttbar_process, TString year =
 	      if(particleCuts && recoCuts && tTaggerCut && btagCut)
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
-	  		{
+	  		  {
 	      		hParticleReco[ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight);
 	      		hRecoParticle[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-
-	      		hParticleResponse[ivar]->Fill(xParticleAll[ivar],xRecoAll[ivar], genEvtWeight*weights*LUMI*bTagEvntWeight);
 	      	}
 	      }
 	      if(particleCuts)

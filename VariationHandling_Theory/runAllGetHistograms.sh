@@ -17,11 +17,11 @@ nohup python3 RunGetHistograms_bTag.py 2017 > btag_histograms_17.out &
 nohup python3 RunGetHistograms_bTag.py 2018 > btag_histograms_18.out &
 
 # PS Weights
-
-nohup python3 RunGetHistograms_PS_PDF.py 2016_preVFP PSWeights > ps_histograms_16pre.out &
-nohup python3 RunGetHistograms_PS_PDF.py 2016_postVFP PSWeights > ps_histograms_16post.out &
-nohup python3 RunGetHistograms_PS_PDF.py 2017 PSWeights > ps_histograms_17.out &
-nohup python3 RunGetHistograms_PS_PDF.py 2018 PSWeights > ps_histograms_18.out &
+# No event counter ps weights
+#nohup python3 RunGetHistograms_PS_PDF.py 2016_preVFP PSWeights > ps_histograms_16pre.out &
+#nohup python3 RunGetHistograms_PS_PDF.py 2016_postVFP PSWeights > ps_histograms_16post.out &
+#nohup python3 RunGetHistograms_PS_PDF.py 2017 PSWeights > ps_histograms_17.out &
+#nohup python3 RunGetHistograms_PS_PDF.py 2018 PSWeights > ps_histograms_18.out &
 
 # PDF weights 
 
