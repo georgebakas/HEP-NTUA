@@ -116,9 +116,9 @@ namespace AnalysisConstants_UL
 
   void appendScaleVariations(std::vector<TString> &variations)
   {
-    for (int i = 1; i < 6; i++)
+    for (int i = 2; i < 10; i++)
     {
-      //if (i == 3 || i == 5)
+      if (i == 6) continue;
       //  continue;
       variations.push_back(TString::Format("scaleWeight%i", i));
       /*correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
@@ -520,22 +520,22 @@ namespace AnalysisConstants_UL
         "mtop178",
         "cp5down",
         "cp5up",*/
-        "isrRedHi",
-        "fsrRedHi",
-        "isrRedLo", //~
-        "fsrRedLo",
-        "isrDefHi", //~
-        "fsrDefHi",
-        "isrDefLo",
-        "fsrDefLo",
-        "isrConHi",
-        "fsrConHi",
-        "isrConLo",
-        "fsrConLo", //~
+        //"isrRedHi",
+        //"fsrRedHi",
+        //"isrRedLo", //~
+        //"fsrRedLo",
+        //"isrDefHi", //~
+        //"fsrDefHi",
+        //"isrDefLo",
+        //"fsrDefLo",
+        //"isrConHi",
+        //"fsrConHi",
+        //"isrConLo",
+        //"fsrConLo", //~
         "bTagUp",
         "bTagDown"};
 
-    appendJESWeights(variations);
+    //appendJESWeights(variations);
     appendScaleVariations(variations);
     appendPdfVariations(variations);
 
