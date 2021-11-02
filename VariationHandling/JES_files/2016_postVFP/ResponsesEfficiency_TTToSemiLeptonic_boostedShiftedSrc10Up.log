@@ -1,0 +1,46 @@
+000 (462111.000.000) 11/01 07:59:32 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_1778_237a>
+...
+040 (462111.000.000) 11/01 08:04:40 Started transferring input files
+	Transferring to host: <128.142.137.79:9618?addrs=128.142.137.79-9618+[2001-1458-301-5e--100-43]-9618&alias=b7g19p1545.cern.ch&noUDP&sock=slot1_30_36000_01b1_10255>
+...
+040 (462111.000.000) 11/01 08:04:40 Finished transferring input files
+...
+001 (462111.000.000) 11/01 08:04:40 Job executing on host: <128.142.137.79:9618?addrs=128.142.137.79-9618+[2001-1458-301-5e--100-43]-9618&alias=b7g19p1545.cern.ch&noUDP&sock=startd_35956_675e>
+...
+006 (462111.000.000) 11/01 08:04:49 Image size of job updated: 625832
+	5  -  MemoryUsage of job (MB)
+	4256  -  ResidentSetSize of job (KB)
+...
+006 (462111.000.000) 11/01 08:09:50 Image size of job updated: 791840
+	53  -  MemoryUsage of job (MB)
+	53816  -  ResidentSetSize of job (KB)
+...
+006 (462111.000.000) 11/01 08:14:51 Image size of job updated: 791840
+	67  -  MemoryUsage of job (MB)
+	67760  -  ResidentSetSize of job (KB)
+...
+006 (462111.000.000) 11/01 09:24:56 Image size of job updated: 791840
+	106  -  MemoryUsage of job (MB)
+	107984  -  ResidentSetSize of job (KB)
+...
+040 (462111.000.000) 11/01 09:26:29 Started transferring output files
+...
+040 (462111.000.000) 11/01 09:26:29 Finished transferring output files
+...
+005 (462111.000.000) 11/01 09:26:30 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:34, Sys 0 00:00:27  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:34, Sys 0 00:00:27  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	121141  -  Run Bytes Sent By Job
+	43945  -  Run Bytes Received By Job
+	121141  -  Total Bytes Sent By Job
+	43945  -  Total Bytes Received By Job
+	Partitionable Resources :      Usage  Request Allocated 
+	   Cpus                 :       0.00        1         1 
+	   Disk (KB)            : 2759039          45   1645294 
+	   Memory (MB)          :     106        2000      2000 
+
+	Job terminated of its own accord at 2021-11-01T08:26:29Z.
+...

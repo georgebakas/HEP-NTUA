@@ -6,7 +6,6 @@ print(f'Number of arguments {len(sys.argv)}')
 print(f'Argument list: {str(sys.argv)}')
 
 year = sys.argv[1]
-allFiles = []
 
 all_files = {"2016_preVFP":['TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root'],
              "2016_postVFP":['TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root'],

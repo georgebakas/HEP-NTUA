@@ -1,0 +1,96 @@
+[8MB/455.5MB][  1%][>                                                 ][1.6MB/s]  [16MB/455.5MB][  3%][=>                                                ][1.231MB/s]  [24MB/455.5MB][  5%][==>                                               ][945.2kB/s]  [32MB/455.5MB][  7%][===>                                              ][910.2kB/s]  [40MB/455.5MB][  8%][====>                                             ][853.3kB/s]  [48MB/455.5MB][ 10%][=====>                                            ][910.2kB/s]  [56MB/455.5MB][ 12%][======>                                           ][882.2kB/s]  [64MB/455.5MB][ 14%][=======>                                          ][862.3kB/s]  [72MB/455.5MB][ 15%][=======>                                          ][810.2kB/s]  [80MB/455.5MB][ 17%][========>                                         ][780.2kB/s]  [88MB/455.5MB][ 19%][=========>                                        ][757.2kB/s]  [96MB/455.5MB][ 21%][==========>                                       ][733.6kB/s]  [104MB/455.5MB][ 22%][===========>                                      ][705.3kB/s]  [112MB/455.5MB][ 24%][============>                                     ][682.7kB/s]  [120MB/455.5MB][ 26%][=============>                                    ][643.4kB/s]  [128MB/455.5MB][ 28%][==============>                                   ][636.3kB/s]  [136MB/455.5MB][ 29%][==============>                                   ][621.7kB/s]  [144MB/455.5MB][ 31%][===============>                                  ][609.3kB/s]  [152MB/455.5MB][ 33%][================>                                 ][605.6kB/s]  [160MB/455.5MB][ 35%][=================>                                ][609.1kB/s]  [168MB/455.5MB][ 36%][==================>                               ][595.3kB/s]  [176MB/455.5MB][ 38%][===================>                              ][589kB/s]  [184MB/455.5MB][ 40%][====================>                             ][578kB/s]  [192MB/455.5MB][ 42%][=====================>                            ][576.6kB/s]  [200MB/455.5MB][ 43%][=====================>                            ][576.9kB/s]  [208MB/455.5MB][ 45%][======================>                           ][574.1kB/s]  [216MB/455.5MB][ 47%][=======================>                          ][570.1kB/s]  [224MB/455.5MB][ 49%][========================>                         ][560.8kB/s]  [232MB/455.5MB][ 50%][=========================>                        ][559kB/s]  [240MB/455.5MB][ 52%][==========================>                       ][566.3kB/s]  [248MB/455.5MB][ 54%][===========================>                      ][566.9kB/s]  [256MB/455.5MB][ 56%][============================>                     ][563.8kB/s]  [264MB/455.5MB][ 57%][============================>                     ][560.9kB/s]  [272MB/455.5MB][ 59%][=============================>                    ][554.8kB/s]  [280MB/455.5MB][ 61%][==============================>                   ][554.6kB/s]  [288MB/455.5MB][ 63%][===============================>                  ][552.3kB/s]  [296MB/455.5MB][ 64%][================================>                 ][551.1kB/s]  [304MB/455.5MB][ 66%][=================================>                ][551kB/s]  [312MB/455.5MB][ 68%][==================================>               ][547.1kB/s]  [320MB/455.5MB][ 70%][===================================>              ][548kB/s]  [328MB/455.5MB][ 72%][====================================>             ][547.9kB/s]  [336MB/455.5MB][ 73%][====================================>             ][553.2kB/s]  [344MB/455.5MB][ 75%][=====================================>            ][554.7kB/s]  [352MB/455.5MB][ 77%][======================================>           ][550.3kB/s]  [360MB/455.5MB][ 79%][=======================================>          ][548.6kB/s]  [368MB/455.5MB][ 80%][========================================>         ][549.3kB/s]  [376MB/455.5MB][ 82%][=========================================>        ][550.8kB/s]  [384MB/455.5MB][ 84%][==========================================>       ][550.7kB/s]  [392MB/455.5MB][ 86%][===========================================>      ][551.4kB/s]  [400MB/455.5MB][ 87%][===========================================>      ][553.5kB/s]  [408MB/455.5MB][ 89%][============================================>     ][552.6kB/s]  [416MB/455.5MB][ 91%][=============================================>    ][553.9kB/s]  [424MB/455.5MB][ 93%][==============================================>   ][555.9kB/s]  [432MB/455.5MB][ 94%][===============================================>  ][557.1kB/s]  [440MB/455.5MB][ 96%][================================================> ][557.6kB/s]  [448MB/455.5MB][ 98%][=================================================>][556.1kB/s]  [455.5MB/455.5MB][100%][==================================================][557.2kB/s]  [455.5MB/455.5MB][100%][==================================================][557.2kB/s]  
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau3
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau2
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau1
+Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub0
+Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub1
+Error in <TTree::SetBranchAddress>: unknown branch -> jetBtagSub0
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are not consistent: passed bin content > total bin content
+Error in <TROOT::TEfficiency::CheckConsistency>: passed TEfficiency objects do not have consistent bin contents
+Error in <TEfficiency::TEfficiency(const TH1&,const TH1&)>: histograms are not consistent -> results are useless
+Warning in <TEfficiency::TEfficiency(const TH1&,const TH1&)>: using two empty TH1D('h1','h1',10,0,10)
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are not consistent: passed bin content > total bin content
+Error in <TROOT::TEfficiency::CheckConsistency>: passed TEfficiency objects do not have consistent bin contents
+Error in <TEfficiency::TEfficiency(const TH1&,const TH1&)>: histograms are not consistent -> results are useless
+Warning in <TEfficiency::TEfficiency(const TH1&,const TH1&)>: using two empty TH1D('h1','h1',10,0,10)
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TROOT::TEfficiency::CheckEntries>: Histograms are not consistent: passed bin content > total bin content
+Error in <TROOT::TEfficiency::CheckConsistency>: passed TEfficiency objects do not have consistent bin contents
+Error in <TEfficiency::TEfficiency(const TH1&,const TH1&)>: histograms are not consistent -> results are useless
+Warning in <TEfficiency::TEfficiency(const TH1&,const TH1&)>: using two empty TH1D('h1','h1',10,0,10)
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency
+Info in <TEfficiency::TEfficiency>: given histograms are filled with weights
+Info in <TROOT::TEfficiency::SetUseWeightedEvents>: Handle weighted events for computing efficiency

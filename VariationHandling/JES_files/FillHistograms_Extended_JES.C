@@ -27,9 +27,17 @@ void FillHistograms_Extended_JES(TString file_name, TString ttbar_process, TStri
   cout<<"YEAR: "<<year<<endl;
   cout<<"file_name: "<<file_name<<endl;
   cout<<"ttbar_process: "<<ttbar_process<<endl;
-  float triggerFloat;
-  if(year.Contains("2016")) triggerFloat = 2;
-  else triggerFloat = 5;
+  float triggerFloat, triggerFloatCR;
+  if(year.Contains("2016"))
+  {
+    triggerFloatCR = 4;
+    triggerFloat = 2;
+  } 
+  else
+  {
+    triggerFloat = 5;
+    triggerFloatCR = 5;
+  } 
 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];

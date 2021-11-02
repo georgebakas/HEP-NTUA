@@ -1,0 +1,8 @@
+[8MB/455.1MB][  1%][>                                                 ][4MB/s]  [48MB/455.1MB][ 10%][=====>                                            ][16MB/s]  [104MB/455.1MB][ 22%][===========>                                      ][26MB/s]  [160MB/455.1MB][ 35%][=================>                                ][32MB/s]  [224MB/455.1MB][ 49%][========================>                         ][37.33MB/s]  [288MB/455.1MB][ 63%][===============================>                  ][41.14MB/s]  [344MB/455.1MB][ 75%][=====================================>            ][43MB/s]  [408MB/455.1MB][ 89%][============================================>     ][45.33MB/s]  [455.1MB/455.1MB][100%][==================================================][50.57MB/s]  [455.1MB/455.1MB][100%][==================================================][50.57MB/s]  
+In file included from input_line_8:1:
+/pool/condor/dir_41373/FillHistograms_Extended_JES.C:244:70: warning: 'if' initialization statements are a C++17 extension [-Wc++17-extensions]
+    if(recoCuts && revertBtag && tTaggerCut && (*bit)[triggerFloatCR];)
+                                                                     ^
+/pool/condor/dir_41373/FillHistograms_Extended_JES.C:244:71: error: expected expression
+    if(recoCuts && revertBtag && tTaggerCut && (*bit)[triggerFloatCR];)
+                                                                      ^

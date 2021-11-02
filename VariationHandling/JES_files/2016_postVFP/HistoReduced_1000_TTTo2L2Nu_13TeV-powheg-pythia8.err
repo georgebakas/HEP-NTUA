@@ -1,0 +1,36 @@
+[8MB/268.6MB][  2%][=>                                                ][2.667MB/s]  [24MB/268.6MB][  8%][====>                                             ][6MB/s]  [40MB/268.6MB][ 14%][=======>                                          ][8MB/s]  [48MB/268.6MB][ 17%][========>                                         ][8MB/s]  [64MB/268.6MB][ 23%][===========>                                      ][9.143MB/s]  [80MB/268.6MB][ 29%][==============>                                   ][10MB/s]  [88MB/268.6MB][ 32%][================>                                 ][9.778MB/s]  [104MB/268.6MB][ 38%][===================>                              ][10.4MB/s]  [120MB/268.6MB][ 44%][======================>                           ][10.91MB/s]  [136MB/268.6MB][ 50%][=========================>                        ][11.33MB/s]  [144MB/268.6MB][ 53%][==========================>                       ][11.08MB/s]  [160MB/268.6MB][ 59%][=============================>                    ][11.43MB/s]  [176MB/268.6MB][ 65%][================================>                 ][11.73MB/s]  [184MB/268.6MB][ 68%][==================================>               ][11.5MB/s]  [200MB/268.6MB][ 74%][=====================================>            ][11.76MB/s]  [208MB/268.6MB][ 77%][======================================>           ][11.56MB/s]  [224MB/268.6MB][ 83%][=========================================>        ][11.79MB/s]  [240MB/268.6MB][ 89%][============================================>     ][12MB/s]  [248MB/268.6MB][ 92%][==============================================>   ][11.81MB/s]  [264MB/268.6MB][ 98%][=================================================>][12MB/s]  [268.6MB/268.6MB][100%][==================================================][12.21MB/s]  [268.6MB/268.6MB][100%][==================================================][12.21MB/s]  
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00002b4f6285d60c in waitpid () from /lib64/libc.so.6
+#1  0x00002b4f627daf62 in do_system () from /lib64/libc.so.6
+#2  0x00002b4f61ef6bdc in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00002b4f65de5578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00002b4f65ddca2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00002b4f618cf1d6 in ?? ()
+#6  0x0000000600000008 in ?? ()
+#7  0x0000000700000008 in ?? ()
+#8  0x0000000a00000007 in ?? ()
+#9  0x0000000b0000000a in ?? ()
+#10 0x0000000a0000000a in ?? ()
+#11 0x0000006400000064 in ?? ()
+#12 0x00002b4f68fbe885 in ?? () from /usr/lib64/root/libCling.so
+#13 0x00002b4f62b5f760 in ?? () from /lib64/libc.so.6
+#14 0x0000000000000103 in ?? ()
+#15 0x00002b4f62b5f7b0 in main_arena () from /lib64/libc.so.6
+#16 0xffff800300000000 in ?? ()
+#17 0x00007ffc7e5e5770 in ?? ()
+#18 0x00007ffc7e5e0109 in ?? ()
+#19 0x00007ffc7e5e5950 in ?? ()
+#20 0x00002b4f6934c341 in ?? () from /usr/lib64/root/libCling.so
+#21 0xffff800300000000 in ?? ()
+#22 0x0000000000000103 in ?? ()
+#23 0xbbf5fc99ca0ace00 in ?? ()
+#24 0x00007ffc7e5e5780 in ?? ()
+#25 0x0000004000000004 in ?? ()
+#26 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/pool/condor/dir_27994/FillHistograms_Reduced_JES.C:119:5: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+    trIN->SetBranchAddress("nJets"          ,&nJets);
+    ^~~~
