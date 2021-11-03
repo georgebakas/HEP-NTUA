@@ -96,6 +96,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
   //handle responses efficiency, acceptance
   TH2F *hResponse[BND_reco.size()];
   TH1F *efficiency[BND_reco.size()], *acceptance[BND_reco.size()];
+  TH1F *hTheory[BND_reco.size()], *hTheory_norm[BND_reco.size()];
   float LUMI = 0;
 
   TEfficiency *acc_had[BND_reco.size()], *acc_sem[BND_reco.size()], *acc_dil[BND_reco.size()];
@@ -292,6 +293,20 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     closure_pad1->SetBottomMargin(0.005);
     closure_pad1->cd();
 
+    // get theory from efficiency
+    TH1F *hTheory_notScaled = (TH1F*)efficiency[ivar]->GetTotalHistogram();
+    hTheory_notScaled->SetTitle(TString::Format("hTheory_%s_notScaled", variable[ivar].Data()));
+    
+    // this is diff cross section 
+    hTheory[ivar]->Scale(1/LUMI, "width");
+    hTheory[ivar]->SetTitle(TString::Format("hTheory_%s", variable[ivar].Data()));
+    
+    // this is normalized cross section 
+    hTheory_norm[ivar] = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryNorm_%s", variable[ivar].Data()));
+    hTheory_norm[ivar]->Scale(1/hTheory_norm[ivar]->Integral());
+    hTheory_norm[ivar]->SetTitle(TString::Format("hTheoryNorm_%s", variable[ivar].Data());
+    
+    
     TH1F *hUnfFinal_notScaled= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s_notScaled", variable[ivar].Data()));
     //this is differential cross section dsigma / dX  = S_i / L * dXi
     hUnf[ivar]->Scale(1/LUMI, "width");
@@ -299,8 +314,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     
 
     hUnf[ivar]->Scale(LUMI/hUnfFinal[ivar]->Integral());
-
-    hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s",varParton.Data(),variable[ivar].Data()));
+    //hUnf[ivar]->SetTitle(TString::Format("%s Unfolded vs Theory %s",varParton.Data(),variable[ivar].Data()));
 
     TH1F *hUnf_norm = (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfNorm_%s", variable[ivar].Data()));
     hUnf_norm->Scale(1./hUnf[ivar]->Integral());
@@ -357,12 +371,21 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     //unfolded after efficiency (not scaled)
     hUnfFinal_notScaled->Write(TString::Format("hUnfoldFinal_NoScaled_%s", variable[ivar].Data()));
 
-    //unfolded after efficiency (scaled)
+    //unfolded after efficiency (scaled to LUMI, width)
     hUnfFinal[ivar]->Write(TString::Format("hUnfoldFinal_%s", variable[ivar].Data()));
     
     // normalised result
     hUnf_norm->Write(TString::Format("hUnfoldNorm_%s", variable[ivar].Data()));
     
+    // theory bulk 
+    hTheory_notScaled->Write(TString::Format("hTheory_NoScaled_%s", variable[ivar].Data()));
+
+    // theory diff xsec
+    hTheory[ivar]->Write(TString::Format("hTheory_%s", variable[ivar].Data()));
+
+    // theory norm diff xsec 
+    hTheory_norm[ivar]->Write(TString::Format("hTheoryNorm_%s", variable[ivar].Data())); 
+
     signalFile->Close();
   }
 

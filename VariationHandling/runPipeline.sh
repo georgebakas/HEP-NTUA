@@ -10,7 +10,7 @@
 
 # Create all combined files for reduced and extended 
 # This step is needed only if you combine files BEFORE signal extraction!!!
-# ./runCombineFiles.sh
+./runCombineFiles.sh
 
 # Create the mass fit signal templates from ttbar
 ./runCreateSignalTemplates.sh
@@ -23,7 +23,7 @@
 
 # Combine Fiducial Measurements into 1 files per variation
 # I need to manually create this step so this is tbd 
-root -l CombineFiducialMeasurements.cxx
+root -l CombineFiducialMeasurements_new.cxx
 
 # Combine Acceptance and Efficiency 
 python3 runEfficiency_Acceptance_Comb.py

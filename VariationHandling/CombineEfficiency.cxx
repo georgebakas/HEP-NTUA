@@ -33,9 +33,8 @@ void CombineEfficiency(TString variation="Nominal", TString varParton="Parton")
 { 
 
   AnalysisConstants::initConstants();
-  //gSystem->Load("libBlue.so");
-  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
   baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
   TString outFileDir = TString::Format("%sEfficiencyCombined/%s", baseInputDir.Data(), variation.Data());
