@@ -96,6 +96,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
   //handle responses efficiency, acceptance
   TH2F *hResponse[BND_reco.size()];
   TH1F *efficiency[BND_reco.size()], *acceptance[BND_reco.size()];
+  TH1F *efficiency_denom[BND_reco.size()];
   TH1F *hTheory[BND_reco.size()], *hTheory_norm[BND_reco.size()];
   float LUMI = 0;
 
@@ -143,11 +144,11 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
       TFile *acc_inf, *eff_inf;
       if (dir.EqualTo("Nominal"))
       {
-        acc_inf = TFile::Open(TString::Format("AcceptanceCombined/%s/CombAcceptance%s_%s_ResponsesEfficiency_%s.root",
-                                    dir.Data(), varParton.Data(), variable[ivar].Data(), inputFile.Data()));
+        acc_inf = TFile::Open(TString::Format("AcceptanceCombined/%s/CombAcceptance%s_%s_ResponsesEfficiency_TTToHadronic.root",
+                                    dir.Data(), varParton.Data(), variable[ivar].Data()));
 
-        eff_inf = TFile::Open(TString::Format("EfficiencyCombined/%s/CombEfficiency%s_%s_ResponsesEfficiency_%s.root",
-                                    dir.Data(), varParton.Data(), variable[ivar].Data(), inputFile.Data()));
+        eff_inf = TFile::Open(TString::Format("EfficiencyCombined/%s/CombEfficiency%s_%s_ResponsesEfficiency_TTToHadronic.root",
+                                    dir.Data(), varParton.Data(), variable[ivar].Data()));
       }
       else
       {
@@ -164,6 +165,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
       
       acceptance[ivar] = (TH1F*)acc_inf->Get("acceptance");
       efficiency[ivar] = (TH1F*)eff_inf->Get("efficiency");
+      efficiency_denom[ivar] = (TH1F*)eff_inf->Get("denominator_efficiency");
 
     }
   }
@@ -292,20 +294,19 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     closure_pad1->Draw();
     closure_pad1->SetBottomMargin(0.005);
     closure_pad1->cd();
-
+    cout<< "ok"<<endl;
     // get theory from efficiency
-    TH1F *hTheory_notScaled = (TH1F*)efficiency[ivar]->GetTotalHistogram();
+    hTheory[ivar] = (TH1F*)efficiency_denom[ivar]->Clone();
+    TH1F *hTheory_notScaled = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheory_%s_notScaled", variable[ivar].Data()));
     hTheory_notScaled->SetTitle(TString::Format("hTheory_%s_notScaled", variable[ivar].Data()));
     
     // this is diff cross section 
     hTheory[ivar]->Scale(1/LUMI, "width");
     hTheory[ivar]->SetTitle(TString::Format("hTheory_%s", variable[ivar].Data()));
-    
     // this is normalized cross section 
     hTheory_norm[ivar] = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheoryNorm_%s", variable[ivar].Data()));
     hTheory_norm[ivar]->Scale(1/hTheory_norm[ivar]->Integral());
-    hTheory_norm[ivar]->SetTitle(TString::Format("hTheoryNorm_%s", variable[ivar].Data());
-    
+    hTheory_norm[ivar]->SetTitle(TString::Format("hTheoryNorm_%s", variable[ivar].Data()));
     
     TH1F *hUnfFinal_notScaled= (TH1F*)hUnf[ivar]->Clone(TString::Format("hUnfFinal_%s_notScaled", variable[ivar].Data()));
     //this is differential cross section dsigma / dX  = S_i / L * dXi

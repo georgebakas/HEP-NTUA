@@ -33,8 +33,8 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
 { 
 
   AnalysisConstants::initConstants();
-  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
   baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
   TString outFileDir = TString::Format("%sAcceptanceCombined/%s", baseInputDir.Data(), variation.Data());
@@ -219,6 +219,7 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
 
     outFile->cd();
     numerator_all->Write("acceptance");
+    denominator_all->Write("denominator_acceptance");
 
     outFile->Close();
     delete bins;
