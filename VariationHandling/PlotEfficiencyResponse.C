@@ -44,6 +44,11 @@ void PlotEfficiencyResponse(bool isParton = true)
     /* Loop on all variables and create canvases */
 
     TString years[4] = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
+
+    //write to a txt file the Kolmogorov tests
+    ofstream myfile;
+    myfile.open ("Comparison_EffAccResponses/KS_results.txt");
+
     for (int ivar=0; ivar<NVAR; ivar++)
     {
         // define efficiencies for each process for each year 
@@ -73,7 +78,7 @@ void PlotEfficiencyResponse(bool isParton = true)
                 tempVar = variableParton[ivar];
             else
                 tempVar = variableGen[ivar];
-            cout << years[iy]<<endl;
+            cout << years[iy]<< "\n";
             // get responses 
             hResponse_had[iy] = (TH2F*)inf_had->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
             hResponse_sem[iy] = (TH2F*)inf_sem->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
@@ -104,12 +109,12 @@ void PlotEfficiencyResponse(bool isParton = true)
             *acceptance[iy] += (*acc_dil); 
             
             efficiency[iy]->SetMarkerStyle(20+iy);
-            efficiency[iy]->SetMarkerSize(1+iy);
+            efficiency[iy]->SetMarkerSize(1.2);
             efficiency[iy]->SetMarkerColor(color[iy]);
             efficiency[iy]->SetLineColor(color[iy]);
 
             acceptance[iy]->SetMarkerStyle(20+iy);
-            acceptance[iy]->SetMarkerSize(1+iy);
+            acceptance[iy]->SetMarkerSize(1.2);
             acceptance[iy]->SetMarkerColor(color[iy]);
             acceptance[iy]->SetLineColor(color[iy]);
             
@@ -119,7 +124,7 @@ void PlotEfficiencyResponse(bool isParton = true)
 
         lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
         int iPeriod = 4;
-        int iPos = 0;
+        int iPos = 1;
         writeExtraText=true;
         
         // plot acceptance 
@@ -132,8 +137,18 @@ void PlotEfficiencyResponse(bool isParton = true)
         acceptance[1]->Draw("same");
         acceptance[2]->Draw("same");
         acceptance[3]->Draw("same");
+
+        gPad->Update(); 
+        auto graph = acceptance[0]->GetPaintedGraph(); 
+        graph->SetMinimum(0.4);
+        graph->SetMaximum(1.); 
+        gPad->Update(); 
+
         CMS_lumi(can_acc, iPeriod, iPos);
-        
+
+        can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/Acceptance%s_%s.png", 
+                        varParton.Data(), variable[ivar].Data()));
+        leg->Draw();
 
         // plot efficiency 
         TCanvas *can_eff = new TCanvas(TString::Format("canEff_%s",variable[ivar].Data()),
@@ -145,14 +160,46 @@ void PlotEfficiencyResponse(bool isParton = true)
         efficiency[1]->Draw("same");
         efficiency[2]->Draw("same");
         efficiency[3]->Draw("same");
+
+        gPad->Update(); 
+        auto graph_eff = efficiency[0]->GetPaintedGraph(); 
+        graph_eff->SetMinimum(0);
+        graph_eff->SetMaximum(0.1); 
+        gPad->Update(); 
         
         CMS_lumi(can_eff, iPeriod, iPos);
         leg->Draw();
 
         
-        //can_eff->SaveAs(TString::Format("%s%s/Systematics%s%s_%s.png", 
-        //                    baseInputDir.Data(), outputDirectory.Data(), 
-        //                    histo_name.Data(), isParton.Data(), vars[i].Data()));
-        break;
+        can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/Efficiency%s_%s.png", 
+                        varParton.Data(), variable[ivar].Data()));
+
+        // now deal with the responses
+        // I will get the results from the Kolmogorov test 
+        // The returned function value is the probability of test (much less than one means NOT compatible)
+
+        myfile<<"------------"<< "\n";
+        myfile<< variable[ivar]<< "\n";
+        myfile<<"16pre-16post: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
+        myfile<<"16pre-17: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
+        myfile<<"16pre-18: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+
+        myfile<<"16post-16pre: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
+        myfile<<"16post-17: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
+        myfile<<"16post-18: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+
+        myfile<<"17-16pre: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
+        myfile<<"17-16post: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
+        myfile<<"17-18: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+
+        myfile<<"18-16pre: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
+        myfile<<"18-16post: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
+        myfile<<"18-17: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+        
+        myfile<<"------------"<< "\n";
+
+        
     } // end of variables loop 
+
+    myfile.close();
 }
