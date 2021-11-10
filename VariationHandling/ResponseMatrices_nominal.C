@@ -201,29 +201,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
 	float weights = XSEC/norm;
 
-	//for parton matching
-	std::vector<int> *jetMatchedIndexes = new std::vector<int>(0);
-	std::vector<float> *jetMatchedDr = new std::vector<float>(0);
-	std::vector<float> *eta_ = new std::vector<float>(0);
-  std::vector<float> *y_ = new std::vector<float>(0);
-	std::vector<float> *phi_ = new std::vector<float>(0);
-	std::vector<float> *mass_ = new std::vector<float>(0);
-	std::vector<float> *pt_ = new std::vector<float>(0);
-	std::vector<float> *jetTtag_ = new std::vector<float>(0);
-	std::vector<float> *jetBtagSub0_ = new std::vector<float>(0);
-	std::vector<float> *jetBtagSub1_ = new std::vector<float>(0);
-
-	std::vector<float> *partonPt_ = new std::vector<float>(0);
-	std::vector<float> *partonEta_ = new std::vector<float>(0);
-  std::vector<float> *partonY_ = new std::vector<float>(0);
-	std::vector<float> *partonMass_ = new std::vector<float>(0);
-	std::vector<float> *partonPhi_ = new std::vector<float>(0);
-
-	std::vector<float> *jetBtagSub0DCSVbb_ = new std::vector<float>(0);
-	std::vector<float> *jetBtagSub1DCSVbb_ = new std::vector<float>(0);
-	std::vector<float> *jetBtagSub0DCSVbbb_ = new std::vector<float>(0);
-	std::vector<float> *jetBtagSub1DCSVbbb_ = new std::vector<float>(0);
-
 	float jetDr_(0);
 
     int decade(0);
@@ -242,103 +219,12 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
         cout<<10*k<<" %"<<endl;
       decade = k;
       trIN->GetEntry(iev);
-		/* int isMatched =0;
-		eta_->clear();
-        mass_->clear();
-        pt_->clear();
-        phi_->clear();
-        y_->clear();
-        jetBtagSub0_->clear();
-        jetBtagSub1_->clear();
-        jetTtag_->clear();
-
-       partonPt_->clear();
-       partonMass_->clear();
-       partonY_->clear();
-       partonPhi_->clear();
-       partonEta_->clear();
-
-	   jetBtagSub0DCSVbb_->clear();
-	   jetBtagSub1DCSVbb_->clear();
-	   jetBtagSub0DCSVbbb_->clear();
-	   jetBtagSub1DCSVbbb_->clear(); */
 
 	   xPartonAll.clear();
 	   xRecoAll.clear();
 	   xParticleAll.clear();
 
 
-      //----------------------MATCHING------------------------------------------------------
-  /*
-			for(int ijet =0; ijet<nJets; ijet++)
-			{
-				//cout<<"ok"<<endl;
-			   jetMatchedIndexes->clear();
-			   jetMatchedDr->clear();
-			   std::vector<int>::iterator it = std::find(partonMatchIdx->begin(), partonMatchIdx->end(), ijet);
-			   //get all entries that match our jet.
-			   while(it != partonMatchIdx->end())
-			   {
-				   int index = it - partonMatchIdx->begin();
-				   jetMatchedIndexes->push_back(index); //has the positions where I found the jet i in partonMatchedIdx
-				   jetMatchedDr->push_back((*partonMatchDR)[index]); //same here for the DR: DR that correspond to the jet i
-				   //cout<<"jetFound at: "<<index<<endl;
-				   ++it;
-				   it = std::find(it, partonMatchIdx->end(), ijet);
-			   }
-			   //if we actually selected something
-			   if(jetMatchedIndexes->size() > 0)
-			   {
-
-					float dRmin = (*jetMatchedDr)[0];
-					int indexMin = (*jetMatchedIndexes)[0];
-
-					//cout<<"dRmin[0]: "<<dRmin<<endl;
-					for(int k=1; k<jetMatchedIndexes->size(); k++)
-					{
-						//cout<<"jetMatchedIndexes at k = "<<k<<" is: "<<(*jetMatchedIndexes)[k]<<endl;
-						//cout<<"jetMatchedDr at k =  "<<k<<" is: "<<(*jetMatchedDr)[k]<<endl;
-						if((*jetMatchedDr)[k] < dRmin)
-						{
-							dRmin = (*jetMatchedDr)[k];
-							indexMin = (*jetMatchedIndexes)[k];
-						}
-					//cout<<"dRmin is: "<<dRmin<<endl;
-					}
-					//cout<<"dRdRmin: "<<dRmin<<endl;
-					//cout<<indexMin<<endl;
-					if(dRmin < 0.4)
-					{
-						isMatched++;
-						//cout<<"int isMatched: "<<isMatched<<endl;
-						jetDr_ = dRmin;
-						pt_->push_back((*jetPt)[(*partonMatchIdx)[indexMin]]);
-						mass_->push_back((*jetMassSoftDrop)[(*partonMatchIdx)[indexMin]]);
-						eta_->push_back((*jetEta)[(*partonMatchIdx)[indexMin]]);
-            y_->push_back((*jetY)[(*partonMatchIdx)[indexMin]]);
-						phi_->push_back( (*jetPhi)[(*partonMatchIdx)[indexMin]]);
-						jetBtagSub0_->push_back( (*jetBtagSub0)[(*partonMatchIdx)[indexMin]]);
-						//jetBtagSub1_->push_back( (*jetBtagSub1)[(*partonMatchIdx)[indexMin]]);
-						jetTtag_->push_back( (*jetTtag)[(*partonMatchIdx)[indexMin]]);
-
-						jetBtagSub0DCSVbb_->push_back((*jetBtagSub0DCSVbb)[(*partonMatchIdx)[indexMin]]);
-						jetBtagSub1DCSVbb_->push_back((*jetBtagSub1DCSVbb)[(*partonMatchIdx)[indexMin]]);
-						jetBtagSub0DCSVbbb_->push_back((*jetBtagSub0DCSVbbb)[(*partonMatchIdx)[indexMin]]);
-						jetBtagSub1DCSVbbb_->push_back((*jetBtagSub1DCSVbbb)[(*partonMatchIdx)[indexMin]]);
-
-						partonPt_->push_back( (*partonPt)[indexMin]);
-						partonMass_->push_back( (*partonMass)[indexMin]);
-						partonPhi_->push_back( (*partonPhi)[indexMin]);
-            partonY_->push_back( (*partonY)[indexMin]);
-						partonEta_->push_back( (*partonEta)[indexMin]);
-
-						//cout<<(*partonMatchIdx)[indexMin]<<endl;
-						//cout<<"------------"<<endl;
-					}
-
-			   }
-
-			} */
 	if(nJets > 1)
     {
 
@@ -444,7 +330,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[0].Theta())); //this is |cos(theta*)| leading
 		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[1].Theta())); //this is |cos(theta*)| subleading
 
-	  //---------------------------end of MATCHING---------------------------------------------------------
 	  bool recoCuts, partonCuts, particleCuts;
 	  bool massCut = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
 	  bool tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
@@ -572,9 +457,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   }
 
 
-
-
-
   for(int ivar =0; ivar<NVAR; ivar++)
   {
     hReco[ivar]->Scale(weights*LUMI);
@@ -590,28 +472,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   }
   TEfficiency *efficiency_parton[NVAR], *acceptance_parton[NVAR];
   TEfficiency *efficiency_particle[NVAR], *acceptance_particle[NVAR];
-
-  //efficiency for parton quantity and for topTagger (new)
-
-  for(int ivar = 0; ivar< NVAR; ivar++)
-  {
-  	if(hParton[ivar]->GetBinContent(0) > 0)
-  		hParton[ivar]->SetBinContent(0,0.0);
-  	if(hReco[ivar]->GetBinContent(0) > 0)
-  		hReco[ivar]->SetBinContent(0,0.0);
-  	if(hParticle[ivar]->GetBinContent(0) > 0)
-  		hParticle[ivar]->SetBinContent(0,0.0);
-
-  	if(hRecoParton[ivar]->GetBinContent(0) > 0)
-  		hRecoParton[ivar]->SetBinContent(0,0.0);
-  	if(hPartonReco[ivar]->GetBinContent(0) > 0)
-  		hPartonReco[ivar]->SetBinContent(0,0.0);
-
-  	if(hRecoParticle[ivar]->GetBinContent(0) > 0)
-  		hRecoParticle[ivar]->SetBinContent(0,0.0);
-  	if(hParticleReco[ivar]->GetBinContent(0) > 0)
-  		hParticleReco[ivar]->SetBinContent(0,0.0);
-  }
 
 
   for(int ivar = 0; ivar< NVAR; ivar++)

@@ -64,6 +64,7 @@ void PlotEfficiencyResponse(bool isParton = true)
 
         
         // legend 
+        TLegend *leg_acc = new TLegend(0.7, 0.25, 0.9, 0.45);
         TLegend *leg = new TLegend(0.7, 0.75, 0.9, 0.9);
 
         //get response matrix
@@ -119,6 +120,7 @@ void PlotEfficiencyResponse(bool isParton = true)
             acceptance[iy]->SetLineColor(color[iy]);
             
             leg->AddEntry(efficiency[iy], years[iy], "lep");
+            leg_acc->AddEntry(efficiency[iy], years[iy], "lep");
         } // end of years loop
 
 
@@ -145,10 +147,10 @@ void PlotEfficiencyResponse(bool isParton = true)
         gPad->Update(); 
 
         CMS_lumi(can_acc, iPeriod, iPos);
-
+        leg_acc->Draw();    
         can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/Acceptance%s_%s.png", 
                         varParton.Data(), variable[ivar].Data()));
-        leg->Draw();
+        
 
         // plot efficiency 
         TCanvas *can_eff = new TCanvas(TString::Format("canEff_%s",variable[ivar].Data()),
@@ -177,27 +179,27 @@ void PlotEfficiencyResponse(bool isParton = true)
         // now deal with the responses
         // I will get the results from the Kolmogorov test 
         // The returned function value is the probability of test (much less than one means NOT compatible)
-
+        
         myfile<<"------------"<< "\n";
         myfile<< variable[ivar]<< "\n";
         myfile<<"16pre-16post: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
         myfile<<"16pre-17: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
         myfile<<"16pre-18: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
 
-        myfile<<"16post-16pre: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
-        myfile<<"16post-17: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
-        myfile<<"16post-18: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+        myfile<<"16post-16pre: " <<hResponse[1]->KolmogorovTest(hResponse[0])<< "\n";
+        myfile<<"16post-17: " <<hResponse[1]->KolmogorovTest(hResponse[2])<< "\n";
+        myfile<<"16post-18: " <<hResponse[1]->KolmogorovTest(hResponse[3])<< "\n";
 
-        myfile<<"17-16pre: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
-        myfile<<"17-16post: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
-        myfile<<"17-18: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+        myfile<<"17-16pre: " <<hResponse[2]->KolmogorovTest(hResponse[0])<< "\n";
+        myfile<<"17-16post: " <<hResponse[2]->KolmogorovTest(hResponse[1])<< "\n";
+        myfile<<"17-18: " <<hResponse[2]->KolmogorovTest(hResponse[3])<< "\n";
 
-        myfile<<"18-16pre: " <<hResponse[0]->KolmogorovTest(hResponse[1])<< "\n";
-        myfile<<"18-16post: " <<hResponse[0]->KolmogorovTest(hResponse[2])<< "\n";
-        myfile<<"18-17: " <<hResponse[0]->KolmogorovTest(hResponse[3])<< "\n";
+        myfile<<"18-16pre: " <<hResponse[3]->KolmogorovTest(hResponse[0])<< "\n";
+        myfile<<"18-16post: " <<hResponse[3]->KolmogorovTest(hResponse[1])<< "\n";
+        myfile<<"18-17: " <<hResponse[3]->KolmogorovTest(hResponse[2])<< "\n";
         
         myfile<<"------------"<< "\n";
-
+        
         
     } // end of variables loop 
 
