@@ -1,39 +1,0 @@
-[8MB/259.2MB][  3%][=>                                                ][4MB/s]  [16MB/259.2MB][  6%][===>                                              ][5.333MB/s]  [40MB/259.2MB][ 15%][=======>                                          ][10MB/s]  [64MB/259.2MB][ 24%][============>                                     ][12.8MB/s]  [88MB/259.2MB][ 33%][================>                                 ][14.67MB/s]  [104MB/259.2MB][ 40%][====================>                             ][14.86MB/s]  [128MB/259.2MB][ 49%][========================>                         ][16MB/s]  [152MB/259.2MB][ 58%][=============================>                    ][16.89MB/s]  [176MB/259.2MB][ 67%][=================================>                ][17.6MB/s]  [192MB/259.2MB][ 74%][=====================================>            ][17.45MB/s]  [216MB/259.2MB][ 83%][=========================================>        ][18MB/s]  [232MB/259.2MB][ 89%][============================================>     ][17.85MB/s]  [256MB/259.2MB][ 98%][=================================================>][18.29MB/s]  [259.2MB/259.2MB][100%][==================================================][18.51MB/s]  [259.2MB/259.2MB][100%][==================================================][18.51MB/s]  
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00002b86e51c360c in waitpid () from /lib64/libc.so.6
-#1  0x00002b86e5140f62 in do_system () from /lib64/libc.so.6
-#2  0x00002b86e485cbdc in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00002b86e874b578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00002b86e8742a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00002b86f8fd0af8 in ?? ()
-#6  0x0000000600000008 in ?? ()
-#7  0x0000000700000008 in ?? ()
-#8  0x0000000a00000007 in ?? ()
-#9  0x0000000b0000000a in ?? ()
-#10 0x0000000a0000000a in ?? ()
-#11 0x00002b86f8fcea9d in ?? ()
-#12 0x0000000600000008 in ?? ()
-#13 0x0000000700000008 in ?? ()
-#14 0x0000000a00000007 in ?? ()
-#15 0x0000000b0000000a in ?? ()
-#16 0x0000000a0000000a in ?? ()
-#17 0x00002b86f8fce4dc in ?? ()
-#18 0x00000000017606ec in ?? ()
-#19 0x0000000002062f20 in ?? ()
-#20 0x00007ffdec06ad90 in ?? ()
-#21 0x0000000002062f22 in ?? ()
-#22 0x00000000028f18c8 in ?? ()
-#23 0x00007ffdec0699e0 in ?? ()
-#24 0x00007ffdec069e08 in ?? ()
-#25 0x00002b86e8aab085 in clang::CodeGen::CodeGenFunction::EmitCXXDestructorCall(clang::GlobalDecl, clang::CodeGen::CGCallee const&, llvm::Value*, clang::QualType, llvm::Value*, clang::QualType, clang::CallExpr const*) () from /usr/lib64/root/libCling.so
-#26 0x00002b86e8957579 in (anonymous namespace)::ItaniumCXXABI::EmitDestructorCall(clang::CodeGen::CodeGenFunction&, clang::CXXDestructorDecl const*, clang::CXXDtorType, bool, bool, clang::CodeGen::Address, clang::QualType) () from /usr/lib64/root/libCling.so
-#27 0x00002b86e8a39ea9 in clang::CodeGen::CodeGenFunction::destroyCXXObject(clang::CodeGen::CodeGenFunction&, clang::CodeGen::Address, clang::QualType) () from /usr/lib64/root/libCling.so
-#28 0x00002b86e8a5da55 in clang::CodeGen::CodeGenFunction::emitDestroy(clang::CodeGen::Address, clang::QualType, void (*)(clang::CodeGen::CodeGenFunction&, clang::CodeGen::Address, clang::QualType), bool) () from /usr/lib64/root/libCling.so
-#29 0x0000000000000000 in ?? ()
-Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
-Execution of your code was aborted.
-In file included from input_line_8:1:
-/pool/condor/dir_60086/ResponseMatrices_JES.C:147:5: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
-    trIN->SetBranchAddress("nJets"          ,&nJets);
-    ^~~~

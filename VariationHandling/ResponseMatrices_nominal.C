@@ -118,8 +118,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
     float genEvtWeight(0);
     double  bTagEvntWeight(0);
     float mJJ(0), ptJJ(0), yJJ(0),mva(0);
-    vector<float> *tau3(0),*tau2(0),*tau1(0);
-	  vector<float> *jetMassSub0(0), *jetMassSub1(0), *jetBtagSub0(0), *jetBtagSub1(0);
     vector<float> *jetMassSoftDrop(0), *partonEta(0), *partonY(0);
 
     //parton
@@ -150,19 +148,12 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
     trIN->SetBranchAddress("jetEta"         ,&jetEta);
     trIN->SetBranchAddress("jetY"           ,&jetY);
     trIN->SetBranchAddress("jetPhi"         ,&jetPhi);
-    trIN->SetBranchAddress("jetTau3"        ,&tau3);
-    trIN->SetBranchAddress("jetTau2"        ,&tau2);
-    trIN->SetBranchAddress("jetTau1"        ,&tau1);
     trIN->SetBranchAddress("triggerBit"     ,&bit);
     trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
     trIN->SetBranchAddress("bTagEvntWeight", &bTagEvntWeight);
-    trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
-    trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
     trIN->SetBranchAddress("mJJ"   			,&mJJ);
     trIN->SetBranchAddress("yJJ"   			,&yJJ);
     trIN->SetBranchAddress("ptJJ"   		,&ptJJ);
-	trIN->SetBranchAddress("jetBtagSub0"	,&jetBtagSub0);
-    //trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
     trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   	trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
   	//deepCSV
@@ -473,7 +464,34 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   TEfficiency *efficiency_parton[NVAR], *acceptance_parton[NVAR];
   TEfficiency *efficiency_particle[NVAR], *acceptance_particle[NVAR];
 
+  for(int ivar = 0; ivar< NVAR; ivar++)
+  {
+  	for (int ibin =0; ibin<=hParton[ivar]->GetNbinsX()+2; ibin++)
+    {
+      //cout<<ivar<<endl;
+      //cout<<"passed "<<ibin<<" :"<<hPartonReco[ivar]->GetBinContent(ibin)<<endl;
+      //cout<<"total "<<ibin<<" :"<<hParton[ivar]->GetBinContent(ibin)<<endl;
 
+      if(hParton[ivar]->GetBinContent(ibin) < 0){
+        hParton[ivar]->SetBinContent(ibin,0.0);
+      }
+      if(hReco[ivar]->GetBinContent(ibin) < 0)
+        hReco[ivar]->SetBinContent(ibin,0.0);
+      if(hParticle[ivar]->GetBinContent(ibin) < 0)
+        hParticle[ivar]->SetBinContent(ibin,0.0);
+
+      if(hRecoParton[ivar]->GetBinContent(ibin) < 0)
+        hRecoParton[ivar]->SetBinContent(ibin,0.0);
+      if(hPartonReco[ivar]->GetBinContent(ibin) < 0)
+        hPartonReco[ivar]->SetBinContent(ibin,0.0);
+
+      if(hRecoParticle[ivar]->GetBinContent(ibin) < 0)
+        hRecoParticle[ivar]->SetBinContent(ibin,0.0);
+      if(hParticleReco[ivar]->GetBinContent(ibin) < 0)
+        hParticleReco[ivar]->SetBinContent(ibin,0.0);
+    }
+  } 
+  
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
 

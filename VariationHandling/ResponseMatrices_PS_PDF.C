@@ -656,26 +656,32 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
   TEfficiency *efficiency_particle[weightsSize][NVAR], *acceptance_particle[weightsSize][NVAR];
 
   //efficiency for parton quantity and for topTagger (new)
-  /*
+  
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
-  	if(hParton[ivar]->GetBinContent(0) > 0)
-  		hParton[ivar]->SetBinContent(0,0.0);
-  	if(hReco[ivar]->GetBinContent(0) > 0)
-  		hReco[ivar]->SetBinContent(0,0.0);
-  	if(hParticle[ivar]->GetBinContent(0) > 0)
-  		hParticle[ivar]->SetBinContent(0,0.0);
+    for(int iweight=0; iweight<weightsSize; iweight++)
+    {
+      for (int ibin =0; ibin<=hParton[ivar]->GetNbinsX()+2; ibin++)
+      {
+        if(hParton[iweight][ivar]->GetBinContent(ibin) < 0)
+          hParton[iweight][ivar]->SetBinContent(ibin,0.0);
+        if(hReco[iweight][ivar]->GetBinContent(ibin) < 0)
+          hReco[iweight][ivar]->SetBinContent(ibin,0.0);
+        if(hParticle[iweight][ivar]->GetBinContent(ibin) < 0)
+          hParticle[iweight][ivar]->SetBinContent(ibin,0.0);
 
-  	if(hRecoParton[ivar]->GetBinContent(0) > 0)
-  		hRecoParton[ivar]->SetBinContent(0,0.0);
-  	if(hPartonReco[ivar]->GetBinContent(0) > 0)
-  		hPartonReco[ivar]->SetBinContent(0,0.0);
+        if(hRecoParton[iweight][ivar]->GetBinContent(ibin) < 0)
+          hRecoParton[iweight][ivar]->SetBinContent(ibin,0.0);
+        if(hPartonReco[iweight][ivar]->GetBinContent(ibin) < 0)
+          hPartonReco[iweight][ivar]->SetBinContent(ibin,0.0);
 
-  	if(hRecoParticle[ivar]->GetBinContent(0) > 0)
-  		hRecoParticle[ivar]->SetBinContent(0,0.0);
-  	if(hParticleReco[ivar]->GetBinContent(0) > 0)
-  		hParticleReco[ivar]->SetBinContent(0,0.0);
-  } */
+        if(hRecoParticle[iweight][ivar]->GetBinContent(ibin) < 0)
+          hRecoParticle[iweight][ivar]->SetBinContent(ibin,0.0);
+        if(hParticleReco[iweight][ivar]->GetBinContent(ibin) < 0)
+          hParticleReco[iweight][ivar]->SetBinContent(ibin,0.0);
+      }
+    }
+  } 
 
 
   for(int ivar = 0; ivar< NVAR; ivar++)

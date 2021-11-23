@@ -384,7 +384,6 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
 	  btagCut = deepCSV;
 
 	  //qcout<<"----------"<<endl;
-    float extra_weight(1);
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
 		  if(recoCuts && btagCut && tTaggerCut)

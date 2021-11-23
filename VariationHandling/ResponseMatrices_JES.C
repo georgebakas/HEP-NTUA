@@ -459,7 +459,7 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
 	  btagCut = deepCSV;
 
 	  //qcout<<"----------"<<endl;
-
+      
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
 		  if(recoCuts && btagCut && tTaggerCut)
@@ -595,23 +595,26 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
 
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
-  	if(hParton[ivar]->GetBinContent(0) > 0)
-  		hParton[ivar]->SetBinContent(0,0.0);
-  	if(hReco[ivar]->GetBinContent(0) > 0)
-  		hReco[ivar]->SetBinContent(0,0.0);
-  	if(hParticle[ivar]->GetBinContent(0) > 0)
-  		hParticle[ivar]->SetBinContent(0,0.0);
+  	for (int ibin =0; ibin<hParton[ivar]->GetNbinsX(); ibin++)
+    {
+      if(hParton[ivar]->GetBinContent(ibin) < 0)
+        hParton[ivar]->SetBinContent(ibin,0.0);
+      if(hReco[ivar]->GetBinContent(ibin) < 0)
+        hReco[ivar]->SetBinContent(ibin,0.0);
+      if(hParticle[ivar]->GetBinContent(ibin) < 0)
+        hParticle[ivar]->SetBinContent(ibin,0.0);
 
-  	if(hRecoParton[ivar]->GetBinContent(0) > 0)
-  		hRecoParton[ivar]->SetBinContent(0,0.0);
-  	if(hPartonReco[ivar]->GetBinContent(0) > 0)
-  		hPartonReco[ivar]->SetBinContent(0,0.0);
+      if(hRecoParton[ivar]->GetBinContent(ibin) < 0)
+        hRecoParton[ivar]->SetBinContent(ibin,0.0);
+      if(hPartonReco[ivar]->GetBinContent(ibin) < 0)
+        hPartonReco[ivar]->SetBinContent(ibin,0.0);
 
-  	if(hRecoParticle[ivar]->GetBinContent(0) > 0)
-  		hRecoParticle[ivar]->SetBinContent(0,0.0);
-  	if(hParticleReco[ivar]->GetBinContent(0) > 0)
-  		hParticleReco[ivar]->SetBinContent(0,0.0);
-  }
+      if(hRecoParticle[ivar]->GetBinContent(ibin) < 0)
+        hRecoParticle[ivar]->SetBinContent(ibin,0.0);
+      if(hParticleReco[ivar]->GetBinContent(ibin) < 0)
+        hParticleReco[ivar]->SetBinContent(ibin,0.0);
+    }
+  } 
 
 
   for(int ivar = 0; ivar< NVAR; ivar++)
