@@ -1,0 +1,52 @@
+
+Processing GetHistograms_bTag.C("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root","TTJets","2018","up")...
+YEAR: 2018
+file_name: /eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root
+ttbar_process: TTJets
+XSEC: 832
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau3
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau2
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau1
+Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub0
+Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub1
+Error in <TTree::SetBranchAddress>: unknown branch -> jetBtagSub0
+Entries: 11328392
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+
+Processing GetHistograms_bTag.C("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root","TTJets","2018","down")...
+YEAR: 2018
+file_name: /eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root
+ttbar_process: TTJets
+XSEC: 832
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau3
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau2
+Error in <TTree::SetBranchAddress>: unknown branch -> jetTau1
+Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub0
+Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub1
+Error in <TTree::SetBranchAddress>: unknown branch -> jetBtagSub0
+Entries: 11328392
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+Number of arguments 2
+Argument list: ['RunGetHistograms_bTag.py', '2018']
+variation is: up
+TTJets
+TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root
+variation is: down
+TTJets
+TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root

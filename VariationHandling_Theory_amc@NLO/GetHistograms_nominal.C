@@ -358,7 +358,6 @@ void GetHistograms_nominal(TString file_name, TString ttbar_process, TString yea
 	  btagCut = deepCSV;
 
 	  //qcout<<"----------"<<endl;
-
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
 		  if(recoCuts && btagCut && tTaggerCut)

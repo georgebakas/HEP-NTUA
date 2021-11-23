@@ -1,36 +1,0 @@
-[8MB/227.6MB][  3%][=>                                                ][2MB/s]  [16MB/227.6MB][  7%][===>                                              ][2.667MB/s]  [24MB/227.6MB][ 10%][=====>                                            ][3MB/s]  [32MB/227.6MB][ 14%][=======>                                          ][3.556MB/s]  [40MB/227.6MB][ 17%][========>                                         ][3.636MB/s]  [48MB/227.6MB][ 21%][==========>                                       ][4MB/s]  [56MB/227.6MB][ 24%][============>                                     ][4MB/s]  [64MB/227.6MB][ 28%][==============>                                   ][4.267MB/s]  [72MB/227.6MB][ 31%][===============>                                  ][4.5MB/s]  [80MB/227.6MB][ 35%][=================>                                ][4.706MB/s]  [88MB/227.6MB][ 38%][===================>                              ][4.889MB/s]  [96MB/227.6MB][ 42%][=====================>                            ][5.053MB/s]  [104MB/227.6MB][ 45%][======================>                           ][5.2MB/s]  [120MB/227.6MB][ 52%][==========================>                       ][5.714MB/s]  [128MB/227.6MB][ 56%][============================>                     ][5.818MB/s]  [152MB/227.6MB][ 66%][=================================>                ][6.609MB/s]  [176MB/227.6MB][ 77%][======================================>           ][7.333MB/s]  [200MB/227.6MB][ 87%][===========================================>      ][8MB/s]  [227.6MB/227.6MB][100%][==================================================][9.106MB/s]  [227.6MB/227.6MB][100%][==================================================][9.106MB/s]  
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00002b9c87e0260c in waitpid () from /lib64/libc.so.6
-#1  0x00002b9c87d7ff62 in do_system () from /lib64/libc.so.6
-#2  0x00002b9c8749bbdc in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00002b9c8b38a578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00002b9c8b381a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00002b9c86e721d6 in ?? ()
-#6  0x0000000600000008 in ?? ()
-#7  0x0000000700000008 in ?? ()
-#8  0x0000000a00000007 in ?? ()
-#9  0x0000000b0000000a in ?? ()
-#10 0x0000000a0000000a in ?? ()
-#11 0x0000006400000064 in ?? ()
-#12 0x00002b9c8e563885 in ?? () from /usr/lib64/root/libCling.so
-#13 0x00002b9c88104760 in ?? () from /lib64/libc.so.6
-#14 0x0000000000000103 in ?? ()
-#15 0x00002b9c881047b0 in main_arena () from /lib64/libc.so.6
-#16 0xffff800000000000 in ?? ()
-#17 0x00007fffbb168130 in ?? ()
-#18 0x00007fffbb160109 in ?? ()
-#19 0x00007fffbb168310 in ?? ()
-#20 0x00002b9c8e8f1341 in ?? () from /usr/lib64/root/libCling.so
-#21 0xffff800000000000 in ?? ()
-#22 0x0000000000000103 in ?? ()
-#23 0x716c6cf8677b9000 in ?? ()
-#24 0x00007fffbb168140 in ?? ()
-#25 0x0000004000000004 in ?? ()
-#26 0x0000000000000000 in ?? ()
-Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
-Execution of your code was aborted.
-In file included from input_line_8:1:
-/pool/condor/dir_27951/FillHistograms_Reduced_JES.C:119:5: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
-    trIN->SetBranchAddress("nJets"          ,&nJets);
-    ^~~~
