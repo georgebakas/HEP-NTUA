@@ -44,6 +44,8 @@ void PlotEfficiencyResponse(bool isParton = true)
     /* Loop on all variables and create canvases */
 
     TString years[4] = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
+    
+    TString variations[5] = {"bTagVariation", "JES", "PDFWeights", "PSWeights", 'ScaleWeights'};
 
     //write to a txt file the Kolmogorov tests
     ofstream myfile;
@@ -61,24 +63,46 @@ void PlotEfficiencyResponse(bool isParton = true)
         TEfficiency *acceptance[4], *efficiency[4];
         // define th2 response matrices per year
         TH2F *hResponse[4];
-
         
         // legend 
         TLegend *leg_acc = new TLegend(0.7, 0.25, 0.9, 0.45);
         TLegend *leg = new TLegend(0.7, 0.75, 0.9, 0.9);
 
+
+        TFile *f_acc = TFile::Open(TString::Format("AcceptanceCombined/Nominal/CombAcceptance%s_%s_ResponsesEfficiency_TTToHadronic.root", 
+                                varParton.Data(), variable[ivar].Data()));
+        TFile *f_eff = TFile::Open(TString::Format("EfficiencyCombined/Nominal/CombEfficiency%s_%s_ResponsesEfficiency_TTToHadronic.root", 
+                                varParton.Data(), variable[ivar].Data()));
+        TH1F *eff_combined = (TH1F*)f_eff->Get("efficiency");
+        TH1F *acc_combined = (TH1F*)f_acc->Get("acceptance");
+        
+        eff_combined->SetMarkerStyle(28);
+        eff_combined->SetMarkerSize(1.2);
+        eff_combined->SetMarkerColor(kMagenta);
+        eff_combined->SetLineColor(kMagenta);
+
+        acc_combined->SetMarkerStyle(28);
+        acc_combined->SetMarkerSize(1.2);
+        acc_combined->SetMarkerColor(kMagenta);
+        acc_combined->SetLineColor(kMagenta);
+
+        // get the error propagation
+
+
         //get response matrix
         for(int iy = 0; iy<4; iy++)
         {   
-            TFile *inf_had = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_TTToHadronic.root", years[iy].Data()));
-            TFile *inf_sem = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_TTToSemiLeptonic.root", years[iy].Data()));
-            TFile *inf_dil = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_TTTo2L2Nu.root", years[iy].Data()));
-
             TString tempVar;
             if(isParton)
                 tempVar = variableParton[ivar];
             else
                 tempVar = variableGen[ivar];
+
+            TFile *inf_had = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_TTToHadronic.root", years[iy].Data()));
+            TFile *inf_sem = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_TTToSemiLeptonic.root", years[iy].Data()));
+            TFile *inf_dil = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_TTTo2L2Nu.root", years[iy].Data()));
+
+            
             cout << years[iy]<< "\n";
             // get responses 
             hResponse_had[iy] = (TH2F*)inf_had->Get(TString::Format("h%sResponse_%s",varParton.Data(), variable[ivar].Data()));
@@ -123,6 +147,8 @@ void PlotEfficiencyResponse(bool isParton = true)
             leg_acc->AddEntry(efficiency[iy], years[iy], "lep");
         } // end of years loop
 
+        leg->AddEntry(eff_combined, "Combined", "lep");
+        leg_acc->AddEntry(acc_combined, "Combined", "lep");
 
         lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
         int iPeriod = 4;
@@ -139,6 +165,7 @@ void PlotEfficiencyResponse(bool isParton = true)
         acceptance[1]->Draw("same");
         acceptance[2]->Draw("same");
         acceptance[3]->Draw("same");
+        acc_combined->Draw("same");
 
         gPad->Update(); 
         auto graph = acceptance[0]->GetPaintedGraph(); 
@@ -162,6 +189,7 @@ void PlotEfficiencyResponse(bool isParton = true)
         efficiency[1]->Draw("same");
         efficiency[2]->Draw("same");
         efficiency[3]->Draw("same");
+        eff_combined->Draw("same");
 
         gPad->Update(); 
         auto graph_eff = efficiency[0]->GetPaintedGraph(); 

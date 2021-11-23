@@ -105,7 +105,7 @@ namespace AnalysisConstants_UL
   {
     for (int i = 1; i < 100; i++)
     {
-      variations.push_back(TString::Format("pdfVariation%i", i));
+      variations.push_back(TString::Format("pdf_%i", i));
       correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("pdfVariation%i", i),
                                                                 {1., 1., 1., 1.,
                                                                  1., 1., 1., 1.,
@@ -118,9 +118,9 @@ namespace AnalysisConstants_UL
   {
     for (int i = 2; i < 10; i++)
     {
-      if (i == 6) continue;
+      if (i == 6 || i ==8) continue;
       //  continue;
-      variations.push_back(TString::Format("scaleWeight%i", i));
+      variations.push_back(TString::Format("scale_%i", i));
       /*correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
                                                                 {1., 1., 1., 1.,
                                                                  1., 1., 1., 1.,

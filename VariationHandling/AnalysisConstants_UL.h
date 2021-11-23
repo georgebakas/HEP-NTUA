@@ -105,7 +105,7 @@ namespace AnalysisConstants_UL
   {
     for (int i = 1; i < 100; i++)
     {
-      variations.push_back(TString::Format("pdfVariation%i", i));
+      variations.push_back(TString::Format("pdf_%i", i));
       correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("pdfVariation%i", i),
                                                                 {1., 1., 1., 1.,
                                                                  1., 1., 1., 1.,
@@ -118,8 +118,8 @@ namespace AnalysisConstants_UL
   {
     for (int i = 2; i < 10; i++)
     {
-      if (i == 6) continue;
-      variations.push_back(TString::Format("scaleWeight%i", i));
+      if (i == 6 || i ==8) continue;
+      variations.push_back(TString::Format("scale_%i", i));
       /*correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
                                                                 {1., 1., 1., 1.,
                                                                  1., 1., 1., 1.,
@@ -245,7 +245,7 @@ namespace AnalysisConstants_UL
     gStyle->SetOptStat(0);
     gStyle->SetPaintTextFormat("2.2f");
     clearConstants();
-
+    /*
     if (!gSystem->AccessPathName(lxplusPath))
     {
       baseDir = lxplusPath;
@@ -257,7 +257,7 @@ namespace AnalysisConstants_UL
     else
     {
       std::cout << "Not in lxplus or ipapakri laptop, analysis will not run correctly." << std::endl;
-    }
+    }*/
 
     extractedSignalFiles.insert(std::pair<TString, TString>("2016", baseDir + "/SignalExtraction/results/2016" + currentlyWorkingDirectory["2016"] + "/ExtractedSignal.root"));
     extractedSignalFiles.insert(std::pair<TString, TString>("2017", baseDir + "/SignalExtraction/results/2017/ExtractedSignal.root"));
@@ -275,6 +275,8 @@ namespace AnalysisConstants_UL
     luminositiesSR.insert(std::pair<TString, float>("2016_postVFP", 16500));
     luminositiesSR.insert(std::pair<TString, float>("2017", 41480));
     luminositiesSR.insert(std::pair<TString, float>("2018", 59830));
+    luminositiesSR.insert(std::pair<TString, float>("comb", 137310));
+
 
     luminositiesCR.insert(std::pair<TString, float>("2016_preVFP", 1134));
     luminositiesCR.insert(std::pair<TString, float>("2016_postVFP", 564));
@@ -531,8 +533,8 @@ namespace AnalysisConstants_UL
         "fsrConHi",
         "isrConLo",
         "fsrConLo", //~
-        "bTagUp",
-        "bTagDown"};
+        "up",
+        "down"};
 
     appendJESWeights(variations);
     appendScaleVariations(variations);

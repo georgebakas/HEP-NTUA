@@ -51,7 +51,7 @@ void CombineMeasurements(bool isParton = true)
 
      //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
     TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
-    baseInputDir = TString::Format("%s/VariationHandling_Theory/", baseInputDir.Data());
+    baseInputDir = TString::Format("%s/VariationHandling_Theory_amc@NLO/", baseInputDir.Data());
     const int NVAR = 10;
     TString variable[NVAR]   = {"jetPt0","jetPt1","yJJ", "ptJJ", "mJJ", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
     TString variableParton[NVAR] = {"partonPt0", "partonPt1", "yTTbarParton", "ptTTbarParton", "mTTbarParton", "partonY0", "partonY1","chiParton", "cosThetaParton_0", "cosThetaParton_1"};
