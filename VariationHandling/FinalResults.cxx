@@ -9,7 +9,7 @@
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
 
-void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
+void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized)
 {
     std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue};
     std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue};
@@ -18,7 +18,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
     std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME E2", "SAME", "SAME E2", "SAME"};
     std::vector<bool> drawRatio = {true, true, true, true, true, true};
     std::vector<bool> putInLegend = {true, true, true, true, true, true};
-    std::vector<TString> legendTitles = {"Data", "Total unc.", "amc@NLO+Pythia8", "amc@NLO+Pythia8 unc", "Powheg+Pythia8", "Powheg+Pythia8 unc"};
+    std::vector<TString> legendTitles = {"Data", "Total unc.", /*"amc@NLO+Pythia8", "amc@NLO+Pythia8 unc",*/ "Powheg+Pythia8", "Powheg+Pythia8 unc"};
     std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
 
     TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
@@ -41,7 +41,6 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
                                 AnalysisConstants::FinalResultsConstans::legendPositions[index][1],
                                 AnalysisConstants::FinalResultsConstans::legendPositions[index][2],
                                 AnalysisConstants::FinalResultsConstans::legendPositions[index][3]);
-
   TH1F *dataHist = (TH1F *)histograms[1]->Clone("DataHist");
 
     for (unsigned int i = 0; i < histograms.size(); i++)
@@ -53,15 +52,20 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
         upperPad->SetLogy();
         }
         TH1F *hist = histograms[i];
-
+        //cout<<hist->GetTitle()<<endl;
+        hist->SetTitle("");
         hist->SetMarkerColor(colors[i]);
         hist->SetLineColor(colors[i]);
         hist->SetFillColor(fillColors[i]);
         hist->SetMarkerStyle(markerStyle[i]);
         hist->SetLineWidth(2);
         hist->SetFillStyle(fillStyles[i]);
-        hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
-                                    AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+        if (!isNormalized)
+            hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
+                                        AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+        else 
+            hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
+                                        AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
 
         TH1F *ratio = (TH1F *)hist->Clone("ratio");
         ratio->Divide(dataHist);
@@ -114,8 +118,10 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
     }
 
     float extraTextFactor = 0.14;
-    writeExtraText = true;
-    CMS_lumi(upperPad, 13, 0);
+    int iPeriod = 4;
+    int iPos = 1;
+    writeExtraText=true;
+    CMS_lumi(upperPad, iPeriod, iPos);
     }
 
     void AddSystematicToErrorBar(TH1F *nominal, TH1F *systematic)
@@ -189,7 +195,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
         for (unsigned int var = 0; var < AnalysisConstants::variations.size(); var++)
         {
             TString variation = AnalysisConstants::variations[var];
-            cout<<var<<" "<<variation<<endl;
+            //cout<<var<<" "<<variation<<endl;
             TString tempVariation = "";
             if (variation.Contains("isr") || variation.Contains("fsr"))
                 tempVariation = "PSWeights";
@@ -239,16 +245,15 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
                 if (variation.EqualTo("pdfVariation73")) continue;
                 if (variation.EqualTo("pdfVariation97")) continue;
                 if (variation.EqualTo("pdfVariation98")) continue;
-                cout<<variation<<endl;
                 
                 TH1F *variationTheoryAmcAtNlo = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s_%s",
                                                                             variation.Data(),
                                                                             variable.Data()));
-                if (variation.Contains("pdfVariation") ||
-                    variation.Contains("scaleWeight"))
-                {
-                    variationTheoryAmcAtNlo->Scale(2.);
-                }
+                //if (variation.Contains("pdfVariation") ||
+                //    variation.Contains("scaleWeight"))
+                //{
+                //    variationTheoryAmcAtNlo->Scale(2.);
+                //}
 
                 float_t variationTheoryAmcAtNloYield = variationTheoryAmcAtNlo->Integral();
                 //variationTheoryAmcAtNlo->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
@@ -262,7 +267,6 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
             }
             
         }
-        cout<<"ok"<<endl;
         if (variable.Contains("jetY") && !normalized)
         {
             nominalHistogram->Scale(0.5);
@@ -277,16 +281,15 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index)
                                                                                     (normalized ? "_normalized" : "")));
         TH1F *theoryAmcAtNloHistogramValue = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("theoryAmcAtNloHistogramValue%s",
                                                                                                     (normalized ? "_normalized" : "")));
-        cout<<"here 4"<<endl;
         std::vector<TH1F *> histogramsToDraw;
         histogramsToDraw.push_back(finalResult);
         histogramsToDraw.push_back(nominalHistogram);
-        histogramsToDraw.push_back(finalTheoryAmcAtNlo);
-        histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
+        //histogramsToDraw.push_back(finalTheoryAmcAtNlo);
+        //histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
         histogramsToDraw.push_back(finalTheory);
         histogramsToDraw.push_back(theoryHistogramValue);
 
-        DrawWithRatio(c1, histogramsToDraw, v);
+        DrawWithRatio(c1, histogramsToDraw, v, normalized);
 
         c1->SaveAs(TString::Format("%s/FinalResult_%s%s.png",
                                 outputDir.Data(),

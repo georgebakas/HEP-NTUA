@@ -45,7 +45,7 @@ void PlotEfficiencyResponse(bool isParton = true)
 
     TString years[4] = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
     
-    TString variations[5] = {"bTagVariation", "JES", "PDFWeights", "PSWeights", 'ScaleWeights'};
+    TString variations[5] = {"bTagVariation", "JES", "PDFWeights", "PSWeights", "ScaleWeights"};
 
     //write to a txt file the Kolmogorov tests
     ofstream myfile;
@@ -194,7 +194,10 @@ void PlotEfficiencyResponse(bool isParton = true)
         gPad->Update(); 
         auto graph_eff = efficiency[0]->GetPaintedGraph(); 
         graph_eff->SetMinimum(0);
-        graph_eff->SetMaximum(0.1); 
+        if (isParton)
+            graph_eff->SetMaximum(0.1);
+        else 
+            graph_eff->SetMaximum(0.3);
         gPad->Update(); 
         
         CMS_lumi(can_eff, iPeriod, iPos);

@@ -317,6 +317,17 @@ namespace AnalysisConstants_UL
     recoVariables.push_back("cosTheta_0");
     recoVariables.push_back("cosTheta_1");
 
+    axisInLogScale.push_back(true);
+    axisInLogScale.push_back(true);
+    axisInLogScale.push_back(false);
+    axisInLogScale.push_back(true);
+    axisInLogScale.push_back(true);
+    axisInLogScale.push_back(false);
+    axisInLogScale.push_back(false);
+    axisInLogScale.push_back(false);
+    axisInLogScale.push_back(false);
+    axisInLogScale.push_back(false);
+
     partonVariables.push_back("partonPt0");
     partonVariables.push_back("partonPt1");
     partonVariables.push_back("yTTbarParton");
@@ -361,20 +372,10 @@ namespace AnalysisConstants_UL
     axisTitles.push_back("mJJ (GeV)");
     axisTitles.push_back("Leading jet |Y|");
     axisTitles.push_back("Subleading jet |Y|");
-    //axisTitles.push_back("Leading jet Y");
-    //axisTitles.push_back("Subleading jet Y");
-    //axisTitles.push_back("leadingPartonCosThetaStar");
-    //axisTitles.push_back("subleadingPartonCosThetaStar");
-    //axisTitles.push_back("YStar");
-    //axisTitles.push_back("Leading jet mass (GeV)");
-    //axisTitles.push_back("Subleading jet mass (GeV)");
-    axisTitles.push_back("Leading jet Pt (GeV)");
-    axisTitles.push_back("Subleading jet Pt (GeV)");
-    axisTitles.push_back("yJJ");
-    axisTitles.push_back("ptJJ (GeV)");
-    axisTitles.push_back("mJJ (GeV)");
-    axisTitles.push_back("Leading jet |Y|");
-    axisTitles.push_back("Subleading jet |Y|");
+    axisTitles.push_back("#chi ");
+    axisTitles.push_back("Leading jet |cosTheta*|");
+    axisTitles.push_back("Subleading jet |cosTheta*|");
+
 
     partonAxisTitles.push_back("Leading parton Pt (GeV)");
     partonAxisTitles.push_back("Subleading parton Pt (GeV)");
@@ -383,13 +384,9 @@ namespace AnalysisConstants_UL
     partonAxisTitles.push_back("mTTbarParton (GeV)");
     partonAxisTitles.push_back("Leading parton |Y|");
     partonAxisTitles.push_back("Subleading parton |Y|");
-    //partonAxisTitles.push_back("Leading parton Y");
-    //partonAxisTitles.push_back("Subleading parton Y");
-    //partonAxisTitles.push_back("leadingPartonCosThetaStar");
-    //partonAxisTitles.push_back("subleadingPartonCosThetaStar");
-    //partonAxisTitles.push_back("YStar");
-    //partonAxisTitles.push_back("Leading parton mass (GeV)");
-    //partonAxisTitles.push_back("Subleading parton mass (GeV)");
+    partonAxisTitles.push_back("Parton #chi ");
+    partonAxisTitles.push_back("Leading parton  jet |cosTheta*|");
+    partonAxisTitles.push_back("Subleading parton jet |cosTheta*|");
 
     partonAxisTitles.push_back("Leading particle Pt (GeV)");
     partonAxisTitles.push_back("Subleading particle Pt (GeV)");
@@ -398,16 +395,9 @@ namespace AnalysisConstants_UL
     partonAxisTitles.push_back("particle mTTbarParton (GeV)");
     partonAxisTitles.push_back("Leading particle |Y|");
     partonAxisTitles.push_back("Subleading particle |Y|");
-
-    axisInLogScale.push_back(true);
-    axisInLogScale.push_back(true);
-    axisInLogScale.push_back(true);
-    axisInLogScale.push_back(true);
-    axisInLogScale.push_back(true);
-    axisInLogScale.push_back(false);
-    axisInLogScale.push_back(false);
-    axisInLogScale.push_back(true);
-    axisInLogScale.push_back(true);
+    partonAxisTitles.push_back("Particle #chi ");
+    partonAxisTitles.push_back("Leading particle  jet cosTheta*");
+    partonAxisTitles.push_back("Subleading particle jet cosTheta*");
 
     axisLowValues.push_back(-10);
     axisLowValues.push_back(-10);
