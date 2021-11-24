@@ -349,21 +349,7 @@ namespace AnalysisConstants_UL
     particleVariables.push_back("chiParticle");
     particleVariables.push_back("cosThetaParticle_0");
     particleVariables.push_back("cosThetaParticle_1");
-    
-    //partonVariables.push_back("leadingPartonY");
-    //partonVariables.push_back("subleadingPartonY");
-    //partonVariables.push_back("leadingPartonCosThetaStar");
-    //partonVariables.push_back("subleadingPartonCosThetaStar");
-    //partonVariables.push_back("YStar");
-    //partonVariables.push_back("leadingPartonMass");
-    //partonVariables.push_back("subleadingPartonMass");
-    partonVariables.push_back("leadingGenPt");
-    partonVariables.push_back("subleadingGenPt");
-    partonVariables.push_back("yJJGen");
-    partonVariables.push_back("ptJJGen");
-    partonVariables.push_back("mJJGen");
-    partonVariables.push_back("leadingGenAbsY");
-    partonVariables.push_back("subleadingGenAbsY");
+
 
     axisTitles.push_back("Leading jet Pt (GeV)");
     axisTitles.push_back("Subleading jet Pt (GeV)");

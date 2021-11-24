@@ -18,7 +18,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME E2", "SAME", "SAME E2", "SAME"};
     std::vector<bool> drawRatio = {true, true, true, true, true, true};
     std::vector<bool> putInLegend = {true, true, true, true, true, true};
-    std::vector<TString> legendTitles = {"Data", "Total unc.", /*"amc@NLO+Pythia8", "amc@NLO+Pythia8 unc",*/ "Powheg+Pythia8", "Powheg+Pythia8 unc"};
+    std::vector<TString> legendTitles = {"Data", "Total unc.", "amc@NLO+Pythia8", "amc@NLO+Pythia8 unc","Powheg+Pythia8", "Powheg+Pythia8 unc"};
     std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
 
     TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
@@ -150,7 +150,9 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
     TString theoryYear = "2018";
 
-    TFile *nominalAmcAtNloFile = TFile::Open("../VariationHandling_Theory_amc@NLO/testFile_TheoryParton.root");
+    //TFile *nominalAmcAtNloFile = TFile::Open("../VariationHandling_Theory_amc@NLO/testFile_TheoryParton.root");
+
+    TFile *nominalAmcAtNloFile = TFile::Open("../VariationHandling_Theory_amc@NLO/2018/Nominal/Histograms_TTJets.root");
 
     for (unsigned int v = 0; v < AnalysisConstants::unfoldingVariables.size(); v++)
     {
@@ -172,15 +174,17 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                                                                         (normalized ? "Norm" : ""),
                                                                         variable.Data()));
 
-        TH1F *theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s", 
-                                                                        variable.Data()));
+        //TH1F *theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s", 
+        //                                                                variable.Data()));
+
+        TH1F *theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParton_%s", 
+                                                                        AnalysisConstants::partonVariables[v].Data()));
         
+        theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["comb"], "width");
         float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
-        //theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-        // gb has already merged an normalized 
         if (normalized)
         {
-            theoryAmcAtNloHistogram->Scale(AnalysisConstants::luminositiesSR[theoryYear] / theoryAmcAtNloYield);
+            theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
         }
         TH1F *finalTheoryAmcAtNlo = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNlo%s_%s",
                                                                             (normalized ? "Norm" : ""),
@@ -207,9 +211,9 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 tempVariation = "ScaleWeights";
             else tempVariation = "JES";
 
-            
             if (variation.Contains("pdf_99")) continue;
 
+            
             TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFileParton_%s.root",
                                                                 baseDir.Data(),
                                                                 tempVariation.Data(), 
@@ -220,50 +224,68 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                                                                             variable.Data()));
             AddSystematicToErrorBar(finalResult, variationHistogram);
 
+            if (tempVariation.Contains("JES")) continue;
+            if (tempVariation.Contains("bTagVariation")) continue;
+            if (tempVariation.Contains("PDFWeights")) continue;
+            if (tempVariation.EqualTo("PSWeights"))
+                cout<<variation<<endl;
+
             TH1F *variationTheory = (TH1F *)variationFile->Get(TString::Format("hTheory%s_%s",
                                                                             (normalized ? "Norm" : ""),
                                                                             variable.Data()));
 
             AddSystematicToErrorBar(finalTheory, variationTheory);
             variationFile->Close();
+            // check AMC@NLO pdf and scale 
             if (variation.Contains("pdf") ||
-                variation.Contains("scale") ||
-                variation.Contains("up") ||
-                variation.Contains("down")
+                variation.Contains("scale")
             )
             {   
                 if (tempVariation.EqualTo("JES")) continue;
                 if (tempVariation.EqualTo("PSWeights")) continue;
+                
                 // up or down --> bTagup and bTagDown
+                /*
+                use only when using combined AMC@NLO results 
                 if (variation.Contains("up") || variation.Contains("down"))
                     variation = TString::Format("bTag%s", variation.Data());
                 else if (variation.Contains("scale"))
                     variation = variation.ReplaceAll("scale_", "scaleWeight");
                 else if (variation.Contains("pdf"))
-                    variation = variation.ReplaceAll("pdf_", "pdfVariation");
+                    variation = variation.ReplaceAll("pdf_", "pdfVariation"); 
                 if (variation.EqualTo("pdfVariation6")) continue;
                 if (variation.EqualTo("pdfVariation73")) continue;
                 if (variation.EqualTo("pdfVariation97")) continue;
-                if (variation.EqualTo("pdfVariation98")) continue;
+                if (variation.EqualTo("pdfVariation98")) continue; */
                 
-                TH1F *variationTheoryAmcAtNlo = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s_%s",
-                                                                            variation.Data(),
-                                                                            variable.Data()));
-                //if (variation.Contains("pdfVariation") ||
-                //    variation.Contains("scaleWeight"))
-                //{
-                //    variationTheoryAmcAtNlo->Scale(2.);
-                //}
+                TFile *variationTheoryAmcAtNloFile = TFile::Open(TString::Format("../VariationHandling_Theory_amc@NLO/2018/%s/Histograms_TTJets_%s.root",
+                                        tempVariation.Data(),
+                                        variation.Data()));
+                //for combined file 
+                //TH1F *variationTheoryAmcAtNlo = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s_%s",
+                //                                                            variation.Data(),
+                //                                                            variable.Data()));
 
+                TH1F *variationTheoryAmcAtNlo = (TH1F *)variationTheoryAmcAtNloFile->Get(TString::Format("hParton_%s_%s", 
+                                                                        AnalysisConstants::partonVariables[v].Data(),
+                                                                        variation.Data()));
+                if (variation.Contains("pdf") ||
+                    variation.Contains("scale"))
+                {
+                    variationTheoryAmcAtNlo->Scale(2);
+                }
+
+                variationTheoryAmcAtNlo->Scale(1. / AnalysisConstants::luminositiesSR["comb"], "width");
+                
                 float_t variationTheoryAmcAtNloYield = variationTheoryAmcAtNlo->Integral();
-                //variationTheoryAmcAtNlo->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
+                cout<<variationTheoryAmcAtNlo->GetBinContent(1)<<" "<<finalTheoryAmcAtNlo->GetBinContent(1)<<endl;
                 // gb has already scaled
                 if (normalized)
                 {
-                    variationTheoryAmcAtNlo->Scale(AnalysisConstants::luminositiesSR["comb"] / variationTheoryAmcAtNloYield);
+                    variationTheoryAmcAtNlo->Scale(1 / variationTheoryAmcAtNloYield);
                 }
                 AddSystematicToErrorBar(finalTheoryAmcAtNlo, variationTheoryAmcAtNlo);
-                //variationAmcAtNloFile->Close();
+                variationTheoryAmcAtNloFile->Close();
             }
             
         }
@@ -284,8 +306,8 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         std::vector<TH1F *> histogramsToDraw;
         histogramsToDraw.push_back(finalResult);
         histogramsToDraw.push_back(nominalHistogram);
-        //histogramsToDraw.push_back(finalTheoryAmcAtNlo);
-        //histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
+        histogramsToDraw.push_back(finalTheoryAmcAtNlo);
+        histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
         histogramsToDraw.push_back(finalTheory);
         histogramsToDraw.push_back(theoryHistogramValue);
 
