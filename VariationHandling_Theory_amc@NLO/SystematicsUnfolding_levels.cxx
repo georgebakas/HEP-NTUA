@@ -40,31 +40,48 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
-  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
+  std::vector<TString> dirs = {"Nominal", "bTagVariation", "PDFWeights", "ScaleWeights"};
+  std::vector<TString> groups = {"Stat. Uncertainty", "Flavor Tagging", "PDF", "Scale"};
   std::vector<int> groupColors = {kBlack, kRed, kGreen, kBlue, kOrange};
 
+  const int NVAR = 10;
+  TString variable[NVAR]   = {"jetPt0","jetPt1","yJJ", "ptJJ", "mJJ", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
+  TString variableParton[NVAR] = {"partonPt0", "partonPt1", "yTTbarParton", "ptTTbarParton", "mTTbarParton", "partonY0", "partonY1","chiParton", "cosThetaParton_0", "cosThetaParton_1"};
+  TString variableGen[NVAR] = {"genjetPt0", "genjetPt1", "yJJGen", "ptJJGen", "mJJGen", "genjetY0", "genjetY1", "chiParticle", "cosThetaParticle_0", "cosThetaParticle_1"};
+
   //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling_Theory/";
-  TString outputDirectory = TString::Format("/TheoryResults");
+  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling_Theory_amc@NLO/2018";
+  TString outputDirectory = TString::Format("/SystematicsBreakdown/");
   //CheckAndCreateDirectory(outputDirectory);
-  TString histo_name = "hParton_";
+  TString histo_name = "hUnfoldFinal_";
   //TString histo_name = "hSigInit_";
   
-  const int NVAR = 10;
+  
 
-  TString fileName = TString::Format("%s/Nominal/OutputFile%s.root", baseInputDir.Data(), isParton.Data());
+  TString fileName = TString::Format("%s/Nominal/Histograms_TTJets.root", baseInputDir.Data());
   TFile *fNominal = TFile::Open(fileName);
 
   for (int i = 0; i<NVAR; i++)
   {
-    std::cout << "Variable: " << vars[i]<< std::endl;
+    TString histoName;
+    if(isParton.EqualTo("Parton"))
+    {   
+        histoName = "hParton_";
+        vars[i] = variableParton[i];
+    }
+    else
+    {
+        histoName = "hParticle_";
+        vars[i] = variableGen[i];
+    }
 
+    
+    std::cout << "Variable: " << vars[i]<< std::endl;
     std::vector<TH1F *> groupHistogramsUp;
     std::vector<TH1F *> groupHistogramsDown;
     std::vector<TH1F *> groupHistogramsSym;
 
-    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
+    TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("h%s_%s", isParton.Data() ,vars[i].Data()));
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
@@ -111,21 +128,18 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
     {
       //std::cout << "Variation: " << dirs[j] << std::endl;
       TString variation = dirs[j];
-      std::vector<TString> variationFiles = listFiles(TString::Format("UnfoldedCombined/%s/", dirs[j].Data()), isParton.Data());
+      std::vector<TString> variationFiles = listFiles(TString::Format("2018/%s/", dirs[j].Data()), "");
 
       int group = -1;
       if (variation.Contains("Nominal"))
         group = 0;
-      if (variation.Contains("JES") || variation.Contains("JER") || variation.Contains("Pileup"))
+      if (variation.Contains("Scale"))
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("PS"))
+      if (variation.Contains("PDF"))
         group = 3;
-      if (variation.Contains("PDF") || variation.Contains("Scale"))
-        group = 4;
-      if (variation.Contains("SystematicsFiles"))
-        group = -1;
+
 
       cout<<variation<<" group: "<<group <<endl;
 
@@ -134,37 +148,48 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
 
       for(int jfile=0; jfile<variationFiles.size(); jfile++)
       {
-        /* fileName = TString::Format("UnfoldedCombined/%s/%s",
-                                  variation.Data(),
-                                   variationFiles[jfile].Data()); */
 
-        fileName = TString::Format("UnfoldedCombined/%s/%s",
+        cout<<variation<<endl;
+        cout<<variationFiles[jfile].Data()<<endl;
+
+        if (variationFiles[jfile].Contains("nom0") || variationFiles[jfile].Contains("nom1")) continue;
+        fileName = TString::Format("2018/%s/%s",
                                   variation.Data(),
                                   variationFiles[jfile].Data());
         
         if (!fileName.Contains("Def") && variation.Contains("PS"))
           continue;
         
+
         TFile *f = TFile::Open(fileName);
+
+         //do this to get coherent name
+        TString hname = variationFiles[jfile];
+        hname.ReplaceAll("Histograms_TTJets_", "");
+        hname.ReplaceAll(".root", "");
         
-        cout<<fileName<<endl;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_0.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_56.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_57.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_35.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_42.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_76.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_59.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_58.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_86.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_93.root", isParton.Data()))) continue;
-        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
-        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
+        TH1F *hVariation;
+        if (variation.Contains("scale_9")) continue;
+        if (variation.Contains("bTag") || variation.EqualTo("Nominal"))
+        {   
+            hVariation = (TH1F *)f->Get(TString::Format("%s%s",
+                                        histoName.Data(),
+                                        vars[i].Data()));
+            cout<<TString::Format("%s%s",histoName.Data(), 
+                                        vars[i].Data())<<endl;
+        }
+        else
+        {   
+            hVariation = (TH1F *)f->Get(TString::Format("%s%s_%s",
+                                        histoName.Data(),
+                                        vars[i].Data(), 
+                                        hname.Data()));
+            cout<<TString::Format("%s%s_%s",histoName.Data(), 
+                                        vars[i].Data(), 
+                                        hname.Data())<<endl;
+            hVariation->Scale(2);
+        }
 
-
-        TH1F *hVariation = (TH1F *)f->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
         {
           double nominalValue = hNominal->GetBinContent(bin + 1);

@@ -105,9 +105,9 @@ void CombineMeasurements(bool isParton = true)
         cout<<"variable: "<<variable << endl;
 
         //loop on each year 
-        for (unsigned int y = 0; y < AnalysisConstants::years.size(); y++)
+        for (unsigned int y = 0; y < -1; y++)
         {
-            NamEst[y] = AnalysisConstants::years[y];  
+            NamEst[y] = "2018";  
 
             // Step 1 is to handle the nominal histograms       
             TFile *file = TFile::Open(TString::Format("%s/%s/Nominal/Histograms_TTJets.root",
@@ -133,7 +133,7 @@ void CombineMeasurements(bool isParton = true)
             for (unsigned int i = 1; i < variation_dirs.size(); i++)
             {
                 //search on a STATIC year for the vaiation name!!
-                TString testYear = "2016_postVFP";
+                TString testYear = "2018";
                 std::vector<TString> variationFiles = listFiles(TString::Format("%s/%s/%s/", 
                                                     baseInputDir.Data(), 
                                                     testYear.Data(),
