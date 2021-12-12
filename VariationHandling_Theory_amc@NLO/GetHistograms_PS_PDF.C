@@ -292,6 +292,7 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
    		  subleadingPt_particle =0;
    		  leadingPt_particle = 1;
    		}
+    float extra_weight(1);
 
 		//reco for angular
     TLorentzVector p4T[2], p4T_ZMF[2], p4TTbar;

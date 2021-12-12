@@ -40,8 +40,8 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
-  std::vector<TString> dirs = {"Nominal", "bTagVariation", "PDFWeights", "ScaleWeights"};
-  std::vector<TString> groups = {"Stat. Uncertainty", "Flavor Tagging", "PDF", "Scale"};
+  std::vector<TString> dirs = {"Nominal", "PSWeights", "PDFWeights", "ScaleWeights"};
+  std::vector<TString> groups = {"Stat. Uncertainty", "Parton Shower", "PDF", "Scale"};
   std::vector<int> groupColors = {kBlack, kRed, kGreen, kBlue, kOrange};
 
   const int NVAR = 10;
@@ -49,8 +49,8 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
   TString variableParton[NVAR] = {"partonPt0", "partonPt1", "yTTbarParton", "ptTTbarParton", "mTTbarParton", "partonY0", "partonY1","chiParton", "cosThetaParton_0", "cosThetaParton_1"};
   TString variableGen[NVAR] = {"genjetPt0", "genjetPt1", "yJJGen", "ptJJGen", "mJJGen", "genjetY0", "genjetY1", "chiParticle", "cosThetaParticle_0", "cosThetaParticle_1"};
 
-  //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-  TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling_Theory_amc@NLO/2018";
+  TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling_Theory_amc@NLO/2016_preVFP";
+  //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling_Theory_amc@NLO/2016_preVFP";
   TString outputDirectory = TString::Format("/SystematicsBreakdown/");
   //CheckAndCreateDirectory(outputDirectory);
   TString histo_name = "hUnfoldFinal_";
@@ -128,14 +128,14 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
     {
       //std::cout << "Variation: " << dirs[j] << std::endl;
       TString variation = dirs[j];
-      std::vector<TString> variationFiles = listFiles(TString::Format("2018/%s/", dirs[j].Data()), "");
+      std::vector<TString> variationFiles = listFiles(TString::Format("2016_preVFP/%s/", dirs[j].Data()), "");
 
       int group = -1;
       if (variation.Contains("Nominal"))
         group = 0;
       if (variation.Contains("Scale"))
         group = 1;
-      if (variation.Contains("bTagVariation"))
+      if (variation.Contains("PS"))
         group = 2;
       if (variation.Contains("PDF"))
         group = 3;
@@ -153,7 +153,8 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
         cout<<variationFiles[jfile].Data()<<endl;
 
         if (variationFiles[jfile].Contains("nom0") || variationFiles[jfile].Contains("nom1")) continue;
-        fileName = TString::Format("2018/%s/%s",
+        if (variationFiles[jfile].Contains("Con") || variationFiles[jfile].Contains("Red")) continue;
+        fileName = TString::Format("2016_preVFP/%s/%s",
                                   variation.Data(),
                                   variationFiles[jfile].Data());
         
