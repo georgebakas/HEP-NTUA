@@ -24,8 +24,6 @@ TString globalYear;
 void TopTaggerDatavsMCOutput(TString file_name, TString ttbar_process, bool data, TString year = "2016")
 {
   
-
-
   globalYear = year;
   initFilesMapping();
   cout<<"YEAR: "<<year<<endl;

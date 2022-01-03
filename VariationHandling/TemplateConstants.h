@@ -14,6 +14,7 @@ map<int, TString> scale_weights;
 map<TString, int> variableConstant;
 map<int, TString> vars;
 map<TString, map<TString, TString>> ttNominalFiles;
+map<TString, float> ttbarSigStrength;
 
 void initFilesMapping()
 {
@@ -138,6 +139,10 @@ void initFilesMapping()
 	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2017", eosNomTT17));
 	ttNominalFiles.insert(pair<TString, map<TString, TString>>("2018", eosNomTT18));
 
+	ttbarSigStrength.insert(pair<TString,float>("2016_preVFP", 0.69));
+	ttbarSigStrength.insert(pair<TString,float>("2016_postVFP", 0.64));
+	ttbarSigStrength.insert(pair<TString,float>("2017", 0.642));
+	ttbarSigStrength.insert(pair<TString,float>("2018", 0.652));
 
 
 
