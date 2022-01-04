@@ -324,5 +324,10 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                                 variable.Data(),
                                 (normalized ? "_normalized" : "")),
                 "svg");
+        c1->SaveAs(TString::Format("%s/FinalResult_%s%s.pdf",
+                                outputDir.Data(),
+                                variable.Data(),
+                                (normalized ? "_normalized" : "")),
+                "pdf");
     }
 }
