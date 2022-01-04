@@ -151,8 +151,9 @@ void PlotEfficiencyResponse(bool isParton = true)
         leg_acc->AddEntry(acc_combined, "Combined", "lep");
 
         lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
-        int iPeriod = 4;
-        int iPos = 1;
+        int iPeriod = 13;
+        int iPos = 0;
+        //extraTextFactor = 0.14;
         writeExtraText=true;
         
         // plot acceptance 
@@ -177,6 +178,9 @@ void PlotEfficiencyResponse(bool isParton = true)
         leg_acc->Draw();    
         can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/Acceptance%s_%s.png", 
                         varParton.Data(), variable[ivar].Data()));
+
+        can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/Acceptance%s_%s.pdf", 
+                        varParton.Data(), variable[ivar].Data()), "pdf");
         
 
         // plot efficiency 
@@ -206,6 +210,9 @@ void PlotEfficiencyResponse(bool isParton = true)
         
         can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/Efficiency%s_%s.png", 
                         varParton.Data(), variable[ivar].Data()));
+        
+        can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/Efficiency%s_%s.pdf", 
+                        varParton.Data(), variable[ivar].Data()), "pdf");
 
         // now deal with the responses
         // I will get the results from the Kolmogorov test 

@@ -32,6 +32,8 @@ namespace AnalysisConstants_UL
   std::vector<TString> partonVariables;
   std::vector<TString> particleVariables;
   std::vector<TString> partonAxisTitles;
+  std::vector<TString> particleAxisTitles;
+
 
   std::vector<bool> axisInLogScale;
 
@@ -374,16 +376,16 @@ namespace AnalysisConstants_UL
     partonAxisTitles.push_back("Leading parton  jet |cosTheta*|");
     partonAxisTitles.push_back("Subleading parton jet |cosTheta*|");
 
-    partonAxisTitles.push_back("Leading particle Pt (GeV)");
-    partonAxisTitles.push_back("Subleading particle Pt (GeV)");
-    partonAxisTitles.push_back("particle yJJ");
-    partonAxisTitles.push_back("particle ptJJ (GeV)");
-    partonAxisTitles.push_back("particle mTTbarParton (GeV)");
-    partonAxisTitles.push_back("Leading particle |Y|");
-    partonAxisTitles.push_back("Subleading particle |Y|");
-    partonAxisTitles.push_back("Particle #chi ");
-    partonAxisTitles.push_back("Leading particle  jet cosTheta*");
-    partonAxisTitles.push_back("Subleading particle jet cosTheta*");
+    particleAxisTitles.push_back("Leading particle Pt (GeV)");
+    particleAxisTitles.push_back("Subleading particle Pt (GeV)");
+    particleAxisTitles.push_back("particle yJJ");
+    particleAxisTitles.push_back("particle ptJJ (GeV)");
+    particleAxisTitles.push_back("particle mTTbarParton (GeV)");
+    particleAxisTitles.push_back("Leading particle |Y|");
+    particleAxisTitles.push_back("Subleading particle |Y|");
+    particleAxisTitles.push_back("Particle #chi ");
+    particleAxisTitles.push_back("Leading particle  jet cosTheta*");
+    particleAxisTitles.push_back("Subleading particle jet cosTheta*");
 
     axisLowValues.push_back(-10);
     axisLowValues.push_back(-10);

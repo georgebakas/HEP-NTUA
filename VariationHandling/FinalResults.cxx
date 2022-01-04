@@ -9,7 +9,7 @@
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
 
-void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized)
+void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized, TString partonParticle)
 {
     std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue};
     std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue};
@@ -60,12 +60,22 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         hist->SetMarkerStyle(markerStyle[i]);
         hist->SetLineWidth(2);
         hist->SetFillStyle(fillStyles[i]);
-        if (!isNormalized)
-            hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
-                                        AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
-        else 
-            hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
-                                        AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+        if (partonParticle.EqualTo("Parton")){
+            if (!isNormalized)
+                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
+                                            AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+            else 
+                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
+                                            AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+        }
+        else{
+            if (!isNormalized)
+                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][0],
+                                            AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][1]);
+            else 
+                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][0],
+                                            AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][1]);
+        }
 
         TH1F *ratio = (TH1F *)hist->Clone("ratio");
         ratio->Divide(dataHist);
@@ -73,8 +83,14 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         {
         ratio->SetBinContent(bin, ratio->GetBinContent(bin) - 1);
         }
+        if (partonParticle.EqualTo("Parton")){
         hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
                                     AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+        }
+        else{
+            hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                    AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+        }
         hist->Draw(drawOptions[i]);
 
         can->cd();
@@ -93,9 +109,16 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         ratio->GetXaxis()->SetTitleOffset(1.);
         ratio->GetXaxis()->SetLabelSize(0.12);
         ratio->GetXaxis()->SetLabelOffset(0.015);
-        ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
-        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
-                                        AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+        if (partonParticle.EqualTo("Parton")){
+            ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
+            ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
+                                            AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+        }
+        else{
+            ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
+            ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                            AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+        }
         ratio->Draw(drawOptions[i]);
         }
 
@@ -117,9 +140,9 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         std::cout << primitives->At(i)->GetName() << std::endl;
     }
 
-    float extraTextFactor = 0.14;
-    int iPeriod = 4;
-    int iPos = 1;
+    //float extraTextFactor = 0.14;
+    int iPeriod = 13;
+    int iPos = 0;
     writeExtraText=true;
     CMS_lumi(upperPad, iPeriod, iPos);
     }
@@ -131,6 +154,11 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         float nominalValue = nominal->GetBinContent(bin);
         float variationValue = systematic->GetBinContent(bin);
         float difference = TMath::Abs(nominalValue - variationValue);
+        /*if ((difference / nominalValue) > 0.3)
+        {
+            cout<<systematic->GetName()<<endl;
+            break;
+        } */
         float error = TMath::Sqrt(TMath::Power(nominal->GetBinError(bin), 2) +
                                 TMath::Power(difference, 2));
         nominal->SetBinError(bin, error);
@@ -139,11 +167,12 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
     void FinalResults(bool normalized = false)
     {
-    
+    TString partonParticle = "Parton";
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     AnalysisConstants::initConstants();
-    TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFileParton.root",
-                                                    baseDir.Data()));
+    TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
+                                                    baseDir.Data(),
+                                                    partonParticle.Data()));
     TString outputDir = TString::Format("%s/FinalResults/results",
                                         baseDir.Data());
     CheckAndCreateDirectory("results");
@@ -152,7 +181,8 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
     //TFile *nominalAmcAtNloFile = TFile::Open("../VariationHandling_Theory_amc@NLO/testFile_TheoryParton.root");
 
-    TFile *nominalAmcAtNloFile = TFile::Open("../VariationHandling_Theory_amc@NLO/2018/Nominal/Histograms_TTJets.root");
+    TFile *nominalAmcAtNloFile = TFile::Open(TString::Format(
+                            "../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
 
     for (unsigned int v = 0; v < AnalysisConstants::unfoldingVariables.size(); v++)
     {
@@ -176,9 +206,12 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
         //TH1F *theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s", 
         //                                                                variable.Data()));
-
-        TH1F *theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParton_%s", 
-                                                                        AnalysisConstants::partonVariables[v].Data()));
+        
+        TH1F *theoryAmcAtNloHistogram;
+        if (partonParticle.EqualTo("Parton")) theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParton_%s", 
+                                                                AnalysisConstants::partonVariables[v].Data()));
+        else theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParticle_%s", 
+                                        AnalysisConstants::particleVariables[v].Data()));
         
         theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["comb"], "width");
         float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
@@ -186,6 +219,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         {
             theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
         }
+
         TH1F *finalTheoryAmcAtNlo = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNlo%s_%s",
                                                                             (normalized ? "Norm" : ""),
                                                                             variable.Data()));
@@ -214,9 +248,10 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
             if (variation.Contains("pdf_99")) continue;
 
             
-            TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFileParton_%s.root",
+            TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
-                                                                tempVariation.Data(), 
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
                                                                 variation.Data()));
 
             TH1F *variationHistogram = (TH1F *)variationFile->Get(TString::Format("hUnfold%s_%s",
@@ -244,37 +279,33 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 if (tempVariation.EqualTo("JES")) continue;
                 if (tempVariation.EqualTo("PSWeights")) continue;
                 
-                // up or down --> bTagup and bTagDown
-                /*
-                use only when using combined AMC@NLO results 
-                if (variation.Contains("up") || variation.Contains("down"))
-                    variation = TString::Format("bTag%s", variation.Data());
-                else if (variation.Contains("scale"))
-                    variation = variation.ReplaceAll("scale_", "scaleWeight");
-                else if (variation.Contains("pdf"))
-                    variation = variation.ReplaceAll("pdf_", "pdfVariation"); 
-                if (variation.EqualTo("pdfVariation6")) continue;
-                if (variation.EqualTo("pdfVariation73")) continue;
-                if (variation.EqualTo("pdfVariation97")) continue;
-                if (variation.EqualTo("pdfVariation98")) continue; */
                 
-                TFile *variationTheoryAmcAtNloFile = TFile::Open(TString::Format("../VariationHandling_Theory_amc@NLO/2018/%s/Histograms_TTJets_%s.root",
+                TFile *variationTheoryAmcAtNloFile = TFile::Open(TString::Format(
+                                        "../VariationHandling_Theory_amc@NLO/%s/%s/Histograms_TTJets_%s.root",
+                                        theoryYear.Data(),
                                         tempVariation.Data(),
                                         variation.Data()));
                 //for combined file 
                 //TH1F *variationTheoryAmcAtNlo = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s_%s",
                 //                                                            variation.Data(),
                 //                                                            variable.Data()));
-
-                TH1F *variationTheoryAmcAtNlo = (TH1F *)variationTheoryAmcAtNloFile->Get(TString::Format("hParton_%s_%s", 
+                TH1F *variationTheoryAmcAtNlo;
+                if (partonParticle.EqualTo("Parton")) variationTheoryAmcAtNlo = (TH1F *)variationTheoryAmcAtNloFile->Get(TString::Format("hParton_%s_%s", 
                                                                         AnalysisConstants::partonVariables[v].Data(),
                                                                         variation.Data()));
+                else variationTheoryAmcAtNlo = (TH1F *)variationTheoryAmcAtNloFile->Get(TString::Format("hParticle_%s_%s", 
+                                                AnalysisConstants::particleVariables[v].Data(),
+                                                variation.Data()));
+                
                 if (variation.Contains("pdf") ||
                     variation.Contains("scale"))
                 {
-                    variationTheoryAmcAtNlo->Scale(2);
-                }
-
+                    variationTheoryAmcAtNlo->Scale(2.);
+                } 
+                if((/*variation.Contains("scale_3") || variation.Contains("scale_5") || */variation.Contains("scale_9")) 
+                    && (AnalysisConstants::partonVariables[v].Contains("chi") || AnalysisConstants::partonVariables[v].Contains("cos")))
+                    continue;
+                
                 variationTheoryAmcAtNlo->Scale(1. / AnalysisConstants::luminositiesSR["comb"], "width");
                 
                 float_t variationTheoryAmcAtNloYield = variationTheoryAmcAtNlo->Integral();
@@ -311,22 +342,28 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         histogramsToDraw.push_back(finalTheory);
         histogramsToDraw.push_back(theoryHistogramValue);
 
-        DrawWithRatio(c1, histogramsToDraw, v, normalized);
+        DrawWithRatio(c1, histogramsToDraw, v, normalized, partonParticle);
 
+
+        TString draw_name;
+        if (partonParticle.EqualTo("Particle")) draw_name = AnalysisConstants::particleVariables[v].Data();
+        else draw_name = AnalysisConstants::partonVariables[v].Data();
+            
         c1->SaveAs(TString::Format("%s/FinalResult_%s%s.png",
                                 outputDir.Data(),
-                                variable.Data(),
+                                draw_name.Data(),
                                 (normalized ? "_normalized" : "")),
                 "png");
 
-        c1->SaveAs(TString::Format("%s/FinalResult_%s%s.svg",
+        /* c1->SaveAs(TString::Format("%s/FinalResult_%s%s.svg",
                                 outputDir.Data(),
                                 variable.Data(),
                                 (normalized ? "_normalized" : "")),
-                "svg");
+                "svg"); */
+        
         c1->SaveAs(TString::Format("%s/FinalResult_%s%s.pdf",
                                 outputDir.Data(),
-                                variable.Data(),
+                                draw_name.Data(),
                                 (normalized ? "_normalized" : "")),
                 "pdf");
     }
