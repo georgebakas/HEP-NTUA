@@ -37,7 +37,8 @@ void PlotEfficiencyResponse(bool isParton = true)
     TString variable[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
     TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1","chiParton", "cosThetaParton_0", "cosThetaParton_1"};
     TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1", "chiParticle", "cosThetaParticle_0", "cosThetaParticle_1"};
-
+    TString expr[NVAR] = {"(GeV)", "(GeV)", "", "(GeV)", "(GeV)", "", "", "", "", ""};
+    
     std::vector<int> color = {kRed, kGreen, kBlue, kBlack};
     TString varParton = "Parton";
     if(!isParton) varParton = "Particle";
@@ -176,10 +177,8 @@ void PlotEfficiencyResponse(bool isParton = true)
 
         CMS_lumi(can_acc, iPeriod, iPos);
         leg_acc->Draw();    
-        can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/Acceptance%s_%s.png", 
-                        varParton.Data(), variable[ivar].Data()));
 
-        can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/Acceptance%s_%s.pdf", 
+        can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Acceptance%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
         
 
@@ -206,12 +205,8 @@ void PlotEfficiencyResponse(bool isParton = true)
         
         CMS_lumi(can_eff, iPeriod, iPos);
         leg->Draw();
-
         
-        can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/Efficiency%s_%s.png", 
-                        varParton.Data(), variable[ivar].Data()));
-        
-        can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/Efficiency%s_%s.pdf", 
+        can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Efficiency%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
 
         // now deal with the responses
@@ -238,7 +233,108 @@ void PlotEfficiencyResponse(bool isParton = true)
         
         myfile<<"------------"<< "\n";
         
+        // plot the response matrices (these are scaled to their integrals!!)
+        // x-axis is particle or parton while y is reco
+        TH2F *hCombined = (TH2F*)hResponse[0]->Clone(TString::Format(
+                                    "CombinedResponseMatrix_%s", variable[ivar].Data()));
+        TString tempVar;
+        if(isParton)
+            tempVar = variableParton[ivar];
+        else
+            tempVar = variableGen[ivar];
+        for (int iy=0; iy<4; iy++)
+        {   
+            if (iy!=0) hCombined->Add(hResponse[iy]);
+            TCanvas *can_response_yearly = new TCanvas(
+                            TString::Format("canRespYearly%s_%s", variable[ivar].Data(),years[iy].Data()),
+                            TString::Format("canRespYearly%s_%s", variable[ivar].Data(),years[iy].Data()), 800, 600);
+            can_response_yearly->cd();
+            //hResponse[iy]->Scale(1/hResponse[iy]->Integral());
+            gStyle->SetPaintTextFormat("4.1f");
+            hResponse[iy]->GetXaxis()->SetTitle(tempVar+" "+expr[ivar]);
+            hResponse[iy]->GetYaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
+            hResponse[iy]->Draw("colz text");
+            CMS_lumi(can_response_yearly, iPeriod, iPos);
+            can_response_yearly->SaveAs(TString::Format("Comparison_EffAccResponses/%s/Response%s_%s.pdf", 
+                        years[iy].Data(), varParton.Data(), variable[ivar].Data()), "pdf");
+        }
         
+        TCanvas *can_response_comb = new TCanvas(
+                            TString::Format("canRespComb%s", variable[ivar].Data()),
+                            TString::Format("canRespComb%s", variable[ivar].Data()), 800, 600);
+        can_response_comb->cd();
+        gStyle->SetPaintTextFormat("4.1f");
+        hCombined->GetXaxis()->SetTitle(tempVar+" "+expr[ivar]);
+        hCombined->GetYaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
+        //hCombined->Scale(1/hCombined->Integral());
+        hCombined->Draw("colz text");
+        CMS_lumi(can_response_comb, iPeriod, iPos);
+        can_response_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Response%s_%s.pdf", 
+                        varParton.Data(), variable[ivar].Data()), "pdf");
+
+        
+        //plot efficiency and acceptance per year and combined in the same plot 
+        for (int iy=0; iy<4; iy++)
+        {   
+            TCanvas *can_eff_yearly = new TCanvas(
+                            TString::Format("canEffYearly%s_%s", variable[ivar].Data(),years[iy].Data()),
+                            TString::Format("canEffYearly%s_%s", variable[ivar].Data(),years[iy].Data()), 800, 600);
+            can_eff_yearly->cd();
+            TEfficiency *effCombYearly = (TEfficiency*)efficiency[iy]->Clone("effCombYearly");
+            TEfficiency *accCombYearly = (TEfficiency*)acceptance[iy]->Clone("accCombYearly");
+            accCombYearly->SetMarkerStyle(20);
+            accCombYearly->SetMarkerSize(0.7);
+            accCombYearly->SetMarkerColor(kBlue);
+            accCombYearly->SetLineColor(kBlue);
+            accCombYearly->SetFillColorAlpha(kBlue, 0.4);
+            //accCombYearly->SetFillStyle(4050);
+            
+            effCombYearly->SetMarkerStyle(20);
+            effCombYearly->SetMarkerSize(0.7);
+            effCombYearly->SetMarkerColor(kRed);
+            effCombYearly->SetLineColor(kRed);
+            effCombYearly->SetFillColorAlpha(kRed, 0.4); 
+            //effCombYearly->SetFillStyle(4050);
+            
+            accCombYearly->Draw();
+            effCombYearly->Draw("same");     
+            gPad->Update(); 
+            auto graph_eff_yearly = accCombYearly->GetPaintedGraph(); 
+            graph_eff_yearly->SetMinimum(0);
+            graph_eff_yearly->SetMaximum(1);
+            graph_eff_yearly->GetYaxis()->SetTitle("Fractions");
+            CMS_lumi(can_eff_yearly, iPeriod, iPos);
+            can_eff_yearly->SaveAs(TString::Format("Comparison_EffAccResponses/%s/EfficiencyAcceptance%s_%s.pdf", 
+                        years[iy].Data(), varParton.Data(), variable[ivar].Data()), "pdf");
+        }
+
+        TCanvas *can_eff_comb = new TCanvas(
+                        TString::Format("canEffYearly%s", variable[ivar].Data()),
+                        TString::Format("canEffYearly%s", variable[ivar].Data()), 800, 600);
+        
+        can_eff_comb->cd();
+        TH1F *effCombClone = (TH1F*)eff_combined->Clone("effCombClone");
+        TH1F *accCombClone = (TH1F*)acc_combined->Clone("accCombClone");
+        effCombClone->SetMarkerColor(kRed);
+        effCombClone->SetLineColor(kRed);
+        accCombClone->SetMarkerColor(kBlue);
+        accCombClone->SetLineColor(kBlue);
+        //effCombClone->SetFillStyle(3444);
+        //accCombClone->SetFillStyle(3444);
+        effCombClone->SetFillColorAlpha(kRed, 0.4);
+        accCombClone->SetFillColorAlpha(kBlue, 0.4);
+        effCombClone->GetXaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
+        accCombClone->GetXaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
+        effCombClone->Draw("E2");
+        accCombClone->Draw("E2 same");
+        effCombClone->SetMinimum(0);
+        effCombClone->SetMaximum(1);
+
+
+        CMS_lumi(can_eff_comb, iPeriod, iPos);
+        can_eff_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/EfficiencyAcceptance%s_%s.pdf", 
+                        varParton.Data(), variable[ivar].Data()), "pdf");
+        //break;
     } // end of variables loop 
 
     myfile.close();

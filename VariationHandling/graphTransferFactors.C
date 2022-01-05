@@ -9,13 +9,16 @@
 #include "TLatex.h"
 #include "TGraphErrors.h"
 
+#include "../CMS_plots/CMS_lumi.C"
+#include "../CMS_plots/tdrstyle.C"
+
 using std::cin;
 using std::cout;
 using std::endl;
 
-void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false, TString variable = "jetPt0");
+void graphTransferFactorsSpecific(TString year = "2016_preVFP", bool bEnriched = false, TString variable = "jetPt0");
 
-void graphTransferFactors(TString year = "2016", bool bEnriched = false)
+void graphTransferFactors(TString year = "2016_preVFP", bool bEnriched = false)
 {
   const int NVAR = 11;
   TString vars[] = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1", "mTop"};
@@ -26,9 +29,10 @@ void graphTransferFactors(TString year = "2016", bool bEnriched = false)
 }
 
 
-void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false, TString variable = "jetPt0")
+void graphTransferFactorsSpecific(TString year = "2016_preVFP", bool bEnriched = false, TString variable = "jetPt0")
 {
   gStyle->SetOptStat(0);
+  setTDRStyle();
   TH1F *hfData;
   TH1F *hfQCD;
   TFile *outF, *outFQCD;
@@ -174,7 +178,7 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
   	  //TString year = "2016";
   	  //now plot them Data
   	  outF = new TFile(TString::Format("../MassFit/%s/Ryield/TransferFactor%s_%s.root",year.Data(), bEnr.Data(), variable.Data()), "RECREATE");
-  	  hfData->SetTitle(TString::Format("R_{yield} transfer factor %s %s", year.Data(),variable.Data()));
+  	  hfData->SetTitle(TString::Format("R_{yield} %s %s", year.Data(),variable.Data()));
 	  hfData->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
       hfData->SetMarkerStyle(marker[i]);
 	  hfData->SetMarkerColor(col[i]);
@@ -183,11 +187,16 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
       hfData->GetYaxis()->SetRangeUser(0.1,0.8);
 	  can = new TCanvas(TString::Format("can_%s_%s", year.Data(),variable.Data()),TString::Format("can_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfData->Draw("hist e");
-	  can->Print(TString::Format("../MassFit/%s/Ryield/TransferFactor%s_%s.pdf",year.Data(), bEnr.Data(),variable.Data()),"pdf");
+	  int iPeriod = 13;
+      int iPos = 0;
+      writeExtraText=true;
+      CMS_lumi(can, iPeriod, iPos);
+	  can->Print(TString::Format("../MassFit/%s/Ryield/TransferFactor%s_%s.pdf",year.Data(), 
+	  							bEnr.Data(),variable.Data()),"pdf");
 
 	  hfData->Write("dataTransferFactor");
 	  //now plot them QCD
-  	  hfQCD->SetTitle(TString::Format("R_{yield} transfer factor %s %s(Closure Test)", year.Data(),variable.Data()));
+  	  hfQCD->SetTitle(TString::Format("R_{yield} %s %s (Closure Test)", year.Data(),variable.Data()));
 	  hfQCD->GetYaxis()->SetTitle("#frac{N_{Region}}{N_{Ext.Region}}");
       hfQCD->SetMarkerStyle(marker[i]);
 	  hfQCD->SetMarkerColor(col[i]);
@@ -196,16 +205,18 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
       hfQCD->GetYaxis()->SetRangeUser(0.1,0.5);
 	  canQCD = new TCanvas(TString::Format("canQCD_%s_%s", year.Data(),variable.Data()),TString::Format("canQCD_%s_%s", year.Data(),variable.Data()),800,600);
 	  hfQCD->Draw("hist e");
-	  canQCD->Print(TString::Format("../MassFit/%s/Ryield/TransferFactor_ClosureIntegral%s_%s.pdf",year.Data(), bEnr.Data(),variable.Data()),"pdf");
-
+	  
 	  hfQCD->Write("ClosureTest_TransferFactor");
+      writeExtraText=true;
+      CMS_lumi(canQCD, iPeriod, iPos);
+	  canQCD->Print(TString::Format("../MassFit/%s/Ryield/TransferFactor_ClosureIntegral%s_%s.pdf",
+	  				year.Data(), bEnr.Data(),variable.Data()),"pdf");
+
 
 	  TH1F *hCorrectedRyield = new TH1F("CorrectedRYield", "CorrectedRYield", 1, 0, 1);
 	  hCorrectedRyield->SetBinContent(1, rYield);
       hCorrectedRyield->SetBinError(1, error);
 
 	  hCorrectedRyield->Write("CorrectedRYield");
-
-
 
 }//eof

@@ -36,17 +36,18 @@ std::vector<TString> listFiles(const char *dirname="", const char *var="", const
    return list_of_files;
 }
 
-void SystematicsUnfolding_levels(TString isParton = "Particle")
+void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = false)
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
+  setTDRStyle();
   std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
   std::vector<int> groupColors = {kBlack, kRed, kGreen, kBlue, kOrange};
 
   //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
   TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling/";
-  TString outputDirectory = TString::Format("/UnfoldedCombined/results");
+  TString outputDirectory = TString::Format("/SystematicBreakdown/results");
   //CheckAndCreateDirectory(outputDirectory);
   TString histo_name = "hUnfoldFinal_";
   //TString histo_name = "hSigInit_";
@@ -65,6 +66,8 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
     std::vector<TH1F *> groupHistogramsSym;
 
     TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
+    if(isNorm)
+      hNominal->Scale(1./hNominal->Integral());
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
@@ -160,11 +163,16 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_58.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_86.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_93.root", isParton.Data()))) continue;
-        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_99.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_100.root", isParton.Data()))) continue;
+        if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
         //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
 
 
         TH1F *hVariation = (TH1F *)f->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
+        if(isNorm)
+          hVariation->Scale(1./hVariation->Integral());
+
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
         {
           double nominalValue = hNominal->GetBinContent(bin + 1);
@@ -251,10 +259,13 @@ void SystematicsUnfolding_levels(TString isParton = "Particle")
     leg->Draw();
 
     lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
-    writeExtraText = true;
-    CMS_lumi(c1, 4, 10);
-    c1->SaveAs(TString::Format("%s%s/Systematics%s%s_%s.png", 
+    int iPeriod = 13;
+    int iPos = 0;
+    writeExtraText=true;
+    CMS_lumi(c1, iPeriod, iPos);
+    c1->SaveAs(TString::Format("%s%s/Systematics%s%s_%s%s.pdf", 
                         baseInputDir.Data(), outputDirectory.Data(), 
-                        histo_name.Data(), isParton.Data(), vars[i].Data()));
+                        histo_name.Data(), isParton.Data(), vars[i].Data(),
+                        (isNorm ? "_normalized" : "")), "pdf");
   }
 }
