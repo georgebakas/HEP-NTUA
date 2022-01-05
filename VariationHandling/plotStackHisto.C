@@ -131,7 +131,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   TPad *closure_pad1 = new TPad(TString::Format("cp1_%s",variable.Data()),TString::Format("cp2_%s",variable.Data()),0.,0.3,1.,1.);
   closure_pad1->Draw();
   closure_pad1->SetBottomMargin(0.01);
-  if(variable.EqualTo("mJJ")) closure_pad1->SetLogy();
+  //if(variable.EqualTo("mJJ")) closure_pad1->SetLogy();
   closure_pad1->cd();
 
   hData->GetYaxis()->SetTitleSize(20);
@@ -181,8 +181,8 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   lumi_13TeV = lumi_str+" fb^{-1}";
 
   float extraTextFactor = 0.14;
-  int iPeriod = 4;
-  int iPos = 1;
+  int iPeriod = 13;
+  int iPos = 0;
   writeExtraText=true;
   CMS_lumi(closure_pad1, iPeriod, iPos);
   can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%dbTag.pdf",year.Data(), variable.Data(), btagFlag),"pdf");
