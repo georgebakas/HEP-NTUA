@@ -253,7 +253,7 @@ void PlotEfficiencyResponse(bool isParton = true)
             gStyle->SetPaintTextFormat("4.1f");
             hResponse[iy]->GetXaxis()->SetTitle(tempVar+" "+expr[ivar]);
             hResponse[iy]->GetYaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
-            hResponse[iy]->Draw("colz text");
+            hResponse[iy]->Draw("text colz0");
             CMS_lumi(can_response_yearly, iPeriod, iPos);
             can_response_yearly->SaveAs(TString::Format("Comparison_EffAccResponses/%s/Response%s_%s.pdf", 
                         years[iy].Data(), varParton.Data(), variable[ivar].Data()), "pdf");
@@ -267,7 +267,7 @@ void PlotEfficiencyResponse(bool isParton = true)
         hCombined->GetXaxis()->SetTitle(tempVar+" "+expr[ivar]);
         hCombined->GetYaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
         //hCombined->Scale(1/hCombined->Integral());
-        hCombined->Draw("colz text");
+        hCombined->Draw("textcolz0");
         CMS_lumi(can_response_comb, iPeriod, iPos);
         can_response_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Response%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
