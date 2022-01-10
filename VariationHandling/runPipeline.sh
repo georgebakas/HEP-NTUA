@@ -26,7 +26,7 @@
 root -l CombineFiducialMeasurements_new.cxx
 
 # Combine Acceptance and Efficiency 
-python3 runEfficiency_Acceptance_Comb.py
+python3 CombineEfficiencyAcceptance.py
 
 # Unfolding Parton and Particle 
 python3 Unfold_Combined.py

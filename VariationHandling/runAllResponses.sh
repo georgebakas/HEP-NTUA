@@ -39,7 +39,7 @@ nohup python3 RunResponses_PS_PDF.py 2018 ScaleWeights > scale_responses_18.out 
 
 # JES Weights
 
-#nohup python3 RunResponses_PS_PDF.py 2016_preVFP JES > scale_responses_16pre.out &
-#nohup python3 RunResponses_PS_PDF.py 2016_postVFP JES > scale_responses_16post.out &
-#nohup python3 RunResponses_PS_PDF.py 2017 JES > scale_responses_17.out &
-#nohup python3 RunResponses_PS_PDF.py 2018 JES > scale_responses_18.out &
+#nohup python3 RunResponses_PS_PDF.py 2016_preVFP JES > jes_responses_16pre.out &
+#nohup python3 RunResponses_PS_PDF.py 2016_postVFP JES > jes_responses_16post.out &
+#nohup python3 RunResponses_PS_PDF.py 2017 JES > jes_responses_17.out &
+#nohup python3 RunResponses_PS_PDF.py 2018 JES > jes_responses_18.out &

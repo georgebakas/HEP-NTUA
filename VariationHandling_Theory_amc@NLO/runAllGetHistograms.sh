@@ -11,10 +11,10 @@ nohup python3 RunGetHistograms_nominal.py 2018 > nom_histograms_18.out &
 
 # bTag Variation
 
-nohup python3 RunGetHistograms_bTag.py 2016_preVFP > btag_histograms_16pre.out &
-nohup python3 RunGetHistograms_bTag.py 2016_postVFP > btag_histograms_16post.out &
-nohup python3 RunGetHistograms_bTag.py 2017 > btag_histograms_17.out &
-nohup python3 RunGetHistograms_bTag.py 2018 > btag_histograms_18.out &
+#nohup python3 RunGetHistograms_bTag.py 2016_preVFP > btag_histograms_16pre.out &
+#nohup python3 RunGetHistograms_bTag.py 2016_postVFP > btag_histograms_16post.out &
+#nohup python3 RunGetHistograms_bTag.py 2017 > btag_histograms_17.out &
+#nohup python3 RunGetHistograms_bTag.py 2018 > btag_histograms_18.out &
 
 # PS Weights
 # No event counter ps weights

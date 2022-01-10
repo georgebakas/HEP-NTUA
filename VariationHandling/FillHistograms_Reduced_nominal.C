@@ -55,8 +55,8 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading; //jetY1
+                       {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                       {0,0.2,0.4,0.6,0.7,.8,1}}; //|cosTheta*| subleading; 
 
 
   int NBINS[BND.size()];
@@ -212,8 +212,8 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
       xRecoAll.push_back(fabs((*jetY)[leadingPt]));
       xRecoAll.push_back(fabs((*jetY)[subleadingPt]));
       xRecoAll.push_back(yStarExp); //this is chi
-     	xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
-     	xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+     	xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
+     	xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
       xRecoAll.push_back((*jetMassSoftDrop)[leadingPt]);
       xRecoAll.push_back((*jetMassSoftDrop)[subleadingPt]);
 

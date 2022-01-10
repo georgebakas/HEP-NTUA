@@ -105,8 +105,8 @@ namespace AnalysisConstants_UL
         {0., 2.4},
         {0., 2.4},
         {1, 13},
-        {-1, 1},
-        {-1, 1},
+        {0, 1},
+        {0, 1},
 
         {450, 1500},
         {400, 1500},
@@ -116,8 +116,8 @@ namespace AnalysisConstants_UL
         {0., 2.4},
         {0., 2.4},
         {1, 13},
-        {-1, 1},
-        {-1, 1}};
+        {0, 1},
+        {0, 1}};
 
     std::vector<std::vector<float>> particleXAxisValues = {
         {450, 1500},
@@ -128,8 +128,8 @@ namespace AnalysisConstants_UL
         {0., 2.4},
         {0., 2.4},
         {1, 13},
-        {-1, 1},
-        {-1, 1},
+        {0, 1},
+        {0, 1},
 
         {450, 1500},
         {400, 1500},
@@ -139,8 +139,8 @@ namespace AnalysisConstants_UL
         {0., 2.4},
         {0., 2.4},
         {1, 13},
-        {-1, 1},
-        {-1, 1}};
+        {0, 1},
+        {0, 1}};
 
     std::vector<std::vector<float>> legendPositions = {
         {0.59, 0.59, 0.89, 0.89},

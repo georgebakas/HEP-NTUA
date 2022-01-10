@@ -45,8 +45,8 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                                                         {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+                                                        {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                                                        {0,0.2,0.4,0.6,0.7,0.8,1}}; //|cosTheta*| subleading;
 
   std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                 {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
@@ -56,8 +56,8 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                                                 {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                                                 {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
-                                                {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+                                                {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                                                {0,0.2,0.4,0.6,0.7,0.8,1}}; //|cosTheta*| subleading;
 
   int NBINS[BND_reco.size()];
   for (int i = 0; i<BND_reco.size(); i++) NBINS[i] = BND_reco[i].size()-1;
@@ -390,8 +390,8 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
 		xRecoAll.push_back(fabs((*jetY)[leadingPt]));
 		xRecoAll.push_back(fabs((*jetY)[subleadingPt]));
     xRecoAll.push_back(yStarExp); //this is chi
-    xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
-    xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+    xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
+    xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
 
 
 		 //now parton
@@ -416,8 +416,8 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
 		xPartonAll.push_back(fabs((*partonY)[leadingPt_parton]));
 		xPartonAll.push_back(fabs((*partonY)[subleadingPt_parton]));
     xPartonAll.push_back(yStarExpParton);
-		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[0].Theta())); //this is |cos(theta*)| leading
-		xPartonAll.push_back(TMath::Cos(p4T_ZMFParton[1].Theta())); //this is |cos(theta*)| subleading
+		xPartonAll.push_back(fabs(TMath::Cos(p4T_ZMFParton[0].Theta()))); //this is |cos(theta*)| leading
+		xPartonAll.push_back(fabs(TMath::Cos(p4T_ZMFParton[1].Theta()))); //this is |cos(theta*)| subleading
 
     //now particle
 		TLorentzVector p4TParticle[2], p4T_ZMFParticle[2], p4TTbarParticle;
@@ -441,8 +441,8 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
 		xParticleAll.push_back(fabs((*genjetY)[leadingPt_particle]));
 		xParticleAll.push_back(fabs((*genjetY)[subleadingPt_particle]));
     xParticleAll.push_back(yStarExpParticle);
-		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[0].Theta())); //this is |cos(theta*)| leading
-		xParticleAll.push_back(TMath::Cos(p4T_ZMFParticle[1].Theta())); //this is |cos(theta*)| subleading
+		xParticleAll.push_back(fabs(TMath::Cos(p4T_ZMFParticle[0].Theta()))); //this is |cos(theta*)| leading
+		xParticleAll.push_back(fabs(TMath::Cos(p4T_ZMFParticle[1].Theta()))); //this is |cos(theta*)| subleading
 
 	  //---------------------------end of MATCHING---------------------------------------------------------
 	  bool recoCuts, partonCuts, particleCuts;
@@ -560,8 +560,8 @@ void ResponseMatrices_JES(TString file_name, TString ttbar_process, TString jes_
     xPartonAllCnt.push_back(fabs(partonYCnt[leadingPt]));
     xPartonAllCnt.push_back(fabs(partonYCnt[subleadingPt]));
 	  xPartonAllCnt.push_back(yStarExpPartonCnt);
-	  xPartonAllCnt.push_back(TMath::Cos(p4T_ZMFPartonCnt[0].Theta())); //this is |cos(theta*)| leading
-	  xPartonAllCnt.push_back(TMath::Cos(p4T_ZMFPartonCnt[1].Theta())); //this is |cos(theta*)| subleading
+	  xPartonAllCnt.push_back(fabs(TMath::Cos(p4T_ZMFPartonCnt[0].Theta()))); //this is |cos(theta*)| leading
+	  xPartonAllCnt.push_back(fabs(TMath::Cos(p4T_ZMFPartonCnt[1].Theta()))); //this is |cos(theta*)| subleading
 
 	  for(int ivar = 0; ivar < NVAR; ivar++)
 	  {

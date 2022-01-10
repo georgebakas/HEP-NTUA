@@ -194,8 +194,8 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                       {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading; 
+                       {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                       {0,0.2,0.4,0.6,0.7,0.8,1}}; //|cosTheta*| subleading; 
 
   TFile *inf;
   int fileSize = listOfFiles.size();
@@ -512,8 +512,8 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     xRecoAll.push_back(fabs((*y_)[leadingPt]));
     xRecoAll.push_back(fabs((*y_)[subleadingPt]));
     xRecoAll.push_back(yStarExp); //this is chi
-    xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
-    xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+    xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
+    xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
     xRecoAll.push_back((*jetTtag_)[leadingPt]);
     xRecoAll.push_back((*jetTtag_)[subleadingPt]);
     xRecoAll.push_back((*mass_)[leadingPt]);
@@ -573,8 +573,8 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
    xRecoAll.push_back(fabs((*jetY)[0]));
    xRecoAll.push_back(fabs((*jetY)[1]));
    xRecoAll.push_back(yStarExp); //this is chi
-   xRecoAll.push_back(TMath::Cos(p4T_ZMF[0].Theta())); //this is |cos(theta*)| leading
-   xRecoAll.push_back(TMath::Cos(p4T_ZMF[1].Theta())); //this is |cos(theta*)| subleading
+   xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
+   xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
    xRecoAll.push_back((*jetTtag)[0]);
    xRecoAll.push_back((*jetTtag)[1]);
    xRecoAll.push_back((*jetMassSoftDrop)[0]);

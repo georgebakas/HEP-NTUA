@@ -90,8 +90,8 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                                                         {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+                                                        {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                                                        {0,0.2,0.4,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
 
   std::vector< std::vector <Float_t> > const BND_reco ={{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
@@ -101,8 +101,8 @@ void Unfold_data(TString inYear, TString dir, TString inputFile, bool isThreePro
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                                                         {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                                                         {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}, //|cosTheta*| leading
-                                                        {-1,-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1}}; //|cosTheta*| subleading
+                                                        {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                                                        {0,0.2,0.4,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
 
 
 
