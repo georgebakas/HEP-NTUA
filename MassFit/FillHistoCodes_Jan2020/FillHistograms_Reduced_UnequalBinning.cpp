@@ -172,7 +172,7 @@ void FillHistograms_Reduced_UnequalBinning(TString y="2016", int sel = 0, bool i
   const int N_JETMASS = 100;
   const int N_MVA = 100;
   const int N_CHI = 11;
-  const int N_COSTHETASTAR = 10;
+  const int N_COSTHETASTAR = 6;
 
  float selMvaCut=topTaggerCuts[year];
  cout<<"triggerSRConst[year.Data()]]: "<<triggerSRConst[year.Data()]<<endl;

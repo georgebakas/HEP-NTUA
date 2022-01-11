@@ -186,9 +186,9 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                             "../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
 
     for (unsigned int v = 0; v < AnalysisConstants::unfoldingVariables.size(); v++)
-    {
+    {   
         TString variable = AnalysisConstants::unfoldingVariables[v];
-        
+
         TH1F *nominalHistogram = (TH1F *)nominalFile->Get(TString::Format("hUnfold%s_%s",
                                                                         (normalized ? "Norm" : "Final"), 
                                                                         variable.Data()));
@@ -246,9 +246,16 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 tempVariation = "ScaleWeights";
             else tempVariation = "JES";
 
-            if (variation.Contains("pdf_99")) continue;
+            if (tempVariation.EqualTo("JES")) continue;
 
-            
+            if (variation.Contains("pdf_99")) continue;
+            if (variation.Contains("pdf_98")) continue;
+
+            cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                                baseDir.Data(),
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
+                                                                variation.Data())<<endl;
             TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
                                                                 tempVariation.Data(),
