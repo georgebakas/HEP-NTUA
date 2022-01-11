@@ -250,6 +250,23 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
             if (variation.Contains("pdf_99")) continue;
             if (variation.Contains("pdf_98")) continue;
+            if (variation.Contains("pdf_1")) continue;
+            if (variation.Contains("pdf_35")) continue;
+            if (variation.Contains("pdf_40")) continue;
+            if (variation.Contains("pdf_56")) continue;
+            if (variation.Contains("pdf_57")) continue;
+            if (variation.Contains("pdf_59")) continue;
+            if (variation.Contains("pdf_62")) continue;
+            if (variation.Contains("pdf_83")) continue;
+            if (variation.Contains("pdf_86")) continue;
+            if (variation.Contains("pdf_85")) continue;
+            if (variation.Contains("pdf_76")) continue;
+            if (variation.Contains("pdf_42")) continue;
+            if (variation.Contains("pdf_58")) continue;
+            if (variation.Contains("pdf_69")) continue;
+            if (variation.Contains("pdf_93")) continue;
+
+
 
             cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
