@@ -661,7 +661,7 @@ void ResponseMatrices_PS_PDF(TString file_name, TString ttbar_process, TString y
   {
     for(int iweight=0; iweight<weightsSize; iweight++)
     {
-      for (int ibin =0; ibin<=hParton[ivar]->GetNbinsX()+2; ibin++)
+      for (int ibin =0; ibin<=hParton[iweight][ivar]->GetNbinsX()+2; ibin++)
       {
         if(hParton[iweight][ivar]->GetBinContent(ibin) < 0)
           hParton[iweight][ivar]->SetBinContent(ibin,0.0);
