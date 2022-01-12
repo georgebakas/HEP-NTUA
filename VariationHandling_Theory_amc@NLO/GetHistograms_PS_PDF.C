@@ -27,8 +27,17 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
   cout<<"file_name: "<<file_name<<endl;
   cout<<"ttbar_process: "<<ttbar_process<<endl;
   float triggerFloat;
-  if(year.Contains("2016")) triggerFloat = 2;
-  else triggerFloat = 5;
+  float triggerFloatCR;
+  if(year.Contains("2016"))
+  {
+    triggerFloatCR = 4;
+    triggerFloat = 2;
+  } 
+  else
+  {
+    triggerFloat = 5;
+    triggerFloatCR = 5;
+  } 
   float mJJCut = 1000;
 
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];

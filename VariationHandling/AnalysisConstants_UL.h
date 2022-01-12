@@ -373,8 +373,8 @@ namespace AnalysisConstants_UL
     partonAxisTitles.push_back("Leading parton |Y|");
     partonAxisTitles.push_back("Subleading parton |Y|");
     partonAxisTitles.push_back("Parton #chi ");
-    partonAxisTitles.push_back("Leading parton  jet |cosTheta*|");
-    partonAxisTitles.push_back("Subleading parton jet |cosTheta*|");
+    partonAxisTitles.push_back("Leading parton  jet |cos(#theta*)|");
+    partonAxisTitles.push_back("Subleading parton jet |cos(#theta*)|");
 
     particleAxisTitles.push_back("Leading particle Pt (GeV)");
     particleAxisTitles.push_back("Subleading particle Pt (GeV)");
@@ -384,8 +384,8 @@ namespace AnalysisConstants_UL
     particleAxisTitles.push_back("Leading particle |Y|");
     particleAxisTitles.push_back("Subleading particle |Y|");
     particleAxisTitles.push_back("Particle #chi ");
-    particleAxisTitles.push_back("Leading particle  jet cosTheta*");
-    particleAxisTitles.push_back("Subleading particle jet cosTheta*");
+    particleAxisTitles.push_back("Leading particle  jet |cos(#theta*)|");
+    particleAxisTitles.push_back("Subleading particle jet |cos(#theta*)|");
 
     axisLowValues.push_back(-10);
     axisLowValues.push_back(-10);

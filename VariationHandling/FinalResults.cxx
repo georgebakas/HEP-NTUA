@@ -214,7 +214,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         else theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParticle_%s", 
                                         AnalysisConstants::particleVariables[v].Data()));
         
-        theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["comb"], "width");
+        theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
         float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
         if (normalized)
         {
@@ -246,7 +246,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 tempVariation = "ScaleWeights";
             else tempVariation = "JES";
 
-            if (tempVariation.EqualTo("JES")) continue;
+            if (tempVariation.Contains("JES")) continue;
 
             if (variation.Contains("pdf_99")) continue;
             if (variation.Contains("pdf_98")) continue;
@@ -331,7 +331,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                     && (AnalysisConstants::partonVariables[v].Contains("chi") || AnalysisConstants::partonVariables[v].Contains("cos")))
                     continue;
                 
-                variationTheoryAmcAtNlo->Scale(1. / AnalysisConstants::luminositiesSR["comb"], "width");
+                variationTheoryAmcAtNlo->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
                 
                 float_t variationTheoryAmcAtNloYield = variationTheoryAmcAtNlo->Integral();
                 cout<<variationTheoryAmcAtNlo->GetBinContent(1)<<" "<<finalTheoryAmcAtNlo->GetBinContent(1)<<endl;
