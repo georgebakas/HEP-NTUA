@@ -29,4 +29,4 @@ def CreateCondorSubmitFile(executable, arguments, inputFiles, outputFile, flavou
 
 def submitCondorJobs(executable, arguments, inputFiles, outputFile):
     CreateCondorSubmitFile(executable, arguments, inputFiles, outputFile)
-    os.system("condor_submit " + outputFile.replace('.root', '') + ".sub")
+    os.system("condor_submit -name bigbird08.cern.ch" + outputFile.replace('.root', '') + ".sub")

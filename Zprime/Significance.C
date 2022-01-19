@@ -45,6 +45,7 @@ void Significance_ZprimeMass_Width(TString year="2016", int z_mass=2000, float z
   for (int icut=0; icut<n; icut++)
   {
     int mJJCut = (int)mJJCuts[icut];
+    cout<<mJJCut<<endl;
     //---------------------------------- START OF DATA --------------------------------------------
     //read the data file and get the histogram for our new SR
     TString histoName = "hWt_chi_2btag_expYield";

@@ -50,6 +50,10 @@ for ifile, file_name in enumerate(split_files):
         argument = f'-l -b -q ResponseMatrices_JES.C(\\\"{file_name_to_send}\\\",\\\"{split_file_underscore[0]}\\\",\\\"{jes_variation}\\\",\\\"{year}\\\",{mjj_cut}) {file_name}'
         output_file = f'ResponsesEfficiency_{split_file_underscore[0]}_{jes_variation}.root'
         scj.submitCondorJobs('submit_.sh', argument, 'ResponseMatrices_JES.C, TemplateConstants.h', output_file)
+
+        argument_red = f'-l -b -q FillHistograms_Reduced_JES.C(\\\"{file_name_to_send}\\\",\\\"{split_file_underscore[0]}\\\",\\\"{jes_variation}\\\",\\\"{year}\\\",{mjj_cut}) {file_name}'
+        output_file_red = f'HistoReduced_{mjj_cut}_{split_file_underscore[0]}_{jes_variation}.root'
+        scj.submitCondorJobs('submit_.sh', argument, 'FillHistograms_Extended_JES.C, TemplateConstants.h', output_file_red)
         #break
     #break
 
