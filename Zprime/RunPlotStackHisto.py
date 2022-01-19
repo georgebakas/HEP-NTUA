@@ -22,5 +22,5 @@ for imass in masses:
         print('mass', imass, 'width:', iwidth)
 
         os.system(f'root -l -b -q \'plotStackHisto.C(\"{year}\",1000,{imass},{iwidth})\'')
-        #os.system(f'root -l -b -q \'plotStackHisto_ZprimeInc.C(\"{year}\",1000,{imass},{iwidth})\'')
+        os.system(f'root -l -b -q \'plotStackHisto_ZprimeInc.C(\"{year}\",1000,{imass},{iwidth})\'')
         #os.system(f'root -l -b -q \'plotStackHisto_DeltaY.C(\"{year}\",1400,{imass},{iwidth})\'')

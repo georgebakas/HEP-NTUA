@@ -28,7 +28,7 @@ void plotSensitivity_Zprime_TTbar(TString year, int mJJCut = 2000, int selMass= 
   //tt nominal file: or should I take it from signal extractions??
   //ttnominal because we believe that the signal strength will not be modified with a further mass cut
   //this is nominal
-  TFile *infTT = TFile::Open(TString::Format("../VariationHandling/%s/Nominal/combined/HistoReduced_1000_TT.root",year.Data()));
+  TFile *infTT = TFile::Open(TString::Format("../MassFit/%s/Histo_TT_NominalMC_100_reduced_UnequalBinning.root",year.Data()));
 
   const int NVAR =4;
   TString varReco[NVAR]   = {"chi","cosTheta_0", "cosTheta_1", "mJJ"};
