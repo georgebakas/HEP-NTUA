@@ -1,6 +1,7 @@
 import os
 
 types = ['Nominal', 'bTagVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
+#types = ['JES']
 
 parton_particle_types = ['Parton', 'Particle']
 

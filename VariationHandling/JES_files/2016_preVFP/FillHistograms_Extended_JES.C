@@ -241,7 +241,7 @@ void FillHistograms_Extended_JES(TString file_name, TString ttbar_process, TStri
 		  }
 	  }
     //Control Region 0btag
-    if(recoCuts && revertBtag && tTaggerCut && (*bit)[triggerFloatCR];)
+    if(recoCuts && revertBtag && tTaggerCut && (*bit)[triggerFloatCR])
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{

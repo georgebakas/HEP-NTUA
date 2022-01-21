@@ -402,13 +402,13 @@ void CombineFiducialMeasurements_new()
     } // loop on all variables    
 
 
-    DrawWithRatio(c1, histogramsToDraw, v, normalized);
+    //DrawWithRatio(c1, histogramsToDraw, v, normalized);
 
-    c1->SaveAs(TString::Format("%s/FinalResult_%s%s.pdf",
+    /*1->SaveAs(TString::Format("%s/FinalResult_%s%s.pdf",
                                 outputDir.Data(),
                                 draw_name.Data(),
                                 (normalized ? "_normalized" : "")),
-                "pdf");
+                "pdf");*/
 
     outFile->Close();
 } //oef 
