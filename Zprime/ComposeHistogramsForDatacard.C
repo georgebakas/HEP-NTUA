@@ -70,7 +70,7 @@ void ComposeHistogramsForDatacard(TString year="2017", int mJJCut = 1000)
 
   for (int imass = 0; imass<number_of_masses; imass++)
   {
-    if (masses[imass] == 1400 && year.Contains("2016")) continue;
+    //if (masses[imass] == 1400 && year.Contains("2016")) continue;
     for(int iw = 0; iw<1; iw++)
     {
 
