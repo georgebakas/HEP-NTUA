@@ -74,7 +74,7 @@ void ComposeHistogramsForDatacard(TString year="2017", int mJJCut = 1000)
     for(int iw = 0; iw<1; iw++)
     {
 
-      if(imass==2 && iw ==2) continue;
+      //if(imass==2 && iw ==2) continue;
       float width = masses[imass]* widths[iw];
       cout<<"mass: "<<masses[imass]<<" width:"<<(int)width<<endl;
 

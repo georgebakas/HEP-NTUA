@@ -11,8 +11,6 @@ masses = [1200, 1400, 1600, 1800, 2000, 2500, 3000, 3500, 4000, 4500]
 width = [0.01]#, 0.1, 0.3]
 
 for imass in masses:
-    if year == '2016_preVFP' and imass == 1400:
-        continue
 
     for w in width:
         iwidth = int(imass * w)
