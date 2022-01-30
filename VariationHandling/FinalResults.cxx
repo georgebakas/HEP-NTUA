@@ -246,11 +246,13 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 tempVariation = "ScaleWeights";
             else tempVariation = "JES";
 
-            if (tempVariation.Contains("JES")) continue;
+            //if (tempVariation.Contains("JES")) continue;
 
             if (variation.Contains("pdf_99")) continue;
             if (variation.Contains("pdf_98")) continue;
-            if (variation.Contains("pdf_1")) continue;
+            if (variation.Contains("pdf_100")) continue;
+            
+            /*if (variation.Contains("pdf_1")) continue;
             if (variation.Contains("pdf_35")) continue;
             if (variation.Contains("pdf_40")) continue;
             if (variation.Contains("pdf_56")) continue;
@@ -264,7 +266,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
             if (variation.Contains("pdf_42")) continue;
             if (variation.Contains("pdf_58")) continue;
             if (variation.Contains("pdf_69")) continue;
-            if (variation.Contains("pdf_93")) continue;
+            if (variation.Contains("pdf_93")) continue; */
 
 
 

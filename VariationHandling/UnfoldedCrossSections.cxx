@@ -148,8 +148,11 @@ void UnfoldedCrossSections(TString isParton = "Parton")
         cout<<fileName<<endl;
         if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_0.root")) continue;
         if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_100.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_98.root")) continue;
+        if (fileName.EqualTo("UnfoldedCombined/PDFWeights/OutputFileParton_pdf_99.root")) continue;
         if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
         if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
+
         TH1F *hVariation = (TH1F *)f->Get(TString::Format("hUnfoldNorm_%s", vars[i].Data()));
         
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)

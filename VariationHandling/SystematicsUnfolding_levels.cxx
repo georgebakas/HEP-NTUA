@@ -151,7 +151,7 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         TFile *f = TFile::Open(fileName);
         
         cout<<fileName<<endl;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_0.root", isParton.Data()))) continue;
+        /*if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_0.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_56.root", isParton.Data()))) continue;
@@ -162,10 +162,11 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_59.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_58.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_86.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_93.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_93.root", isParton.Data()))) continue;*/
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_98.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_99.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_100.root", isParton.Data()))) continue;
-        if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
+        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
         //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
 
 
