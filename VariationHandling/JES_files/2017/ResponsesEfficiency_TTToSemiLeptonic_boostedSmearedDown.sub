@@ -1,0 +1,14 @@
+universe = vanilla
+executable = submit_.sh
+arguments = -l -b -q ResponseMatrices_JES.C(\"TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_boostedSmearedDown.root\",\"TTToSemiLeptonic\",\"boostedSmearedDown\",\"2017\",1000) root://grid02.physics.uoi.gr:1094//store/user/ipapakri/ttbar/MC/Signal/2017/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_boostedSmearedDown.root
+error = ResponsesEfficiency_TTToSemiLeptonic_boostedSmearedDown.err
+output = ResponsesEfficiency_TTToSemiLeptonic_boostedSmearedDown.out
+log = ResponsesEfficiency_TTToSemiLeptonic_boostedSmearedDown.log
++JobFlavour = "testmatch"
++AccountingGroup = "group_u_CMS.u_zh.users"
+
+should_transfer_files = yes
+transfer_input_files = ResponseMatrices_JES.C, TemplateConstants.h
+when_to_transfer_output = ON_EXIT
+transfer_output_files = ResponsesEfficiency_TTToSemiLeptonic_boostedSmearedDown.root
+queue
