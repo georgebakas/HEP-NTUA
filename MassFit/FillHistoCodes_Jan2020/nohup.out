@@ -1,0 +1,3500 @@
+
+Processing FillHistograms.C("2016_preVFP",0, 0)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_preVFP/JetHT_Run2016-21Feb2020_UL2016_HIPM-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_preVFP/JetHT_Run2016-21Feb2020_UL2016_HIPM-v1.root
+LUMI: 19500
+LUMI_CR: 1134
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 9304969 entries
+10 %
+
+ *** Break *** keyboard interrupt
+
+Processing FillHistograms.C("2016_preVFP",1, 0)...
+
+ *** Break *** keyboard interrupt
+While deleting: i8** %
+Use still stuck around after Def is destroyed:  <badref> = load i8*, i8** <badref>, align 8
+root.exe: /builddir/build/BUILD/root-6.24.06/interpreter/llvm/src/lib/IR/Value.cpp:91: llvm::Value::~Value(): Assertion `use_empty() && "Uses remain when a value is destroyed!"' failed.
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2016_preVFP",2, 0)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 169440 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 2637692 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 4507417 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1053
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 2473179 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 5746
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 2377346 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 10179
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 1401736 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 6838
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2016_preVFP",2, 1)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.2217
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 169440 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 2637692 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 65
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 4507417 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 15249
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 2473179 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 59046
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 2377346 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 100789
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 1401736 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 67353
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2016_preVFP",3, 0)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 89593 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 832
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 30442 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 351
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 133209 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2821
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 53364 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1053
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 127673 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 3315
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 7116 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 234
+64
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2016_preVFP",3, 1)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.2217
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 89593 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 3237
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 30442 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1001
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 133209 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 8658
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 53364 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2665
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 127673 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 9139
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 19500
+LUMI_CR: 1134
+Reading 7116 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 455
+249
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2016_postVFP",0, 0)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_postVFP/JetHT_Run2016-21Feb2020_UL2016-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_postVFP/JetHT_Run2016-21Feb2020_UL2016-v1.root
+LUMI: 16500
+LUMI_CR: 564
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 7502221 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 40183
+3091
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2016_postVFP",0, 1)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.2217
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_postVFP/JetHT_Run2016-21Feb2020_UL2016-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_postVFP/JetHT_Run2016-21Feb2020_UL2016-v1.root
+LUMI: 16500
+LUMI_CR: 564
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 7502221 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 163202
+12554
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2016_postVFP",1, 0)...
+/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/
+
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/
+SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/ Is a directory
+Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/ failed to read the file type data.
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007f731bc0e60c in waitpid () from /lib64/libc.so.6
+#1  0x00007f731bb8bf62 in do_system () from /lib64/libc.so.6
+#2  0x00007f731c6f4a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007f73144da578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007f73144d1a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007f731cdcb30e in ?? ()
+#6  0x0000000003310bd8 in ?? ()
+#7  0x0000000003310bb0 in ?? ()
+#8  0x00007ffd77fa2380 in ?? ()
+#9  0x00007f731cde85c5 in ?? ()
+#10 0x0000000000000004 in ?? ()
+#11 0x0000000002b01cb8 in ?? ()
+#12 0x00007f731cdf02b0 in ?? ()
+#13 0x0000000002b01c90 in ?? ()
+#14 0x00007ffd77fa2368 in ?? ()
+#15 0x000000000000000a in ?? ()
+#16 0x00000000029876a8 in ?? ()
+#17 0x0000000003310bd8 in ?? ()
+#18 0x0000000003310bb0 in ?? ()
+#19 0x00007f731cdefe00 in ?? ()
+#20 0x0100000003310bb0 in ?? ()
+#21 0x0000000003310bb0 in ?? ()
+#22 0x00007ffd77fa59a0 in ?? ()
+#23 0x00000000029876a8 in ?? ()
+#24 0x00007ffd77fa23a0 in ?? ()
+#25 0x00007f731cde8424 in ?? ()
+#26 0x00007ffd77fa59a0 in ?? ()
+#27 0x00000000029876a8 in ?? ()
+#28 0x00007ffd77fa23d0 in ?? ()
+#29 0x00007f731cdefa8b in ?? ()
+#30 0x00000000000000f0 in ?? ()
+#31 0x00000000029876a8 in ?? ()
+#32 0x00007f731cebc468 in ?? ()
+#33 0x00007f731cdcb0e6 in ?? ()
+#34 0x00007ffd77fa2420 in ?? ()
+#35 0x00007f731cde075d in ?? ()
+#36 0x00007ffd77fa5638 in ?? ()
+#37 0x00000000000000f0 in ?? ()
+#38 0x00007ffd77fa2440 in ?? ()
+#39 0x00007f731c18c18d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#40 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+                           ^~~
+
+Processing FillHistograms.C("2016_postVFP",1, 1)...
+/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/
+
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.2217
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/
+SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/ Is a directory
+Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/ failed to read the file type data.
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007feafdf7860c in waitpid () from /lib64/libc.so.6
+#1  0x00007feafdef5f62 in do_system () from /lib64/libc.so.6
+#2  0x00007feafea5ea6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007feaf6844578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007feaf683ba2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007feaff13530e in ?? ()
+#6  0x0000000003fe9c88 in ?? ()
+#7  0x0000000003fe9c60 in ?? ()
+#8  0x00007ffd19061bd0 in ?? ()
+#9  0x00007feaff1525c5 in ?? ()
+#10 0x0000000000000004 in ?? ()
+#11 0x0000000003e0da58 in ?? ()
+#12 0x00007feaff15a2b0 in ?? ()
+#13 0x0000000003e0da30 in ?? ()
+#14 0x00007ffd19061bb8 in ?? ()
+#15 0x000000000000000a in ?? ()
+#16 0x0000000002bbd1a8 in ?? ()
+#17 0x0000000003fe9c88 in ?? ()
+#18 0x0000000003fe9c60 in ?? ()
+#19 0x00007feaff159e00 in ?? ()
+#20 0x0100000003fe9c60 in ?? ()
+#21 0x0000000003fe9c60 in ?? ()
+#22 0x00007ffd190651f0 in ?? ()
+#23 0x0000000002bbd1a8 in ?? ()
+#24 0x00007ffd19061bf0 in ?? ()
+#25 0x00007feaff152424 in ?? ()
+#26 0x00007ffd190651f0 in ?? ()
+#27 0x0000000002bbd1a8 in ?? ()
+#28 0x00007ffd19061c20 in ?? ()
+#29 0x00007feaff159a8b in ?? ()
+#30 0x00000000000000f0 in ?? ()
+#31 0x0000000002bbd1a8 in ?? ()
+#32 0x00007feaff226468 in ?? ()
+#33 0x00007feaff1350e6 in ?? ()
+#34 0x00007ffd19061c70 in ?? ()
+#35 0x00007feaff14a75d in ?? ()
+#36 0x00007ffd19064e88 in ?? ()
+#37 0x00000000000000f0 in ?? ()
+#38 0x00007ffd19061c90 in ?? ()
+#39 0x00007feafe4f618d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#40 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+                           ^~~
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2016_postVFP",2, 0)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 166309 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 2568550 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 4639273 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 949
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 2532833 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 5655
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 2342579 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 11232
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 1391460 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 7592
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2016_postVFP",2, 1)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.2217
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 166309 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 2568550 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 78
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 4639273 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 11336
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 2532833 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 51116
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 2342579 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 94484
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 1391460 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 64571
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2016_postVFP",3, 0)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.6321
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 91058 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1053
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 33180 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 338
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 132771 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2483
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 51640 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1040
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 13555 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 221
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 7135 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 104
+81
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2016_postVFP",3, 1)...
+triggerSRConst[year.Data()]]: 2
+triggerCRConst[year.Data()]]: 4
+topTagger: 0.2
+deepCSVFloat: 0.2217
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 91058 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2821
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 33180 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1040
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 132771 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 7631
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 51640 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2431
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 13555 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 910
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 16500
+LUMI_CR: 564
+Reading 7135 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 377
+217
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2017",0, 0)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.4506
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2017/JetHT_Run2017-UL2017_MiniAODv2-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2017/JetHT_Run2017-UL2017_MiniAODv2-v1.root
+LUMI: 41480
+LUMI_CR: 41480
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 11611902 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 120055
+9235
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2017",0, 1)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.1355
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2017/JetHT_Run2017-UL2017_MiniAODv2-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2017/JetHT_Run2017-UL2017_MiniAODv2-v1.root
+LUMI: 41480
+LUMI_CR: 41480
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 11611902 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 637130
+49010
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2017",1, 0)...
+/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/
+
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.4506
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/
+SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/ Is a directory
+Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/ failed to read the file type data.
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007f6c1d84b60c in waitpid () from /lib64/libc.so.6
+#1  0x00007f6c1d7c8f62 in do_system () from /lib64/libc.so.6
+#2  0x00007f6c1e331a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007f6c16117578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007f6c1610ea2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007f6c1ea0830e in ?? ()
+#6  0x0000000003508d28 in ?? ()
+#7  0x0000000003508d00 in ?? ()
+#8  0x00007ffeaf4b7230 in ?? ()
+#9  0x00007f6c1ea255c5 in ?? ()
+#10 0x0000000000000004 in ?? ()
+#11 0x0000000002f948a8 in ?? ()
+#12 0x00007f6c1ea2d2b0 in ?? ()
+#13 0x0000000002f94880 in ?? ()
+#14 0x00007ffeaf4b7218 in ?? ()
+#15 0x000000000000000a in ?? ()
+#16 0x0000000002e6e218 in ?? ()
+#17 0x0000000003508d28 in ?? ()
+#18 0x0000000003508d00 in ?? ()
+#19 0x00007f6c1ea2ce00 in ?? ()
+#20 0x0100000003508d00 in ?? ()
+#21 0x0000000003508d00 in ?? ()
+#22 0x00007ffeaf4ba850 in ?? ()
+#23 0x0000000002e6e218 in ?? ()
+#24 0x00007ffeaf4b7250 in ?? ()
+#25 0x00007f6c1ea25424 in ?? ()
+#26 0x00007ffeaf4ba850 in ?? ()
+#27 0x0000000002e6e218 in ?? ()
+#28 0x00007ffeaf4b7280 in ?? ()
+#29 0x00007f6c1ea2ca8b in ?? ()
+#30 0x00000000000000f0 in ?? ()
+#31 0x0000000002e6e218 in ?? ()
+#32 0x00007f6c1eaf9468 in ?? ()
+#33 0x00007f6c1ea080e6 in ?? ()
+#34 0x00007ffeaf4b72d0 in ?? ()
+#35 0x00007f6c1ea1d75d in ?? ()
+#36 0x00007ffeaf4ba4e8 in ?? ()
+#37 0x00000000000000f0 in ?? ()
+#38 0x00007ffeaf4b72f0 in ?? ()
+#39 0x00007f6c1ddc918d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#40 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+                           ^~~
+
+Processing FillHistograms.C("2017",1, 1)...
+/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/
+
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.1355
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/
+SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/ Is a directory
+Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/ failed to read the file type data.
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007fed99faf60c in waitpid () from /lib64/libc.so.6
+#1  0x00007fed99f2cf62 in do_system () from /lib64/libc.so.6
+#2  0x00007fed9aa95a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007fed9287b578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007fed92872a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007fed9b16c30e in ?? ()
+#6  0x0000000002fb9468 in ?? ()
+#7  0x0000000002fb9440 in ?? ()
+#8  0x00007ffef6ba2ab0 in ?? ()
+#9  0x00007fed9b1895c5 in ?? ()
+#10 0x0000000000000004 in ?? ()
+#11 0x000000000350c428 in ?? ()
+#12 0x00007fed9b1912b0 in ?? ()
+#13 0x000000000350c400 in ?? ()
+#14 0x00007ffef6ba2a98 in ?? ()
+#15 0x000000000000000a in ?? ()
+#16 0x000000000363fad8 in ?? ()
+#17 0x0000000002fb9468 in ?? ()
+#18 0x0000000002fb9440 in ?? ()
+#19 0x00007fed9b190e00 in ?? ()
+#20 0x0100000002fb9440 in ?? ()
+#21 0x0000000002fb9440 in ?? ()
+#22 0x00007ffef6ba60d0 in ?? ()
+#23 0x000000000363fad8 in ?? ()
+#24 0x00007ffef6ba2ad0 in ?? ()
+#25 0x00007fed9b189424 in ?? ()
+#26 0x00007ffef6ba60d0 in ?? ()
+#27 0x000000000363fad8 in ?? ()
+#28 0x00007ffef6ba2b00 in ?? ()
+#29 0x00007fed9b190a8b in ?? ()
+#30 0x00000000000000f0 in ?? ()
+#31 0x000000000363fad8 in ?? ()
+#32 0x00007fed9b25d468 in ?? ()
+#33 0x00007fed9b16c0e6 in ?? ()
+#34 0x00007ffef6ba2b50 in ?? ()
+#35 0x00007fed9b18175d in ?? ()
+#36 0x00007ffef6ba5d68 in ?? ()
+#37 0x00000000000000f0 in ?? ()
+#38 0x00007ffef6ba2b70 in ?? ()
+#39 0x00007fed9a52d18d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#40 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+                           ^~~
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2017",2, 0)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.4506
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 168781 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 2962975 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 4587148 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1898
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 2584477 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 9594
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 2419678 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 14443
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 1432599 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 7384
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2017",2, 1)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.1355
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 168781 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 2962975 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 91
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 4587148 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 22685
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 2584477 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 106782
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 2419678 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 160667
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 1432599 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 95927
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2017",3, 0)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.4506
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 88405 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1417
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 30163 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 780
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 130082 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 3835
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 12248 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 650
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 6539 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 247
+109
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2017",3, 1)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0
+deepCSVFloat: 0.1355
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 88405 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 4797
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 30163 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2106
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 130082 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 11687
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 12248 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1287
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 41480
+LUMI_CR: 41480
+Reading 6539 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 494
+369
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2018",0, 0)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.4168
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
+LUMI: 59830
+LUMI_CR: 59830
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 10011499 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 160888
+12376
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2018",0, 1)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.1208
+Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
+file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
+LUMI: 59830
+LUMI_CR: 59830
+Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
+Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
+Reading 10011499 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 839709
+64593
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2018",1, 0)...
+/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
+
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.4168
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
+SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ Is a directory
+Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ failed to read the file type data.
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007f96e765960c in waitpid () from /lib64/libc.so.6
+#1  0x00007f96e75d6f62 in do_system () from /lib64/libc.so.6
+#2  0x00007f96e813fa6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007f96dff25578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007f96dff1ca2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007f96e881630e in ?? ()
+#6  0x00000000035bb898 in ?? ()
+#7  0x00000000035bb870 in ?? ()
+#8  0x00007ffe8937ce80 in ?? ()
+#9  0x00007f96e88335c5 in ?? ()
+#10 0x0000000000000004 in ?? ()
+#11 0x00000000020ca408 in ?? ()
+#12 0x00007f96e883b2b0 in ?? ()
+#13 0x00000000020ca3e0 in ?? ()
+#14 0x00007ffe8937ce68 in ?? ()
+#15 0x000000000000000a in ?? ()
+#16 0x0000000003707a68 in ?? ()
+#17 0x00000000035bb898 in ?? ()
+#18 0x00000000035bb870 in ?? ()
+#19 0x00007f96e883ae00 in ?? ()
+#20 0x01000000035bb870 in ?? ()
+#21 0x00000000035bb870 in ?? ()
+#22 0x00007ffe893804a0 in ?? ()
+#23 0x0000000003707a68 in ?? ()
+#24 0x00007ffe8937cea0 in ?? ()
+#25 0x00007f96e8833424 in ?? ()
+#26 0x00007ffe893804a0 in ?? ()
+#27 0x0000000003707a68 in ?? ()
+#28 0x00007ffe8937ced0 in ?? ()
+#29 0x00007f96e883aa8b in ?? ()
+#30 0x00000000000000f0 in ?? ()
+#31 0x0000000003707a68 in ?? ()
+#32 0x00007f96e8907468 in ?? ()
+#33 0x00007f96e88160e6 in ?? ()
+#34 0x00007ffe8937cf20 in ?? ()
+#35 0x00007f96e882b75d in ?? ()
+#36 0x00007ffe89380138 in ?? ()
+#37 0x00000000000000f0 in ?? ()
+#38 0x00007ffe8937cf40 in ?? ()
+#39 0x00007f96e7bd718d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#40 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+                           ^~~
+
+Processing FillHistograms.C("2018",1, 1)...
+/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
+
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.1208
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
+SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ Is a directory
+Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ failed to read the file type data.
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+    gdb.printing.register_pretty_printer(gdb.current_objfile(),
+#0  0x00007f97a516c60c in waitpid () from /lib64/libc.so.6
+#1  0x00007f97a50e9f62 in do_system () from /lib64/libc.so.6
+#2  0x00007f97a5c52a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007f979da38578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007f979da2fa2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007f97a632930e in ?? ()
+#6  0x00000000043faaf8 in ?? ()
+#7  0x00000000043faad0 in ?? ()
+#8  0x00007ffe041fc340 in ?? ()
+#9  0x00007f97a63465c5 in ?? ()
+#10 0x0000000000000004 in ?? ()
+#11 0x0000000003852488 in ?? ()
+#12 0x00007f97a634e2b0 in ?? ()
+#13 0x0000000003852460 in ?? ()
+#14 0x00007ffe041fc328 in ?? ()
+#15 0x000000000000000a in ?? ()
+#16 0x0000000002866018 in ?? ()
+#17 0x00000000043faaf8 in ?? ()
+#18 0x00000000043faad0 in ?? ()
+#19 0x00007f97a634de00 in ?? ()
+#20 0x01000000043faad0 in ?? ()
+#21 0x00000000043faad0 in ?? ()
+#22 0x00007ffe041ff960 in ?? ()
+#23 0x0000000002866018 in ?? ()
+#24 0x00007ffe041fc360 in ?? ()
+#25 0x00007f97a6346424 in ?? ()
+#26 0x00007ffe041ff960 in ?? ()
+#27 0x0000000002866018 in ?? ()
+#28 0x00007ffe041fc390 in ?? ()
+#29 0x00007f97a634da8b in ?? ()
+#30 0x00000000000000f0 in ?? ()
+#31 0x0000000002866018 in ?? ()
+#32 0x00007f97a641a468 in ?? ()
+#33 0x00007f97a63290e6 in ?? ()
+#34 0x00007ffe041fc3e0 in ?? ()
+#35 0x00007f97a633e75d in ?? ()
+#36 0x00007ffe041ff5f8 in ?? ()
+#37 0x00000000000000f0 in ?? ()
+#38 0x00007ffe041fc400 in ?? ()
+#39 0x00007f97a56ea18d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#40 0x0000000000000000 in ?? ()
+Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
+Execution of your code was aborted.
+In file included from input_line_8:1:
+/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
+  TTree *trIN    = (TTree*)inf->Get("boosted/events");
+                           ^~~
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2018",2, 0)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.4168
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 159611 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 2564998 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 4753561 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1469
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 2629336 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 7514
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 2421467 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 10166
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 1189197 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 4615
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2018",2, 1)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.1208
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 159611 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 0
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 2564998 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 52
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 4753561 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 17238
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 2629336 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 82446
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 2421467 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 130585
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 1189197 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 67925
+0
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+
+Processing FillHistograms.C("2018",3, 0)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.4168
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 87836 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1001
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 78840 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 923
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 133961 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 3263
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 51544 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 1196
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 12637 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 351
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 6570 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 208
+77
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+
+Processing FillHistograms.C("2018",3, 1)...
+triggerSRConst[year.Data()]]: 5
+triggerCRConst[year.Data()]]: 5
+topTagger: 0.1
+deepCSVFloat: 0.1208
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 87836 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 3692
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 78840 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 3094
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 133961 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 9334
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 51544 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 2977
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 12637 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 988
+Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
+LUMI: 59830
+LUMI_CR: 59830
+Reading 6570 entries
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+counter: 728
+284
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+inside the loop!
+mJJ
+ptJJ
+yJJ
+jetPt0
+jetPt1
+jetY0
+jetY1
+chi
+cosTheta_0
+cosTheta_1
+mva
+topTagger1
+mTop
+jetMassSoftDrop
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
+Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found

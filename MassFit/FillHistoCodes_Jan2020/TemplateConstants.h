@@ -326,8 +326,8 @@ void initFilesMapping(bool isLoose)
 
 	if(!isLoose)
 	{
-		deepCSVFloatMap.insert(pair<TString, float>("2016_preVFP", 0.6321));
-		deepCSVFloatMap.insert(pair<TString, float>("2016_postVFP", 0.6321));
+		deepCSVFloatMap.insert(pair<TString, float>("2016_preVFP", 0.6001));
+		deepCSVFloatMap.insert(pair<TString, float>("2016_postVFP", 0.5847));
 		deepCSVFloatMap.insert(pair<TString, float>("2017",0.4506));
 		deepCSVFloatMap.insert(pair<TString, float>("2018",0.4168));
 	}

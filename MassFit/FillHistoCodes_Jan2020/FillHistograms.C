@@ -171,7 +171,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   const int N_JETMASS = 100;
   const int N_MVA = 100;
   const int N_CHI = 11;
-  const int N_COSTHETASTAR = 6;
+  const int N_COSTHETASTAR = 9;
 
   float selMvaCut=topTaggerCuts[year];
 
@@ -194,8 +194,8 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
                        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 16}, //chi
-                       {0,0.2,0.4,0.6,0.7,0.8,1}, //|cosTheta*| leading
-                       {0,0.2,0.4,0.6,0.7,0.8,1}}; //|cosTheta*| subleading; 
+                       {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                       {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}}; //|cosTheta*| subleading 
 
   TFile *inf;
   int fileSize = listOfFiles.size();

@@ -4,17 +4,17 @@
 
 # Nominal files
 
-#nohup python3 RunResponses_nominal.py 2016_preVFP > nom_responses_16pre.out &
-#nohup python3 RunResponses_nominal.py 2016_postVFP > nom_responses_16post.out &
-#nohup python3 RunResponses_nominal.py 2017 > nom_responses_17.out &
-#nohup python3 RunResponses_nominal.py 2018 > nom_responses_18.out &
+nohup python3 RunResponses_nominal.py 2016_preVFP > nom_responses_16pre.out &
+nohup python3 RunResponses_nominal.py 2016_postVFP > nom_responses_16post.out &
+nohup python3 RunResponses_nominal.py 2017 > nom_responses_17.out &
+nohup python3 RunResponses_nominal.py 2018 > nom_responses_18.out &
 
 # bTag Variation
 
-#nohup python3 RunResponses_bTag.py 2016_preVFP > btag_responses_16pre.out &
-#nohup python3 RunResponses_bTag.py 2016_postVFP > btag_responses_16post.out &
-#nohup python3 RunResponses_bTag.py 2017 > btag_responses_17.out &
-#nohup python3 RunResponses_bTag.py 2018 > btag_responses_18.out &
+nohup python3 RunResponses_bTag.py 2016_preVFP > btag_responses_16pre.out &
+nohup python3 RunResponses_bTag.py 2016_postVFP > btag_responses_16post.out &
+nohup python3 RunResponses_bTag.py 2017 > btag_responses_17.out &
+nohup python3 RunResponses_bTag.py 2018 > btag_responses_18.out &
 
 # PS Weights
 
