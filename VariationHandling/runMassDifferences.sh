@@ -51,3 +51,6 @@ python3 GetMassFitDifferences.py 2016_preVFP SystematicsFiles
 python3 GetMassFitDifferences.py 2016_postVFP SystematicsFiles
 python3 GetMassFitDifferences.py 2017 SystematicsFiles
 python3 GetMassFitDifferences.py 2018 SystematicsFiles
+
+
+python3 RunPlotMassFitDiff.py

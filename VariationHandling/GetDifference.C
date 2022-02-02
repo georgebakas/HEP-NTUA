@@ -1,17 +1,3 @@
-/*
-    This is a piece of code dedicated for Signal Extraction:
-    For every variable x_reco we need to extract the signal using the formula:
-
-    S(x) = D(x) - (Ryield * Ryield_correction * Nbkg) * QCDShapeCorrection * Q(x) - B(x)
-    where:
-    1.S(x) is the extracted signal
-    2.Ryield is the NSR / NSRA taken from the file--> year/TransferFactor.root
-    3.Nbkg is the number of QCD events in the SR taken from the simultaneous fit leaving the eb free
-    4.QCDShapeCorrection is taken from the corrected shape (only for 2017 and 2018 for specific variables) from files: FitOutput.root
-    5.Q(x) is taken from the CR from data
-    6.B(x) is the signal region of the Subdominant bkg (exp yield) taken from MC
-*/
-
 #include <iostream>
 #include "TTree.h"
 #include "TFile.h"
