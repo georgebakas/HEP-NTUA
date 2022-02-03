@@ -1,25 +1,20 @@
-009 (757606.000.000) 02/03 11:07:17 Job was aborted.
+009 (757650.000.000) 02/03 11:14:19 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:06:19Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T10:13:27Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757641.000.000) 02/03 12:06:24 Job was aborted.
+009 (757635.000.000) 02/03 11:33:22 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T11:05:29Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T10:33:10Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757636.000.000) 02/03 12:26:26 Job was aborted.
+009 (757598.000.000) 02/03 11:50:23 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T11:26:22Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T10:49:30Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757658.000.000) 02/03 12:32:26 Job was aborted.
+009 (757626.000.000) 02/03 12:27:26 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T11:32:05Z (using method 0: OF_ITS_OWN_ACCORD).
-...
-009 (757613.000.000) 02/03 13:01:31 Job was aborted.
-	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
-
-	Job terminated by itself at 2022-02-02T12:00:59Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T11:27:10Z (using method 0: OF_ITS_OWN_ACCORD).
 ...

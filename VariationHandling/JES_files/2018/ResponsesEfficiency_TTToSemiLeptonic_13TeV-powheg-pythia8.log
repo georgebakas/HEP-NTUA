@@ -1,40 +1,35 @@
-009 (757923.000.000) 02/03 11:00:16 Job was aborted.
+009 (758217.000.000) 02/03 11:26:21 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T09:59:29Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T10:26:08Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757875.000.000) 02/03 11:11:18 Job was aborted.
+009 (758226.000.000) 02/03 12:07:25 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:10:52Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T11:06:42Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757860.000.000) 02/03 11:16:19 Job was aborted.
+009 (758220.000.000) 02/03 12:08:25 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:15:52Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T11:07:58Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757917.000.000) 02/03 11:19:19 Job was aborted.
+009 (758229.000.000) 02/03 12:09:25 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:18:48Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T11:08:26Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757939.000.000) 02/03 11:20:20 Job was aborted.
+009 (758239.000.000) 02/03 12:09:25 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:19:55Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T11:08:43Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757898.000.000) 02/03 11:21:20 Job was aborted.
+009 (758233.000.000) 02/03 13:04:31 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:21:08Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T12:04:08Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-009 (757934.000.000) 02/03 11:24:21 Job was aborted.
+009 (758236.000.000) 02/03 13:06:31 Job was aborted.
 	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
 
-	Job terminated by itself at 2022-02-02T10:23:56Z (using method 0: OF_ITS_OWN_ACCORD).
-...
-009 (757889.000.000) 02/03 12:11:25 Job was aborted.
-	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
-
-	Job terminated by itself at 2022-02-02T11:11:05Z (using method 0: OF_ITS_OWN_ACCORD).
+	Job terminated by itself at 2022-02-02T12:05:46Z (using method 0: OF_ITS_OWN_ACCORD).
 ...

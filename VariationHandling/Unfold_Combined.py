@@ -64,7 +64,6 @@ def unfold(year, weightType, isParton):
 if __name__ == '__main__':
     
     types = ['Nominal', 'bTagVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
-    types = ['JES']
     year = '2017'
     parton_particle_types = ['Parton', 'Particle']
     
