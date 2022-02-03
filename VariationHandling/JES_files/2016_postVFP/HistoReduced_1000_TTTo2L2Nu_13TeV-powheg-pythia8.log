@@ -1,16 +1,40 @@
-000 (759799.000.000) 02/02 22:18:47 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (756973.000.000) 02/03 10:47:15 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:47:08Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759813.000.000) 02/02 22:18:57 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (756995.000.000) 02/03 10:48:15 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:47:51Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759827.000.000) 02/02 22:19:06 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (757004.000.000) 02/03 10:48:15 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:47:34Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759841.000.000) 02/02 22:19:14 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (757012.000.000) 02/03 10:49:15 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:48:56Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759859.000.000) 02/02 22:19:23 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (757018.000.000) 02/03 10:50:15 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:49:39Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759882.000.000) 02/02 22:19:38 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (756964.000.000) 02/03 10:59:15 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:58:51Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759900.000.000) 02/02 22:19:45 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (756958.000.000) 02/03 11:00:16 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:59:46Z (using method 0: OF_ITS_OWN_ACCORD).
 ...
-000 (759924.000.000) 02/02 22:19:56 Job submitted from host: <188.185.121.235:9618?addrs=188.185.121.235-9618+[2001-1458-d00-49--100-36e]-9618&alias=bigbird22.cern.ch&noUDP&sock=schedd_8027_6ecd>
+009 (756982.000.000) 02/03 11:00:16 Job was aborted.
+	The system macro SYSTEM_PERIODIC_REMOVE expression '(JobUniverse == 5 && JobStatus == 2 && (MaxRuntime =!= undefined) && (BenchmarkJob =!= true) && (TransferringInput =!= true) && ((time() - JobCurrentStartExecutingDate) > MaxRuntime)) || (JobUniverse == 5 && JobStatus == 1 && (time() - EnteredCurrentStatus > 86400 * 10)) || (JobStatus == 5 && time() - EnteredCurrentStatus > 3600 * 24) || (ResidentSetSize_RAW > 10000 * RequestMemory) || (NumJobStarts > 10) || (DiskUsage > 1.5 * ((TARGET.TotalDisk / TARGET.DetectedCpus) * RequestCpus)) || (HoldReasonCode =?= 33)' evaluated to TRUE
+
+	Job terminated by itself at 2022-02-02T09:59:11Z (using method 0: OF_ITS_OWN_ACCORD).
 ...

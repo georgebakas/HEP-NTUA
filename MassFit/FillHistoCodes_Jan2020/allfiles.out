@@ -3,7 +3,7 @@ Processing FillHistograms.C("2016_preVFP",0)...
 triggerSRConst[year.Data()]]: 2
 triggerCRConst[year.Data()]]: 4
 topTagger: 0.2
-deepCSVFloat: 0.6321
+deepCSVFloat: 0.6001
 Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_preVFP/JetHT_Run2016-21Feb2020_UL2016_HIPM-v1.root
 file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2016_preVFP/JetHT_Run2016-21Feb2020_UL2016_HIPM-v1.root
 LUMI: 19500
@@ -20,8 +20,8 @@ Reading 9304969 entries
 70 %
 80 %
 90 %
-counter: 53950
-4150
+counter: 57382
+4414
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 mJJ
 ptJJ
@@ -51,46 +51,46 @@ SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gba
 Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Signal/ failed to read the file type data.
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00007fe4f363b60c in waitpid () from /lib64/libc.so.6
-#1  0x00007fe4f35b8f62 in do_system () from /lib64/libc.so.6
-#2  0x00007fe4f4121a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00007fe4ebf07578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00007fe4ebefea2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00007fe4f47f8310 in ?? ()
-#6  0x0000000004313008 in ?? ()
-#7  0x0000000004312fe0 in ?? ()
-#8  0x00007ffce12a9830 in ?? ()
-#9  0x00007fe4f48155c5 in ?? ()
-#10 0x0000000000000004 in ?? ()
-#11 0x00000000039a4ea8 in ?? ()
-#12 0x00007fe4f481d2b0 in ?? ()
-#13 0x00000000039a4e80 in ?? ()
-#14 0x00007ffce12a9818 in ?? ()
+#0  0x00007fee97b9d60c in waitpid () from /lib64/libc.so.6
+#1  0x00007fee97b1af62 in do_system () from /lib64/libc.so.6
+#2  0x00007fee98683a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007fee90469578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007fee90460a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007fee98d59310 in ?? ()
+#6  0x000000000296f548 in ?? ()
+#7  0x000000000296f520 in ?? ()
+#8  0x00007fff3181c860 in ?? ()
+#9  0x00007fee98d765c5 in ?? ()
+#10 0x00000006983c0fe0 in ?? ()
+#11 0x00000000028a0bb8 in ?? ()
+#12 0x00007fee98d7e2b0 in ?? ()
+#13 0x00000000028a0b90 in ?? ()
+#14 0x00007fff3181c848 in ?? ()
 #15 0x000000000000000a in ?? ()
-#16 0x0000000004b3ddd8 in ?? ()
-#17 0x0000000004313008 in ?? ()
-#18 0x0000000004312fe0 in ?? ()
-#19 0x00007fe4f481ce00 in ?? ()
-#20 0x0100000004312fe0 in ?? ()
-#21 0x0000000004312fe0 in ?? ()
-#22 0x00007ffce12ace50 in ?? ()
-#23 0x0000000004b3ddd8 in ?? ()
-#24 0x00007ffce12a9850 in ?? ()
-#25 0x00007fe4f4815424 in ?? ()
-#26 0x00007ffce12ace50 in ?? ()
-#27 0x0000000004b3ddd8 in ?? ()
-#28 0x00007ffce12a9880 in ?? ()
-#29 0x00007fe4f481ca8b in ?? ()
+#16 0x0000000002972628 in ?? ()
+#17 0x000000000296f548 in ?? ()
+#18 0x000000000296f520 in ?? ()
+#19 0x00007fee98d7de00 in ?? ()
+#20 0x010000000296f520 in ?? ()
+#21 0x000000000296f520 in ?? ()
+#22 0x00007fff3181fe80 in ?? ()
+#23 0x0000000002972628 in ?? ()
+#24 0x00007fff3181c880 in ?? ()
+#25 0x00007fee98d76424 in ?? ()
+#26 0x00007fff3181fe80 in ?? ()
+#27 0x0000000002972628 in ?? ()
+#28 0x00007fff3181c8b0 in ?? ()
+#29 0x00007fee98d7da8b in ?? ()
 #30 0x00000000000000f0 in ?? ()
-#31 0x0000000004b3ddd8 in ?? ()
-#32 0x00007fe4f48e9468 in ?? ()
-#33 0x00007fe4f47f80e8 in ?? ()
-#34 0x00007ffce12a98d0 in ?? ()
-#35 0x00007fe4f480d75d in ?? ()
-#36 0x00007ffce12acae8 in ?? ()
+#31 0x0000000002972628 in ?? ()
+#32 0x00007fee98e4b468 in ?? ()
+#33 0x00007fee98d590e8 in ?? ()
+#34 0x00007fff3181c900 in ?? ()
+#35 0x00007fee98d6e75d in ?? ()
+#36 0x00007fff3181fb18 in ?? ()
 #37 0x00000000000000f0 in ?? ()
-#38 0x00007ffce12a98f0 in ?? ()
-#39 0x00007fe4f3bb918d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#38 0x00007fff3181c920 in ?? ()
+#39 0x00007fee9811b18d in operator new(unsigned long) () from /lib64/libstdc++.so.6
 #40 0x0000000000000000 in ?? ()
 Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
 Execution of your code was aborted.
@@ -149,7 +149,7 @@ Reading 4507417 entries
 70 %
 80 %
 90 %
-counter: 1248
+counter: 1105
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 19500
@@ -164,7 +164,7 @@ Reading 2473179 entries
 70 %
 80 %
 90 %
-counter: 6851
+counter: 6812
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 19500
@@ -179,7 +179,7 @@ Reading 2377346 entries
 70 %
 80 %
 90 %
-counter: 11921
+counter: 11882
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 19500
@@ -302,7 +302,7 @@ Reading 89593 entries
 70 %
 80 %
 90 %
-counter: 936
+counter: 910
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 LUMI: 19500
@@ -317,7 +317,7 @@ Reading 30442 entries
 70 %
 80 %
 90 %
-counter: 351
+counter: 338
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 19500
@@ -332,7 +332,7 @@ Reading 133209 entries
 70 %
 80 %
 90 %
-counter: 3055
+counter: 2925
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 19500
@@ -347,7 +347,7 @@ Reading 53364 entries
 70 %
 80 %
 90 %
-counter: 1144
+counter: 1079
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 LUMI: 19500
@@ -362,7 +362,7 @@ Reading 127673 entries
 70 %
 80 %
 90 %
-counter: 3601
+counter: 3510
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_preVFP/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 19500
@@ -378,7 +378,7 @@ Reading 7116 entries
 80 %
 90 %
 counter: 247
-72
+70
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 inside the loop!
 inside the loop!
@@ -487,8 +487,8 @@ Reading 7502221 entries
 70 %
 80 %
 90 %
-counter: 46202
-3554
+counter: 43862
+3374
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 mJJ
 ptJJ
@@ -518,46 +518,46 @@ SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gba
 Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Signal/ failed to read the file type data.
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00007f0c31c7860c in waitpid () from /lib64/libc.so.6
-#1  0x00007f0c31bf5f62 in do_system () from /lib64/libc.so.6
-#2  0x00007f0c3275ea6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00007f0c2a544578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00007f0c2a53ba2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00007f0c32e35310 in ?? ()
-#6  0x0000000003938bc8 in ?? ()
-#7  0x0000000003938ba0 in ?? ()
-#8  0x00007ffcc77e8a80 in ?? ()
-#9  0x00007f0c32e525c5 in ?? ()
+#0  0x00007fe3f928a60c in waitpid () from /lib64/libc.so.6
+#1  0x00007fe3f9207f62 in do_system () from /lib64/libc.so.6
+#2  0x00007fe3f9d70a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007fe3f1b56578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007fe3f1b4da2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007fe3fa446310 in ?? ()
+#6  0x0000000003dcb848 in ?? ()
+#7  0x0000000003dcb820 in ?? ()
+#8  0x00007ffd35033d20 in ?? ()
+#9  0x00007fe3fa4635c5 in ?? ()
 #10 0x0000000000000004 in ?? ()
-#11 0x0000000001a76368 in ?? ()
-#12 0x00007f0c32e5a2b0 in ?? ()
-#13 0x0000000001a76340 in ?? ()
-#14 0x00007ffcc77e8a68 in ?? ()
+#11 0x0000000003c58ae8 in ?? ()
+#12 0x00007fe3fa46b2b0 in ?? ()
+#13 0x0000000003c58ac0 in ?? ()
+#14 0x00007ffd35033d08 in ?? ()
 #15 0x000000000000000a in ?? ()
-#16 0x00000000030cebe8 in ?? ()
-#17 0x0000000003938bc8 in ?? ()
-#18 0x0000000003938ba0 in ?? ()
-#19 0x00007f0c32e59e00 in ?? ()
-#20 0x0100000003938ba0 in ?? ()
-#21 0x0000000003938ba0 in ?? ()
-#22 0x00007ffcc77ec0a0 in ?? ()
-#23 0x00000000030cebe8 in ?? ()
-#24 0x00007ffcc77e8aa0 in ?? ()
-#25 0x00007f0c32e52424 in ?? ()
-#26 0x00007ffcc77ec0a0 in ?? ()
-#27 0x00000000030cebe8 in ?? ()
-#28 0x00007ffcc77e8ad0 in ?? ()
-#29 0x00007f0c32e59a8b in ?? ()
+#16 0x0000000003ca7b48 in ?? ()
+#17 0x0000000003dcb848 in ?? ()
+#18 0x0000000003dcb820 in ?? ()
+#19 0x00007fe3fa46ae00 in ?? ()
+#20 0x0100000003dcb820 in ?? ()
+#21 0x0000000003dcb820 in ?? ()
+#22 0x00007ffd35037340 in ?? ()
+#23 0x0000000003ca7b48 in ?? ()
+#24 0x00007ffd35033d40 in ?? ()
+#25 0x00007fe3fa463424 in ?? ()
+#26 0x00007ffd35037340 in ?? ()
+#27 0x0000000003ca7b48 in ?? ()
+#28 0x00007ffd35033d70 in ?? ()
+#29 0x00007fe3fa46aa8b in ?? ()
 #30 0x00000000000000f0 in ?? ()
-#31 0x00000000030cebe8 in ?? ()
-#32 0x00007f0c32f26468 in ?? ()
-#33 0x00007f0c32e350e8 in ?? ()
-#34 0x00007ffcc77e8b20 in ?? ()
-#35 0x00007f0c32e4a75d in ?? ()
-#36 0x00007ffcc77ebd38 in ?? ()
+#31 0x0000000003ca7b48 in ?? ()
+#32 0x00007fe3fa538468 in ?? ()
+#33 0x00007fe3fa4460e8 in ?? ()
+#34 0x00007ffd35033dc0 in ?? ()
+#35 0x00007fe3fa45b75d in ?? ()
+#36 0x00007ffd35036fd8 in ?? ()
 #37 0x00000000000000f0 in ?? ()
-#38 0x00007ffcc77e8b40 in ?? ()
-#39 0x00007f0c321f618d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#38 0x00007ffd35033de0 in ?? ()
+#39 0x00007fe3f980818d in operator new(unsigned long) () from /lib64/libstdc++.so.6
 #40 0x0000000000000000 in ?? ()
 Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
 Execution of your code was aborted.
@@ -616,7 +616,7 @@ Reading 4639273 entries
 70 %
 80 %
 90 %
-counter: 1144
+counter: 1014
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 16500
@@ -631,7 +631,7 @@ Reading 2532833 entries
 70 %
 80 %
 90 %
-counter: 6942
+counter: 6838
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 16500
@@ -646,7 +646,7 @@ Reading 2342579 entries
 70 %
 80 %
 90 %
-counter: 14430
+counter: 14391
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 16500
@@ -661,7 +661,7 @@ Reading 1391460 entries
 70 %
 80 %
 90 %
-counter: 9867
+counter: 9841
 0
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 inside the loop!
@@ -769,7 +769,7 @@ Reading 91058 entries
 70 %
 80 %
 90 %
-counter: 1131
+counter: 1092
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 LUMI: 16500
@@ -784,7 +784,7 @@ Reading 33180 entries
 70 %
 80 %
 90 %
-counter: 429
+counter: 416
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 16500
@@ -799,7 +799,7 @@ Reading 132771 entries
 70 %
 80 %
 90 %
-counter: 2691
+counter: 2626
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 16500
@@ -814,7 +814,7 @@ Reading 51640 entries
 70 %
 80 %
 90 %
-counter: 1105
+counter: 1053
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2016_postVFP/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 16500
@@ -845,7 +845,7 @@ Reading 7135 entries
 80 %
 90 %
 counter: 130
-87
+84
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 inside the loop!
 inside the loop!
@@ -954,8 +954,8 @@ Reading 11611902 entries
 70 %
 80 %
 90 %
-counter: 120055
-9235
+counter: 117637
+9049
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 mJJ
 ptJJ
@@ -985,46 +985,46 @@ SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gba
 Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/ failed to read the file type data.
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00007f266bd8360c in waitpid () from /lib64/libc.so.6
-#1  0x00007f266bd00f62 in do_system () from /lib64/libc.so.6
-#2  0x00007f266c869a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00007f266464f578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00007f2664646a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00007f266cf40310 in ?? ()
-#6  0x00000000045f01a8 in ?? ()
-#7  0x00000000045f0180 in ?? ()
-#8  0x00007ffc0ae88860 in ?? ()
-#9  0x00007f266cf5d5c5 in ?? ()
+#0  0x00007f6b8b28f60c in waitpid () from /lib64/libc.so.6
+#1  0x00007f6b8b20cf62 in do_system () from /lib64/libc.so.6
+#2  0x00007f6b8bd75a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007f6b83b5b578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007f6b83b52a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007f6b8c44b310 in ?? ()
+#6  0x0000000003539a98 in ?? ()
+#7  0x0000000003539a70 in ?? ()
+#8  0x00007ffdeb160650 in ?? ()
+#9  0x00007f6b8c4685c5 in ?? ()
 #10 0x0000000000000004 in ?? ()
-#11 0x0000000003a3c328 in ?? ()
-#12 0x00007f266cf652b0 in ?? ()
-#13 0x0000000003a3c300 in ?? ()
-#14 0x00007ffc0ae88848 in ?? ()
+#11 0x0000000003461c98 in ?? ()
+#12 0x00007f6b8c4702b0 in ?? ()
+#13 0x0000000003461c70 in ?? ()
+#14 0x00007ffdeb160638 in ?? ()
 #15 0x000000000000000a in ?? ()
-#16 0x00000000037ccde8 in ?? ()
-#17 0x00000000045f01a8 in ?? ()
-#18 0x00000000045f0180 in ?? ()
-#19 0x00007f266cf64e00 in ?? ()
-#20 0x01000000045f0180 in ?? ()
-#21 0x00000000045f0180 in ?? ()
-#22 0x00007ffc0ae8be80 in ?? ()
-#23 0x00000000037ccde8 in ?? ()
-#24 0x00007ffc0ae88880 in ?? ()
-#25 0x00007f266cf5d424 in ?? ()
-#26 0x00007ffc0ae8be80 in ?? ()
-#27 0x00000000037ccde8 in ?? ()
-#28 0x00007ffc0ae888b0 in ?? ()
-#29 0x00007f266cf64a8b in ?? ()
+#16 0x000000000238b318 in ?? ()
+#17 0x0000000003539a98 in ?? ()
+#18 0x0000000003539a70 in ?? ()
+#19 0x00007f6b8c46fe00 in ?? ()
+#20 0x0100000003539a70 in ?? ()
+#21 0x0000000003539a70 in ?? ()
+#22 0x00007ffdeb163c70 in ?? ()
+#23 0x000000000238b318 in ?? ()
+#24 0x00007ffdeb160670 in ?? ()
+#25 0x00007f6b8c468424 in ?? ()
+#26 0x00007ffdeb163c70 in ?? ()
+#27 0x000000000238b318 in ?? ()
+#28 0x00007ffdeb1606a0 in ?? ()
+#29 0x00007f6b8c46fa8b in ?? ()
 #30 0x00000000000000f0 in ?? ()
-#31 0x00000000037ccde8 in ?? ()
-#32 0x00007f266d031468 in ?? ()
-#33 0x00007f266cf400e8 in ?? ()
-#34 0x00007ffc0ae88900 in ?? ()
-#35 0x00007f266cf5575d in ?? ()
-#36 0x00007ffc0ae8bb18 in ?? ()
+#31 0x000000000238b318 in ?? ()
+#32 0x00007f6b8c53d468 in ?? ()
+#33 0x00007f6b8c44b0e8 in ?? ()
+#34 0x00007ffdeb1606f0 in ?? ()
+#35 0x00007f6b8c46075d in ?? ()
+#36 0x00007ffdeb163908 in ?? ()
 #37 0x00000000000000f0 in ?? ()
-#38 0x00007ffc0ae88920 in ?? ()
-#39 0x00007f266c30118d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#38 0x00007ffdeb160710 in ?? ()
+#39 0x00007f6b8b80d18d in operator new(unsigned long) () from /lib64/libstdc++.so.6
 #40 0x0000000000000000 in ?? ()
 Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
 Execution of your code was aborted.
@@ -1083,7 +1083,7 @@ Reading 4587148 entries
 70 %
 80 %
 90 %
-counter: 1898
+counter: 1651
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 41480
@@ -1098,7 +1098,7 @@ Reading 2584477 entries
 70 %
 80 %
 90 %
-counter: 9594
+counter: 9438
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 41480
@@ -1113,7 +1113,7 @@ Reading 2419678 entries
 70 %
 80 %
 90 %
-counter: 14443
+counter: 14404
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 41480
@@ -1236,7 +1236,7 @@ Reading 88405 entries
 70 %
 80 %
 90 %
-counter: 1417
+counter: 1404
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
 LUMI: 41480
@@ -1251,7 +1251,7 @@ Reading 30163 entries
 70 %
 80 %
 90 %
-counter: 780
+counter: 767
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 41480
@@ -1266,7 +1266,7 @@ Reading 130082 entries
 70 %
 80 %
 90 %
-counter: 3835
+counter: 3822
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 41480
@@ -1281,7 +1281,7 @@ Reading 12248 entries
 70 %
 80 %
 90 %
-counter: 650
+counter: 624
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 41480
@@ -1296,8 +1296,8 @@ Reading 6539 entries
 70 %
 80 %
 90 %
-counter: 247
-109
+counter: 234
+108
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 inside the loop!
 inside the loop!
@@ -1392,8 +1392,8 @@ Reading 10011499 entries
 70 %
 80 %
 90 %
-counter: 160888
-12376
+counter: 156585
+12045
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 mJJ
 ptJJ
@@ -1423,46 +1423,46 @@ SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gba
 Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ failed to read the file type data.
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
     gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00007f04dbd5560c in waitpid () from /lib64/libc.so.6
-#1  0x00007f04dbcd2f62 in do_system () from /lib64/libc.so.6
-#2  0x00007f04dc83ba6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00007f04d4621578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00007f04d4618a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00007f04dcf12310 in ?? ()
-#6  0x00000000032fcaa8 in ?? ()
-#7  0x00000000032fca80 in ?? ()
-#8  0x00007fff50ebd410 in ?? ()
-#9  0x00007f04dcf2f5c5 in ?? ()
+#0  0x00007f9f6c60760c in waitpid () from /lib64/libc.so.6
+#1  0x00007f9f6c584f62 in do_system () from /lib64/libc.so.6
+#2  0x00007f9f6d0eda6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
+#3  0x00007f9f64ed3578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
+#4  0x00007f9f64ecaa2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
+#5  0x00007f9f6d7c3310 in ?? ()
+#6  0x000000000136c028 in ?? ()
+#7  0x000000000136c000 in ?? ()
+#8  0x00007fff35631ad0 in ?? ()
+#9  0x00007f9f6d7e05c5 in ?? ()
 #10 0x0000000000000004 in ?? ()
-#11 0x0000000002d20e08 in ?? ()
-#12 0x00007f04dcf372b0 in ?? ()
-#13 0x0000000002d20de0 in ?? ()
-#14 0x00007fff50ebd3f8 in ?? ()
+#11 0x0000000002dc9598 in ?? ()
+#12 0x00007f9f6d7e82b0 in ?? ()
+#13 0x0000000002dc9570 in ?? ()
+#14 0x00007fff35631ab8 in ?? ()
 #15 0x000000000000000a in ?? ()
-#16 0x0000000003393d98 in ?? ()
-#17 0x00000000032fcaa8 in ?? ()
-#18 0x00000000032fca80 in ?? ()
-#19 0x00007f04dcf36e00 in ?? ()
-#20 0x01000000032fca80 in ?? ()
-#21 0x00000000032fca80 in ?? ()
-#22 0x00007fff50ec0a30 in ?? ()
-#23 0x0000000003393d98 in ?? ()
-#24 0x00007fff50ebd430 in ?? ()
-#25 0x00007f04dcf2f424 in ?? ()
-#26 0x00007fff50ec0a30 in ?? ()
-#27 0x0000000003393d98 in ?? ()
-#28 0x00007fff50ebd460 in ?? ()
-#29 0x00007f04dcf36a8b in ?? ()
+#16 0x000000000307a298 in ?? ()
+#17 0x000000000136c028 in ?? ()
+#18 0x000000000136c000 in ?? ()
+#19 0x00007f9f6d7e7e00 in ?? ()
+#20 0x010000000136c000 in ?? ()
+#21 0x000000000136c000 in ?? ()
+#22 0x00007fff356350f0 in ?? ()
+#23 0x000000000307a298 in ?? ()
+#24 0x00007fff35631af0 in ?? ()
+#25 0x00007f9f6d7e0424 in ?? ()
+#26 0x00007fff356350f0 in ?? ()
+#27 0x000000000307a298 in ?? ()
+#28 0x00007fff35631b20 in ?? ()
+#29 0x00007f9f6d7e7a8b in ?? ()
 #30 0x00000000000000f0 in ?? ()
-#31 0x0000000003393d98 in ?? ()
-#32 0x00007f04dd003468 in ?? ()
-#33 0x00007f04dcf120e8 in ?? ()
-#34 0x00007fff50ebd4b0 in ?? ()
-#35 0x00007f04dcf2775d in ?? ()
-#36 0x00007fff50ec06c8 in ?? ()
+#31 0x000000000307a298 in ?? ()
+#32 0x00007f9f6d8b5468 in ?? ()
+#33 0x00007f9f6d7c30e8 in ?? ()
+#34 0x00007fff35631b70 in ?? ()
+#35 0x00007f9f6d7d875d in ?? ()
+#36 0x00007fff35634d88 in ?? ()
 #37 0x00000000000000f0 in ?? ()
-#38 0x00007fff50ebd4d0 in ?? ()
-#39 0x00007f04dc2d318d in operator new(unsigned long) () from /lib64/libstdc++.so.6
+#38 0x00007fff35631b90 in ?? ()
+#39 0x00007f9f6cb8518d in operator new(unsigned long) () from /lib64/libstdc++.so.6
 #40 0x0000000000000000 in ?? ()
 Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
 Execution of your code was aborted.
@@ -1521,7 +1521,7 @@ Reading 4753561 entries
 70 %
 80 %
 90 %
-counter: 1469
+counter: 1248
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 59830
@@ -1536,7 +1536,7 @@ Reading 2629336 entries
 70 %
 80 %
 90 %
-counter: 7514
+counter: 7488
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 59830
@@ -1551,7 +1551,7 @@ Reading 2421467 entries
 70 %
 80 %
 90 %
-counter: 10166
+counter: 10153
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
 LUMI: 59830
@@ -1674,1793 +1674,7 @@ Reading 87836 entries
 70 %
 80 %
 90 %
-counter: 1001
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 78840 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 923
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 133961 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3263
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 51544 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1196
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 12637 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 351
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 6570 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 208
-77
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 160667
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 1432599 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 95927
-0
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2017",3, 0)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0
-deepCSVFloat: 0.4506
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 88405 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1417
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 30163 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 780
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 130082 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3835
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 12248 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 650
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 6539 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 247
-109
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-
-Processing FillHistograms.C("2017",3, 1)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0
-deepCSVFloat: 0.1355
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 88405 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 4797
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 30163 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 2106
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 130082 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 11687
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 12248 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1287
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 41480
-LUMI_CR: 41480
-Reading 6539 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 494
-369
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2018",0, 0)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.4168
-Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
-file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
-LUMI: 59830
-LUMI_CR: 59830
-Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
-Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
-Reading 10011499 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 160888
-12376
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-
-Processing FillHistograms.C("2018",0, 1)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.1208
-Entering /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
-file: /eos/cms/store/user/gbakas/ttbar/JetHT/ul-2018/JetHT_Run2018-UL2018_MiniAODv2-v1.root
-LUMI: 59830
-LUMI_CR: 59830
-Error in <TTree::SetBranchAddress>: unknown branch -> genEvtWeight
-Error in <TTree::SetBranchAddress>: unknown branch -> bTagEvntWeight
-Reading 10011499 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 839709
-64593
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2018",1, 0)...
-/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
-
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.4168
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
-SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ Is a directory
-Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ failed to read the file type data.
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00007fc16ad9d60c in waitpid () from /lib64/libc.so.6
-#1  0x00007fc16ad1af62 in do_system () from /lib64/libc.so.6
-#2  0x00007fc16b883a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00007fc163669578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00007fc163660a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00007fc16bf5a310 in ?? ()
-#6  0x00000000036a60b8 in ?? ()
-#7  0x00000000036a6090 in ?? ()
-#8  0x00007ffe2a755630 in ?? ()
-#9  0x00007fc16bf775c5 in ?? ()
-#10 0x0000000000000004 in ?? ()
-#11 0x0000000004db0638 in ?? ()
-#12 0x00007fc16bf7f2b0 in ?? ()
-#13 0x0000000004db0610 in ?? ()
-#14 0x00007ffe2a755618 in ?? ()
-#15 0x000000000000000a in ?? ()
-#16 0x0000000004b88e58 in ?? ()
-#17 0x00000000036a60b8 in ?? ()
-#18 0x00000000036a6090 in ?? ()
-#19 0x00007fc16bf7ee00 in ?? ()
-#20 0x01000000036a6090 in ?? ()
-#21 0x00000000036a6090 in ?? ()
-#22 0x00007ffe2a758c50 in ?? ()
-#23 0x0000000004b88e58 in ?? ()
-#24 0x00007ffe2a755650 in ?? ()
-#25 0x00007fc16bf77424 in ?? ()
-#26 0x00007ffe2a758c50 in ?? ()
-#27 0x0000000004b88e58 in ?? ()
-#28 0x00007ffe2a755680 in ?? ()
-#29 0x00007fc16bf7ea8b in ?? ()
-#30 0x00000000000000f0 in ?? ()
-#31 0x0000000004b88e58 in ?? ()
-#32 0x00007fc16c04b468 in ?? ()
-#33 0x00007fc16bf5a0e8 in ?? ()
-#34 0x00007ffe2a7556d0 in ?? ()
-#35 0x00007fc16bf6f75d in ?? ()
-#36 0x00007ffe2a7588e8 in ?? ()
-#37 0x00000000000000f0 in ?? ()
-#38 0x00007ffe2a7556f0 in ?? ()
-#39 0x00007fc16b31b18d in operator new(unsigned long) () from /lib64/libstdc++.so.6
-#40 0x0000000000000000 in ?? ()
-Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
-Execution of your code was aborted.
-In file included from input_line_8:1:
-/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
-  TTree *trIN    = (TTree*)inf->Get("boosted/events");
-                           ^~~
-
-Processing FillHistograms.C("2018",1, 1)...
-/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
-
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.1208
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/
-SysError in <TFile::ReadBuffer>: error reading from file /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ Is a directory
-Error in <TFile::Init>: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/ failed to read the file type data.
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-    gdb.printing.register_pretty_printer(gdb.current_objfile(),
-#0  0x00007f291eb7360c in waitpid () from /lib64/libc.so.6
-#1  0x00007f291eaf0f62 in do_system () from /lib64/libc.so.6
-#2  0x00007f291f659a6c in TUnixSystem::StackTrace() () from /usr/lib64/root/libCore.so.6.24
-#3  0x00007f291743f578 in cling::MultiplexInterpreterCallbacks::PrintStackTrace() () from /usr/lib64/root/libCling.so
-#4  0x00007f2917436a2a in cling_runtime_internal_throwIfInvalidPointer () from /usr/lib64/root/libCling.so
-#5  0x00007f291fd30310 in ?? ()
-#6  0x000000000396e558 in ?? ()
-#7  0x000000000396e530 in ?? ()
-#8  0x00007fff121c50c0 in ?? ()
-#9  0x00007f291fd4d5c5 in ?? ()
-#10 0x0000000000000004 in ?? ()
-#11 0x00000000036a19b8 in ?? ()
-#12 0x00007f291fd552b0 in ?? ()
-#13 0x00000000036a1990 in ?? ()
-#14 0x00007fff121c50a8 in ?? ()
-#15 0x000000000000000a in ?? ()
-#16 0x0000000002e39558 in ?? ()
-#17 0x000000000396e558 in ?? ()
-#18 0x000000000396e530 in ?? ()
-#19 0x00007f291fd54e00 in ?? ()
-#20 0x010000000396e530 in ?? ()
-#21 0x000000000396e530 in ?? ()
-#22 0x00007fff121c86e0 in ?? ()
-#23 0x0000000002e39558 in ?? ()
-#24 0x00007fff121c50e0 in ?? ()
-#25 0x00007f291fd4d424 in ?? ()
-#26 0x00007fff121c86e0 in ?? ()
-#27 0x0000000002e39558 in ?? ()
-#28 0x00007fff121c5110 in ?? ()
-#29 0x00007f291fd54a8b in ?? ()
-#30 0x00000000000000f0 in ?? ()
-#31 0x0000000002e39558 in ?? ()
-#32 0x00007f291fe21468 in ?? ()
-#33 0x00007f291fd300e8 in ?? ()
-#34 0x00007fff121c5160 in ?? ()
-#35 0x00007f291fd4575d in ?? ()
-#36 0x00007fff121c8378 in ?? ()
-#37 0x00000000000000f0 in ?? ()
-#38 0x00007fff121c5180 in ?? ()
-#39 0x00007f291f0f118d in operator new(unsigned long) () from /lib64/libstdc++.so.6
-#40 0x0000000000000000 in ?? ()
-Error in <HandleInterpreterException>: Trying to dereference null pointer or trying to call routine taking non-null arguments.
-Execution of your code was aborted.
-In file included from input_line_8:1:
-/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/FillHistograms.C:216:28: warning: null passed to a callee that requires a non-null argument [-Wnonnull]
-  TTree *trIN    = (TTree*)inf->Get("boosted/events");
-                           ^~~
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2018",2, 0)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.4168
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 159611 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 0
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 2564998 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 0
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 4753561 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1469
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 2629336 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 7514
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 2421467 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 10166
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 1189197 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 4615
-0
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-
-Processing FillHistograms.C("2018",2, 1)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.1208
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 159611 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 0
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 2564998 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 52
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 4753561 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 17238
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 2629336 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 82446
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 2421467 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 130585
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/QCD_HT2000toInf_TuneCP5_PSWeights_13TeV-madgraphMLM-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 1189197 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 67925
-0
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-SysError in <TFile::TFile>: could not delete /afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/../2018/Histo_QCD_HT300toInf_100_Loose.root (errno: 2) No such file or directory
-mJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-ptJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-yJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-jetPt0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-jetPt1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-jetY0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-jetY1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-chi
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-cosTheta_0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-cosTheta_1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-mva
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-topTagger1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-mTop
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-jetMassSoftDrop
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2018",3, 0)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.4168
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 87836 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1001
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 78840 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 923
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 133961 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3263
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 51544 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1196
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 12637 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 351
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 6570 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 208
-77
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-SysError in <TFile::TFile>: could not delete /afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/../2018/Histo_SubdominantBkgs_100.root (errno: 2) No such file or directory
-mJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-ptJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-yJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetPt0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetPt1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetY0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetY1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-chi
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-cosTheta_0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-cosTheta_1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-mva
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-topTagger1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-mTop
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetMassSoftDrop
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-
-Processing FillHistograms.C("2018",3, 1)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.1208
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 87836 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3692
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 78840 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3094
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 133961 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 9334
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 51544 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 2977
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 12637 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
 counter: 988
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 6570 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 728
-284
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-e the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2018",3, 0)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.4168
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 87836 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1001
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 59830
@@ -3475,7 +1689,7 @@ Reading 78840 entries
 70 %
 80 %
 90 %
-counter: 923
+counter: 884
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 59830
@@ -3490,7 +1704,7 @@ Reading 133961 entries
 70 %
 80 %
 90 %
-counter: 3263
+counter: 3120
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
 LUMI: 59830
@@ -3505,7 +1719,7 @@ Reading 51544 entries
 70 %
 80 %
 90 %
-counter: 1196
+counter: 1170
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 59830
@@ -3520,7 +1734,7 @@ Reading 12637 entries
 70 %
 80 %
 90 %
-counter: 351
+counter: 325
 Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
 LUMI: 59830
@@ -3536,274 +1750,7 @@ Reading 6570 entries
 80 %
 90 %
 counter: 208
-77
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-SysError in <TFile::TFile>: could not delete /afs/cern.ch/work/g/gbakas/public/HEP-NTUA/MassFit/FillHistoCodes_Jan2020/../2018/Histo_SubdominantBkgs_100.root (errno: 2) No such file or directory
-mJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-ptJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-yJJ
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetPt0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetPt1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetY0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetY1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-chi
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-cosTheta_0
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-cosTheta_1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-mva
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-topTagger1
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-mTop
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-jetMassSoftDrop
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_SubdominantBkgs_100.root is not writable
-
-Processing FillHistograms.C("2018",3, 1)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.1208
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 87836 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3692
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 78840 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3094
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 133961 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 9334
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 51544 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 2977
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 12637 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 988
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 6570 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 728
-284
+76
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 inside the loop!
 inside the loop!
@@ -3889,377 +1836,4 @@ mva
 topTagger1
 mTop
 jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-ory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Error in <TFile::WriteTObject>: Directory ../2018/Histo_QCD_HT300toInf_100_Loose.root is not writable
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
-
-Processing FillHistograms.C("2018",3, 0)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.4168
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 87836 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1001
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 78840 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 923
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 133961 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3263
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 51544 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 1196
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 12637 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 351
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 6570 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 208
-77
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-
-Processing FillHistograms.C("2018",3, 1)...
-triggerSRConst[year.Data()]]: 5
-triggerCRConst[year.Data()]]: 5
-topTagger: 0.1
-deepCSVFloat: 0.1208
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 87836 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3692
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 78840 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 3094
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 133961 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 9334
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 51544 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 2977
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 12637 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 988
-Entering /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-file: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Bkg/ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root
-LUMI: 59830
-LUMI_CR: 59830
-Reading 6570 entries
-10 %
-20 %
-30 %
-40 %
-50 %
-60 %
-70 %
-80 %
-90 %
-counter: 728
-284
-Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-inside the loop!
-mJJ
-ptJJ
-yJJ
-jetPt0
-jetPt1
-jetY0
-jetY1
-chi
-cosTheta_0
-cosTheta_1
-mva
-topTagger1
-mTop
-jetMassSoftDrop
-Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
 Warning in <TApplication::GetOptions>: macro FillHistograms_Reduced_UnequalBinning.C not found
