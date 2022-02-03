@@ -165,8 +165,8 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     }
     }
 
-    void FinalResults(bool normalized = false)
-    {
+void FinalResults(bool normalized = false)
+{
     //setTDRStyle();
     TString partonParticle = "Parton";
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
@@ -267,8 +267,6 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
             if (variation.Contains("pdf_58")) continue;
             if (variation.Contains("pdf_69")) continue;
             if (variation.Contains("pdf_93")) continue; */
-
-
 
             cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
