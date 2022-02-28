@@ -32,7 +32,7 @@ namespace AnalysisConstants_UL
 
         std::vector<std::vector<float>> partonYAxisValues = {
             {6E-6, 1E-1},
-            {1E-6, 1E-2},
+            {1E-6, 1E-1},
             {1E-3, 2.5},
             {3E-6, 5E-2},
             {2E-8, 5E-2},
