@@ -54,6 +54,7 @@ namespace AnalysisConstants_UL
   std::map<TString, std::map<TString, Double_t>> qcdFitInitValues;
 
   std::vector<TString> variations;
+  std::vector<TString> variationsFiducial;
 
   bool isUL = true;
 
@@ -116,12 +117,44 @@ namespace AnalysisConstants_UL
     }
   }
 
+  void appendPdfVariationsFiducial(std::vector<TString> &variations)
+  {
+    for (int i = 1; i < 100; i++)
+    {
+      variations.push_back(TString::Format("pdfVariation%i", i));
+      correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("pdfVariation%i", i),
+                                                                {1., 1., 1., 1.,
+                                                                 1., 1., 1., 1.,
+                                                                 1., 1., 1., 1.,
+                                                                 1., 1., 1., 1.}));
+    }
+  }
+
   void appendScaleVariations(std::vector<TString> &variations)
   {
     for (int i = 2; i < 10; i++)
     {
       if (i == 6 || i ==8) continue;
       variations.push_back(TString::Format("scale_%i", i));
+      /*correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
+                                                                {1., 1., 1., 1.,
+                                                                 1., 1., 1., 1.,
+                                                                 1., 1., 1., 1.,
+                                                                 1., 1., 1., 1.}));*/
+      correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
+                                                                {1., .5, .5, .5,
+                                                                 .5, 1., .5, .5,
+                                                                 .5, .5, 1., .5,
+                                                                 .5, .5, .5, 1.}));
+    }
+  }
+
+  void appendScaleVariationsFiducial(std::vector<TString> &variations)
+  {
+    for (int i = 2; i < 10; i++)
+    {
+      if (i == 6 || i ==8) continue;
+      variations.push_back(TString::Format("scaleWeight%i", i));
       /*correlations.insert(std::pair<TString, correlationMatrix>(TString::Format("scaleWeight%i", i),
                                                                 {1., 1., 1., 1.,
                                                                  1., 1., 1., 1.,
@@ -236,6 +269,7 @@ namespace AnalysisConstants_UL
     crossSections.clear();
 
     variations.clear();
+    variationsFiducial.clear();
 
     qcdFitInitValues.clear();
   }
@@ -513,10 +547,43 @@ namespace AnalysisConstants_UL
         "fsrConLo", //~
         "up",
         "down"};
+      
+      variationsFiducial = {
+        /*"amcatnlo",
+        //"madgraph",
+        "herwig",
+        "hdampdown",
+        "hdampup",
+        "mtop166",
+        "mtop169",
+        "mtop171",
+        "mtop173",
+        "mtop175",
+        "mtop178",
+        "cp5down",
+        "cp5up",*/
+        "isrRedHi",
+        "fsrRedHi",
+        "isrRedLo", //~
+        "fsrRedLo",
+        "isrDefHi", //~
+        "fsrDefHi",
+        "isrDefLo",
+        "fsrDefLo",
+        "isrConHi",
+        "fsrConHi",
+        "isrConLo",
+        "fsrConLo", //~
+        "bTagup",
+        "bTagdown"};
 
     appendJESWeights(variations);
     appendScaleVariations(variations);
     appendPdfVariations(variations);
+
+    appendJESWeights(variationsFiducial);
+    appendScaleVariationsFiducial(variationsFiducial);
+    appendPdfVariationsFiducial(variationsFiducial);
 
     std::map<TString, Double_t> qcdFitInitValues2016 = {{"b0", 3.0981e-01},
                                                         {"b1", 9.0739e-01},

@@ -97,6 +97,8 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
   TH2F *hResponse[BND_reco.size()];
   TH1F *efficiency[BND_reco.size()], *acceptance[BND_reco.size()];
   TH1F *efficiency_denom[BND_reco.size()];
+  TH1F *fiducial_theory[BND_reco.size()];
+  TH1F *hFidTheory[BND_reco.size()], *hFidTheory_norm[BND_reco.size()];
   TH1F *hTheory[BND_reco.size()], *hTheory_norm[BND_reco.size()];
   float LUMI = 0;
 
@@ -166,6 +168,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
       acceptance[ivar] = (TH1F*)acc_inf->Get("acceptance");
       efficiency[ivar] = (TH1F*)eff_inf->Get("efficiency");
       efficiency_denom[ivar] = (TH1F*)eff_inf->Get("denominator_efficiency");
+      fiducial_theory[ivar] = (TH1F*)acc_inf->Get("fiducial_theory");
 
     }
   }
@@ -300,6 +303,16 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     TH1F *hTheory_notScaled = (TH1F*)hTheory[ivar]->Clone(TString::Format("hTheory_%s_notScaled", variable[ivar].Data()));
     hTheory_notScaled->SetTitle(TString::Format("hTheory_%s_notScaled", variable[ivar].Data()));
     
+    //this is fiducial diff cross section 
+    hFidTheory[ivar] = (TH1F*)fiducial_theory[ivar]->Clone();
+    hFidTheory[ivar]->Scale(1/LUMI, "width");
+    hFidTheory[ivar]->SetTitle(TString::Format("hFidTheory_%s", variable[ivar].Data()));
+
+    // this is Fiducial normalized cross section 
+    hFidTheory_norm[ivar] = (TH1F*)hFidTheory[ivar]->Clone(TString::Format("hFidTheoryNorm_%s", variable[ivar].Data()));
+    hFidTheory_norm[ivar]->Scale(1/hFidTheory[ivar]->Integral());
+    hFidTheory_norm[ivar]->SetTitle(TString::Format("hFidTheoryNorm_%s", variable[ivar].Data()));
+
     // this is diff cross section 
     hTheory[ivar]->Scale(1/LUMI, "width");
     hTheory[ivar]->SetTitle(TString::Format("hTheory_%s", variable[ivar].Data()));
@@ -378,6 +391,15 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     // normalised result
     hUnf_norm->Write(TString::Format("hUnfoldNorm_%s", variable[ivar].Data()));
     
+    // fiducial theory bulk
+    fiducial_theory[ivar]->Write(TString::Format("hFidTheory_NoScaled_%s", variable[ivar].Data()));
+
+    // Fiducial theory diff xsec
+    hFidTheory[ivar]->Write(TString::Format("hFidTheory_%s", variable[ivar].Data()));
+
+    // Fiducial theory norm diff xsec 
+    hFidTheory_norm[ivar]->Write(TString::Format("hFidTheoryNorm_%s", variable[ivar].Data())); 
+
     // theory bulk 
     hTheory_notScaled->Write(TString::Format("hTheory_NoScaled_%s", variable[ivar].Data()));
 

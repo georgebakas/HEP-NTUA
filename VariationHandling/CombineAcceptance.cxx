@@ -215,12 +215,14 @@ void CombineAcceptance(TString variation="Nominal", TString varParton="Parton")
     denominator_all->SetBinError(ibin, denominator_error);
     
     }
+    TH1F *theory_fiducial = (TH1F*)numerator_all->Clone("fiducial_theory");
     numerator_all->Divide(denominator_all);
 
     outFile->cd();
     numerator_all->Write("acceptance");
     denominator_all->Write("denominator_acceptance");
-
+    theory_fiducial->Write("fiducial_theory");
+    
     outFile->Close();
     delete bins;
     delete resultsHisto;

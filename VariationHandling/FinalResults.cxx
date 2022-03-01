@@ -283,12 +283,11 @@ void FinalResults(bool normalized = false)
                                                                             (normalized ? "Norm" : "Final"), 
                                                                             variable.Data()));
             AddSystematicToErrorBar(finalResult, variationHistogram);
-
+            /*
             if (tempVariation.Contains("JES")) continue;
             if (tempVariation.Contains("bTagVariation")) continue;
             if (tempVariation.Contains("PDFWeights")) continue;
-            if (tempVariation.EqualTo("PSWeights"))
-                cout<<variation<<endl;
+            if (tempVariation.EqualTo("PSWeights")) continue; */
 
             TH1F *variationTheory = (TH1F *)variationFile->Get(TString::Format("hTheory%s_%s",
                                                                             (normalized ? "Norm" : ""),
