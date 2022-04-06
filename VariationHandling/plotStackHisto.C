@@ -21,7 +21,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR")
 {
   initFilesMapping();
-  setTDRStyle();
+  //setTDRStyle();
   //get the files from the directory
   //data file
   TFile *infData = TFile::Open(TString::Format("../MassFit/%s/Histo_Data_%s_100_reduced_UnequalBinning.root",year.Data(), year.Data()));
@@ -112,7 +112,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->SetMarkerStyle(20);
   hData->SetMarkerColor(kBlack);
 
-  THStack *hs = new THStack("Data vs MC", "Data vs MC;Top Angular Dists;Number of Events");
+  THStack *hs = new THStack("", ";Top Angular Dists;Number of Events");
   hs->Add(hSub);
   hs->Add(hQCD);
   hs->Add(hTT);
@@ -166,7 +166,12 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->SetTitle("");
   hNum->GetYaxis()->SetRangeUser(0.01,3);
   hNum->GetYaxis()->SetTitle("#frac{Data}{MC}");
-  hNum->GetXaxis()->SetTitle(variable);
+  if (variable.EqualTo("chi"))
+    hNum->GetXaxis()->SetTitle("#chi");
+  else if (variable.Contains("cosTheta"))
+    hNum->GetXaxis()->SetTitle("|cos(#theta_{*})|");
+  else 
+    hNum->GetXaxis()->SetTitle(variable);
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
   hNum->GetYaxis()->SetTitleOffset(1.3);
@@ -184,7 +189,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   int iPeriod = 13;
   int iPos = 0;
   writeExtraText=true;
-  CMS_lumi(closure_pad1, iPeriod, iPos);
+  CMS_lumi(closure_pad1, "combined", iPos);
   can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%dbTag.pdf",year.Data(), variable.Data(), btagFlag),"pdf");
 
 }

@@ -182,12 +182,12 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
 	   xRecoAll.clear();
     if(nJets>1)
     {
-   	int leadingPt =0;
+   	int leadingPt = 0;
     int subleadingPt = 1;
 
   		if((*jetPt)[0] < (*jetPt)[1])
   		{
-   		    subleadingPt =0;
+   		    subleadingPt = 0;
    		    leadingPt = 1;
    		}
 

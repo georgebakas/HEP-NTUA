@@ -184,7 +184,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 void FinalResults(bool normalized = false)
 {
     //setTDRStyle();
-    TString partonParticle = "Parton";
+    TString partonParticle = "Particle";
     //TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
     AnalysisConstants::initConstants();
