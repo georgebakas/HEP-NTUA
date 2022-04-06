@@ -60,22 +60,38 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         hist->SetMarkerStyle(markerStyle[i]);
         hist->SetLineWidth(2);
         hist->SetFillStyle(fillStyles[i]);
+        
         if (partonParticle.EqualTo("Parton")){
             if (!isNormalized)
+            {
                 hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
                                             AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+                hist->GetYaxis()->SetTitle("#frac{d#sigma}{dX}");
+            }
             else 
+            {
                 hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
                                             AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+                hist->GetYaxis()->SetTitle("#frac{1}{#sigma}#frac{d#sigma}{dX}");
+            }
         }
         else{
             if (!isNormalized)
+            {
                 hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][0],
                                             AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][1]);
+                hist->GetYaxis()->SetTitle("#frac{d#sigma}{dX}");
+            }
             else 
+            {
                 hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][0],
                                             AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][1]);
+                hist->GetYaxis()->SetTitle("#frac{1}{#sigma}#frac{d#sigma}{dX}");
+            }
         }
+        hist->GetYaxis()->SetLabelSize(0.035);
+        hist->GetYaxis()->SetTitleSize(0.042);
+        hist->GetYaxis()->SetTitleOffset(1);
 
         TH1F *ratio = (TH1F *)hist->Clone("ratio");
         ratio->Divide(dataHist);
@@ -144,7 +160,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     int iPeriod = 13;
     int iPos = 0;
     writeExtraText=true;
-    CMS_lumi(upperPad, iPeriod, iPos);
+    CMS_lumi(upperPad, "combined", iPos);
     }
 
     void AddSystematicToErrorBar(TH1F *nominal, TH1F *systematic)
@@ -169,7 +185,8 @@ void FinalResults(bool normalized = false)
 {
     //setTDRStyle();
     TString partonParticle = "Parton";
-    TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+    //TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+    TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
     AnalysisConstants::initConstants();
     TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),

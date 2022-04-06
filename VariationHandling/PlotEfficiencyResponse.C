@@ -28,7 +28,7 @@ void PlotEfficiencyResponse(bool isParton = true)
 {   
     /* init variables and values */
     initFilesMapping();
-    setTDRStyle();
+    //setTDRStyle();
     gStyle->SetOptStat(0);
     const int NVAR = 10;
     TString variable[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1", "chi", "cosTheta_0", "cosTheta_1"};
@@ -172,7 +172,7 @@ void PlotEfficiencyResponse(bool isParton = true)
         graph->SetMaximum(1.); 
         gPad->Update(); 
 
-        CMS_lumi(can_acc, iPeriod, iPos);
+        CMS_lumi(can_acc, "combined", iPos);
         leg_acc->Draw();    
 
         can_acc->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Acceptance%s_%s.pdf", 
@@ -200,7 +200,7 @@ void PlotEfficiencyResponse(bool isParton = true)
             graph_eff->SetMaximum(0.3);
         gPad->Update(); 
         
-        CMS_lumi(can_eff, iPeriod, iPos);
+        CMS_lumi(can_eff, "combined", iPos);
         leg->Draw();
         
         can_eff->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Efficiency%s_%s.pdf", 
@@ -250,8 +250,9 @@ void PlotEfficiencyResponse(bool isParton = true)
             gStyle->SetPaintTextFormat("4.1f");
             hResponse[iy]->GetXaxis()->SetTitle(tempVar+" "+expr[ivar]);
             hResponse[iy]->GetYaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
+            hResponse[iy]->SetTitle("");
             hResponse[iy]->Draw("text colz0");
-            CMS_lumi(can_response_yearly, iPeriod, iPos);
+            CMS_lumi(can_response_yearly, "combined", iPos);
             can_response_yearly->SaveAs(TString::Format("Comparison_EffAccResponses/%s/Response%s_%s.pdf", 
                         years[iy].Data(), varParton.Data(), variable[ivar].Data()), "pdf");
         }
@@ -265,7 +266,7 @@ void PlotEfficiencyResponse(bool isParton = true)
         hCombined->GetYaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
         //hCombined->Scale(1/hCombined->Integral());
         hCombined->Draw("textcolz0");
-        CMS_lumi(can_response_comb, iPeriod, iPos);
+        CMS_lumi(can_response_comb, "combined", iPos);
         can_response_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Response%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
 
@@ -300,7 +301,7 @@ void PlotEfficiencyResponse(bool isParton = true)
             graph_eff_yearly->SetMinimum(0);
             graph_eff_yearly->SetMaximum(1);
             graph_eff_yearly->GetYaxis()->SetTitle("Fractions");
-            CMS_lumi(can_eff_yearly, iPeriod, iPos);
+            CMS_lumi(can_eff_yearly, "combined", iPos);
             can_eff_yearly->SaveAs(TString::Format("Comparison_EffAccResponses/%s/EfficiencyAcceptance%s_%s.pdf", 
                         years[iy].Data(), varParton.Data(), variable[ivar].Data()), "pdf");
         }
@@ -316,8 +317,8 @@ void PlotEfficiencyResponse(bool isParton = true)
         effCombClone->SetLineColor(kRed);
         accCombClone->SetMarkerColor(kBlue);
         accCombClone->SetLineColor(kBlue);
-        //effCombClone->SetFillStyle(3444);
-        //accCombClone->SetFillStyle(3444);
+        effCombClone->SetFillStyle(3444);
+        accCombClone->SetFillStyle(3444);
         effCombClone->SetFillColorAlpha(kRed, 0.4);
         accCombClone->SetFillColorAlpha(kBlue, 0.4);
         effCombClone->GetXaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
@@ -328,7 +329,7 @@ void PlotEfficiencyResponse(bool isParton = true)
         effCombClone->SetMaximum(1);
 
 
-        CMS_lumi(can_eff_comb, iPeriod, iPos);
+        CMS_lumi(can_eff_comb, "combined", iPos);
         can_eff_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/EfficiencyAcceptance%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
         //break;

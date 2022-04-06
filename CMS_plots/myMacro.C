@@ -8,7 +8,7 @@ TCanvas* example_plot( int iPeriod, int iPos );
 void myMacro()
 {
   //  gROOT->LoadMacro("tdrstyle.C");
-  setTDRStyle();
+  //setTDRStyle();
 
   //  gROOT->LoadMacro("CMS_lumi.C");
 
