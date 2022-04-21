@@ -44,6 +44,7 @@ void PlotEfficiencyResponse(bool isParton = true)
     TString years[4] = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
     
     TString variations[5] = {"bTagVariation", "JES", "PDFWeights", "PSWeights", "ScaleWeights"};
+    TH1D *purityParton[NVAR], *stabilityParton[10];
 
     //write to a txt file the Kolmogorov tests
     ofstream myfile;
@@ -270,6 +271,56 @@ void PlotEfficiencyResponse(bool isParton = true)
         can_response_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/Response%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
 
+        int sizeBins = hCombined->GetXaxis()->GetNbins();
+        purityParton[ivar] 	  = new TH1D(TString::Format("PurityParton_%s", variable[ivar].Data()),
+                                            TString::Format("PurityParton_%s", variable[ivar].Data()), sizeBins, 0, sizeBins+1);
+  	    stabilityParton[ivar] = new TH1D(TString::Format("StabilityParton_%s", variable[ivar].Data()),
+                                            TString::Format("StabilityParton_%s", variable[ivar].Data()), sizeBins, 0, sizeBins+1);
+
+        //get the stability and purity for the combined:
+        float sumOfRowsParton[sizeBins], sumOfColsParton[sizeBins];
+        float sumOfRowsParticle[sizeBins], sumOfColsParticle[sizeBins];
+
+        for(int i=1; i<=sizeBins; i++)
+        {
+            sumOfColsParton[i] = ((TH1D*)hCombined->ProjectionX())->GetBinContent(i);
+            sumOfRowsParton[i] = ((TH1D*)hCombined->ProjectionY())->GetBinContent(i);
+
+            for(int j=1; j<=sizeBins; j++)
+            {
+                if(i==j)
+                {
+                    float initContentParton = hCombined->GetBinContent(i,j);
+                    purityParton[ivar]->SetBinContent(i,initContentParton/sumOfColsParton[i]);
+                    stabilityParton[ivar]->SetBinContent(i,initContentParton/sumOfRowsParton[i]);
+                }
+            }
+        }
+        purityParton[ivar]->SetLineColor(kBlack);
+        stabilityParton[ivar]->SetLineColor(kBlue);
+
+        // plot purity and stability 
+
+        TCanvas *can_purStab = new TCanvas(TString::Format("can_purStab%s",variable[ivar].Data()),
+                                        TString::Format("can_purStab%s",variable[ivar].Data()) , 800,600);
+        TLegend *leg_purstab = new TLegend(0.3, 0.2, 0.5, 0.4);
+        can_purStab->cd();
+        purityParton[ivar]->GetYaxis()->SetRangeUser(0,1);
+        purityParton[ivar]->GetXaxis()->SetTitle("Bin Number");
+        purityParton[ivar]->Draw();
+        purityParton[ivar]->SetName("");
+        purityParton[ivar]->SetTitle("");
+        stabilityParton[ivar]->Draw("same");
+
+        leg_purstab->SetHeader(variable[ivar]);
+        leg_purstab->AddEntry(purityParton[ivar], "Purity" ,"lp");
+        leg_purstab->AddEntry(stabilityParton[ivar], "Stability", "lp");
+        
+        CMS_lumi(can_purStab, "combined", iPos);
+        leg_purstab->Draw();
+        
+        can_purStab->SaveAs(TString::Format("Comparison_EffAccResponses/combined/PurityStability%s_%s.pdf", 
+                        varParton.Data(), variable[ivar].Data()), "pdf");
         
         //plot efficiency and acceptance per year and combined in the same plot 
         for (int iy=0; iy<4; iy++)
