@@ -8,6 +8,7 @@
 
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
+#include "TemplateConstants.h"
 
 void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized, TString partonParticle)
 {
@@ -60,22 +61,14 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         hist->SetMarkerStyle(markerStyle[i]);
         hist->SetLineWidth(2);
         hist->SetFillStyle(fillStyles[i]);
-        if (partonParticle.EqualTo("Parton")){
-            if (!isNormalized)
-                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
-                                            AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
-            else 
-                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
-                                            AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
-        }
-        else{
-            if (!isNormalized)
-                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][0],
-                                            AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][1]);
-            else 
-                hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][0],
-                                            AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][1]);
-        }
+        if (!isNormalized)
+            hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::fiducialYAxisValues[index][0],
+                                        AnalysisConstants::FinalResultsConstans::fiducialYAxisValues[index][1]);
+        else 
+            hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
+                                        AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+    
+
 
         TH1F *ratio = (TH1F *)hist->Clone("ratio");
         ratio->Divide(dataHist);
@@ -110,12 +103,12 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         ratio->GetXaxis()->SetLabelSize(0.12);
         ratio->GetXaxis()->SetLabelOffset(0.015);
         if (partonParticle.EqualTo("Parton")){
-            ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
+            ratio->GetXaxis()->SetTitle(AnalysisConstants::fiducialAxisTitles[index]);
             ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
                                             AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
         }
         else{
-            ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
+            ratio->GetXaxis()->SetTitle(AnalysisConstants::fiducialAxisTitles[index]);
             ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
                                             AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
         }
@@ -140,12 +133,15 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         std::cout << primitives->At(i)->GetName() << std::endl;
     }
 
-    //float extraTextFactor = 0.14;
+    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
     int iPeriod = 13;
     int iPos = 0;
+    extraTextFactor = 0.14;
     writeExtraText=true;
-    CMS_lumi(upperPad, iPeriod, iPos);
+
+    CMS_lumi(upperPad, "combined", iPos);
     }
+    
 
     void AddSystematicToErrorBar(TH1F *nominal, TH1F *systematic)
     {
@@ -167,7 +163,8 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
 void FinalResults_Fiducial(bool normalized = true)
 {
-    //setTDRStyle();
+    initFilesMapping();
+    gStyle->SetOptStat(0);
     TString partonParticle = "Parton";
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     AnalysisConstants::initConstants();

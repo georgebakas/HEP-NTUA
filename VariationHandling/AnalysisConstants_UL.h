@@ -32,6 +32,8 @@ namespace AnalysisConstants_UL
   std::vector<TString> partonVariables;
   std::vector<TString> particleVariables;
   std::vector<TString> partonAxisTitles;
+  std::vector<TString> fiducialAxisTitles;
+
   std::vector<TString> particleAxisTitles;
 
 
@@ -262,6 +264,7 @@ namespace AnalysisConstants_UL
     partonVariables.clear();
     particleVariables.clear();
     partonAxisTitles.clear();
+    fiducialAxisTitles.clear();
 
     axisInLogScale.clear();
     extractedSignalFiles.clear();
@@ -398,6 +401,16 @@ namespace AnalysisConstants_UL
     axisTitles.push_back("Leading jet |cosTheta*|");
     axisTitles.push_back("Subleading jet |cosTheta*|");
 
+    fiducialAxisTitles.push_back("Leading jet p_{T} (GeV)");
+    fiducialAxisTitles.push_back("Subleading jet p_{T} (GeV)");
+    fiducialAxisTitles.push_back("yJJ");
+    fiducialAxisTitles.push_back("ptJJ (GeV)");
+    fiducialAxisTitles.push_back("mJJ (GeV)");
+    fiducialAxisTitles.push_back("Leading |Y|");
+    fiducialAxisTitles.push_back("Subleading |Y|");
+    fiducialAxisTitles.push_back("#chi ");
+    fiducialAxisTitles.push_back("Leading jet |cos(#theta*)|");
+    fiducialAxisTitles.push_back("Subleading jet |cos(#theta*)|");
 
     partonAxisTitles.push_back("Leading parton Pt (GeV)");
     partonAxisTitles.push_back("Subleading parton Pt (GeV)");

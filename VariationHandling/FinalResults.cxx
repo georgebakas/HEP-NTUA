@@ -8,6 +8,7 @@
 
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
+#include "TemplateConstants.h"
 
 void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized, TString partonParticle)
 {
@@ -156,10 +157,12 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
         std::cout << primitives->At(i)->GetName() << std::endl;
     }
 
-    //float extraTextFactor = 0.14;
+    lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
     int iPeriod = 13;
     int iPos = 0;
+    extraTextFactor = 0.14;
     writeExtraText=true;
+        
     CMS_lumi(upperPad, "combined", iPos);
     }
 
@@ -183,10 +186,12 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
 
 void FinalResults(bool normalized = false)
 {
+    initFilesMapping();
     //setTDRStyle();
-    TString partonParticle = "Particle";
-    //TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
-    TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
+    gStyle->SetOptStat(0);
+    TString partonParticle = "Parton";
+    TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+    //TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
     AnalysisConstants::initConstants();
     TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),

@@ -40,7 +40,7 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
-  setTDRStyle();
+  //setTDRStyle();
   std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
   std::vector<int> groupColors = {kBlack, kRed, kGreen, kBlue, kOrange};
@@ -170,7 +170,6 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
         //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
 
-
         TH1F *hVariation = (TH1F *)f->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
         if(isNorm)
           hVariation->Scale(1./hVariation->Integral());
@@ -261,10 +260,11 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
     leg->Draw();
 
     lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
+    float extraTextFactor = 0.14;
     int iPeriod = 13;
     int iPos = 0;
     writeExtraText=true;
-    CMS_lumi(c1, iPeriod, iPos);
+    CMS_lumi(c1, "combined", iPos);
     c1->SaveAs(TString::Format("%s%s/Systematics%s%s_%s%s.pdf", 
                         baseInputDir.Data(), outputDirectory.Data(), 
                         histo_name.Data(), isParton.Data(), vars[i].Data(),

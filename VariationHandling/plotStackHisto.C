@@ -169,9 +169,21 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   if (variable.EqualTo("chi"))
     hNum->GetXaxis()->SetTitle("#chi");
   else if (variable.Contains("cosTheta"))
-    hNum->GetXaxis()->SetTitle("|cos(#theta_{*})|");
-  else 
+    hNum->GetXaxis()->SetTitle("|cos(#theta^{*})|");
+  else if (variable.Contains("jetY0"))
+    hNum->GetXaxis()->SetTitle("Leading Jet abs Y");
+  else if (variable.Contains("jetY0"))
+    hNum->GetXaxis()->SetTitle("Leading Jet abs Y");
+  else if (variable.Contains("jetY1"))
+    hNum->GetXaxis()->SetTitle("Second Leading Jet abs Y");
+  else if (variable.Contains("jetPt0"))
+    hNum->GetXaxis()->SetTitle("Leading Jet p_{T}");
+  else if (variable.Contains("jetPt1"))
+    hNum->GetXaxis()->SetTitle("Second Leading Jet p_{T}");
+  else if (variable.Contains("yJJ"))
     hNum->GetXaxis()->SetTitle(variable);
+  else 
+    hNum->GetXaxis()->SetTitle(TString::Format("%s (GeV)",variable.Data()));
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
   hNum->GetYaxis()->SetTitleOffset(1.3);
@@ -189,7 +201,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   int iPeriod = 13;
   int iPos = 0;
   writeExtraText=true;
-  CMS_lumi(closure_pad1, "combined", iPos);
+  CMS_lumi(closure_pad1, year, iPos);
   can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%dbTag.pdf",year.Data(), variable.Data(), btagFlag),"pdf");
 
 }

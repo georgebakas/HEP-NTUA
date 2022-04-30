@@ -58,9 +58,9 @@ void GetDifference(TString year, TString weightType, TString inputFitFile)
 
     TFile *output_file = TFile::Open(TString::Format("%s/MassDifferences.root",year.Data()), "UPDATE");
     output_file->cd();
-    TParameter<float> *p = new TParameter<float>(inputFitFile, total);
-    TParameter<float> *p_e = new TParameter<float>(TString::Format("%s_error",inputFitFile.Data()), total_error);
-    p->Write(inputFitFile);
-    p_e->Write(TString::Format("%s_error",inputFitFile.Data()));
+    TParameter<float> *p = new TParameter<float>(TString::Format("%s_%s", weightType.Data(), inputFitFile.Data()), total);
+    TParameter<float> *p_e = new TParameter<float>(TString::Format("%s_%s_error", weightType.Data(), inputFitFile.Data()), total_error);
+    p->Write(TString::Format("%s_%s", weightType.Data(), inputFitFile.Data()));
+    p_e->Write((TString::Format("%s_%s_error", weightType.Data(), inputFitFile.Data())));
     output_file->Close();
 }

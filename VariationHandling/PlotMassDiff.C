@@ -43,7 +43,7 @@ void PlotMassDiff(TString year)
 
         obj = inf->Get(key->GetName()); // copy object to memory
         // do something with obj
-        printf(" found object:%s\n",key->GetName());
+        //printf(" found object:%s\n",key->GetName());
         TString object_name = key->GetName();
         if (!(object_name.Contains("error")))
         {
@@ -53,13 +53,16 @@ void PlotMassDiff(TString year)
             float val = p->GetVal();
             float error = p_e->GetVal();
             TString name = key->GetName();
+            cout<<name<<endl;
             name.ReplaceAll("MassFitResults_SignalTemplates_", "");
             name.ReplaceAll(".root", "");
+            
             if (name.Contains("nom") || name.Length() ==0)
                 continue;
             // for pdf variations
-            if (name.IsDigit())
-                name = TString::Format("pdf_%s", name.Data());
+            //if (name.IsDigit())
+            //    name = TString::Format("pdf_%s", name.Data());
+            
             data_struct tmp;  
             tmp = {i, val, error, name};
             
@@ -76,32 +79,64 @@ void PlotMassDiff(TString year)
 
     // Instantiate graph and set data
     TGraphErrors *g_original = new TGraphErrors();
+    TGraphErrors *g_original_2 = new TGraphErrors();
     g_original->SetMarkerStyle(20);
+    g_original_2->SetMarkerStyle(20);
+    // to get index as plain number --> it - data_map.begin()
     for (map<int,data_struct>::iterator it = data_map.begin(); it != data_map.end(); ++it) {
-        g_original->SetPoint(it->first, it->second.xVal, it->second.yVal);
-        g_original->SetPointError(it->first, 0, it->second.yError);
+        
+        if (std::distance(data_map.begin(), it) <= data_map.size()/2) {
+            g_original->SetPoint(it->first, it->second.xVal, it->second.yVal);
+            g_original->SetPointError(it->first, 0, it->second.yError);
+        }
+        else {
+            cout<<it->first-data_map.size()/2<<endl;
+            g_original_2->SetPoint(it->first-data_map.size()/2-1, it->second.xVal, it->second.yVal);
+            g_original_2->SetPointError(it->first-data_map.size()/2-1, 0, it->second.yError);
+        }
     } 
-
+    
     // Clone graph, get axis object from clone, and change axis bin labels
     TGraphErrors *g_altered = (TGraphErrors*)g_original->Clone();
+    TGraphErrors *g_altered_2 = (TGraphErrors*)g_original_2->Clone();
+    
     TAxis *a = g_altered->GetXaxis();
+    TAxis *a2 = g_altered_2->GetXaxis();
+    
     int bin;
     for (map<int,data_struct>::iterator it = data_map.begin(); it != data_map.end(); ++it) {
-        bin = a->FindBin(it->second.xVal);
-        cout<<it->second.xVal<< " "<<bin<<endl;
-        a->SetBinLabel(bin, it->second.xLabel);
+        if (std::distance(data_map.begin(), it) <= data_map.size()/2) {
+            bin = a->FindBin(it->second.xVal);
+            cout<<it->second.xVal<< " "<<bin<<endl;
+            a->SetBinLabel(bin, it->second.xLabel);
+        }
+        else {
+            bin = a2->FindBin(it->second.xVal);
+            cout<<it->second.xVal<< " "<<bin<<endl;
+            a2->SetBinLabel(bin, it->second.xLabel);
+        }
     }
-
+    
     // Draw altered plot
     TCanvas *c_altered = new TCanvas("c1", "c1", 1200, 600);
     c_altered->cd();
     g_altered->GetYaxis()->SetRangeUser(0.8, 1.2);
-    g_altered->GetXaxis()->SetRangeUser(0, i);
-    g_altered->GetXaxis()->SetLabelOffset(0.005);
+    g_altered->GetXaxis()->SetRangeUser(0, i/2);
+    g_altered->GetXaxis()->SetLabelOffset(0.008);
     g_altered->GetXaxis()->SetLabelSize(0.03);
     g_altered->GetXaxis()->LabelsOption("v");
+    
     g_altered->Draw("AP");
 
-    c_altered -> Print(TString::Format("%s/MassDifferences.pdf", year.Data()), "pdf");
+    TCanvas *c_altered_2 = new TCanvas("c2", "c2", 1200, 600);
+    c_altered_2->cd();
+    g_altered_2->GetYaxis()->SetRangeUser(0.8, 1.2);
+    g_altered_2->GetXaxis()->SetRangeUser(i/2, i);
+    g_altered_2->GetXaxis()->SetLabelOffset(0.005);
+    g_altered_2->GetXaxis()->SetLabelSize(0.03);
+    g_altered_2->GetXaxis()->LabelsOption("v");
+    g_altered_2->Draw("AP");
+
+    //c_altered -> Print(TString::Format("%s/MassDifferences.pdf", year.Data()), "pdf");
     
 }

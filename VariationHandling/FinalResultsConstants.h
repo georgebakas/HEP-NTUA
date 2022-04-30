@@ -42,6 +42,18 @@ namespace AnalysisConstants_UL
             {0., 6.}, //cosTheta0
             {0., 6.}}; //cosTheta1;
 
+        std::vector<std::vector<float>> fiducialYAxisValues = {
+            {6E-6, 1E-1},
+            {1E-6, 1E-1},
+            {1E-3, 2.5},
+            {3E-6, 5E-2},
+            {2E-8, 5E-2},
+            {0., 2.},
+            {0., 2.},
+            {0., .1},//chi 
+            {0., .34}, //cosTheta0
+            {0., .34}}; //cosTheta1;
+
         std::vector<std::vector<float>> particleYAxisValues = {
             {6E-6, 1E-2},
             {1E-6, 1E-2},

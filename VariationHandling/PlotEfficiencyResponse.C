@@ -364,12 +364,13 @@ void PlotEfficiencyResponse(bool isParton = true)
         can_eff_comb->cd();
         TH1F *effCombClone = (TH1F*)eff_combined->Clone("effCombClone");
         TH1F *accCombClone = (TH1F*)acc_combined->Clone("accCombClone");
+        effCombClone->SetTitle("");
         effCombClone->SetMarkerColor(kRed);
         effCombClone->SetLineColor(kRed);
         accCombClone->SetMarkerColor(kBlue);
         accCombClone->SetLineColor(kBlue);
-        effCombClone->SetFillStyle(3444);
-        accCombClone->SetFillStyle(3444);
+        //effCombClone->SetFillStyle(3444);
+        //accCombClone->SetFillStyle(3444);
         effCombClone->SetFillColorAlpha(kRed, 0.4);
         accCombClone->SetFillColorAlpha(kBlue, 0.4);
         effCombClone->GetXaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);

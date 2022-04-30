@@ -1,6 +1,11 @@
 #!/bin/sh
 
 # Create Mass Fit Results
+# Remove though the files, while they are updated!
+rm 2016_preVFP/MassDifferences.root
+rm 2016_postVFP/MassDifferences.root
+rm 2017/MassDifferences.root
+rm 2018/MassDifferences.root
 
 # Nominal files
 
