@@ -2,6 +2,7 @@
 #include "../CMS_plots/tdrstyle.C"
 #include "../CMS_plots/CMS_lumi.C"
 
+#include "AnalysisConstants_UL.h"
 //We split the uncertaintied in 5 groups and we create a histogram for each group
 //1. Statistical which is basically the error bars of the unfolded histograms
 //2. JES+JER+Pileup which is the variation (difference from the nominal restuls)
@@ -40,6 +41,7 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
 {
   gStyle->SetOptStat(0);
   initFilesMapping();
+  AnalysisConstants_UL::initConstants();
   //setTDRStyle();
   std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
   std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
@@ -145,30 +147,19 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
                                   variation.Data(),
                                   variationFiles[jfile].Data());
         
-        if (!fileName.Contains("Def") && variation.Contains("PS"))
+        if (fileName.Contains("Def") && variation.Contains("PS"))
           continue;
         
         
         TFile *f = TFile::Open(fileName);
         
         cout<<fileName<<endl;
-        /*if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_0.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_56.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_57.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_35.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_42.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_76.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_59.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_58.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_86.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_93.root", isParton.Data()))) continue;*/
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_98.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_99.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_100.root", isParton.Data()))) continue;
-        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_9.root")) continue;
-        //if (fileName.EqualTo("UnfoldedCombined/ScaleWeights/OutputFileParton_scale_7.root")) continue;
+
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PSWeights/OutputFile%s_nom0.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PSWeights/OutputFile%s_nom1.root", isParton.Data()))) continue;
 
         TH1F *hVariation = (TH1F *)f->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
         if(isNorm)
@@ -237,17 +228,33 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
     //groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
     groupHistogramsSym[0]->SetTitle("");
     groupHistogramsSym[0]->SetLineWidth(0);
-    groupHistogramsSym[0]->GetXaxis()->SetTitle(vars[i]);
+    if (isParton.Contains("Parton"))
+      groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::partonAxisTitles[i]);
+    else 
+      groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::particleAxisTitles[i]);
+
     groupHistogramsSym[0]->GetXaxis()->SetLabelSize(0.035);
     std::cout << groupHistogramsSym[0]->GetYaxis()->GetLabelSize() << std::endl;
     groupHistogramsSym[0]->Draw("hist");
-    groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
+    
+    if (vars[i].Contains("cos")) {
+      groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 30);
+    }
+    else
+      groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 60);
+    
     groupHistogramsSym[0]->GetYaxis()->SetTitle("Relative Uncertainty [%]");
     //groupHistogramsSym[0]->Draw();
     if (groupHistogramsSym[0]->GetMaximum() < 120)
     {
-      groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
+      if (vars[i].Contains("cos")) {
+        groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 30);
+      }
+      else
+        groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 60);
     }
+    groupHistogramsSym[0]->GetYaxis()->SetTitle("Relative Uncertainty [%]");
+    groupHistogramsSym[0]->SetTitleSize(0.037, "xy");
     TLegend *leg = new TLegend(0.7, 0.75, 0.9, 0.9);
     leg->AddEntry(groupHistogramsSym[0], groups[0], "f");
 

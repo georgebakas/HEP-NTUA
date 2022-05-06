@@ -98,9 +98,10 @@ void initFilesMapping()
 	variableConstant.insert(pair<TString, int>("jetPt1", 4));
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
-	variableConstant.insert(pair<TString, int>("cosTheta_0", 7));
-	variableConstant.insert(pair<TString, int>("cosTheta_1", 8));
-	variableConstant.insert(pair<TString, int>("chi", 9));
+	variableConstant.insert(pair<TString, int>("chi", 7));
+	variableConstant.insert(pair<TString, int>("cosTheta_0", 8));
+	variableConstant.insert(pair<TString, int>("cosTheta_1", 9));
+	
 
 	vars.insert(pair<int, TString>(0, "mJJ"));
 	vars.insert(pair<int, TString>(1, "ptJJ"));
@@ -109,9 +110,10 @@ void initFilesMapping()
 	vars.insert(pair<int, TString>(4, "jetPt1"));
 	vars.insert(pair<int, TString>(5, "jetY0"));
 	vars.insert(pair<int, TString>(6, "jetY1"));
-	vars.insert(pair<int, TString>(7, "cosTheta_0"));
-	vars.insert(pair<int, TString>(8, "cosTheta_1"));
-	vars.insert(pair<int, TString>(9, "chi"));
+	vars.insert(pair<int, TString>(7, "chi"));
+	vars.insert(pair<int, TString>(8, "cosTheta_0"));
+	vars.insert(pair<int, TString>(9, "cosTheta_1"));
+	
 
 	// Only for JES
 
