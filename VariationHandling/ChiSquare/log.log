@@ -1,0 +1,281 @@
+ERROR in cling::CIFactory::createCI(): cannot extract standard library include paths!
+Invoking:
+  LC_ALL=C x86_64-linux-gnu-g++-7  -O3 -DNDEBUG -xc++ -E -v /dev/null 2>&1 | sed -n -e '/^.include/,${' -e '/^ \/.*++/p' -e '}'
+Results was:
+With exit code 0
+
+Processing ChiSquare_normalised.cpp...
+Skata
+subleadingGenAbsY
+hdampDOWN
+hdampUP
+mtop166p5
+mtop169p5
+mtop171p5
+mtop173p5
+mtop175p5
+mtop178p5
+isrRedHi
+fsrRedHi
+isrRedLo
+fsrRedLo
+fsrDefHi
+isrDefLo
+fsrDefLo
+isrConHi
+fsrConHi
+isrConLo
+fsrConLo
+bTagUp
+bTagDown
+boostedShiftedSrc1Up
+boostedShiftedSrc1Down
+boostedShiftedSrc2Up
+boostedShiftedSrc2Down
+boostedShiftedSrc3Up
+boostedShiftedSrc3Down
+boostedShiftedSrc4Up
+boostedShiftedSrc4Down
+boostedShiftedSrc5Up
+boostedShiftedSrc5Down
+boostedShiftedSrc6Up
+boostedShiftedSrc6Down
+boostedShiftedSrc7Up
+boostedShiftedSrc7Down
+boostedShiftedSrc8Up
+boostedShiftedSrc8Down
+boostedShiftedSrc9Up
+boostedShiftedSrc9Down
+boostedShiftedSrc10Up
+boostedShiftedSrc10Down
+boostedShiftedSrc11Up
+boostedShiftedSrc11Down
+boostedShiftedSrc12Up
+boostedShiftedSrc12Down
+boostedShiftedSrc13Up
+boostedShiftedSrc13Down
+boostedShiftedSrc14Up
+boostedShiftedSrc14Down
+boostedShiftedSrc15Up
+boostedShiftedSrc15Down
+boostedShiftedSrc16Up
+boostedShiftedSrc16Down
+boostedShiftedSrc17Up
+boostedShiftedSrc17Down
+boostedShiftedSrc18Up
+boostedShiftedSrc18Down
+boostedShiftedSrc19Up
+boostedShiftedSrc19Down
+boostedShiftedSrc20Up
+boostedShiftedSrc20Down
+boostedShiftedSrc21Up
+boostedShiftedSrc21Down
+boostedShiftedSrc22Up
+boostedShiftedSrc22Down
+boostedShiftedSrc23Up
+boostedShiftedSrc23Down
+boostedShiftedSrc24Up
+boostedShiftedSrc24Down
+boostedShiftedSrc25Up
+boostedShiftedSrc25Down
+boostedShiftedSrc26Up
+boostedShiftedSrc26Down
+boostedShiftedSrc27Up
+boostedShiftedSrc27Down
+boostedShiftedSrc28Up
+boostedShiftedSrc28Down
+boostedShiftedSrc29Up
+boostedShiftedSrc29Down
+boostedSmeared
+boostedSmearedUp
+boostedShiftedUp
+boostedSmearedDown
+boostedShiftedDown
+scaleWeight1
+scaleWeight2
+scaleWeight3
+scaleWeight4
+scaleWeight5
+pdfVariation1
+pdfVariation2
+pdfVariation3
+pdfVariation4
+pdfVariation5
+pdfVariation6
+pdfVariation7
+pdfVariation8
+pdfVariation9
+pdfVariation10
+pdfVariation11
+pdfVariation12
+pdfVariation13
+pdfVariation14
+pdfVariation15
+pdfVariation16
+pdfVariation17
+pdfVariation18
+pdfVariation19
+pdfVariation20
+pdfVariation21
+pdfVariation22
+pdfVariation23
+pdfVariation24
+pdfVariation25
+pdfVariation26
+pdfVariation27
+pdfVariation28
+pdfVariation29
+pdfVariation30
+pdfVariation31
+pdfVariation32
+pdfVariation33
+pdfVariation34
+pdfVariation35
+pdfVariation36
+pdfVariation37
+pdfVariation38
+pdfVariation39
+pdfVariation40
+pdfVariation41
+pdfVariation42
+pdfVariation43
+pdfVariation44
+pdfVariation45
+pdfVariation46
+pdfVariation47
+pdfVariation48
+pdfVariation49
+pdfVariation50
+pdfVariation51
+pdfVariation52
+pdfVariation53
+pdfVariation54
+pdfVariation55
+pdfVariation56
+pdfVariation57
+pdfVariation58
+pdfVariation59
+pdfVariation60
+pdfVariation61
+pdfVariation62
+pdfVariation63
+pdfVariation64
+pdfVariation65
+pdfVariation66
+pdfVariation67
+pdfVariation68
+pdfVariation69
+pdfVariation70
+pdfVariation71
+pdfVariation72
+pdfVariation73
+pdfVariation74
+pdfVariation75
+pdfVariation76
+pdfVariation77
+pdfVariation78
+pdfVariation79
+pdfVariation80
+pdfVariation81
+pdfVariation82
+pdfVariation83
+pdfVariation84
+pdfVariation85
+pdfVariation86
+pdfVariation87
+pdfVariation88
+pdfVariation89
+pdfVariation90
+pdfVariation91
+pdfVariation92
+pdfVariation93
+pdfVariation94
+pdfVariation95
+pdfVariation96
+pdfVariation97
+pdfVariation98
+pdfVariation99
+Skata
+
+10x10 matrix is as follows
+
+     |       0    |       1    |       2    |       3    |       4    |
+----------------------------------------------------------------------
+   0 |      19.91       18.34       19.09       16.26       14.17 
+   1 |      18.34        16.9       17.59       14.98       13.05 
+   2 |      19.09       17.59        18.3       15.59       13.58 
+   3 |      16.26       14.98       15.59       13.28       11.57 
+   4 |      14.17       13.05       13.58       11.57       10.08 
+   5 |      11.38       10.49       10.91       9.296       8.099 
+   6 |      8.767       8.077       8.404       7.161       6.239 
+   7 |      6.145       5.661        5.89       5.019       4.373 
+   8 |      4.123       3.799       3.953       3.368       2.934 
+   9 |     0.6525      0.6011      0.6255       0.533      0.4643 
+
+
+     |       5    |       6    |       7    |       8    |       9    |
+----------------------------------------------------------------------
+   0 |      11.38       8.767       6.145       4.123      0.6525 
+   1 |      10.49       8.077       5.661       3.799      0.6011 
+   2 |      10.91       8.404        5.89       3.953      0.6255 
+   3 |      9.296       7.161       5.019       3.368       0.533 
+   4 |      8.099       6.239       4.373       2.934      0.4643 
+   5 |      6.507       5.011       3.512       2.357       0.373 
+   6 |      5.011       3.861       2.705       1.816      0.2873 
+   7 |      3.512       2.705       1.897       1.273      0.2014 
+   8 |      2.357       1.816       1.273      0.8544      0.1351 
+   9 |      0.373      0.2873      0.2014      0.1351     0.02148 
+
+
+1x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |      23.27 
+
+Skata
+
+10x10 matrix is as follows
+
+     |       0    |       1    |       2    |       3    |       4    |
+----------------------------------------------------------------------
+   0 |      19.91       18.34       19.09       16.26       14.17 
+   1 |      18.34        16.9       17.59       14.98       13.05 
+   2 |      19.09       17.59        18.3       15.59       13.58 
+   3 |      16.26       14.98       15.59       13.28       11.57 
+   4 |      14.17       13.05       13.58       11.57       10.08 
+   5 |      11.38       10.49       10.91       9.296       8.099 
+   6 |      8.767       8.077       8.404       7.161       6.239 
+   7 |      6.145       5.661        5.89       5.019       4.373 
+   8 |      4.123       3.799       3.953       3.368       2.934 
+   9 |     0.6525      0.6011      0.6255       0.533      0.4643 
+
+
+     |       5    |       6    |       7    |       8    |       9    |
+----------------------------------------------------------------------
+   0 |      11.38       8.767       6.145       4.123      0.6525 
+   1 |      10.49       8.077       5.661       3.799      0.6011 
+   2 |      10.91       8.404        5.89       3.953      0.6255 
+   3 |      9.296       7.161       5.019       3.368       0.533 
+   4 |      8.099       6.239       4.373       2.934      0.4643 
+   5 |      6.507       5.011       3.512       2.357       0.373 
+   6 |      5.011       3.861       2.705       1.816      0.2873 
+   7 |      3.512       2.705       1.897       1.273      0.2014 
+   8 |      2.357       1.816       1.273      0.8544      0.1351 
+   9 |      0.373      0.2873      0.2014      0.1351     0.02148 
+
+
+1x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |      21.62 
+
+Info in <TCanvas::Print>: file /home/ipapakri/CERN/PHD/TopAnalysis/ChiSquare/results/subleadingGenAbsY.png has been created
+Info in <TCanvas::Print>: pdf file /home/ipapakri/CERN/PHD/TopAnalysis/ChiSquare/results/subleadingGenAbsY.pdf has been created
+Error in <TApplication::ExecuteFile>: macro ChiSquare_normalised.cpp.q not found in path .:/home/ipapakri/root/macros
+input_line_68:2:3: error: use of undeclared identifier 'clear'
+ (clear)
+  ^
+Error in <HandleInterpreterException>: Error evaluating expression (clear).
+Execution of your code was aborted.
