@@ -138,19 +138,18 @@ void DrawWithChiSquare_normalised(TString subDir = "")
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
   TString theoryYear = "2018";
+  TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+  TString partonParticle = "Parton";
 
-  TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%soutputFile_normalized.root",
-                                                   AnalysisConstants::baseDir.Data(),
-                                                   AnalysisConstants::subDir.Data()));
-  TFile *chiSquareFiles = TFile::Open(TString::Format("%s/ChiSquare/results/%schiSquareResults_normalised.root",
-                                                      AnalysisConstants::baseDir.Data(),
-                                                      AnalysisConstants::subDir.Data()));
-  TString baseInputDir = AnalysisConstants::baseDir;
-  baseInputDir = TString::Format("%s/Unfolding/results/combined%s",
-                                 baseInputDir.Data(),
-                                 (AnalysisConstants::isUL ? "/UL" : ""));
+  TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFileNorm.root",
+                                                   baseDir.Data(),
+                                                   partonParticle.Data()));
+  TFile *chiSquareFiles = TFile::Open(TString::Format("%s/ChiSquare/results/%s_chiSquareResults_normalised.root",
+                                                      baseDir.Data(),
+                                                      partonParticle.Data()));
+
   TFile *nominalFile = TFile::Open(TString::Format("%s/Nominal/%sUnfoldingResults.root",
-                                                   baseInputDir.Data(),
+                                                   baseDir.Data(),
                                                    AnalysisConstants::subDir.Data()));
   TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format("%s/EfficiencyAcceptance_amcatnlo_Nominal_%s.root",
                                                           GetInputFilesPath(theoryYear).Data(),
@@ -166,13 +165,13 @@ void DrawWithChiSquare_normalised(TString subDir = "")
                              600, 600);
     std::vector<TH1F *> histograms;
 
-    TH1F *f = (TH1F *)resultsFile->Get(TString::Format("FinalResult_%s_normalized",
+    TH1F *f = (TH1F *)resultsFile->Get(TString::Format("FinalResult_%s",
                                                        variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("unfoldedHistogram_%s_normalized",
+    f = (TH1F *)resultsFile->Get(TString::Format("unfoldedHistogram_%s",
                                                  variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheoryAmcAtNlo_%s_normalized",
+    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheoryAmcAtNlo_%s",
                                                  variable.Data()));
     histograms.push_back(f);
     f = MergeHistograms<TH1F>(theoryFileAmcAtNlo,
@@ -185,11 +184,11 @@ void DrawWithChiSquare_normalised(TString subDir = "")
     f->Scale(AnalysisConstants::luminositiesSR[theoryYear] / theoryAmcAtNloYield);
     histograms.push_back(f);
 
-    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheory_%s_normalized",
+    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheory_%s",
                                                  variable.Data()));
     histograms.push_back(f);
 
-    f = (TH1F *)nominalFile->Get(TString::Format("theory_%s_normalized",
+    f = (TH1F *)nominalFile->Get(TString::Format("theory_%s",
                                                  variable.Data()));
     histograms.push_back(f);
 

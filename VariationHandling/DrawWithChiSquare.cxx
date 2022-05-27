@@ -1,4 +1,4 @@
-#include "../BASE.h"
+#include "BASE.h"
 
 #include "FinalResultsConstants.h"
 
@@ -6,6 +6,8 @@
 #include "TCanvas.h"
 #include "TLegend.h"
 #include "TMatrixD.h"
+#include "../CMS_plots/CMS_lumi.C"
+#include "../CMS_plots/tdrstyle.C"
 
 void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, bool normalized)
 {
@@ -133,13 +135,14 @@ void DrawWithChiSquare(TString subDir = "")
 {
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-
-  TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%soutputFile.root",
-                                                   AnalysisConstants::baseDir.Data(),
-                                                   AnalysisConstants::subDir.Data()));
-  TFile *chiSquareFiles = TFile::Open(TString::Format("%s/ChiSquare/results/%schiSquareResults.root",
-                                                      AnalysisConstants::baseDir.Data(),
-                                                      AnalysisConstants::subDir.Data()));
+  TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+  TString partonParticle = "Parton";
+  TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
+                                                   baseDir.Data(),
+                                                   partonParticle.Data()));
+  TFile *chiSquareFiles = TFile::Open(TString::Format("%s/ChiSquare/results/%s_chiSquareResults.root",
+                                                      baseDir.Data(),
+                                                      partonParticle.Data()));
   chiSquareFiles->ls();
 
   for (int i = 0; i < AnalysisConstants::unfoldingVariables.size(); i++)
@@ -155,21 +158,22 @@ void DrawWithChiSquare(TString subDir = "")
     TH1F *f = (TH1F *)resultsFile->Get(TString::Format("FinalResult_%s",
                                                        variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("unfoldedHistogram_%s",
+    f = (TH1F *)resultsFile->Get(TString::Format("nominalHistogram%s",
                                                  variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheoryAmcAtNlo_%s",
+    f = (TH1F *)resultsFile->Get(TString::Format("finalTheoryAmcAtNlo%s",
                                                  variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("theoryAmcAtNloHistogramValue_%s",
+    f = (TH1F *)resultsFile->Get(TString::Format("theoryAmcAtNloHistogramValue%s",
                                                  variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheory_%s",
+    f = (TH1F *)resultsFile->Get(TString::Format("finalTheory%s",
                                                  variable.Data()));
     histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("theoryHistogramValue_%s",
+    f = (TH1F *)resultsFile->Get(TString::Format("theoryHistogramValue%s",
                                                  variable.Data()));
     histograms.push_back(f);
+
 
     TMatrixD *chiSquare = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s",
                                                                           variable.Data()));
@@ -177,14 +181,14 @@ void DrawWithChiSquare(TString subDir = "")
                                                                               variable.Data()));
     DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), false);
 
-    c->SaveAs(TString::Format("%s/FinalResults/results/%sFinalResult_%s_chiSquare.pdf",
-                              AnalysisConstants::baseDir.Data(),
-                              AnalysisConstants::subDir.Data(),
+    c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare.pdf",
+                              baseDir.Data(),
+                              partonParticle.Data(),
                               variable.Data()),
               "pdf");
-    c->SaveAs(TString::Format("%s/FinalResults/results/%sFinalResult_%s_chiSquare.png",
-                              AnalysisConstants::baseDir.Data(),
-                              AnalysisConstants::subDir.Data(),
+    c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare.png",
+                              baseDir.Data(),
+                              partonParticle.Data(),
                               variable.Data()),
               "png");
   }

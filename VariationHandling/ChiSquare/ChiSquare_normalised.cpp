@@ -8,6 +8,10 @@
 #include "TLegend.h"
 
 #include "ChiSquareConstants.h"
+#include "FinalResultsConstants.h"
+#include "../../CMS_plots/CMS_lumi.C"
+#include "../../CMS_plots/tdrstyle.C"
+#include "TemplateConstants.h"
 
 TMatrixD *CalculateChiSquare(TMatrixD covariance, TH1F *nominalHistogram, TH1F *theoryHistogram,
                              TString title, TLegend *leg)
@@ -45,27 +49,27 @@ void ChiSquare_normalised(TString subDir = "")
 
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-  TString baseInputDir = AnalysisConstants::baseDir;
-  baseInputDir = TString::Format("%s/Unfolding/results/combined%s",
-                                 baseInputDir.Data(),
-                                 (AnalysisConstants::isUL ? "/UL" : ""));
-  TString outputDir = TString::Format("%s/ChiSquare/results/%s",
-                                      AnalysisConstants::baseDir.Data(),
-                                      AnalysisConstants::subDir.Data());
+  TString partonParticle = "Parton";
+  bool normalized = true;
+  TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+  TString outputDir = TString::Format("%s/ChiSquare/results/",
+                                      baseDir.Data());
+  
   CheckAndCreateDirectory(outputDir);
-  TFile *outputFile = TFile::Open(TString::Format("%s/chiSquareResults_normalised.root",
-                                                  outputDir.Data()),
-                                  "recreate");
+  TFile *outputFile = TFile::Open(TString::Format("%s/%s_chiSquareResults_normalised.root",
+                                                  outputDir.Data(),
+                                                  partonParticle.Data()),
+                                                  "recreate");
 
-  TFile *nominalFile = TFile::Open(TString::Format("%s/Nominal/%sUnfoldingResults.root",
-                                                   baseInputDir.Data(),
-                                                   AnalysisConstants::subDir.Data()));
-  TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%soutputFile_normalized.root",
-                                                       AnalysisConstants::baseDir.Data(),
-                                                       AnalysisConstants::subDir.Data()));
-  TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format("%s/EfficiencyAcceptance_amcatnlo_Nominal_%s.root",
-                                                          GetInputFilesPath(theoryYear).Data(),
-                                                          theoryYear.Data()));
+  TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
+                                                    baseDir.Data(),
+                                                    partonParticle.Data()));
+  TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFileNorm.root",
+                                                       baseDir.Data(),
+                                                       partonParticle.Data())); 
+                                                  
+  TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
+                            "../../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
 
   for (int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
@@ -73,18 +77,26 @@ void ChiSquare_normalised(TString subDir = "")
 
     std::cout << variable << std::endl;
 
-    TH1F *nominalHistogram = (TH1F *)nominalFile->Get(TString::Format("unfoldedHistogram_%s_normalized",
-                                                                      variable.Data()));
-    TH1F *theoryHistogram = (TH1F *)nominalFile->Get(TString::Format("theory_%s_normalized",
-                                                                     variable.Data()));
-    TH1F *theoryAmcAtNloHistogram = MergeHistograms<TH1F>(theoryFileAmcAtNlo,
-                                                          theoryYear,
-                                                          TString::Format("EfficiencyDenom_%s",
-                                                                          AnalysisConstants::partonVariables[var].Data()),
-                                                          AnalysisConstants::luminositiesSR[theoryYear]);
+    TH1F *nominalHistogram = (TH1F *)nominalFile->Get(TString::Format("hUnfold%s_%s",
+                                                                    (normalized ? "Norm" : "Final"), 
+                                                                    variable.Data()));
+
+    TH1F *theoryHistogram = (TH1F *)nominalFile->Get(TString::Format("hTheory%s_%s",
+                                                                    (normalized ? "Norm" : ""),
+                                                                    variable.Data()));
+
+    TH1F *theoryAmcAtNloHistogram;
+    if (partonParticle.EqualTo("Parton")) theoryAmcAtNloHistogram = (TH1F *)theoryFileAmcAtNlo->Get(TString::Format("hParton_%s", 
+                                                            AnalysisConstants::partonVariables[var].Data()));
+    else theoryAmcAtNloHistogram = (TH1F *)theoryFileAmcAtNlo->Get(TString::Format("hParticle_%s", 
+                                    AnalysisConstants::particleVariables[var].Data()));
+    
+    theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
     float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
-    theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-    theoryAmcAtNloHistogram->Scale(AnalysisConstants::luminositiesSR[theoryYear] / theoryAmcAtNloYield);
+    if (normalized)
+    {
+        theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
+    }
 
     TMatrixD *covariance = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     TMatrixD *covarianceTheory = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
@@ -98,33 +110,54 @@ void ChiSquare_normalised(TString subDir = "")
 
     for (unsigned int v = 0; v < AnalysisConstants::variations.size(); v++)
     {
-      TString variation = AnalysisConstants::variations[v];
-      std::cout << variation << std::endl;
 
-      if (variation.Contains("Up") || variation.Contains("UP"))
+      TString variation = AnalysisConstants::variations[v];
+      //cout<<var<<" "<<variation<<endl;
+      TString tempVariation = "";
+      if (variation.Contains("isr") || variation.Contains("fsr"))
+          tempVariation = "PSWeights";
+      else if (variation.Contains("up") || variation.Contains("down"))
+          tempVariation = "bTagVariation";
+      else if (variation.Contains("pdf"))
+          tempVariation = "PDFWeights";
+      else if (variation.Contains("scale"))
+          tempVariation = "ScaleWeights";
+      else tempVariation = "JES";
+
+      if (tempVariation.Contains("bTag") || variation.Contains("JES"))
       {
         TString variationDown = variation;
         if (variation.Contains("Up"))
         {
           variationDown.ReplaceAll("Up", "Down");
         }
+        else if (variation.Contains("up"))
+        {
+          variationDown.ReplaceAll("up", "down");
+        }
         else
         {
           variationDown.ReplaceAll("UP", "DOWN");
         }
 
-        TFile *variationFileUp = TFile::Open(TString::Format("%s/%s/%sUnfoldingResults.root",
-                                                             baseInputDir.Data(),
-                                                             variation.Data(),
-                                                             AnalysisConstants::subDir.Data()));
-        TH1F *variationHistogramUp = (TH1F *)variationFileUp->Get(TString::Format("unfoldedHistogram_%s_normalized",
-                                                                                  variable.Data()));
-        TFile *variationFileDown = TFile::Open(TString::Format("%s/%s/%sUnfoldingResults.root",
-                                                               baseInputDir.Data(),
-                                                               variationDown.Data(),
-                                                               AnalysisConstants::subDir.Data()));
-        TH1F *variationHistogramDown = (TH1F *)variationFileDown->Get(TString::Format("unfoldedHistogram_%s_normalized",
-                                                                                      variable.Data()));
+        TFile *variationFileUp = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                                baseDir.Data(),
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
+                                                                variation.Data()));
+
+        TH1F *variationHistogramUp = (TH1F *)variationFileUp->Get(TString::Format("hUnfold%s_%s",
+                                                                            (normalized ? "Norm" : "Final"), 
+                                                                            variable.Data()));
+        TFile *variationFileDown = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                                baseDir.Data(),
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
+                                                                variation.Data()));
+
+        TH1F *variationHistogramDown = (TH1F *)variationFileUp->Get(TString::Format("hUnfold%s_%s",
+                                                                            (normalized ? "Norm" : "Final"), 
+                                                                            variable.Data()));
 
         for (int binI = 1; binI <= variationHistogramUp->GetNbinsX(); binI++)
         {
@@ -147,18 +180,27 @@ void ChiSquare_normalised(TString subDir = "")
         variationFileUp->Close();
         variationFileDown->Close();
       }
-      else if (!(variation.Contains("Down") ||
-                 variation.Contains("DOWN") ||
-                 variation.Contains("mtop")))
+      else
       {
-        TFile *variationFile = TFile::Open(TString::Format("%s/%s/%sUnfoldingResults.root",
-                                                           baseInputDir.Data(),
-                                                           variation.Data(),
-                                                           AnalysisConstants::subDir.Data()));
-        TH1F *variationHistogram = (TH1F *)variationFile->Get(TString::Format("unfoldedHistogram_%s_normalized",
-                                                                              variable.Data()));
+        if (variation.Contains("pdf_99")) continue;
+        if (variation.Contains("pdf_98")) continue;
+        if (variation.Contains("pdf_100")) continue;
 
-        if (variable.Contains("AbsY"))
+        /*cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                                baseDir.Data(),
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
+                                                                variation.Data())<<endl; */
+        TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                                baseDir.Data(),
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
+                                                                variation.Data()));
+        TH1F *variationHistogram = (TH1F *)variationFile->Get(TString::Format("hUnfold%s_%s",
+                                                                            (normalized ? "Norm" : "Final"), 
+                                                                            variable.Data()));
+
+        if (variable.Contains("jetY"))
         {
           variationHistogram->Scale(1. / 2.);
         }
@@ -183,16 +225,13 @@ void ChiSquare_normalised(TString subDir = "")
                               TString::Format("c_%s",
                                               variable.Data()),
                               600, 600);
-    TH1F *finalResult = (TH1F *)finalResultFile->Get(TString::Format("FinalResult_%s_normalized",
+    TH1F *finalResult = (TH1F *)finalResultFile->Get(TString::Format("FinalResult_%s",
                                                                      variable.Data()));
     TLegend *leg = new TLegend(AnalysisConstants::ChiSquareConstants::legendPositions[var][0],
                                AnalysisConstants::ChiSquareConstants::legendPositions[var][1],
                                AnalysisConstants::ChiSquareConstants::legendPositions[var][2],
                                AnalysisConstants::ChiSquareConstants::legendPositions[var][3]);
-    if (!variable.Contains("AbsY"))
-    {
-      c1->SetLogy();
-    }
+
 
     covarianceTheory->operator+=(*covariance);
     covarianceTheoryAmcAtNlo->operator+=(*covariance);
@@ -220,12 +259,14 @@ void ChiSquare_normalised(TString subDir = "")
     writeExtraText = true;
     CMS_lumi(c1, "combined", 0);
 
-    c1->SaveAs(TString::Format("%s/%s.png",
+    c1->SaveAs(TString::Format("%s/%s_%s_norm.pdf",
                                outputDir.Data(),
+                               partonParticle.Data(),
                                variable.Data()),
                "png");
-    c1->SaveAs(TString::Format("%s/%s.pdf",
+    c1->SaveAs(TString::Format("%s/%s_%s_norm.pdf",
                                outputDir.Data(),
+                               partonParticle.Data(),
                                variable.Data()),
                "pdf");
 

@@ -189,10 +189,16 @@ void FinalResults(bool normalized = false)
     initFilesMapping();
     //setTDRStyle();
     gStyle->SetOptStat(0);
-    TString partonParticle = "Parton";
+    TString partonParticle = "Particle";
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     //TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
     AnalysisConstants::initConstants();
+
+    TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile%s.root",
+                                                    baseDir.Data(),
+                                                    partonParticle.Data(),
+                                                    (normalized ? "Norm" : "")), "RECREATE");
+
     TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),
                                                     partonParticle.Data()));
@@ -375,7 +381,7 @@ void FinalResults(bool normalized = false)
             finalTheoryAmcAtNlo->Scale(0.5);
             theoryAmcAtNloHistogram->Scale(0.5);
         }
-
+        c1->cd();
         TH1F *theoryHistogramValue = (TH1F *)theoryHistogram->Clone(TString::Format("theoryHistogramValue%s",
                                                                                     (normalized ? "_normalized" : "")));
         TH1F *theoryAmcAtNloHistogramValue = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("theoryAmcAtNloHistogramValue%s",
@@ -387,14 +393,12 @@ void FinalResults(bool normalized = false)
         histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
         histogramsToDraw.push_back(finalTheory);
         histogramsToDraw.push_back(theoryHistogramValue);
-
         DrawWithRatio(c1, histogramsToDraw, v, normalized, partonParticle);
-
-
+        
         TString draw_name;
         if (partonParticle.EqualTo("Particle")) draw_name = AnalysisConstants::particleVariables[v].Data();
         else draw_name = AnalysisConstants::partonVariables[v].Data();
-            
+        
         c1->SaveAs(TString::Format("%s/FinalResult_%s%s.png",
                                 outputDir.Data(),
                                 draw_name.Data(),
@@ -412,5 +416,14 @@ void FinalResults(bool normalized = false)
                                 draw_name.Data(),
                                 (normalized ? "_normalized" : "")),
                 "pdf");
+
+        finalResultFile->cd();
+        finalResult->Write((TString::Format("FinalResult_%s", variable.Data())));
+        nominalHistogram->Write((TString::Format("nominalHistogram%s", variable.Data())));
+        finalTheoryAmcAtNlo->Write((TString::Format("finalTheoryAmcAtNlo%s", variable.Data())));
+        theoryAmcAtNloHistogramValue->Write((TString::Format("theoryAmcAtNloHistogramValue%s", variable.Data())));
+        finalTheory->Write((TString::Format("finalTheory%s", variable.Data())));
+        theoryHistogramValue->Write((TString::Format("theoryHistogramValue%s", variable.Data())));
     }
+    finalResultFile->Close();
 }

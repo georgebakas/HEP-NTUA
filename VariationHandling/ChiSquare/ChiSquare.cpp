@@ -48,7 +48,7 @@ void ChiSquare(TString subDir = "")
   TString theoryYear = "2018";
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-  TString partonParticle = "Particle";
+  TString partonParticle = "Parton";
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
   
   TString baseInputDir = baseDir;
@@ -59,16 +59,17 @@ void ChiSquare(TString subDir = "")
   TString outputDir = TString::Format("%s/ChiSquare/results/",
                                       baseDir.Data());
   CheckAndCreateDirectory(outputDir);
-  TFile *outputFile = TFile::Open(TString::Format("%s/chiSquareResults.root",
-                                                  outputDir.Data()),
+  TFile *outputFile = TFile::Open(TString::Format("%s/%s_chiSquareResults.root",
+                                                  outputDir.Data(),
+                                                  partonParticle.Data()),
                                                   "RECREATE");
 
   TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),
                                                     partonParticle.Data()));
-  /* TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%soutputFile.root",
-                                                       AnalysisConstants::baseDir.Data(),
-                                                       AnalysisConstants::subDir.Data())); */
+  TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
+                                                       baseDir.Data(),
+                                                       partonParticle.Data())); 
                                                   
   TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
                             "../../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
@@ -77,16 +78,15 @@ void ChiSquare(TString subDir = "")
   {
     
     TString variable = AnalysisConstants::unfoldingVariables[var];
-    if (!variable.EqualTo("chi")) 
-      continue;
+    /*if (!variable.EqualTo("chi")) 
+      continue;*/
     cout << variable << endl;
 
     TH1F *nominalHistogram = (TH1F *)nominalFile->Get(TString::Format("hUnfold%s_%s",
                                                                         (normalized ? "Norm" : "Final"), 
                                                                         variable.Data()));
 
-    TH1F *finalResult = (TH1F *)nominalHistogram->Clone(TString::Format("FinalResult%s_%s",
-                                                                        (normalized ? "Norm" : "Final"), 
+    TH1F *finalResult = (TH1F *)finalResultFile->Get(TString::Format("FinalResult_%s",
                                                                         variable.Data()));
     finalResult->SetTitle("");
     TH1F *theoryHistogram = (TH1F *)nominalFile->Get(TString::Format("hTheory%s_%s",
@@ -106,11 +106,6 @@ void ChiSquare(TString subDir = "")
                                     AnalysisConstants::particleVariables[var].Data()));
     
     theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
-    float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
-    if (normalized)
-    {
-        theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
-    }
 
     TH1F *finalTheoryAmcAtNlo = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNlo%s_%s",
                                                                         (normalized ? "Norm" : ""),
@@ -148,15 +143,14 @@ void ChiSquare(TString subDir = "")
           tempVariation = "ScaleWeights";
       else tempVariation = "JES";
 
-      //if (tempVariation.Contains("JES")) continue;
 
       if (variation.Contains("pdf_99")) continue;
       if (variation.Contains("pdf_98")) continue;
       if (variation.Contains("pdf_100")) continue;
-      //cout<<v<<": "<<variation<<endl;
-      //continue;
 
-      if (variation.Contains("Up") || variation.Contains("UP") || variation.Contains("up"))
+      // here we handle only btag and JES which have up and down
+      // this means that we need--> calculated (unfolded), and theory variations
+      if (tempVariation.Contains("bTag") || tempVariation.Contains("JES"))
       {
         TString variationDown = variation;
         if (variation.Contains("Up"))
@@ -165,7 +159,7 @@ void ChiSquare(TString subDir = "")
         }
         else if (variation.Contains("up"))
         {
-          variationDown.ReplaceAll("up", "Down");
+          variationDown.ReplaceAll("up", "down");
         }
         else 
         {
@@ -216,83 +210,125 @@ void ChiSquare(TString subDir = "")
         variationFileUp->Close();
         variationFileDown->Close();
         cout<<variation<< "--> only up here!!"<<endl;
-        /*if (variation.Contains("pdf") ||
-            variation.Contains("scale") || 
-            tempVariation.Contains("PS"))
+
+        TFile *variationFileTheoryUp = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                              baseDir.Data(),
+                                                              tempVariation.Data(),
+                                                              partonParticle.Data(),
+                                                              variation.Data()));
+
+        TH1F *variationHistogramTheoryUp = (TH1F *)variationFileTheoryUp->Get(TString::Format("hTheory%s_%s",
+                                                                      (normalized ? "Norm" : ""),
+                                                                      variable.Data()));
+        
+        TFile *variationFileTheoryDown = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                              baseDir.Data(),
+                                                              tempVariation.Data(),
+                                                              partonParticle.Data(),
+                                                              variation.Data()));
+
+        TH1F *variationHistogramTheoryDown = (TH1F *)variationFileTheoryDown->Get(TString::Format("hTheory%s_%s",
+                                                                      (normalized ? "Norm" : ""),
+                                                                      variable.Data()));
+        for (int binI = 1; binI <= variationHistogramTheoryUp->GetNbinsX(); binI++)
         {
-          cout<<"GAMW TIN PANAGIA "<<variation<<endl;
-          TFile *variationFileTheoryUp = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
-                                                                baseDir.Data(),
-                                                                tempVariation.Data(),
-                                                                partonParticle.Data(),
-                                                                variation.Data()));
+          float error_up = TMath::Abs(theoryHistogram->GetBinContent(binI) -
+                                      variationHistogramTheoryUp->GetBinContent(binI));
+          float error_down = TMath::Abs(theoryHistogram->GetBinContent(binI) -
+                                        variationHistogramTheoryDown->GetBinContent(binI));
+          covarianceTheory->operator()(binI - 1, binI - 1) += 1. / 2. * (error_up * error_up + error_down * error_down);
 
-          TH1F *variationHistogramTheoryUp = (TH1F *)variationFileTheoryUp->Get(TString::Format("hTheory%s_%s",
-                                                                        (normalized ? "Norm" : ""),
-                                                                        variable.Data()));
-          //variationHistogramTheoryUp->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-          
-          
-          TFile *variationFileTheoryDown = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
-                                                                baseDir.Data(),
-                                                                tempVariation.Data(),
-                                                                partonParticle.Data(),
-                                                                variation.Data()));
-
-          TH1F *variationHistogramTheoryDown = (TH1F *)variationFileTheoryDown->Get(TString::Format("hTheory%s_%s",
-                                                                        (normalized ? "Norm" : ""),
-                                                                        variable.Data()));
-          //variationHistogramTheoryDown->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-
-          TFile *variationFileTheoryAmcUp = TFile::Open(TString::Format(
-                                        "../../VariationHandling_Theory_amc@NLO/%s/%s/Histograms_TTJets_%s.root",
-                                        theoryYear.Data(),
-                                        tempVariation.Data(),
-                                        variation.Data()));
-          TH1F *variationHistogramTheoryAmcUp;
-          if (partonParticle.EqualTo("Parton")) variationHistogramTheoryAmcUp = (TH1F *)variationFileTheoryAmcUp->Get(TString::Format("hParton_%s", 
-                                                                  AnalysisConstants::partonVariables[v].Data()));
-          else variationHistogramTheoryAmcUp = (TH1F *)variationFileTheoryAmcUp->Get(TString::Format("hParticle_%s", 
-                                          AnalysisConstants::particleVariables[v].Data()));
-          variationHistogramTheoryAmcUp->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-
-          TFile *variationFileTheoryAmcDown = TFile::Open(TString::Format(
-                                        "../../VariationHandling_Theory_amc@NLO/%s/%s/Histograms_TTJets_%s.root",
-                                        theoryYear.Data(),
-                                        tempVariation.Data(),
-                                        variation.Data()));
-          TH1F *variationHistogramTheoryAmcDown;
-          if (partonParticle.EqualTo("Parton")) variationHistogramTheoryAmcDown = (TH1F *)variationFileTheoryAmcDown->Get(TString::Format("hParton_%s", 
-                                                                  AnalysisConstants::partonVariables[v].Data()));
-          else variationHistogramTheoryAmcDown = (TH1F *)variationFileTheoryAmcDown->Get(TString::Format("hParticle_%s", 
-                                          AnalysisConstants::particleVariables[v].Data()));
-          variationHistogramTheoryAmcDown->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-
-          for (int binI = 1; binI <= variationHistogramTheoryUp->GetNbinsX(); binI++)
-          {
-            float error_up = TMath::Abs(theoryHistogram->GetBinContent(binI) -
-                                        variationHistogramTheoryUp->GetBinContent(binI));
-            float error_down = TMath::Abs(theoryHistogram->GetBinContent(binI) -
-                                          variationHistogramTheoryDown->GetBinContent(binI));
-            covarianceTheory->operator()(binI - 1, binI - 1) += 1. / 2. * (error_up * error_up + error_down * error_down);
-
-            float error_up_amc = TMath::Abs(theoryAmcAtNloHistogram->GetBinContent(binI) -
-                                            variationHistogramTheoryAmcUp->GetBinContent(binI));
-            float error_down_amc = TMath::Abs(theoryAmcAtNloHistogram->GetBinContent(binI) -
-                                              variationHistogramTheoryAmcDown->GetBinContent(binI));
-            covarianceTheoryAmcAtNlo->operator()(binI - 1, binI - 1) += 1. / 2. * (error_up_amc * error_up_amc + error_down_amc * error_down_amc);
-          }
+        }
           variationFileTheoryUp->Close();
           variationFileTheoryDown->Close();
-          variationFileTheoryAmcUp->Close();
-          variationFileTheoryAmcDown->Close();
-        }*/
       }
-      else if (!(variation.Contains("Down") ||
-                 variation.Contains("DOWN") ||
-                 variation.Contains("mtop")))
+      // here we handle only pdf and scale weights which have NO up and down
+      // this means that we need--> calculated (unfolded), theory and amc@nlo variations
+      if (tempVariation.Contains("PDF") || tempVariation.Contains("Scale"))
       {
-        cout<<variation<<" --> does not include down ofc"<<endl;
+        cout<<variation<<" --> pdf or scale"<<endl;
+        TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                                baseDir.Data(),
+                                                                tempVariation.Data(),
+                                                                partonParticle.Data(),
+                                                                variation.Data()));
+        TH1F *variationHistogram = (TH1F *)variationFile->Get(TString::Format("hUnfold%s_%s",
+                                                                            (normalized ? "Norm" : "Final"), 
+                                                                            variable.Data()));
+
+        if (variable.Contains("jetY"))
+        {
+          variationHistogram->Scale(1. / 2.);
+        }
+
+        for (int binI = 1; binI <= variationHistogram->GetNbinsX(); binI++)
+        {
+          float error_I = TMath::Abs(nominalHistogram->GetBinContent(binI) -
+                                    variationHistogram->GetBinContent(binI));
+          for (int binJ = binI; binJ <= variationHistogram->GetNbinsX(); binJ++)
+          {
+            float error_J = TMath::Abs(nominalHistogram->GetBinContent(binJ) -
+                                       variationHistogram->GetBinContent(binJ));
+            covariance->operator()(binI - 1, binJ - 1) += (error_I * error_J);
+            covariance->operator()(binJ - 1, binI - 1) = covariance->operator()(binI - 1, binJ - 1);
+          }
+        }
+        variationFile->Close();
+      
+
+        TFile *variationFileTheory = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
+                                                              baseDir.Data(),
+                                                              tempVariation.Data(),
+                                                              partonParticle.Data(),
+                                                              variation.Data()));
+        TH1F *variationHistogramTheory = (TH1F *)variationFileTheory->Get(TString::Format("hTheory%s_%s",
+                                                                      (normalized ? "Norm" : ""),
+                                                                      variable.Data()));
+        //variationHistogramTheory->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
+        TFile *variationFileTheoryAmc = TFile::Open(TString::Format(
+                                      "../../VariationHandling_Theory_amc@NLO/%s/%s/Histograms_TTJets_%s.root",
+                                      theoryYear.Data(),
+                                      tempVariation.Data(),
+                                      variation.Data()));
+        
+          TH1F *variationHistogramTheoryAmc;
+          if (partonParticle.EqualTo("Parton")) variationHistogramTheoryAmc = (TH1F *)variationFileTheoryAmc->Get(TString::Format("hParton_%s_%s", 
+                                                                  AnalysisConstants::partonVariables[var].Data(),
+                                                                  variation.Data()));
+          else variationHistogramTheoryAmc = (TH1F *)variationFileTheoryAmc->Get(TString::Format("hParticle_%s_%s", 
+                                          AnalysisConstants::particleVariables[var].Data(),
+                                          variation.Data()));
+          variationHistogramTheoryAmc->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
+
+        if (variable.Contains("jetY"))
+        {
+          variationHistogramTheory->Scale(1. / 2.);
+          variationHistogramTheoryAmc->Scale(1. / 2.);
+        }
+
+        variationHistogramTheoryAmc->Scale(2.);
+
+          for (int binI = 1; binI <= variationHistogramTheory->GetNbinsX(); binI++)
+          {
+            float error_up = TMath::Abs(theoryHistogram->GetBinContent(binI) -
+                                        variationHistogramTheory->GetBinContent(binI));
+            covarianceTheory->operator()(binI - 1, binI - 1) += (error_up * error_up);
+
+            float error_amc = TMath::Abs(theoryAmcAtNloHistogram->GetBinContent(binI) -
+                                         variationHistogramTheoryAmc->GetBinContent(binI));
+
+            covarianceTheoryAmcAtNlo->operator()(binI - 1, binI - 1) += (error_amc * error_amc);
+          }
+          variationFileTheory->Close();
+          variationFileTheoryAmc->Close();
+
+      }
+      // now
+      // here we handle only ps which have NO up and down 
+      // this means that we need--> calculated (unfolded), and theory variations
+      if (tempVariation.Contains("PS"))
+      {
+        cout<<variation<<" --> ps weights"<<endl;
         TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
                                                                 tempVariation.Data(),
@@ -320,11 +356,7 @@ void ChiSquare(TString subDir = "")
           }
         }
         variationFile->Close();
-      
-        if (variation.Contains("pdf") ||
-            variation.Contains("scale"))
-            //tempVariation.Contains("PS"))
-        {
+    
 
           TFile *variationFileTheory = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
@@ -335,30 +367,10 @@ void ChiSquare(TString subDir = "")
                                                                         (normalized ? "Norm" : ""),
                                                                         variable.Data()));
           //variationHistogramTheory->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-          TFile *variationFileTheoryAmc = TFile::Open(TString::Format(
-                                        "../../VariationHandling_Theory_amc@NLO/%s/%s/Histograms_TTJets_%s.root",
-                                        theoryYear.Data(),
-                                        tempVariation.Data(),
-                                        variation.Data()));
-          TH1F *variationHistogramTheoryAmc;
-          if (partonParticle.EqualTo("Parton")) variationHistogramTheoryAmc = (TH1F *)variationFileTheoryAmc->Get(TString::Format("hParton_%s_%s", 
-                                                                  AnalysisConstants::partonVariables[var].Data(),
-                                                                  variation.Data()));
-          else variationHistogramTheoryAmc = (TH1F *)variationFileTheoryAmc->Get(TString::Format("hParticle_%s_%s", 
-                                          AnalysisConstants::particleVariables[var].Data(),
-                                          variation.Data()));
-          variationHistogramTheoryAmc->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
 
-          if (variable.Contains("AbsY"))
+          if (variable.Contains("jetY"))
           {
             variationHistogramTheory->Scale(1. / 2.);
-            variationHistogramTheoryAmc->Scale(1. / 2.);
-          }
-
-          if (variation.Contains("pdfVariation") ||
-              variation.Contains("scaleWeight"))
-          {
-            variationHistogramTheoryAmc->Scale(2.);
           }
 
           for (int binI = 1; binI <= variationHistogramTheory->GetNbinsX(); binI++)
@@ -366,15 +378,10 @@ void ChiSquare(TString subDir = "")
             float error_up = TMath::Abs(theoryHistogram->GetBinContent(binI) -
                                         variationHistogramTheory->GetBinContent(binI));
             covarianceTheory->operator()(binI - 1, binI - 1) += (error_up * error_up);
-
-            float error_amc = TMath::Abs(theoryAmcAtNloHistogram->GetBinContent(binI) -
-                                         variationHistogramTheoryAmc->GetBinContent(binI));
-
-            covarianceTheoryAmcAtNlo->operator()(binI - 1, binI - 1) += (error_amc * error_amc);
           }
           variationFileTheory->Close();
-          variationFileTheoryAmc->Close();
-        }
+          //variationFileTheoryAmc->Close();
+        
       }
     }
 
@@ -387,10 +394,6 @@ void ChiSquare(TString subDir = "")
                                AnalysisConstants::ChiSquareConstants::legendPositions[var][1],
                                AnalysisConstants::ChiSquareConstants::legendPositions[var][2],
                                AnalysisConstants::ChiSquareConstants::legendPositions[var][3]);
-    if (!variable.Contains("AbsY"))
-    {
-      c1->SetLogy();
-    }
 
     covarianceTheory->operator+=(*covariance);
     covarianceTheoryAmcAtNlo->operator+=(*covariance);
@@ -399,7 +402,10 @@ void ChiSquare(TString subDir = "")
     nominalHistogram->Draw("SAME EP");
     nominalHistogram->SetMarkerStyle(20);
     nominalHistogram->SetLineColor(kBlack);
-    finalResult->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[var]);
+    if (partonParticle.EqualTo("Parton"))
+      finalResult->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[var]);
+    else 
+      finalResult->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[var]);
     finalResult->GetXaxis()->SetLabelSize(0.035);
     finalResult->GetXaxis()->SetLabelOffset(0.015);
     leg->AddEntry(nominalHistogram, "Data", "E P");
@@ -418,12 +424,14 @@ void ChiSquare(TString subDir = "")
     writeExtraText = true;
     CMS_lumi(c1, "combined", 0);
 
-    c1->SaveAs(TString::Format("%s/%s.png",
+    c1->SaveAs(TString::Format("%s/%s_%s.png",
                                outputDir.Data(),
+                               partonParticle.Data(),
                                variable.Data()),
                "png");
-    c1->SaveAs(TString::Format("%s/%s.pdf",
+    c1->SaveAs(TString::Format("%s/%s_%s.pdf",
                                outputDir.Data(),
+                               partonParticle.Data(),
                                variable.Data()),
                "pdf");
 

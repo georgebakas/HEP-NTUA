@@ -13,7 +13,7 @@ For the Response matrices something like chi2 testing is needed.
 #include "TGraphErrors.h"
 #include "../CMS_plots/tdrstyle.C"
 #include "../CMS_plots/CMS_lumi.C"
-
+#include "FinalResultsConstants.h"
 using namespace std;
 
 
@@ -28,6 +28,7 @@ void PlotEfficiencyResponse(bool isParton = true)
 {   
     /* init variables and values */
     initFilesMapping();
+    AnalysisConstants::initConstants();
     //setTDRStyle();
     gStyle->SetOptStat(0);
     const int NVAR = 10;
@@ -347,6 +348,10 @@ void PlotEfficiencyResponse(bool isParton = true)
             
             accCombYearly->Draw();
             effCombYearly->Draw("same");     
+            TLegend *legEffAcc = new TLegend(0.5, 0.5, 0.6, 0.6);
+            legEffAcc->AddEntry(effCombYearly, "f1", "l");
+            legEffAcc->AddEntry(accCombYearly, "f2", "l");
+            legEffAcc->Draw();
             gPad->Update(); 
             auto graph_eff_yearly = accCombYearly->GetPaintedGraph(); 
             graph_eff_yearly->SetMinimum(0);
@@ -360,6 +365,8 @@ void PlotEfficiencyResponse(bool isParton = true)
         TCanvas *can_eff_comb = new TCanvas(
                         TString::Format("canEffYearly%s", variable[ivar].Data()),
                         TString::Format("canEffYearly%s", variable[ivar].Data()), 800, 600);
+        
+        TLegend *legEffAcc = new TLegend(0.5, 0.5, 0.6, 0.6);
         
         can_eff_comb->cd();
         TH1F *effCombClone = (TH1F*)eff_combined->Clone("effCombClone");
@@ -379,11 +386,14 @@ void PlotEfficiencyResponse(bool isParton = true)
         accCombClone->Draw("E2 same");
         effCombClone->SetMinimum(0);
         effCombClone->SetMaximum(1);
-
+        legEffAcc->AddEntry(effCombClone, "f1", "l");
+        legEffAcc->AddEntry(accCombClone, "f2", "l");
+        legEffAcc->Draw();
 
         CMS_lumi(can_eff_comb, "combined", iPos);
         can_eff_comb->SaveAs(TString::Format("Comparison_EffAccResponses/combined/EfficiencyAcceptance%s_%s.pdf", 
                         varParton.Data(), variable[ivar].Data()), "pdf");
+        
         //break;
     } // end of variables loop 
 
