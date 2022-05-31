@@ -1,4 +1,4 @@
-#include "../BASE.h"
+#include "BASE.h"
 
 #include "FinalResultsConstants.h"
 
@@ -6,6 +6,8 @@
 #include "TCanvas.h"
 #include "TLegend.h"
 #include "TMatrixD.h"
+#include "../CMS_plots/CMS_lumi.C"
+#include "../CMS_plots/tdrstyle.C"
 
 void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, bool normalized)
 {
@@ -18,10 +20,10 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
   std::vector<bool> drawRatio = {true, true, false, true, false, true};
   std::vector<bool> putInLegend = {true, true, true, false, true, false};
   std::vector<TString> legendTitles = {"Data", "Total unc.",
-                                       TString::Format("amc@NLO+Pythia8 %.2f", chiSquareAmc),
-                                       "amc@NLO+Pythia8 unc",
-                                       TString::Format("Powheg+Pythia8 %.2f", chiSquare),
-                                       "Powheg+Pythia8 unc"};
+                                      TString::Format("amc@NLO+Pythia8 %.2f", chiSquareAmc),
+                                      "amc@NLO+Pythia8 unc",
+                                      TString::Format("Powheg+Pythia8 %.2f", chiSquare),
+                                      "Powheg+Pythia8 unc"};
   std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
 
   TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
@@ -66,12 +68,12 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
     if (normalized)
     {
       hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
-                                     AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+                                    AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
     }
     else
     {
       hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
-                                     AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+                                    AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
     }
 
     TH1F *ratio = (TH1F *)hist->Clone("ratio");
@@ -82,7 +84,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
       ratio->SetBinContent(bin, ratio->GetBinContent(bin) - 1);
     }
     hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
-                                   AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+                                  AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
     if (draw[i])
     {
       hist->Draw(drawOptions[i]);
@@ -142,54 +144,54 @@ void DrawWithChiSquare_normalised(TString subDir = "")
   TString partonParticle = "Parton";
 
   TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFileNorm.root",
-                                                   baseDir.Data(),
-                                                   partonParticle.Data()));
+                                                  baseDir.Data(),
+                                                  partonParticle.Data()));
   TFile *chiSquareFiles = TFile::Open(TString::Format("%s/ChiSquare/results/%s_chiSquareResults_normalised.root",
                                                       baseDir.Data(),
                                                       partonParticle.Data()));
 
-  TFile *nominalFile = TFile::Open(TString::Format("%s/Nominal/%sUnfoldingResults.root",
-                                                   baseDir.Data(),
-                                                   AnalysisConstants::subDir.Data()));
-  TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format("%s/EfficiencyAcceptance_amcatnlo_Nominal_%s.root",
-                                                          GetInputFilesPath(theoryYear).Data(),
-                                                          theoryYear.Data()));
+  TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
+                                                    baseDir.Data(),
+                                                    partonParticle.Data()));
+                                                  
+  TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
+                            "../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
 
   for (int i = 0; i < AnalysisConstants::unfoldingVariables.size(); i++)
   {
     TString variable = AnalysisConstants::unfoldingVariables[i];
     TCanvas *c = new TCanvas(TString::Format("c_%s",
-                                             variable.Data()),
-                             TString::Format("c_%s",
-                                             variable.Data()),
-                             600, 600);
+                                            variable.Data()),
+                            TString::Format("c_%s",
+                                            variable.Data()),
+                            600, 600);
     std::vector<TH1F *> histograms;
-
+    // this is final result with systematics --> nominal values
     TH1F *f = (TH1F *)resultsFile->Get(TString::Format("FinalResult_%s",
-                                                       variable.Data()));
-    histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("unfoldedHistogram_%s",
-                                                 variable.Data()));
-    histograms.push_back(f);
-    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheoryAmcAtNlo_%s",
-                                                 variable.Data()));
-    histograms.push_back(f);
-    f = MergeHistograms<TH1F>(theoryFileAmcAtNlo,
-                              theoryYear,
-                              TString::Format("EfficiencyDenom_%s",
-                                              AnalysisConstants::partonVariables[i].Data()),
-                              AnalysisConstants::luminositiesSR[theoryYear]);
-    float_t theoryAmcAtNloYield = f->Integral();
-    f->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
-    f->Scale(AnalysisConstants::luminositiesSR[theoryYear] / theoryAmcAtNloYield);
+                                                      variable.Data()));
     histograms.push_back(f);
 
-    f = (TH1F *)resultsFile->Get(TString::Format("FinalTheory_%s",
-                                                 variable.Data()));
+    // this is the nominal histogram taken from the result file
+    f = (TH1F *)resultsFile->Get(TString::Format("nominalHistogram%s",
+                                                variable.Data()));
     histograms.push_back(f);
 
-    f = (TH1F *)nominalFile->Get(TString::Format("theory_%s",
-                                                 variable.Data()));
+    // get nominal amc@nlo 
+    f = (TH1F *)resultsFile->Get(TString::Format("finalTheoryAmcAtNlo%s",
+                                                variable.Data()));
+    histograms.push_back(f);
+
+    // amc@nlo values 
+    f = (TH1F *)resultsFile->Get(TString::Format("theoryAmcAtNloHistogramValue%s",
+                                                variable.Data()));
+    histograms.push_back(f);
+
+    f = (TH1F *)resultsFile->Get(TString::Format("finalTheory%s",
+                                                variable.Data()));
+    histograms.push_back(f);
+
+    f = (TH1F *)nominalFile->Get(TString::Format("hTheoryNorm_%s",
+                                                variable.Data()));
     histograms.push_back(f);
 
     TMatrixD *chiSquare = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_normalized",
@@ -198,14 +200,14 @@ void DrawWithChiSquare_normalised(TString subDir = "")
                                                                               variable.Data()));
     DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), true);
 
-    c->SaveAs(TString::Format("%s/FinalResults/results/%sFinalResult_%s_chiSquare_normalized.pdf",
-                              AnalysisConstants::baseDir.Data(),
-                              AnalysisConstants::subDir.Data(),
+    c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare_normalized.pdf",
+                              baseDir.Data(),
+                              partonParticle.Data(),
                               variable.Data()),
               "pdf");
-    c->SaveAs(TString::Format("%s/FinalResults/results/%sFinalResult_%s_chiSquare_normalized.png",
-                              AnalysisConstants::baseDir.Data(),
-                              AnalysisConstants::subDir.Data(),
+    c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare_normalized.png",
+                              baseDir.Data(),
+                              partonParticle.Data(),
                               variable.Data()),
               "png");
   }
