@@ -9,7 +9,7 @@
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
 
-void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, bool normalized)
+void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, TString partonParticle)
 {
   std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue};
   std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue};
@@ -65,15 +65,15 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
     hist->SetMarkerStyle(markerStyle[i]);
     hist->SetLineWidth(2);
     hist->SetFillStyle(fillStyles[i]);
-    if (normalized)
+    if (partonParticle.Contains("Particle"))
     {
-      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
-                                    AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][0],
+                                     AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][1]);
     }
     else
     {
-      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
-                                    AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
+                                     AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
     }
 
     TH1F *ratio = (TH1F *)hist->Clone("ratio");
@@ -106,9 +106,18 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
       ratio->GetXaxis()->SetTitleOffset(1.);
       ratio->GetXaxis()->SetLabelSize(0.12);
       ratio->GetXaxis()->SetLabelOffset(0.015);
-      ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
-      ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
+      if (partonParticle.Contains("Particle"))
+      {
+        ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
+        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                      AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+      }
+      else
+      {
+        ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
+        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
                                       AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+      }
       ratio->Draw(drawOptions[i]);
     }
 
@@ -198,7 +207,7 @@ void DrawWithChiSquare_normalised(TString subDir = "")
                                                                           variable.Data()));
     TMatrixD *chiSquare_amc = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_amc_normalized",
                                                                               variable.Data()));
-    DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), true);
+    DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), partonParticle);
 
     c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare_normalized.pdf",
                               baseDir.Data(),

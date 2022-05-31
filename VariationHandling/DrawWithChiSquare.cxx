@@ -9,7 +9,7 @@
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
 
-void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, bool normalized)
+void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, TString partonParticle)
 {
   std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue};
   std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue};
@@ -19,10 +19,10 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
   std::vector<bool> drawRatio = {true, true, true, true, true, true};
   std::vector<bool> putInLegend = {true, true, true, true, true, true};
   std::vector<TString> legendTitles = {"Data", "Total unc.",
-                                       TString::Format("amc@NLO+Pythia8 %.2f", chiSquareAmc),
-                                       "amc@NLO+Pythia8 unc",
-                                       TString::Format("Powheg+Pythia8 %.2f", chiSquare),
-                                       "Powheg+Pythia8 unc"};
+                                      TString::Format("amc@NLO+Pythia8 %.2f", chiSquareAmc),
+                                      "amc@NLO+Pythia8 unc",
+                                      TString::Format("Powheg+Pythia8 %.2f", chiSquare),
+                                      "Powheg+Pythia8 unc"};
   std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
 
   TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
@@ -64,15 +64,15 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
     hist->SetMarkerStyle(markerStyle[i]);
     hist->SetLineWidth(2);
     hist->SetFillStyle(fillStyles[i]);
-    if (normalized)
+    if (partonParticle.Contains("Particle"))
     {
-      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
-                                     AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][0],
+                                    AnalysisConstants::FinalResultsConstans::particleYAxisValues[index][1]);
     }
     else
     {
       hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][0],
-                                     AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
+                                    AnalysisConstants::FinalResultsConstans::partonYAxisValues[index][1]);
     }
 
     TH1F *ratio = (TH1F *)hist->Clone("ratio");
@@ -82,7 +82,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
       ratio->SetBinContent(bin, ratio->GetBinContent(bin) - 1);
     }
     hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
-                                   AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+                                  AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
     std::cout << hist->GetTitle() << " " << hist->GetLineColor() << " " << hist->GetFillColor() << std::endl;
     hist->Draw(drawOptions[i]);
 
@@ -102,11 +102,25 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
       ratio->GetXaxis()->SetTitleOffset(1.);
       ratio->GetXaxis()->SetLabelSize(0.12);
       ratio->GetXaxis()->SetLabelOffset(0.015);
-      ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
-      ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
+      
+      if (partonParticle.Contains("Particle"))
+      {
+        ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
+        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                      AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+      }
+      else
+      {
+        ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
+        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
                                       AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+      }
       ratio->Draw(drawOptions[i]);
+
+      
     }
+
+
 
     if (putInLegend[i])
     {
@@ -138,8 +152,8 @@ void DrawWithChiSquare(TString subDir = "")
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
   TString partonParticle = "Parton";
   TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
-                                                   baseDir.Data(),
-                                                   partonParticle.Data()));
+                                                  baseDir.Data(),
+                                                  partonParticle.Data()));
   TFile *chiSquareFiles = TFile::Open(TString::Format("%s/ChiSquare/results/%s_chiSquareResults.root",
                                                       baseDir.Data(),
                                                       partonParticle.Data()));
@@ -149,29 +163,29 @@ void DrawWithChiSquare(TString subDir = "")
   {
     TString variable = AnalysisConstants::unfoldingVariables[i];
     TCanvas *c = new TCanvas(TString::Format("c_%s",
-                                             variable.Data()),
-                             TString::Format("c_%s",
-                                             variable.Data()),
-                             600, 600);
+                                            variable.Data()),
+                            TString::Format("c_%s",
+                                            variable.Data()),
+                            600, 600);
     std::vector<TH1F *> histograms;
 
     TH1F *f = (TH1F *)resultsFile->Get(TString::Format("FinalResult_%s",
-                                                       variable.Data()));
+                                                      variable.Data()));
     histograms.push_back(f);
     f = (TH1F *)resultsFile->Get(TString::Format("nominalHistogram%s",
-                                                 variable.Data()));
+                                                variable.Data()));
     histograms.push_back(f);
     f = (TH1F *)resultsFile->Get(TString::Format("finalTheoryAmcAtNlo%s",
-                                                 variable.Data()));
+                                                variable.Data()));
     histograms.push_back(f);
     f = (TH1F *)resultsFile->Get(TString::Format("theoryAmcAtNloHistogramValue%s",
-                                                 variable.Data()));
+                                                variable.Data()));
     histograms.push_back(f);
     f = (TH1F *)resultsFile->Get(TString::Format("finalTheory%s",
-                                                 variable.Data()));
+                                                variable.Data()));
     histograms.push_back(f);
     f = (TH1F *)resultsFile->Get(TString::Format("theoryHistogramValue%s",
-                                                 variable.Data()));
+                                                variable.Data()));
     histograms.push_back(f);
 
 
@@ -179,7 +193,7 @@ void DrawWithChiSquare(TString subDir = "")
                                                                           variable.Data()));
     TMatrixD *chiSquare_amc = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_amc",
                                                                               variable.Data()));
-    DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), false);
+    DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), partonParticle);
 
     c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare.pdf",
                               baseDir.Data(),
