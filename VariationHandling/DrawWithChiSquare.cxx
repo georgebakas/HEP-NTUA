@@ -19,9 +19,9 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
   std::vector<bool> drawRatio = {true, true, true, true, true, true};
   std::vector<bool> putInLegend = {true, true, true, true, true, true};
   std::vector<TString> legendTitles = {"Data", "Total unc.",
-                                      TString::Format("amc@NLO+Pythia8 %.2f", chiSquareAmc),
+                                      TString::Format("amc@NLO+Pythia8 %.2f #chi^{2}", chiSquareAmc),
                                       "amc@NLO+Pythia8 unc",
-                                      TString::Format("Powheg+Pythia8 %.2f", chiSquare),
+                                      TString::Format("Powheg+Pythia8 %.2f #chi^{2}=", chiSquare),
                                       "Powheg+Pythia8 unc"};
   std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
 
