@@ -12,9 +12,9 @@
 void ExportChi2()
 {
     AnalysisConstants::initConstants();
-    //TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
-    TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
-    TString partonParticle = "Parton";
+    TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
+    //TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
+    TString partonParticle = "Particle";
     
     TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
                                                 baseDir.Data(),
@@ -26,8 +26,10 @@ void ExportChi2()
 
     //write to a txt file the Kolmogorov tests
     ofstream myfile;
-    myfile.open ("FinalResults/resultsChi2/analytical_results.txt");
+    myfile.open (TString::Format("FinalResults/resultsChi2/%sAnalytical_results.txt", partonParticle.Data()));
     myfile<<"------------"<< "\n";    
+    myfile<<"Variable & "<<"NDOF & chi2 Theory & chi2 Theory AMC@NLO & P-value Theory & P-value AMC@NLO \\\\" <<"\n";
+
 
     for (int i = 0; i < AnalysisConstants::unfoldingVariables.size(); i++)
     {
@@ -47,10 +49,8 @@ void ExportChi2()
         Double_t p_valTheory = TMath::Prob(chi2Theory, ndof);
         Double_t p_valTheory_amcNlo = TMath::Prob(chi2Theory, ndof);
 
-        myfile<<"Variable: "<<variable<<"\n";
-        myfile<<"NDOF & chi2 Theory & chi2 Theory AMC@NLO & P-value Theory & P-value AMC@NLO \\\\" <<"\n";
-        myfile<<ndof <<" & "<<chi2Theory<<" & "<<chi2Theory_amcNlo<<" & "<<p_valTheory <<" & "<< p_valTheory_amcNlo <<" \\ " <<"\n";
-        myfile<<"------------"<< "\n";
+        myfile<<variable<<" & "<<ndof <<" & "<<chi2Theory<<" & "<<chi2Theory_amcNlo<<" & "<<p_valTheory <<" & "<< p_valTheory_amcNlo <<" \\\\ " <<"\n";
+        myfile<<"\\hline"<< "\n";
     }
     myfile.close();
 }
