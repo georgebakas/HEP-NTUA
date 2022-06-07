@@ -45,8 +45,8 @@ void ExportChi2Norm()
         Double_t chi2Theory_amcNlo = chiSquare_amc->operator()(0, 0);
         Int_t ndof = f->GetNbinsX()-1;
 
-        Double_t p_valTheory = TMath::Prob(chi2Theory, ndof);
-        Double_t p_valTheory_amcNlo = TMath::Prob(chi2Theory, ndof);
+        Double_t p_valTheory = TMath::Prob(chi2Theory, ndof-1);
+        Double_t p_valTheory_amcNlo = TMath::Prob(chi2Theory_amcNlo, ndof-1);
 
         myfile<<variable<<" & "<<ndof <<" & "<<chi2Theory<<" & "<<chi2Theory_amcNlo<<" & "<<p_valTheory <<" & "<< p_valTheory_amcNlo <<" \\\\ " <<"\n";
         myfile<<"\\hline"<< "\n";
