@@ -24,7 +24,7 @@ using std::endl;
 #include "TemplateConstants.h"
 
 
-void PlotEfficiencyResponse(bool isParton = true)
+void PlotEfficiencyResponse(bool isParton = false)
 {   
     /* init variables and values */
     initFilesMapping();
@@ -337,15 +337,15 @@ void PlotEfficiencyResponse(bool isParton = true)
             accCombYearly->SetMarkerColor(kBlue);
             accCombYearly->SetLineColor(kBlue);
             accCombYearly->SetFillColorAlpha(kBlue, 0.4);
-            //accCombYearly->SetFillStyle(4050);
+            accCombYearly->SetFillStyle(1001);
             
             effCombYearly->SetMarkerStyle(20);
             effCombYearly->SetMarkerSize(0.7);
             effCombYearly->SetMarkerColor(kRed);
             effCombYearly->SetLineColor(kRed);
             effCombYearly->SetFillColorAlpha(kRed, 0.4); 
-            //effCombYearly->SetFillStyle(4050);
-            
+            effCombYearly->SetFillStyle(1001);
+            accCombYearly->SetTitle("");
             accCombYearly->Draw();
             effCombYearly->Draw("same");     
             TLegend *legEffAcc = new TLegend(0.5, 0.5, 0.6, 0.6);
@@ -376,18 +376,20 @@ void PlotEfficiencyResponse(bool isParton = true)
         effCombClone->SetLineColor(kRed);
         accCombClone->SetMarkerColor(kBlue);
         accCombClone->SetLineColor(kBlue);
-        //effCombClone->SetFillStyle(3444);
-        //accCombClone->SetFillStyle(3444);
+        effCombClone->SetFillStyle(1001);
+        accCombClone->SetFillStyle(1001);
         effCombClone->SetFillColorAlpha(kRed, 0.4);
         accCombClone->SetFillColorAlpha(kBlue, 0.4);
         effCombClone->GetXaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
         accCombClone->GetXaxis()->SetTitle(variable[ivar]+" "+expr[ivar]);
+        accCombClone->SetTitle("");
         effCombClone->Draw("E2");
         accCombClone->Draw("E2 same");
         effCombClone->SetMinimum(0);
         effCombClone->SetMaximum(1);
         legEffAcc->AddEntry(effCombClone, "f1", "l");
         legEffAcc->AddEntry(accCombClone, "f2", "l");
+        legEffAcc->SetBorderSize(0);
         legEffAcc->Draw();
 
         CMS_lumi(can_eff_comb, "combined", iPos);
