@@ -30,6 +30,7 @@ namespace AnalysisConstants_UL
   std::vector<TString> recoVariables;
 
   std::vector<TString> partonVariables;
+  std::vector<TString> fiducialVariables;
   std::vector<TString> particleVariables;
   std::vector<TString> partonAxisTitles;
   std::vector<TString> fiducialAxisTitles;
@@ -262,6 +263,7 @@ namespace AnalysisConstants_UL
     recoVariables.clear();
     axisTitles.clear();
     partonVariables.clear();
+    fiducialVariables.clear();
     particleVariables.clear();
     partonAxisTitles.clear();
     fiducialAxisTitles.clear();
@@ -389,6 +391,16 @@ namespace AnalysisConstants_UL
     particleVariables.push_back("cosThetaParticle_0");
     particleVariables.push_back("cosThetaParticle_1");
 
+    fiducialVariables.push_back("jetP0");
+    fiducialVariables.push_back("jetPt1");
+    fiducialVariables.push_back("yJJ");
+    fiducialVariables.push_back("ptJJ");
+    fiducialVariables.push_back("mJJ");
+    fiducialVariables.push_back("jetY0");
+    fiducialVariables.push_back("jetY1");
+    fiducialVariables.push_back("chi");
+    fiducialVariables.push_back("cosTheta_0");
+    fiducialVariables.push_back("cosTheta_1");
 
     axisTitles.push_back("Leading jet Pt (GeV)");
     axisTitles.push_back("Subleading jet Pt (GeV)");

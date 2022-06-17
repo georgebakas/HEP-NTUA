@@ -127,7 +127,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     }
     
 
-void Fiducial_Basic(bool normalized = true)
+void Fiducial_Basic(bool normalized = false)
 {
     initFilesMapping();
     gStyle->SetOptStat(0);
@@ -186,9 +186,7 @@ void Fiducial_Basic(bool normalized = true)
 
         DrawWithRatio(c1, histogramsToDraw, v, normalized, partonParticle);
 
-        TString draw_name;
-        if (partonParticle.EqualTo("Particle")) draw_name = AnalysisConstants::particleVariables[v].Data();
-        else draw_name = AnalysisConstants::partonVariables[v].Data();
+        TString draw_name = AnalysisConstants::fiducialVariables[v].Data();
         
         c1->SaveAs(TString::Format("%s/FinalResult_%s%s.pdf",
                                 outputDir.Data(),
