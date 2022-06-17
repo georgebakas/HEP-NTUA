@@ -14,7 +14,7 @@ void ExportChi2()
     AnalysisConstants::initConstants();
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     //TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
-    TString partonParticle = "Parton";
+    TString partonParticle = "Particle";
     
     TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
                                                 baseDir.Data(),
@@ -44,7 +44,7 @@ void ExportChi2()
 
         Double_t chi2Theory = chiSquare->operator()(0, 0);
         Double_t chi2Theory_amcNlo = chiSquare_amc->operator()(0, 0);
-        Int_t ndof = f->GetNbinsX()-1;
+        Int_t ndof = f->GetNbinsX();
 
         Double_t p_valTheory = TMath::Prob(chi2Theory, ndof);
         Double_t p_valTheory_amcNlo = TMath::Prob(chi2Theory_amcNlo, ndof);
