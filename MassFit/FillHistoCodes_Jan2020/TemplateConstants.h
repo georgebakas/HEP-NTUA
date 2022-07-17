@@ -100,62 +100,94 @@ void initFilesMapping(bool isLoose)
 //----------------------------------------------------------------------------------------------------------------
 //subdominant bkgs:
 	map<TString, TString> sub16_pre = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
+									{"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									{"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									{"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"WJetsToQQ_HT-200to400", "WJetsToQQ_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-400to600", "WJetsToQQ_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-600to800", "WJetsToQQ_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-800toInf", "WJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8.root"}};
 
 	map<TString, TString> sub16_post = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
+									{"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									{"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"WJetsToQQ_HT-200to400", "WJetsToQQ_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-400to600", "WJetsToQQ_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-600to800", "WJetsToQQ_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-800toInf", "WJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8.root"}};
 
 	map<TString, TString> sub17 = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
-	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-	                               //{"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
+									{"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_20UL.root"},
+									{"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									//{"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"WJetsToQQ_HT-200to400", "WJetsToQQ_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-400to600", "WJetsToQQ_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-600to800", "WJetsToQQ_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-800toInf", "WJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8.root"}};
 
 	map<TString, TString> sub18 = {{"ST_tW_top_5f", "ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-	                               {"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-	                               {"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-	                               {"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
-								   {"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
-								   {"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"}};
+									{"ST_tW_antitop_5f", "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"ST_t-channel_top_4f", "ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_antitop_4f", "ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8_19UL.root"},
+									{"ST_t-channel_top_5f", "ST_t-channel_top_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"ST_t-channel_antitop_5f", "ST_t-channel_antitop_5f_InclusiveDecays_TuneCP5_13TeV-powheg-pythia8_19UL.root"},
+									{"WJetsToQQ_HT-200to400", "WJetsToQQ_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-400to600", "WJetsToQQ_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-600to800", "WJetsToQQ_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8.root"},
+									{"WJetsToQQ_HT-800toInf", "WJetsToQQ_HT-800toInf_TuneCP5_13TeV-madgraphMLM-pythia8.root"}};
 
 
 
 	map<TString, float> sub16XSEC_pre = {{"ST_tW_top_5f", 38.09},
-	                                 {"ST_tW_antitop_5f", 38.09},
-	                                 {"ST_t-channel_top_4f", 35.6},
-	                                 {"ST_t-channel_antitop_4f", 35.6},
-									 {"ST_t-channel_top_5f", 119.7},
-									 {"ST_t-channel_antitop_5f", 82.52}};
+									{"ST_tW_antitop_5f", 38.09},
+									{"ST_t-channel_top_4f", 35.6},
+									{"ST_t-channel_antitop_4f", 35.6},
+									{"ST_t-channel_top_5f", 119.7},
+									{"ST_t-channel_antitop_5f", 82.52},
+									{"WJetsToQQ_HT-200to400", 2549.0},
+									{"WJetsToQQ_HT-400to600", 276.5},
+									{"WJetsToQQ_HT-600to800", 59.25},
+									{"WJetsToQQ_HT-800toInf", 28.75}};
 
 	map<TString, float> sub16XSEC_post = {{"ST_tW_top_5f", 38.09},
-	                                 {"ST_tW_antitop_5f", 38.09},
-	                                 {"ST_t-channel_top_4f", 35.6},
-	                                 {"ST_t-channel_antitop_4f", 35.6},
-									 {"ST_t-channel_top_5f", 119.7},
-									 {"ST_t-channel_antitop_5f", 82.52}};
+									{"ST_tW_antitop_5f", 38.09},
+									{"ST_t-channel_top_4f", 35.6},
+									{"ST_t-channel_antitop_4f", 35.6},
+									{"ST_t-channel_top_5f", 119.7},
+									{"ST_t-channel_antitop_5f", 82.52},
+									{"WJetsToQQ_HT-200to400", 2549.0},
+									{"WJetsToQQ_HT-400to600", 276.5},
+									{"WJetsToQQ_HT-600to800", 59.25},
+									{"WJetsToQQ_HT-800toInf", 28.75}};
 
 	map<TString, float> sub17XSEC = {{"ST_tW_top_5f", 34.91},
-	                                 {"ST_tW_antitop_5f", 34.97},
-	                                 {"ST_t-channel_top_4f", 115.3},
-	                                 //{"ST_t-channel_antitop_4f", 69.09},
-									 {"ST_t-channel_top_5f", 119.7},
-									 {"ST_t-channel_antitop_5f", 71.74}};
+									{"ST_tW_antitop_5f", 34.97},
+									{"ST_t-channel_top_4f", 115.3},
+									//{"ST_t-channel_antitop_4f", 69.09},
+									{"ST_t-channel_top_5f", 119.7},
+									{"ST_t-channel_antitop_5f", 71.74},
+									{"WJetsToQQ_HT-200to400", 2549.0},
+									{"WJetsToQQ_HT-400to600", 276.5},
+									{"WJetsToQQ_HT-600to800", 59.25},
+									{"WJetsToQQ_HT-800toInf", 28.75}};
 
 	map<TString, float> sub18XSEC = {{"ST_tW_top_5f", 34.91},
-	                                 {"ST_tW_antitop_5f", 34.97},
-	                                 {"ST_t-channel_top_4f", 115.3},
-	                                 {"ST_t-channel_antitop_4f", 69.09},
-									 {"ST_t-channel_top_5f", 119.7},
-									 {"ST_t-channel_antitop_5f", 71.74}};
+									{"ST_tW_antitop_5f", 34.97},
+									{"ST_t-channel_top_4f", 115.3},
+									{"ST_t-channel_antitop_4f", 69.09},
+									{"ST_t-channel_top_5f", 119.7},
+									{"ST_t-channel_antitop_5f", 71.74},
+									{"WJetsToQQ_HT-200to400", 2549.0},
+									{"WJetsToQQ_HT-400to600", 276.5},
+									{"WJetsToQQ_HT-600to800", 59.25},
+									{"WJetsToQQ_HT-800toInf", 28.75}};
 
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016_preVFP",sub16_pre));
 	subdominantBkgFiles.insert(pair<TString, map<TString, TString>>("2016_postVFP",sub16_post));

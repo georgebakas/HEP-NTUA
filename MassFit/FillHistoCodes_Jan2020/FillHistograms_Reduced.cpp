@@ -61,6 +61,10 @@ void initFileNames()
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
     listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-200to400"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-400to600"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-600to800"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-800toInf"]);
   }
   else if(selection ==4) //signal ttbar mc nominal
   {
@@ -97,6 +101,10 @@ void initXsections()
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
     XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-200to400"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-400to600"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-600to800"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-800toInf"]);
   }
   else if(selection ==4)
   {
@@ -133,6 +141,10 @@ void initHistoNames()
     histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_top_5f_inclusiveDecays");
     histoNames.push_back("ST_t-channel_antitop_5f_inclusiveDecays");
+    histoNames.push_back("WJetsToQQ_HT-200to400");
+    histoNames.push_back("WJetsToQQ_HT-400to600");
+    histoNames.push_back("WJetsToQQ_HT-600to800");
+    histoNames.push_back("WJetsToQQ_HT-800toInf");
   }
   else if(selection ==4)
   {
