@@ -369,7 +369,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     int iPeriod = 4;
     int iPos = 0;
     writeExtraText=true;
-    CMS_lumi(closure_pad1, iPeriod, iPos);
+    CMS_lumi(closure_pad1, "combined", iPos);
 
     cout <<"after "<< hSignal_init->Integral() <<endl;
     outf->cd();

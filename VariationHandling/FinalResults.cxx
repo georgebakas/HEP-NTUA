@@ -189,7 +189,7 @@ void FinalResults(bool normalized = false)
     initFilesMapping();
     //setTDRStyle();
     gStyle->SetOptStat(0);
-    TString partonParticle = "Particle";
+    TString partonParticle = "Parton";
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     //TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
     AnalysisConstants::initConstants();

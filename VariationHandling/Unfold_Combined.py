@@ -38,8 +38,8 @@ def unfold(year, weightType, isParton):
             print('weight_suffix', weight_sufix)
             #(TString inYear, TString dir, TString inputFile, bool isThreeProcesses, bool isParton = true, int unfoldMethod=1)
 
-        os.system(f'root -l -b -q \'Unfold_Combined.cpp(\"{weightType}\",\"{weight_sufix}\",\"{isParton}\")\'')
-        break
+        os.system(f'root -l -b -q \'Unfold_Combined.cxx(\"{weightType}\",\"{weight_sufix}\",\"{isParton}\")\'')
+        #break
 
     '''
     combined_files = ['TT','TTJets']
@@ -72,5 +72,5 @@ if __name__ == '__main__':
     for itype in types:
         #if 'ScaleWeights' in itype: 
         unfold(year, itype, 'true')
-        #unfold(year, itype, 'false')
-        break
+        unfold(year, itype, 'false')
+        #break
