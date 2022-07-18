@@ -192,3 +192,5 @@ void CMS_lumi(TPad *pad, TString iPeriod, int iPosX)
   }
   return;
 }
+
+#undef CMS_lumi_cxx

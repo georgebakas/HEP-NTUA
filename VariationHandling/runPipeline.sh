@@ -13,10 +13,10 @@
 #./runCombineFiles.sh
 
 # Create the mass fit signal templates from ttbar
-#./runCreateSignalTemplates.sh
+./runCreateSignalTemplates.sh
 
 # Create final Mass Fit for the 2 btag reduced region
-#./runMassFit.sh
+./runMassFit.sh
 
 # Create the signal extraction files (fiducial cross sections) for every year and variation
 ./runSignalExtraction.sh
