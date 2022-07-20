@@ -127,6 +127,7 @@ void CreateBkgTemplates(TString year, TString CUT = "")
       hBkg = (TH1F *)infBkg->Get("hWt_mTop_2btag_expYield");
     }
     hBkg->Rebin(2);
+    cout<<"Integral hBkg Subdominant: "<<hBkg->Integral()<<endl;
 
     RooDataHist *roohBkg = new RooDataHist("roohistBkg", "roohistBkg", RooArgList(*x), hBkg);
 

@@ -117,26 +117,32 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
   //RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 
   //---- QCD correction factor ---------------------------
-  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 1e-3, -1, 1);
-  RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
-  mBar->setConstant(true);
+  RooRealVar *kQCD2b_0;
+  if(year.EqualTo("2016_preVFP")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.019, 0.80*0.019, 1.2*0.019);
+  if(year.EqualTo("2016_postVFP")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.01, 0.8*0.01, 1.2*0.01);
+  if(year.EqualTo("2017")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.01, 0.8*0.01, 1.2*0.01);
+  if(year.EqualTo("2018")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.0069, 0.8*0.0069, 1.2*0.0069); 
   kQCD2b_0->setConstant(false);
 
-  //RooFormulaVar qcdCor_2b("qcdCor","(1+@0*@1)/(1+@1*@2)",RooArgList(*x,*kQCD2b_0,*mBar));
   RooFormulaVar qcdCor_2b("qcdCor_2b","(1+@0*@1)",RooArgList(*x,*kQCD2b_0));
   //---- corrected QCD -----------------------------------
 
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
 
   RooRealVar *nFitBkg2b;
-  if(year.EqualTo("2018")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",10,0,500);
-  else nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",400,0,10e+3);
+  if(year.EqualTo("2016_preVFP")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",65,30,95);
+  if(year.EqualTo("2016_postVFP")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",48,24,62);
+  if(year.EqualTo("2017")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",200,150,250);
+  if(year.EqualTo("2018")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",300,250,350);
+  cout<<"year: "<<year<<endl;
+  //else nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",20,0,500);
 
   RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);
 
   RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
 
   RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
+  //RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b),RooArgList(*nFitSig2b,*nFitQCD2b));
 
   /* RooSimultaneous simPdf("simPdf","simPdf",sample);
   simPdf.addPdf(*model_2b,"2btag"); */

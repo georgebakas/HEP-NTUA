@@ -41,8 +41,8 @@ void initFilesMapping()
 	XSECAll.insert(pair<TString, map<TString, float>>("2018", XSEC_));
 
 	//these are btagging Working points for each year Medium WP
-	floatConstants.insert(pair<TString, float>("btagWP2016_preVFP", 0.6321));
-	floatConstants.insert(pair<TString, float>("btagWP2016_postVFP", 0.6321));
+	floatConstants.insert(pair<TString, float>("btagWP2016_preVFP", 0.6001));
+	floatConstants.insert(pair<TString, float>("btagWP2016_postVFP", 0.5847));
 	floatConstants.insert(pair<TString, float>("btagWP2017",0.4506));
 	floatConstants.insert(pair<TString, float>("btagWP2018",0.4168));
 
