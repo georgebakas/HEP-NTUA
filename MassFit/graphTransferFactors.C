@@ -136,13 +136,13 @@ void graphTransferFactorsSpecific(TString year = "2016", bool bEnriched = false,
 	Double_t rYield_correction = tFactorData[0];
 
   	Double_t rYield_error = TMath::Sqrt(TMath::Power(integral[0] / (integralReduced[0] * integral[1]) * intErrorReduced[1], 2) +
-                             TMath::Power(integralReduced[1] / (integralReduced[0] * integral[1]) * intError[0]_error, 2) +
+                             TMath::Power((integralReduced[1] / (integralReduced[0] * integral[1])) * intError[0], 2) +
                              TMath::Power((integralReduced[1] * integral[0]) / (TMath::Power(integralReduced[0], 2) * integral[1]) * intErrorReduced[0], 2) +
                              TMath::Power((integralReduced[1] * integral[0]) / (integralReduced[0] * TMath::Power(integral[1], 2)) * intError[1], 2));
 
  	Double_t rYield_correction_error = TMath::Sqrt(TMath::Power(1 / integralData[0] * intErrorDataReduced[0], 2) +
                                                  TMath::Power(integralDataReduced[0] / TMath::Power(integralData[0], 2) * intErrorData[0], 2));
-  	error = TMath::Sqrt(TMath::Power(rYield_correction * rYield_error, 2) + TMath::Power(rYield * rYield_correction_error, 2));
+  	Double_t error = TMath::Sqrt(TMath::Power(rYield_correction * rYield_error, 2) + TMath::Power(rYield * rYield_correction_error, 2));
  	rYield = rYield * rYield_correction;
   	std::cout << variable << ": " << rYield << " " << error << std::endl;
 

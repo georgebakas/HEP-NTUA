@@ -10,13 +10,13 @@
 
 # Create all combined files for reduced and extended 
 # This step is needed only if you combine files BEFORE signal extraction!!!
-#./runCombineFiles.sh
+./runCombineFiles.sh
 
 # Create the mass fit signal templates from ttbar
-#./runCreateSignalTemplates.sh
+./runCreateSignalTemplates.sh
 
 # Create final Mass Fit for the 2 btag reduced region
-#./runMassFit.sh
+./runMassFit.sh
 
 # Create the signal extraction files (fiducial cross sections) for every year and variation
 ./runSignalExtraction.sh
@@ -29,4 +29,4 @@ root -l CombineFiducialMeasurements_new.cxx
 python3 CombineEfficiencyAcceptance.py
 
 # Unfolding Parton and Particle 
-python3 Unfold_Combined.py
+# python3 Unfold_Combined.py

@@ -8,7 +8,7 @@ void Contamination(TString year)
   //qcd template
   TFile *infQCDMC = TFile::Open(TString::Format("%s/Histo_QCD_HT300toInf_100.root", year.Data()));
   //ttbar
-  TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_NominalMC_100.root",year.Data()));  //nominal
+  TFile *infTTMC = TFile::Open(TString::Format("../VariationHandling/%s/Nominal/combined/Histo_1000_TT.root",year.Data()));  //nominal
   //TFile *infTTMC = TFile::Open(TString::Format("%s/Histo_TT_Mtt-700toInf_100.root",year.Data())); //mtt
   //subdominant bkgs
   TFile *infSubBkg = TFile::Open(TString::Format("%s/Histo_SubdominantBkgs_100.root",year.Data()));  //nominal
@@ -17,6 +17,7 @@ void Contamination(TString year)
   //get the histograms for all the variables:
   const int NVAR = 12;
   TString recoVarAll[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "jetY0","jetY1","chi", "cosTheta_0", "cosTheta_1", "mTop", "jetMassSoftDrop"};
+  TString recoVarAll_nomTT[NVAR] = {"jetPt0", "mJJ", "ptJJ", "yJJ", "jetPt1", "jetY0","jetY1","chi", "cosThjetEta0", "cosThjetEta1", "mTop_Leading", "mTop_Subleading"};
 
 
   TH1F *hData[NVAR], *hCR_tt[NVAR], *hCR_Subdominant[NVAR], *hDataBefore[NVAR], *hCR_QCD[NVAR];
@@ -27,8 +28,9 @@ void Contamination(TString year)
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
     TString recoVar = recoVarAll[ivar];
+    TString recoVarTT = recoVarAll_nomTT[ivar];
     hData[ivar] = (TH1F*)infData->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
-    hCR_tt[ivar] = (TH1F*)infTTMC->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
+    hCR_tt[ivar] = (TH1F*)infTTMC->Get(TString::Format("hWt_%s_0btag",recoVarTT.Data()));
     hCR_Subdominant[ivar] = (TH1F*)infSubBkg->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
     hCR_QCD[ivar] = (TH1F*)infQCDMC->Get(TString::Format("hWt_%s_0btag_expYield",recoVar.Data()));
 
