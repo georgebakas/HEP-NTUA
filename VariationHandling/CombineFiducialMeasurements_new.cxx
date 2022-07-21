@@ -1,4 +1,4 @@
-#include "BASE.h"
+//#include "BASE.h"
 
 #include <iostream>
 
@@ -6,6 +6,9 @@
 #include <TFile.h>
 #include <TH1F.h>
 #include <TGraph.h>
+#include <TCanvas.h> 
+#include <TLegend.h>
+#include <TMath.h> 
 
 #include "FinalResultsConstants.h"
 
@@ -184,8 +187,8 @@ void CombineFiducialMeasurements_new()
     TFile *outFile = new TFile("testFile_.root", "RECREATE");
     AnalysisConstants::initConstants();
 
-    TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-    //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+    //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+    TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
     baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
     // Define formats for Figures and Latex file

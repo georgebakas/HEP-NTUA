@@ -20,8 +20,8 @@
 #include "TGraphErrors.h"
 #include "TUnfold.h"
 #include "TUnfoldDensity.h"
-#include "../CMS_plots/tdrstyle.C"
 #include "../CMS_plots/CMS_lumi.C"
+#include "../CMS_plots/tdrstyle.C"
 
 using namespace std;
 
@@ -39,7 +39,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
 {
   bool isNorm = false;
   initFilesMapping();
-  setTDRStyle();
+  //setTDRStyle();
   gStyle->SetOptStat(0);
 
   TString tempFileName;
@@ -369,7 +369,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     int iPeriod = 4;
     int iPos = 0;
     writeExtraText=true;
-    CMS_lumi(closure_pad1, iPeriod, iPos);
+    CMS_lumi(closure_pad1, "combined", iPos);
 
     cout <<"after "<< hSignal_init->Integral() <<endl;
     outf->cd();

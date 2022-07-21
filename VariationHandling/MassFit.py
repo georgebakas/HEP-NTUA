@@ -18,5 +18,6 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/SignalTemplates_*.root'.form
 
     print(ifile, file_name)
     split_file_name = file_name.split('/')
-    os.system(f'root -l -b -q \'MassFitNew.C(\"{year}\",\"{weightType}\",\"{split_file_name[-1]}\")\'')
+    #os.system(f'root -l -b -q \'MassFitNew.C(\"{year}\",\"{weightType}\",\"{split_file_name[-1]}\")\'')
+    os.system(f'root -l \'MassFitNew.C(\"{year}\",\"{weightType}\",\"{split_file_name[-1]}\")\'')
     #break
