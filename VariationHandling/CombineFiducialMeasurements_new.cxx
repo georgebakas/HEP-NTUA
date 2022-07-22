@@ -139,7 +139,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     int iPeriod = 13;
     int iPos = 0;
     writeExtraText=true;
-    CMS_lumi(upperPad, iPeriod, iPos);
+    CMS_lumi(upperPad, "combined", iPos);
     }
 
     void AddSystematicToErrorBar(TH1F *nominal, TH1F *systematic)
@@ -187,8 +187,8 @@ void CombineFiducialMeasurements_new()
     TFile *outFile = new TFile("testFile_.root", "RECREATE");
     AnalysisConstants::initConstants();
 
-    //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-    TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+    TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+    //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
     baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
     // Define formats for Figures and Latex file
