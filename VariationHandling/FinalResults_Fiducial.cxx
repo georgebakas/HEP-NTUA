@@ -165,6 +165,7 @@ void FinalResults_Fiducial(bool normalized = true)
 {
     initFilesMapping();
     gStyle->SetOptStat(0);
+    cout<<"HERE:::"<<normalized<<endl;
     TString partonParticle = "Parton";
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     AnalysisConstants::initConstants();

@@ -145,12 +145,11 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, doub
   CMS_lumi(upperPad, "combined", 0);
 }
 
-void DrawWithChiSquare(TString subDir = "")
+void DrawWithChiSquare(TString partonParticle = "Parton", TString subDir = "")
 {
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
-  TString partonParticle = "Parton";
   TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
                                                   baseDir.Data(),
                                                   partonParticle.Data()));

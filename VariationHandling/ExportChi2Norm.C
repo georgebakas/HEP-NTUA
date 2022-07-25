@@ -9,12 +9,11 @@
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
 
-void ExportChi2Norm()
+void ExportChi2Norm(TString partonParticle = "Parton")
 {
     AnalysisConstants::initConstants();
     TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
     //TString baseDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/VariationHandling";
-    TString partonParticle = "Parton";
     
     TFile *resultsFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFileNorm.root",
                                                 baseDir.Data(),
