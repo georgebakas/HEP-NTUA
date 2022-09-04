@@ -10,8 +10,10 @@ for year in years:
 # void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR")
 
 # Final Results Fiducial
-norm = 'false'
-os.system(f'root -l -b -q \'FinalResults_Fiducial.cxx(\"{norm}\")\'')
+norms = ['false', 'true']
+for norm in norms:
+    os.system(f'root -l -b -q \'FinalResults_Fiducial.cxx(\"{norm}\")\'')
+    os.system(f'root -l -b -q \'Fiducial_Basic.C(\"{norm}\")\'')
 
 phase_space = ['Parton', 'Particle']
 

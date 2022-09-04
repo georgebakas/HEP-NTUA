@@ -29,4 +29,6 @@ root -l CombineFiducialMeasurements_new.cxx
 python3 CombineEfficiencyAcceptance.py
 
 # Unfolding Parton and Particle 
-# python3 Unfold_Combined.py
+python3 Unfold_Combined.py
+
+# now draw 
