@@ -51,7 +51,7 @@ namespace AnalysisConstants_UL
             {0., 2.},
             {0., 2.},
             {0., .06},//chi 
-            {0., .2}, //cosTheta0
+            {0., .3}, //cosTheta0
             {0., .2}}; //cosTheta1;
 
         std::vector<std::vector<float>> particleYAxisValues = {

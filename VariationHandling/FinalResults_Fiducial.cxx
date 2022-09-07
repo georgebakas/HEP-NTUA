@@ -161,7 +161,7 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     }
     }
 
-void FinalResults_Fiducial(bool normalized = true)
+void FinalResults_Fiducial(bool normalized = false)
 {
     initFilesMapping();
     gStyle->SetOptStat(0);
@@ -181,7 +181,7 @@ void FinalResults_Fiducial(bool normalized = true)
     TFile *nominalAmcAtNloFile = TFile::Open(TString::Format(
                             "../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
 
-    for (unsigned int v = 0; v < AnalysisConstants::variables.size(); v++)
+    for (unsigned int v = 0; v < AnalysisConstants::variables.size()-1; v++)
     {   
         TString variable = AnalysisConstants::variables[v];
 
@@ -241,9 +241,22 @@ void FinalResults_Fiducial(bool normalized = true)
 
             //if (tempVariation.Contains("JES")) continue;
 
+            if (variation.Contains("pdfVariation1")) continue;
+            if (variation.Contains("pdfVariation35")) continue;
+            if (variation.Contains("pdfVariation40")) continue;
+            if (variation.Contains("pdfVariation56")) continue;
+            if (variation.Contains("pdfVariation42")) continue;
+            if (variation.Contains("pdfVariation57")) continue;
+            if (variation.Contains("pdfVariation58")) continue;
+            if (variation.Contains("pdfVariation62")) continue;
             if (variation.Contains("pdfVariation99")) continue;
+            if (variation.Contains("pdfVariation59")) continue;
             if (variation.Contains("pdfVariation98")) continue;
+            if (variation.Contains("pdfVariation76")) continue;
             if (variation.Contains("pdfVariation100")) continue;
+            if (variation.Contains("pdfVariation69")) continue;
+            if (variation.Contains("pdfVariation83")) continue;
+            if (variation.Contains("pdfVariation86")) continue;
 
             /* cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
