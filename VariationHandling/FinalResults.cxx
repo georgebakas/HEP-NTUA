@@ -12,15 +12,15 @@
 
 void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized, TString partonParticle)
 {
-    std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue};
-    std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue};
-    std::vector<Int_t> markerStyle = {20, 1, 1, 1, 1, 1};
-    std::vector<int> fillStyles = {1001, 1001, 3675, 3675, 3257, 3257};
-    std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME E2", "SAME", "SAME E2", "SAME"};
-    std::vector<bool> drawRatio = {true, true, true, true, true, true};
-    std::vector<bool> putInLegend = {true, true, true, true, true, true};
-    std::vector<TString> legendTitles = {"Data", "Total unc.", "amc@NLO+Pythia8", "amc@NLO+Pythia8 unc","Powheg+Pythia8", "Powheg+Pythia8 unc"};
-    std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
+    std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue, kGreen, kGreen};
+    std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue, kGreen, kGreen};
+    std::vector<Int_t> markerStyle = {20, 1, 1, 1, 1, 1, 1, 1};
+    std::vector<int> fillStyles = {1001, 1001, 3675, 3675, 3257, 3257, 3257, 3257};
+    std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME E2", "SAME", "SAME E2", "SAME", "SAME E2", "SAME"};
+    std::vector<bool> drawRatio = {true, true, true, true, true, true, true, true};
+    std::vector<bool> putInLegend = {true, true, true, true, true, true, true, true};
+    std::vector<TString> legendTitles = {"Data", "Total unc.", "amc@NLO+Pythia8", "amc@NLO+Pythia8 unc","Powheg+Pythia8", "Powheg+Pythia8 unc", "Powheg+Herwigpp", "Powheg+Herwigpp unc"};
+    std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f", "EL", "f"};
 
     TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
     upperPad->SetBottomMargin(0.05);
@@ -207,11 +207,10 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
     CheckAndCreateDirectory("results");
 
     TString theoryYear = "2018";
-
-    //TFile *nominalAmcAtNloFile = TFile::Open("../VariationHandling_Theory_amc@NLO/testFile_TheoryParton.root");
-
     TFile *nominalAmcAtNloFile = TFile::Open(TString::Format(
                             "../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
+    TFile *nominalHerwigFile = TFile::Open(TString::Format(
+                            "../VariationHandling_Theory_herwig/%s/Nominal/Histograms_TT.root", theoryYear.Data()));
 
     for (unsigned int v = 0; v < AnalysisConstants::unfoldingVariables.size(); v++)
     {   
@@ -232,10 +231,7 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
         TH1F *finalTheory = (TH1F *)theoryHistogram->Clone(TString::Format("FinalTheory%s_%s",
                                                                         (normalized ? "Norm" : ""),
                                                                         variable.Data()));
-
-        //TH1F *theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("combined_%s", 
-        //                                                                variable.Data()));
-        
+        // AMC@NLO 
         TH1F *theoryAmcAtNloHistogram;
         if (partonParticle.EqualTo("Parton")) theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParton_%s", 
                                                                 AnalysisConstants::partonVariables[v].Data()));
@@ -243,13 +239,29 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                                         AnalysisConstants::particleVariables[v].Data()));
         
         theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+
+        // Herwig samples
+        TH1F *theoryherwigHistogram;
+        if (partonParticle.EqualTo("Parton")) theoryherwigHistogram = (TH1F *)nominalHerwigFile->Get(TString::Format("hParton_%s", 
+                                                                AnalysisConstants::partonVariables[v].Data()));
+        else theoryherwigHistogram = (TH1F *)nominalHerwigFile->Get(TString::Format("hParticle_%s", 
+                                        AnalysisConstants::particleVariables[v].Data()));
+        
+        theoryherwigHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+
         float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
+        float_t herwigYield = theoryherwigHistogram->Integral();
         if (normalized)
         {
             theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
+            theoryherwigHistogram->Scale(1 / herwigYield);
         }
 
         TH1F *finalTheoryAmcAtNlo = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNlo%s_%s",
+                                                                            (normalized ? "Norm" : ""),
+                                                                            variable.Data()));
+        
+        TH1F *finalTheoryHerwig = (TH1F *)theoryherwigHistogram->Clone(TString::Format("FinalTheoryHerwig%s_%s",
                                                                             (normalized ? "Norm" : ""),
                                                                             variable.Data()));
 
@@ -279,8 +291,7 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             if (variation.Contains("pdf_99")) continue;
             if (variation.Contains("pdf_98")) continue;
             if (variation.Contains("pdf_100")) continue;
-            
-            /*if (variation.Contains("pdf_1")) continue;
+            if (variation.Contains("pdf_1")) continue;
             if (variation.Contains("pdf_35")) continue;
             if (variation.Contains("pdf_40")) continue;
             if (variation.Contains("pdf_56")) continue;
@@ -294,7 +305,7 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             if (variation.Contains("pdf_42")) continue;
             if (variation.Contains("pdf_58")) continue;
             if (variation.Contains("pdf_69")) continue;
-            if (variation.Contains("pdf_93")) continue; */
+            if (variation.Contains("pdf_93")) continue; 
 
             cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
@@ -369,7 +380,69 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                 }
                 AddSystematicToErrorBar(finalTheoryAmcAtNlo, variationTheoryAmcAtNlo);
                 variationTheoryAmcAtNloFile->Close();
+
+                // --------------------------------------------------------------------------------------------------------------------------------------------------                
+                //now the same for the herwig samples
+                // --------------------------------------------------------------------------------------------------------------------------------------------------                
+                TFile *variationTheoryHerwigFile = TFile::Open(TString::Format(
+                                        "../VariationHandling_Theory_Herwig/%s/%s/Histograms_TT_%s.root",
+                                        theoryYear.Data(),
+                                        tempVariation.Data(),
+                                        variation.Data()));
+                TH1F *variationTheoryHerwig;
+                if (partonParticle.EqualTo("Parton")) variationTheoryHerwig = (TH1F *)variationTheoryHerwigFile->Get(TString::Format("hParton_%s_%s", 
+                                                                        AnalysisConstants::partonVariables[v].Data(),
+                                                                        variation.Data()));
+                else variationTheoryHerwig = (TH1F *)variationTheoryHerwigFile->Get(TString::Format("hParticle_%s_%s", 
+                                                AnalysisConstants::particleVariables[v].Data(),
+                                                variation.Data()));
+                
+                //if((/*variation.Contains("scale_3") || variation.Contains("scale_5") || */variation.Contains("scale_9")) 
+                //    && (AnalysisConstants::partonVariables[v].Contains("chi") || AnalysisConstants::partonVariables[v].Contains("cos")))
+                //    continue;
+                
+                variationTheoryHerwig->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+                
+                float_t variationTheoryHerwigYield = variationTheoryHerwig->Integral();
+                // gb has already scaled
+                if (normalized)
+                {
+                    variationTheoryHerwig->Scale(1 / variationTheoryHerwigYield);
+                }
+                AddSystematicToErrorBar(finalTheoryHerwig, variationTheoryHerwig);
+                variationTheoryHerwigFile->Close();
             }
+
+            /*
+            if (tempVariation.EqualTo("PSWeights"))
+            {
+                // --------------------------------------------------------------------------------------------------------------------------------------------------                
+                //now the same for the herwig samples
+                // --------------------------------------------------------------------------------------------------------------------------------------------------                
+                TFile *variationTheoryHerwigFile = TFile::Open(TString::Format(
+                                        "../VariationHandling_Theory_Herwig/%s/%s/Histograms_TT_%s.root",
+                                        theoryYear.Data(),
+                                        tempVariation.Data(),
+                                        variation.Data()));
+                TH1F *variationTheoryHerwig;
+                if (partonParticle.EqualTo("Parton")) variationTheoryHerwig = (TH1F *)variationTheoryHerwigFile->Get(TString::Format("hParton_%s_%s", 
+                                                                        AnalysisConstants::partonVariables[v].Data(),
+                                                                        variation.Data()));
+                else variationTheoryHerwig = (TH1F *)variationTheoryHerwigFile->Get(TString::Format("hParticle_%s_%s", 
+                                                AnalysisConstants::particleVariables[v].Data(),
+                                                variation.Data()));
+                
+                variationTheoryHerwig->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+                
+                float_t variationTheoryHerwigYield = variationTheoryHerwig->Integral();
+                // gb has already scaled
+                if (normalized)
+                {
+                    variationTheoryHerwig->Scale(1 / variationTheoryHerwigYield);
+                }
+                AddSystematicToErrorBar(finalTheoryHerwig, variationTheoryHerwig);
+                variationTheoryHerwigFile->Close();
+            } */
             
         }
         if (variable.Contains("jetY") && !normalized)
@@ -380,11 +453,16 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             theoryHistogram->Scale(0.5);
             finalTheoryAmcAtNlo->Scale(0.5);
             theoryAmcAtNloHistogram->Scale(0.5);
+            finalTheoryHerwig->Scale(0.5);
+            theoryherwigHistogram->Scale(0.5);
+
         }
         c1->cd();
         TH1F *theoryHistogramValue = (TH1F *)theoryHistogram->Clone(TString::Format("theoryHistogramValue%s",
                                                                                     (normalized ? "_normalized" : "")));
         TH1F *theoryAmcAtNloHistogramValue = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("theoryAmcAtNloHistogramValue%s",
+                                                                                                    (normalized ? "_normalized" : "")));
+        TH1F *theoryHerwigHistogramValue = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("theoryHerwigHistogramValue%s",
                                                                                                     (normalized ? "_normalized" : "")));
         std::vector<TH1F *> histogramsToDraw;
         histogramsToDraw.push_back(finalResult);
@@ -393,6 +471,8 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
         histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
         histogramsToDraw.push_back(finalTheory);
         histogramsToDraw.push_back(theoryHistogramValue);
+        histogramsToDraw.push_back(finalTheoryHerwig);
+        histogramsToDraw.push_back(theoryHerwigHistogramValue);
         DrawWithRatio(c1, histogramsToDraw, v, normalized, partonParticle);
         
         TString draw_name;
@@ -421,7 +501,9 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
         finalResult->Write((TString::Format("FinalResult_%s", variable.Data())));
         nominalHistogram->Write((TString::Format("nominalHistogram%s", variable.Data())));
         finalTheoryAmcAtNlo->Write((TString::Format("finalTheoryAmcAtNlo%s", variable.Data())));
+        finalTheoryHerwig->Write((TString::Format("finalTheoryHerwig%s", variable.Data())));
         theoryAmcAtNloHistogramValue->Write((TString::Format("theoryAmcAtNloHistogramValue%s", variable.Data())));
+        theoryHerwigHistogramValue->Write((TString::Format("theoryHerwigHistogramValue%s", variable.Data())));
         finalTheory->Write((TString::Format("finalTheory%s", variable.Data())));
         theoryHistogramValue->Write((TString::Format("theoryHistogramValue%s", variable.Data())));
     }
