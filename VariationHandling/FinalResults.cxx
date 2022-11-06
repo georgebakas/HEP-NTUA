@@ -12,16 +12,17 @@
 
 void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool isNormalized, TString partonParticle)
 {
-    std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue, kGreen, kGreen};
-    std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue, kGreen, kGreen};
+    std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kGreen, kGreen, kBlue, kBlue};
+    std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kGreen, kGreen, kBlue, kBlue};
     std::vector<Int_t> markerStyle = {20, 1, 1, 1, 1, 1, 1, 1};
-    std::vector<int> fillStyles = {1001, 1001, 3675, 3675, 3257, 3257, 3257, 3257};
-    std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME E2", "SAME", "SAME E2", "SAME", "SAME E2", "SAME"};
-    std::vector<bool> drawRatio = {true, true, true, true, true, true, true, true};
-    std::vector<bool> putInLegend = {true, true, true, true, true, true, true, true};
-    std::vector<TString> legendTitles = {"Data", "Total unc.", "amc@NLO+Pythia8", "amc@NLO+Pythia8 unc","Powheg+Pythia8", "Powheg+Pythia8 unc", "Powheg+Herwigpp", "Powheg+Herwigpp unc"};
+    std::vector<int> fillStyles = {1001, 1001, 3475, 3475, 3495, 3495, 3457, 3457};
+    std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME EP", "SAME", "SAME EP", "SAME", "SAME EP", "SAME"};
+    std::vector<bool> drawRatio = {true, true, true, false, true, false, true, false};
+    std::vector<bool> putInLegend = {true, true, true, false, true, false, true, false};
+    std::vector<TString> legendTitles = {"Data", "Total unc.", "amc@NLO+Pythia8", "amc@NLO+Pythia8 unc", "Herwig", "Herwig unc", "Powheg+Pythia8", "Powheg+Pythia8 unc"};
     std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f", "EL", "f"};
 
+    
     TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
     upperPad->SetBottomMargin(0.05);
     upperPad->Draw();
@@ -108,35 +109,94 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
             hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
                                     AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
         }
-        hist->Draw(drawOptions[i]);
+
+        if (i < 2) {
+            hist->Draw(drawOptions[i]);
+        }
+        else {
+            if (i % 2 == 0)
+            {
+                TGraphAsymmErrors *gr = new TGraphAsymmErrors(hist->GetNbinsX());
+
+                for (int j = 1; j <= hist->GetNbinsX(); j++)
+                {
+                float binWidth = hist->GetBinWidth(j);
+                float x = hist->GetBinLowEdge(j) + binWidth / 3. * (i / 2);
+                if (x == hist->GetBinLowEdge(j + 1))
+                {
+                    x -= binWidth / 10.;
+                }
+                gr->SetPoint(j, x, hist->GetBinContent(j));
+                gr->SetPointEXhigh(j, 0);
+                gr->SetPointEXlow(j, 0);
+                gr->SetPointEYhigh(j, hist->GetBinError(j));
+                gr->SetPointEYlow(j, hist->GetBinError(j));
+                }
+                gr->SetMarkerStyle(hist->GetMarkerStyle());
+                gr->SetMarkerColor(hist->GetMarkerColor());
+                gr->SetLineColor(hist->GetLineColor());
+                gr->Draw(drawOptions[i]);
+            }
+        }
+        // hist->Draw(drawOptions[i]);
 
         can->cd();
         lowerPad->cd();
 
         if (drawRatio[i])
         {
-        ratio->GetYaxis()->SetRangeUser(-2, 2);
-        ratio->GetYaxis()->SetNdivisions(505);
-        ratio->GetYaxis()->SetLabelSize(0.1);
-        ratio->GetYaxis()->SetTitle("The./data - 1");
-        ratio->GetYaxis()->SetTitleSize(0.115);
-        ratio->GetYaxis()->SetTitleOffset(0.35);
-        ratio->GetYaxis()->CenterTitle(true);
-        ratio->GetXaxis()->SetTitleSize(0.115);
-        ratio->GetXaxis()->SetTitleOffset(1.);
-        ratio->GetXaxis()->SetLabelSize(0.12);
-        ratio->GetXaxis()->SetLabelOffset(0.015);
-        if (partonParticle.EqualTo("Parton")){
-            ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
-            ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
-                                            AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
-        }
-        else{
-            ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
-            ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
-                                            AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
-        }
-        ratio->Draw(drawOptions[i]);
+            ratio->GetYaxis()->SetRangeUser(-2, 2);
+            ratio->GetYaxis()->SetNdivisions(505);
+            ratio->GetYaxis()->SetLabelSize(0.1);
+            ratio->GetYaxis()->SetTitle("The./data - 1");
+            ratio->GetYaxis()->SetTitleSize(0.115);
+            ratio->GetYaxis()->SetTitleOffset(0.35);
+            ratio->GetYaxis()->CenterTitle(true);
+            ratio->GetXaxis()->SetTitleSize(0.115);
+            ratio->GetXaxis()->SetTitleOffset(1.);
+            ratio->GetXaxis()->SetLabelSize(0.12);
+            ratio->GetXaxis()->SetLabelOffset(0.015);
+            if (partonParticle.EqualTo("Parton")){
+                ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
+                ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
+                                                AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+            }
+            else{
+                ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
+                ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                                AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+            }
+            
+            if (i < 2) {
+                ratio->Draw(drawOptions[i]);
+            }
+            else {
+                TGraphAsymmErrors *gr = new TGraphAsymmErrors(ratio->GetNbinsX());
+
+                for (int j = 1; j <= ratio->GetNbinsX(); j++)
+                {
+                float binWidth = ratio->GetBinWidth(j);
+                float x = ratio->GetBinLowEdge(j) + binWidth / 3. * (i / 2);
+                if (x == ratio->GetBinLowEdge(j + 1))
+                {
+                    x -= binWidth / 10.;
+                }
+                gr->SetPoint(j, x, ratio->GetBinContent(j));
+                gr->SetPointEXhigh(j, 0);
+                gr->SetPointEXlow(j, 0);
+                gr->SetPointEYhigh(j, ratio->GetBinError(j));
+                gr->SetPointEYlow(j, ratio->GetBinError(j));
+                }
+                gr->SetMarkerStyle(ratio->GetMarkerStyle());
+                gr->SetMarkerColor(ratio->GetMarkerColor());
+                gr->SetLineColor(ratio->GetLineColor());
+                gr->Draw(drawOptions[i]);
+            }
+            if (i > 2 && (i % 2 != 0))
+            {
+            continue;
+            }
+            // ratio->Draw(drawOptions[i]);
         }
 
         if (putInLegend[i])
