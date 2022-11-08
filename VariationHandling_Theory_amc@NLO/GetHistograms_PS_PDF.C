@@ -172,10 +172,6 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
     trIN->SetBranchAddress("genjetMassSoftDrop", &genjetMassSoftDrop);
 
 
-  float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-	float weights = XSEC/norm;
-
-
   //declare the histograms
   //trIN->GetEntry(1);
   int weightsSize(1);
@@ -192,6 +188,17 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
   {
     for(int iweight=0; iweight<weightsSize; iweight++)
     {
+      float norm; 
+      if(weightType.EqualTo("PSWeights")) {
+        norm = ((TH1F*)file->Get(TString::Format("eventCounter/GenEventWeight_psWeight%d", iweight)))->GetSumOfWeights();
+      }
+      else if (weightType.EqualTo("PDFWeights")) {
+        norm = ((TH1F*)file->Get(TString::Format("eventCounter/GenEventWeight_pdfWeight%d", iweight+1)))->GetSumOfWeights();
+      }
+      else {
+        norm = ((TH1F*)file->Get(TString::Format("eventCounter/GenEventWeight_scaleWeight%d", iweight+1)))->GetSumOfWeights();
+      }
+      float weights = XSEC/norm;
       TString weightName;
       if(weightType.EqualTo("PSWeights")) weightName = ps_weights[iweight];
       else if(weightType.EqualTo("PDFWeights")) weightName = pdf_weights[iweight];
@@ -549,6 +556,17 @@ void GetHistograms_PS_PDF(TString file_name, TString ttbar_process, TString year
   {
     for(int iweight=0; iweight<weightsSize; iweight++)
     {
+      float norm; 
+      if(weightType.EqualTo("PSWeights")) {
+        norm = ((TH1F*)file->Get(TString::Format("eventCounter/GenEventWeight_psWeight%d", iweight)))->GetSumOfWeights();
+      }
+      else if (weightType.EqualTo("PDFWeights")) {
+        norm = ((TH1F*)file->Get(TString::Format("eventCounter/GenEventWeight_pdfWeight%d", iweight+1)))->GetSumOfWeights();
+      }
+      else {
+        norm = ((TH1F*)file->Get(TString::Format("eventCounter/GenEventWeight_scaleWeight%d", iweight+1)))->GetSumOfWeights();
+      }
+      float weights = XSEC/norm;
       hReco[iweight][ivar]->Scale(weights*LUMI);
       hParticle[iweight][ivar]->Scale(weights*LUMI);
 
