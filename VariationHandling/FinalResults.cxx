@@ -126,11 +126,11 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 {
                     x -= binWidth / 10.;
                 }
-                gr->SetPoint(j, x, hist->GetBinContent(j));
-                gr->SetPointEXhigh(j, 0);
-                gr->SetPointEXlow(j, 0);
-                gr->SetPointEYhigh(j, hist->GetBinError(j));
-                gr->SetPointEYlow(j, hist->GetBinError(j));
+                gr->SetPoint(j - 1, x, hist->GetBinContent(j));
+                gr->SetPointEXhigh(j - 1, 0);
+                gr->SetPointEXlow(j - 1, 0);
+                gr->SetPointEYhigh(j - 1, hist->GetBinError(j));
+                gr->SetPointEYlow(j - 1, hist->GetBinError(j));
                 }
                 gr->SetMarkerStyle(hist->GetMarkerStyle());
                 gr->SetMarkerColor(hist->GetMarkerColor());
@@ -181,11 +181,11 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                 {
                     x -= binWidth / 10.;
                 }
-                gr->SetPoint(j, x, ratio->GetBinContent(j));
-                gr->SetPointEXhigh(j, 0);
-                gr->SetPointEXlow(j, 0);
-                gr->SetPointEYhigh(j, ratio->GetBinError(j));
-                gr->SetPointEYlow(j, ratio->GetBinError(j));
+                gr->SetPoint(j - 1, x, ratio->GetBinContent(j));
+                gr->SetPointEXhigh(j - 1, 0);
+                gr->SetPointEXlow(j - 1, 0);
+                gr->SetPointEYhigh(j - 1, ratio->GetBinError(j));
+                gr->SetPointEYlow(j - 1, ratio->GetBinError(j));
                 }
                 gr->SetMarkerStyle(ratio->GetMarkerStyle());
                 gr->SetMarkerColor(ratio->GetMarkerColor());
@@ -226,8 +226,8 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
     CMS_lumi(upperPad, "combined", iPos);
     }
 
-    void AddSystematicToErrorBar(TH1F *nominal, TH1F *systematic)
-    {
+void AddSystematicToErrorBar(TH1F *nominal, TH1F *systematic)
+{
     for (int bin = 1; bin <= nominal->GetNbinsX(); bin++)
     {
         float nominalValue = nominal->GetBinContent(bin);
@@ -242,7 +242,48 @@ void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, bool
                                 TMath::Power(difference, 2));
         nominal->SetBinError(bin, error);
     }
+}
+
+void CalcualteSystematicUncertainty(TH1F* nominal, TH1F *systematic, TH1F *systematicUp, TH1F* systematicDown)
+{
+    for (int bin = 0; bin < nominal->GetNbinsX(); bin++)
+    {
+        double nominalValue = nominal->GetBinContent(bin + 1);
+        double nominalError = nominal->GetBinError(bin + 1);
+        double variationValue = systematic->GetBinContent(bin + 1);
+        double variationErrorUp = systematicUp->GetBinContent(bin + 1);
+        double variationErrorDown = systematicDown->GetBinContent(bin + 1);
+        double variation = variationValue - nominalValue;
+
+        if(variation != 0)
+        {
+            if(variation > 0)
+                systematicUp->SetBinContent(bin + 1, variationErrorUp + (variation * variation));
+            else
+                systematicDown->SetBinContent(bin + 1, variationErrorUp + (variation * variation));
+        }
     }
+}
+
+void InitSystematicHistogram(TH1F* histogram, TH1F* systematicHistogram)
+{
+    systematicHistogram->Reset();
+    for (int bin = 0; bin < histogram->GetNbinsX(); bin++)
+    {
+        systematicHistogram->SetBinContent(bin + 1, histogram->GetBinError(bin + 1) * histogram->GetBinError(bin + 1));
+    }
+}
+
+void CalculateTotalSystematicUncertainty(TH1F* histogram, TH1F* varationUp, TH1F* variationDown)
+{
+    for (int bin = 0; bin < histogram->GetNbinsX(); bin++)
+    {
+        double errorUp = TMath::Sqrt(varationUp->GetBinContent(bin + 1));
+        double errorDown = TMath::Sqrt(variationDown->GetBinContent(bin + 1));
+        histogram->SetBinError(bin + 1, 0.5 * (errorUp + errorDown));
+    }
+}
+
 
 void FinalResults(TString partonParticle = "Parton", bool normalized = false)
 {
@@ -284,15 +325,34 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                                                                         (normalized ? "Norm" : "Final"), 
                                                                         variable.Data()));
 
+        TH1F *finalResultUp = (TH1F *)nominalHistogram->Clone(TString::Format("FinalResultErrorUp_%s%s",
+                                                                        variable.Data(),
+                                                                        (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(finalResult, finalResultUp);
+        TH1F *finalResultDown = (TH1F *)nominalHistogram->Clone(TString::Format("FinalResultErrorDown_%s%s",
+                                                                            variable.Data(),
+                                                                            (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(finalResult, finalResultDown);
+
         TH1F *theoryHistogram = (TH1F *)nominalFile->Get(TString::Format("hTheory%s_%s",
                                                                         (normalized ? "Norm" : ""),
                                                                         variable.Data()));
+
+        TH1F* theoryHistogrampUp = (TH1F *)theoryHistogram->Clone(TString::Format("FinalTheoryErrorUp_%s%s",
+                                                                        variable.Data(),
+                                                                        (normalized ? "_normalized" : "")));
+        
+        InitSystematicHistogram(theoryHistogram, theoryHistogrampUp);
+        TH1F* theoryHistogrampDown = (TH1F *)theoryHistogram->Clone(TString::Format("FinalTheoryErrorDown_%s%s",
+                                                                        variable.Data(),
+                                                                        (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(theoryHistogram, theoryHistogrampDown);
 
         TH1F *finalTheory = (TH1F *)theoryHistogram->Clone(TString::Format("FinalTheory%s_%s",
                                                                         (normalized ? "Norm" : ""),
                                                                         variable.Data()));
         // AMC@NLO 
-        TH1F *theoryAmcAtNloHistogram;
+        TH1F *theoryAmcAtNloHistogram, *theoryAmcAtNloHistogramUp, *theoryAmcAtNloHistogramDown;
         if (partonParticle.EqualTo("Parton")) theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParton_%s", 
                                                                 AnalysisConstants::partonVariables[v].Data()));
         else theoryAmcAtNloHistogram = (TH1F *)nominalAmcAtNloFile->Get(TString::Format("hParticle_%s", 
@@ -301,29 +361,47 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
         theoryAmcAtNloHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
 
         // Herwig samples
-        TH1F *theoryherwigHistogram;
-        if (partonParticle.EqualTo("Parton")) theoryherwigHistogram = (TH1F *)nominalHerwigFile->Get(TString::Format("hParton_%s", 
+        TH1F *theoryHerwigHistogram, *theoryHerwigHistogramDown, *theoryHerwigHistogramUp;
+        if (partonParticle.EqualTo("Parton")) theoryHerwigHistogram = (TH1F *)nominalHerwigFile->Get(TString::Format("hParton_%s", 
                                                                 AnalysisConstants::partonVariables[v].Data()));
-        else theoryherwigHistogram = (TH1F *)nominalHerwigFile->Get(TString::Format("hParticle_%s", 
+        else theoryHerwigHistogram = (TH1F *)nominalHerwigFile->Get(TString::Format("hParticle_%s", 
                                         AnalysisConstants::particleVariables[v].Data()));
         
-        theoryherwigHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+        theoryHerwigHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
 
         float_t theoryAmcAtNloYield = theoryAmcAtNloHistogram->Integral();
-        float_t herwigYield = theoryherwigHistogram->Integral();
+        float_t herwigYield = theoryHerwigHistogram->Integral();
         if (normalized)
         {
             theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
-            theoryherwigHistogram->Scale(1 / herwigYield);
+            theoryHerwigHistogram->Scale(1 / herwigYield);
         }
 
         TH1F *finalTheoryAmcAtNlo = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNlo%s_%s",
                                                                             (normalized ? "Norm" : ""),
                                                                             variable.Data()));
+
+        theoryAmcAtNloHistogramUp = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNloErrorUp_%s%s",
+                                                                                            variable.Data(),
+                                                                                            (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(theoryAmcAtNloHistogram, theoryAmcAtNloHistogramUp);
+        theoryAmcAtNloHistogramDown = (TH1F *)theoryAmcAtNloHistogram->Clone(TString::Format("FinalTheoryAmcAtNloErrorDown_%s%s",
+                                                                                                variable.Data(),
+                                                                                                (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(theoryAmcAtNloHistogram, theoryAmcAtNloHistogramDown);
         
-        TH1F *finalTheoryHerwig = (TH1F *)theoryherwigHistogram->Clone(TString::Format("FinalTheoryHerwig%s_%s",
+        TH1F *finalTheoryHerwig = (TH1F *)theoryHerwigHistogram->Clone(TString::Format("FinalTheoryHerwig%s_%s",
                                                                             (normalized ? "Norm" : ""),
                                                                             variable.Data()));
+
+        theoryHerwigHistogramUp = (TH1F *)theoryHerwigHistogram->Clone(TString::Format("FinalTheoryHerwigErrorUp_%s%s",
+                                                                                            variable.Data(),
+                                                                                            (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(theoryHerwigHistogram, theoryHerwigHistogramUp);
+        theoryHerwigHistogramDown = (TH1F *)theoryHerwigHistogram->Clone(TString::Format("FinalTheoryHerwigErrorDown_%s%s",
+                                                                                                variable.Data(),
+                                                                                                (normalized ? "_normalized" : "")));
+        InitSystematicHistogram(theoryHerwigHistogram, theoryHerwigHistogramDown);
 
         TCanvas *c1 = new TCanvas(TString::Format("FinalResult_%s",
                                                 variable.Data()),
@@ -381,7 +459,8 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             TH1F *variationHistogram = (TH1F *)variationFile->Get(TString::Format("hUnfold%s_%s",
                                                                             (normalized ? "Norm" : "Final"), 
                                                                             variable.Data()));
-            AddSystematicToErrorBar(finalResult, variationHistogram);
+            // AddSystematicToErrorBar(finalResult, variationHistogram);
+            CalcualteSystematicUncertainty(finalResult, variationHistogram, finalResultUp, finalResultDown);
             /*
             if (tempVariation.Contains("JES")) continue;
             if (tempVariation.Contains("bTagVariation")) continue;
@@ -392,16 +471,15 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                                                                             (normalized ? "Norm" : ""),
                                                                             variable.Data()));
 
-            AddSystematicToErrorBar(finalTheory, variationTheory);
+            // AddSystematicToErrorBar(finalTheory, variationTheory);
+            CalcualteSystematicUncertainty(finalTheory, variationTheory, theoryHistogrampUp, theoryHistogrampDown);
             variationFile->Close();
             // check AMC@NLO pdf and scale 
             if (variation.Contains("pdf") ||
-                variation.Contains("scale")
-            )
+                variation.Contains("scale") || variation.Contains("ps"))
             {   
                 if (tempVariation.EqualTo("JES")) continue;
-                if (tempVariation.EqualTo("PSWeights")) continue;
-                
+                //if (tempVariation.EqualTo("PSWeights")) continue;
                 
                 TFile *variationTheoryAmcAtNloFile = TFile::Open(TString::Format(
                                         "../VariationHandling_Theory_amc@NLO/%s/%s/Histograms_TTJets_%s.root",
@@ -419,12 +497,12 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                 else variationTheoryAmcAtNlo = (TH1F *)variationTheoryAmcAtNloFile->Get(TString::Format("hParticle_%s_%s", 
                                                 AnalysisConstants::particleVariables[v].Data(),
                                                 variation.Data()));
-                
+                /*
                 if (variation.Contains("pdf") ||
                     variation.Contains("scale"))
                 {
                     variationTheoryAmcAtNlo->Scale(2.);
-                } 
+                } */
                 if((/*variation.Contains("scale_3") || variation.Contains("scale_5") || */variation.Contains("scale_9")) 
                     && (AnalysisConstants::partonVariables[v].Contains("chi") || AnalysisConstants::partonVariables[v].Contains("cos")))
                     continue;
@@ -438,9 +516,10 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                 {
                     variationTheoryAmcAtNlo->Scale(1 / variationTheoryAmcAtNloYield);
                 }
-                AddSystematicToErrorBar(finalTheoryAmcAtNlo, variationTheoryAmcAtNlo);
+                // AddSystematicToErrorBar(finalTheoryAmcAtNlo, variationTheoryAmcAtNlo);
+                CalcualteSystematicUncertainty(finalTheoryAmcAtNlo, variationTheoryAmcAtNlo, theoryAmcAtNloHistogramUp, theoryAmcAtNloHistogramDown);
                 variationTheoryAmcAtNloFile->Close();
-
+                
                 // --------------------------------------------------------------------------------------------------------------------------------------------------                
                 //now the same for the herwig samples
                 // --------------------------------------------------------------------------------------------------------------------------------------------------                
@@ -469,7 +548,8 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
                 {
                     variationTheoryHerwig->Scale(1 / variationTheoryHerwigYield);
                 }
-                AddSystematicToErrorBar(finalTheoryHerwig, variationTheoryHerwig);
+                // AddSystematicToErrorBar(finalTheoryHerwig, variationTheoryHerwig);
+                CalcualteSystematicUncertainty(finalTheoryHerwig, variationTheoryHerwig, theoryHerwigHistogramUp, theoryHerwigHistogramDown);
                 variationTheoryHerwigFile->Close();
             }
 
@@ -514,7 +594,7 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             finalTheoryAmcAtNlo->Scale(0.5);
             theoryAmcAtNloHistogram->Scale(0.5);
             finalTheoryHerwig->Scale(0.5);
-            theoryherwigHistogram->Scale(0.5);
+            theoryHerwigHistogram->Scale(0.5);
 
         }
         c1->cd();
@@ -527,12 +607,21 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
         std::vector<TH1F *> histogramsToDraw;
         histogramsToDraw.push_back(finalResult);
         histogramsToDraw.push_back(nominalHistogram);
+
+        // now amc@nlo 
+        CalculateTotalSystematicUncertainty(finalTheoryAmcAtNlo, theoryAmcAtNloHistogramUp, theoryAmcAtNloHistogramDown);
         histogramsToDraw.push_back(finalTheoryAmcAtNlo);
         histogramsToDraw.push_back(theoryAmcAtNloHistogramValue);
-        histogramsToDraw.push_back(finalTheory);
-        histogramsToDraw.push_back(theoryHistogramValue);
+        // now herwig 
+        CalculateTotalSystematicUncertainty(finalTheoryHerwig, theoryHerwigHistogramUp, theoryHerwigHistogramDown);
         histogramsToDraw.push_back(finalTheoryHerwig);
         histogramsToDraw.push_back(theoryHerwigHistogramValue);
+        
+        // now theory 
+        CalculateTotalSystematicUncertainty(finalTheory, theoryHistogrampUp, theoryHistogrampDown);
+        histogramsToDraw.push_back(finalTheory);
+        histogramsToDraw.push_back(theoryHistogramValue);
+        
         DrawWithRatio(c1, histogramsToDraw, v, normalized, partonParticle);
         
         TString draw_name;
