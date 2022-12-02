@@ -163,17 +163,17 @@ void initGlobals(TString year)
   initHistoNames(year);
 }
 
-void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
+void TagAndProbe(TString y="2016_preVFP", int sel = 0)
 {
   year =y;
-  initFilesMapping(isLoose);
+  initFilesMapping(false);
   deepCSVFloat = deepCSVFloatMap[year.Data()];
   selection = sel;
   LUMI = luminosity[year.Data()];
   LUMI_CR = luminosityCR[year.Data()];
   initGlobals(year);
   gStyle->SetOptStat(0);
-  const int NVAR =16;
+  const int NVAR =14;
 
   float selMvaCut=topTaggerCuts[year];
 
@@ -183,7 +183,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   cout<<"deepCSVFloat: "<<deepCSVFloat<<endl;
 
   TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","chi","cosThjetEta0", "cosThjetEta1",\
-                            "mTop_Leading", "mTop_Subleading", "topTagger_leading", "topTagger_Subleading", "deepAK8Tagger_leading", "deepAK8Tagger_Subleading"};
+                            "mTop_Leading", "mTop_Subleading", "topTagger_leading", "topTagger_Subleading"};
 
 
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
@@ -202,7 +202,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   vector<float> weights(0);
 
   int NBINS[BND.size()];
-  for (int i = 0; i<BND.size()+2; i++)
+  for (int i = 0; i<BND.size()+6; i++)
   {
     if(i<10) NBINS[i] = BND[i].size()-1;
     else NBINS[i] = 100;
@@ -272,7 +272,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   trIN->SetBranchAddress("mJJ"        ,&mJJ);
   trIN->SetBranchAddress("yJJ"        ,&yJJ);
   trIN->SetBranchAddress("ptJJ"         ,&ptJJ);
-  trIN->SetBranchAddress("jetBtagSub0"    ,&jetBtagSub0);
+  //trIN->SetBranchAddress("jetBtagSub0"    ,&jetBtagSub0);
   //trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
   trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
   trIN->SetBranchAddress("mva"          ,&mva);
@@ -432,9 +432,6 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
       // top tagger leading and subleading 
       xRecoAll.push_back((*jetTtag)[leadingPt]);
       xRecoAll.push_back((*jetTtag)[subleadingPt]);
-      // deep AK8 leading and subleading
-      xRecoAll.push_back((*deepAK8)[leadingPt]);
-      xRecoAll.push_back((*deepAK8)[subleadingPt]);
 
   btagCut = deepCSV;
   revertBtag = revertBtagDeepCSV;
@@ -444,14 +441,20 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
     {
       //Probe Region 2btags
-      if(recoCuts && btagCut && (*bit)[triggerSRConst[year.Data()]])
+      if(recoCuts && btagCut && triggerSR)
       {
+          if (selection == 0)
+          {
+            genEvtWeight=1;
+            bTagEvntWeight=1;
+          }
           if(tTaggerTight > tightTopTaggerCut)
           {
               for(int ivar = 0; ivar < NVAR; ivar++)
               {
                   double weights_temp = genEvtWeight * bTagEvntWeight;
                   h_Denominator[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                  //cout<<"h_Denominator "<<xRecoAll[ivar]<<endl;
               }
           }
           if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
@@ -460,15 +463,13 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
               {
                   double weights_temp = genEvtWeight * bTagEvntWeight;
                   h_Numerator[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                  //cout<<"h_Numerator "<<xRecoAll[ivar]<<endl;
               }
-          }
-          
+          } 
       }
     }
 
-
-
-  }//----end of nJets
+    }//----end of nJets
   } //---end of event loop
 
   cout<<"counter: "<<counter<<endl;
@@ -481,7 +482,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
     {
         if(selection !=0)
         {
-         h_Numerator[j][ivar]->Scale(weights[j]*LUMI_CR); //this is 0 btagged (CR)
+         h_Numerator[j][ivar]->Scale(weights[j]*LUMI); //this is 0 btagged (CR)
          h_Denominator[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
         }
     }
@@ -499,7 +500,7 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   }
   TFile *outFile;
   if(selection == 0)
-    outFile = new TFile(TString::Format("../%s/TagAndProbeHisto_Data_%s.root",year.Data(),year.Data()), "RECREATE");
+    outFile = new TFile(TString::Format("../%s/TagAndProbeHisto_Data.root",year.Data()), "RECREATE");
   else if(selection == 2)
     outFile = new TFile(TString::Format("../%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()), "RECREATE");
   else if(selection == 3)
@@ -509,8 +510,8 @@ void FillHistograms(TString y="2016", int sel = 0, bool isLoose=false)
   for(int ivar = 0; ivar<NVAR; ivar++)
   {
     outFile->cd();
-    h_Numerator[0][ivar]->Write(TString::Format("hSRBTightAndSR_%s", varReco[ivar].Data()));
-    h_Denominator[0][ivar]->Write(TString::Format("hSRBTightAndProbe_%s", varReco[ivar].Data()));
+    h_Numerator[0][ivar]->Write(TString::Format("hSRBTightAndSR_%s_expYield", varReco[ivar].Data()));
+    h_Denominator[0][ivar]->Write(TString::Format("hSRBTightAndProbe_%s_expYield", varReco[ivar].Data()));
   }
   //outFile->Close();
 

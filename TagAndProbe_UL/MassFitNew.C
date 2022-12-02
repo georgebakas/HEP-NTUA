@@ -7,7 +7,7 @@ std::vector<TCanvas*> correlationCanvases;
 void draw(TString CAT, TString year, RooRealVar *x, RooDataHist &combData, RooSimultaneous &simPdf, RooCategory &sample)
 {
 	TCanvas *can = new TCanvas(TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()),
-	                           TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()), 800, 704);
+	                          TString::Format("MassFit_s_%s_%s", CAT.Data(), year.Data()), 800, 704);
 	can->cd()->SetBottomMargin(0.32);
 
 	RooPlot* frame2b = x->frame();
@@ -76,7 +76,7 @@ void correlation(RooRealVar *x, RooRealVar *y, RooFitResult *res, TString titleX
 	correlationCanvases.push_back(can);
 }
 
-void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS="",TString CUT="", int REBIN= 5)
+void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile= "", TString selection= "probe", TString ALIAS="",TString CUT="", int REBIN= 5)
 {
   TString selectedRegion;
   if(selection.EqualTo("probe")) selectedRegion = "hSRBTightAndProbe";
@@ -88,15 +88,15 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
   RooMsgService::instance().setStreamStatus(1,kFALSE);
 
   //Take SR data from Medium WP
-  TFile *inf = TFile::Open(TString::Format("%s/TagAndProbeHisto_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
-  TH1F *h2b  = (TH1F*)inf->Get(TString::Format("%s_mTop_expYield",selectedRegion.Data()));
+  TFile *inf = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
+  TH1F *h2b  = (TH1F*)inf->Get(TString::Format("%s_mTop_Leading_expYield", selectedRegion.Data()));
   //h2b->Rebin(2);
   // -----------------------------------------
-  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg_%s_100.root", year.Data(),selectedRegion.Data()));
-  TFile *fTemplatesSig = TFile::Open(TString::Format("%s/templates_Sig_%s_100.root",year.Data(), selectedRegion.Data()));
+  TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg%s_100.root",year.Data(), selectedRegion.Data()));
+  TFile *fTemplatesSig = TFile::Open(year+"/"+weightType+"/"+inputFile);
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
-
+  cout<<"edw eimai"<<endl;
   RooRealVar *x = (RooRealVar*)wTemplatesSig->var("mTop");
   RooRealVar *yieldTT = (RooRealVar*)wTemplatesSig->var("YieldTT_2btag");
 
@@ -104,14 +104,13 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
   RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
   kMassScale->setConstant(false);
   kMassResol->setConstant(false);
-
+  cout<<"edw eimai 2"<<endl;
+  
   RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b","roohist_data_2b",*x,h2b);
-
   RooCategory sample("sample","sample");
   sample.defineType("2btag");
 
   RooDataHist combData("combData","combData",*x,Index(sample),Import("2btag",*h2b));
-
 
   RooAbsPdf *pdf_bkg_2b = (RooAbsPdf*)wTemplatesBkg->pdf("bkg_pdf_2btag");
   RooAbsPdf *pdf_qcd_2b = (RooAbsPdf*)wTemplatesBkg->pdf("qcd_pdf");
@@ -120,35 +119,37 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
   //RooAbsPdf *pdf_signal_0b = (RooAbsPdf*)wTemplatesSig->pdf("ttbar_pdf_0btag");
 
   //---- QCD correction factor ---------------------------
-
-  float sP, min, max;
-  //sP = 1e-3;
-  min = -1;
-  max = 10;
-  sP = 0.0025;
-  RooRealVar *kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", sP);//, min, max);
-  RooRealVar *mBar = new RooRealVar("mBar", "mBar", 175, 50, 300);
-  mBar->setConstant(true);
+  RooRealVar *kQCD2b_0;
+  if(year.EqualTo("2016_preVFP")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.019, 0.80*0.019, 1.2*0.019);
+  if(year.EqualTo("2016_postVFP")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.01, 0.8*0.01, 1.2*0.01);
+  if(year.EqualTo("2017")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.01, 0.8*0.01, 1.2*0.01);
+  if(year.EqualTo("2018")) kQCD2b_0 = new RooRealVar("kQCD_2b","kQCD_2b", 0.0069, 0.8*0.0069, 1.2*0.0069); 
   kQCD2b_0->setConstant(false);
 
-  //RooFormulaVar qcdCor_2b("qcdCor","(1+@0*@1)/(1+@1*@2)",RooArgList(*x,*kQCD2b_0,*mBar));
   RooFormulaVar qcdCor_2b("qcdCor_2b","(1+@0*@1)",RooArgList(*x,*kQCD2b_0));
   //---- corrected QCD -----------------------------------
 
   RooEffProd pdf_qcdCor_2b("qcdCor_pdf_2b","qcdCor_pdf_2b",*pdf_qcd_2b,qcdCor_2b);
 
-  RooRealVar *nFitBkg2b = new RooRealVar("nFitBkg_","nFitBkg_",100,0,500);
+  RooRealVar *nFitBkg2b;
+  if(year.EqualTo("2016_preVFP")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",65,30,95);
+  if(year.EqualTo("2016_postVFP")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",48,24,62);
+  if(year.EqualTo("2017")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",200,150,250);
+  if(year.EqualTo("2018")) nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",300,250,350);
+  cout<<"year: "<<year<<endl;
+  //else nFitBkg2b = new RooRealVar("nFitBkg_2b","nFitBkg_2b",20,0,500);
 
-  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_","nFitQCD_",10000,0,10e+4);
+  RooRealVar *nFitQCD2b = new RooRealVar("nFitQCD_2b","nFitQCD_2b",10000,0,10e+4);
 
-  RooRealVar *nFitSig2b = new RooRealVar("nFitSig","nFitSig",3000,100,10e+5);
+  RooRealVar *nFitSig2b = new RooRealVar("nFitSig2b","nFitSig2b",2000,100,10e+4);
 
-  RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,*pdf_qcd_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
+  RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b,*pdf_bkg_2b),RooArgList(*nFitSig2b,*nFitQCD2b,*nFitBkg2b));
+  //RooAddPdf *model_2b = new RooAddPdf("model_2b","model_2b",RooArgList(*pdf_signal_2b,pdf_qcdCor_2b),RooArgList(*nFitSig2b,*nFitQCD2b));
 
-  RooSimultaneous simPdf("simPdf","simPdf",sample);
-  simPdf.addPdf(*model_2b,"2btag");
+  /* RooSimultaneous simPdf("simPdf","simPdf",sample);
+  simPdf.addPdf(*model_2b,"2btag"); */
 
-  RooFitResult *res = simPdf.fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
+  RooFitResult *res = model_2b->fitTo(combData,RooFit::Save(),RooFit::Extended(kTRUE));
 
 	//Signal strengh and error propagation:
 	float sigError = TMath::Sqrt(TMath::Power(nFitSig2b->getError()/yieldTT->getVal(),2) + TMath::Power(nFitSig2b->getVal()*nFitSig2b->getError()/TMath::Power(yieldTT->getVal(),2),2));
@@ -173,11 +174,11 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
   RooPlot *frame2b = x->frame();
   combData.plotOn(frame2b,Cut("sample==sample::2btag"),DrawOption("EP"));
   //simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),VisualizeError(*res,1),FillColor(kOrange),MoveToBack());
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),LineColor(kBlue),MoveToBack());
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),ProjWData(sample,combData),LineColor(kBlue),MoveToBack());
   RooHist *pull2b = frame2b->pullHist();
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+2),LineWidth(3),LineStyle(7));
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),DrawOption("FL"),LineColor(kRed),LineWidth(0),FillColor(kRed-10),MoveToBack());
-  simPdf.plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kBlack),LineWidth(3),LineStyle(5));
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),Components("qcd_pdf"),ProjWData(sample,combData),LineColor(kGreen+2),LineWidth(3),LineStyle(7));
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),Components("ttbar_pdf_2btag"),ProjWData(sample,combData),DrawOption("FL"),LineColor(kRed),LineWidth(0),FillColor(kRed-10),MoveToBack());
+  model_2b->plotOn(frame2b,Slice(sample,"2btag"),Components("bkg_pdf_2btag"),ProjWData(sample,combData),LineColor(kBlack),LineWidth(3),LineStyle(5));
 
   RooPlot *frame2bPull = x->frame();
   frame2bPull->addPlotable(pull2b,"p");
@@ -223,7 +224,7 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
 
   //CMS_lumi(can2b,4,0);
 
-  can2b->Print(TString::Format("%s/plots/SimpleMassFit/", year.Data())+TString(can2b->GetName())+selectedRegion+".pdf");
+  can2b->Print(TString::Format("%s/%s/plots/MassFitResult_%s", year.Data(), weightType.Data(), inputFile.Data())+".pdf");
 
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
@@ -231,10 +232,11 @@ void MassFitNew(TString year = "2016", TString selection = "probe",TString ALIAS
   wOut->import(pdf_qcdCor_2b);
   wOut->import(*nFitQCD2b);
   wOut->import(*nFitSig2b);
+	wOut->import(*nFitBkg2b);
   wOut->import(*yieldTT);
-  wOut->writeToFile(TString::Format("%s/MassFitResults_%s",year.Data(),selectedRegion.Data())+ALIAS+"_"+CUT+".root");
-  //wOut->writeToFile(TString::Format("%s/MassFitResultsCorrectedFit_",year.Data())+ALIAS+"_"+CUT+".root");
-  //wOut->writeToFile(TString::Format("%s/MassFitResultsNoCorrection_",year.Data())+ALIAS+"_"+CUT+".root");
+	wOut->import(*kMassScale);
+	wOut->import(*kMassResol);
+  wOut->writeToFile(TString::Format("%s/%s/MassFitResults_%s",year.Data(), weightType.Data(), inputFile.Data()));
 
   /*
   correlation(kQCD2b_0, nFitBkg2b, res, "kQCD2b ", "nFitBkg2b");

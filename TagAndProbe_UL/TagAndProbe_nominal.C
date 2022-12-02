@@ -20,7 +20,7 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 TString globalYear;
 
-void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TString year = "2016", float mJJCut = 1000)
+void TagAndProbe_nominal(TString file_name, TString ttbar_process, TString year = "2016", float mJJCut = 1000)
 {
   globalYear = year;
   initFilesMapping();
@@ -47,7 +47,7 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
   float XSEC = XSECAll[year.Data()][ttbar_process.Data()];
   float tightTopTaggerCut = 0.8;
   cout<<"XSEC: "<<XSEC<<endl;
-  const int NVAR = 16;
+  const int NVAR = 14;
   std::vector< std::vector <Float_t> > const BND = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
                        {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
                        {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
@@ -61,13 +61,13 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
 
 
   int NBINS[BND.size()];
-  for (int i = 0; i<BND.size()+2; i++)
+  for (int i = 0; i<BND.size()+4; i++)
   {
     if(i<10) NBINS[i] = BND[i].size()-1;
     else NBINS[i] = 100;
   }
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","chi","cosThjetEta0", "cosThjetEta1",\
-                            "mTop_Leading", "mTop_Subleading", "topTagger_leading", "topTagger_Subleading", "deepAK8Tagger_leading", "deepAK8Tagger_Subleading"};
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","chi","cosThetEta0", "cosThetEta1",\
+                            "mTop_Leading", "mTop_Subleading", "topTagger_leading", "topTagger_Subleading"};
 
   float weights;
   TH1F *h_Numerator[NVAR], *h_Denominator[NVAR];
@@ -137,21 +137,21 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
     trIN->SetBranchAddress("jetEta"         ,&jetEta);
     trIN->SetBranchAddress("jetY"           ,&jetY);
     trIN->SetBranchAddress("jetPhi"         ,&jetPhi);
-    trIN->SetBranchAddress("jetTau3"        ,&tau3);
-    trIN->SetBranchAddress("jetTau2"        ,&tau2);
-    trIN->SetBranchAddress("jetTau1"        ,&tau1);
+    //trIN->SetBranchAddress("jetTau3"        ,&tau3);
+    //trIN->SetBranchAddress("jetTau2"        ,&tau2);
+    //trIN->SetBranchAddress("jetTau1"        ,&tau1);
     trIN->SetBranchAddress("triggerBit"     ,&bit);
     trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
     trIN->SetBranchAddress("bTagEvntWeight", &bTagEvntWeight);
-    trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
-    trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
+    //trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
+    //trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
     trIN->SetBranchAddress("mJJ"   			,&mJJ);
     trIN->SetBranchAddress("yJJ"   			,&yJJ);
     trIN->SetBranchAddress("ptJJ"   		,&ptJJ);
-	trIN->SetBranchAddress("jetBtagSub0"	,&jetBtagSub0);
+	//trIN->SetBranchAddress("jetBtagSub0"	,&jetBtagSub0);
     //trIN->SetBranchAddress("jetBtagSub1"    ,&jetBtagSub1);
     trIN->SetBranchAddress("jetMassSoftDrop",&jetMassSoftDrop);
-    trIN->SetBranchAddress("deepAK8Tagger"  ,&deepAK8);
+    //trIN->SetBranchAddress("deepAK8Tagger"  ,&deepAK8);
   	trIN->SetBranchAddress("jetTtagCategory",&jetTtag);
   	//deepCSV
     trIN->SetBranchAddress("jetBtagSub0DCSVbb" ,&jetBtagSub0DCSVbb);
@@ -255,8 +255,8 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
             xRecoAll.push_back((*jetTtag)[leadingPt]);
             xRecoAll.push_back((*jetTtag)[subleadingPt]);
             // deep AK8 leading and subleading
-            xRecoAll.push_back((*deepAK8)[leadingPt]);
-            xRecoAll.push_back((*deepAK8)[subleadingPt]);
+            //xRecoAll.push_back((*deepAK8)[leadingPt]);
+            //xRecoAll.push_back((*deepAK8)[subleadingPt]);
 
 
             float dCSVScoreSub0[2], dCSVScoreSub1[2];
@@ -308,7 +308,7 @@ void FillHistograms_Reduced_nominal(TString file_name, TString ttbar_process, TS
     for(int ivar =0; ivar<NVAR; ivar++)
     {
         h_Denominator[ivar]->Scale(weights*LUMI);
-        h_Numerator[ivar]->Scale(weights*LUMI_CR);
+        h_Numerator[ivar]->Scale(weights*LUMI);
     }
 
 
