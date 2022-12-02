@@ -348,37 +348,37 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
     decade = k;
     trIN->GetEntry(iev);
 
-  xRecoAll.clear();
-  bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
-  bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;
-  bool btagCut, revertBtag, btag1;
-  if (nJets >1)
-  {
-
-    int leadingPt = 0;
-    int subleadingPt = 1;
-    if((*jetPt)[0] < (*jetPt)[1])
+    xRecoAll.clear();
+    bool partonCuts, recoCuts, massCut, tTaggerCut, triggerCR, triggerSR;
+    bool deepCSV, btag1DeepCSV, revertBtagDeepCSV;
+    bool btagCut, revertBtag, btag1;
+    if (nJets >1)
     {
-      leadingPt = 1;
-      subleadingPt = 0;
-    }
 
-    TRandom2 *randJet = new TRandom2();
-    int tightJet=0;
-    int otherJet=0;
-    if (randJet->Rndm() > 0.5)
-    {
-      tightJet = 1;
-      otherJet = 0;
-    }
-    else
-    {
-      tightJet = 0;
-      otherJet = 1;
-    }
+      int leadingPt = 0;
+      int subleadingPt = 1;
+      if((*jetPt)[0] < (*jetPt)[1])
+      {
+        leadingPt = 1;
+        subleadingPt = 0;
+      }
 
-    tTaggerTight = (*jetTtag)[tightJet];
-    tTaggerOther = (*jetTtag)[otherJet];
+      TRandom2 *randJet = new TRandom2();
+      int tightJet=0;
+      int otherJet=0;
+      if (randJet->Rndm() > 0.5)
+      {
+        tightJet = 1;
+        otherJet = 0;
+      }
+      else
+      {
+        tightJet = 0;
+        otherJet = 1;
+      }
+
+      tTaggerTight = (*jetTtag)[tightJet];
+      tTaggerOther = (*jetTtag)[otherJet];
   
     float dCSVScoreSub0[2], dCSVScoreSub1[2];
     dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0];
@@ -450,21 +450,16 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
           }
           if(tTaggerTight > tightTopTaggerCut)
           {
-              for(int ivar = 0; ivar < NVAR; ivar++)
-              {
-                  double weights_temp = genEvtWeight * bTagEvntWeight;
-                  h_Denominator[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                  //cout<<"h_Denominator "<<xRecoAll[ivar]<<endl;
-              }
+            double weights_temp = genEvtWeight * bTagEvntWeight;
+            h_Denominator[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+            //cout<<"h_Denominator "<<xRecoAll[ivar]<<endl;
+              
           }
           if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
           {
-              for(int ivar = 0; ivar < NVAR; ivar++)
-              {
-                  double weights_temp = genEvtWeight * bTagEvntWeight;
-                  h_Numerator[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                  //cout<<"h_Numerator "<<xRecoAll[ivar]<<endl;
-              }
+            double weights_temp = genEvtWeight * bTagEvntWeight;
+            h_Numerator[f][ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+            //cout<<"h_Numerator "<<xRecoAll[ivar]<<endl;
           } 
       }
     }
@@ -482,8 +477,8 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
     {
         if(selection !=0)
         {
-         h_Numerator[j][ivar]->Scale(weights[j]*LUMI); //this is 0 btagged (CR)
-         h_Denominator[j][ivar]->Scale(weights[j]*LUMI); //this is 2 btagged (SR)
+          h_Numerator[j][ivar]->Scale(weights[j]*LUMI);  
+          h_Denominator[j][ivar]->Scale(weights[j]*LUMI); 
         }
     }
 

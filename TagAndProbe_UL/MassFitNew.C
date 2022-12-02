@@ -90,7 +90,7 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
   //Take SR data from Medium WP
   TFile *inf = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
   TH1F *h2b  = (TH1F*)inf->Get(TString::Format("%s_mTop_Leading_expYield", selectedRegion.Data()));
-  //h2b->Rebin(2);
+  h2b->Rebin(2);
   // -----------------------------------------
   TFile *fTemplatesBkg = TFile::Open(TString::Format("%s/templates_Bkg%s_100.root",year.Data(), selectedRegion.Data()));
   TFile *fTemplatesSig = TFile::Open(year+"/"+weightType+"/"+inputFile);
@@ -224,7 +224,7 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
 
   //CMS_lumi(can2b,4,0);
 
-  can2b->Print(TString::Format("%s/%s/plots/MassFitResult_%s", year.Data(), weightType.Data(), inputFile.Data())+".pdf");
+  can2b->Print(TString::Format("%s/%s/plots/MassFitResult_%s_%s", year.Data(), weightType.Data(), selectedRegion.Data(),inputFile.Data())+".pdf");
 
 
   RooWorkspace *wOut = new RooWorkspace("w","workspace");
@@ -236,7 +236,7 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
   wOut->import(*yieldTT);
 	wOut->import(*kMassScale);
 	wOut->import(*kMassResol);
-  wOut->writeToFile(TString::Format("%s/%s/MassFitResults_%s",year.Data(), weightType.Data(), inputFile.Data()));
+  wOut->writeToFile(TString::Format("%s/%s/MassFitResults_%s_%s",year.Data(), weightType.Data(), selectedRegion.Data(), inputFile.Data()));
 
   /*
   correlation(kQCD2b_0, nFitBkg2b, res, "kQCD2b ", "nFitBkg2b");

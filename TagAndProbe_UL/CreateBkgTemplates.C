@@ -31,6 +31,7 @@ void CreateBkgTemplates(TString year, TString selection= "probe", TString CUT = 
   //TFile *infData = TFile::Open(TString::Format("%s/TagAndProbeHisto_Data.root", year.Data()));
   TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf.root", year.Data()));
   TH1F *hData = (TH1F*)infData->Get(TString::Format("%s_mTop_Leading_expYield",selectedRegion.Data()));
+  //hData->Rebin(2);
   cout<<"CR Entries from data: "<<hData->GetEntries()<<endl;
   //because of contamination we need to substract the ttbar from the CR.
   //we do that by extracting the 0btag th1 using nominal or mtt mc
@@ -71,18 +72,13 @@ void CreateBkgTemplates(TString year, TString selection= "probe", TString CUT = 
   frameQCD->GetXaxis()->SetTitle("m_{t} (GeV)");
   frameQCD->Draw();
   gPad->Update();
-  canQCD->Print(TString::Format("%s/Nominal/plots/templateResults/"+TString(canQCD->GetName())+".pdf", year.Data()));
+  canQCD->Print(TString::Format("%s/Nominal/plots/templateResults/"+TString(canQCD->GetName())+selectedRegion+".pdf", year.Data()));
 
   RooArgSet *parsQCD = (RooArgSet*)qcd->getParameters(roohData);
   parsQCD->setAttribAll("Constant",true);
 
   w->import(*qcd);
   //TH1F *hMeanTop[2],*hSigmaTop[2],*hMeanW[2],*hSigmaW[2];
-
-  float LUMI(0);
-  if (year.Contains("2016")) LUMI = 35920;
-  else if (year.Contains("2017")) LUMI = 41530;
-  else if (year.Contains("2018")) LUMI = 59740;
 
   for(int icat=0;icat<1;icat++) {
     if (icat==1) continue;
@@ -94,6 +90,7 @@ void CreateBkgTemplates(TString year, TString selection= "probe", TString CUT = 
 
     //---- do the bkg templates -------------
     TH1F *hBkg = (TH1F*)infBkg->Get(TString::Format("%s_mTop_Leading_expYield",selectedRegion.Data()));
+    //hBkg->Rebin(2);
     cout<<"icat "<<icat<<": "<<hBkg->Integral()<<endl;
     RooDataHist *roohBkg = new RooDataHist("roohistBkg","roohistBkg",RooArgList(*x),hBkg);
 
