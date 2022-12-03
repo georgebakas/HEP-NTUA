@@ -20,17 +20,16 @@ void plotStackHisto(TString year)
 
   //get the files from the directory
   //data file
-  TFile *infData = TFile::Open(TString::Format("%s/TagAndProbeHisto_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
+  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
   //tt nominal file:
-  TFile *infTT = TFile::Open(TString::Format("%s/TagAndProbeHisto_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data()));
+  TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
   //qcd mc file
-  TFile *infQCD = TFile::Open(TString::Format("%s/TagAndProbeHisto_QCD_HT300toInf_100_reduced_UnequalBinning.root", year.Data()));
+  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()));
   //subdominant file:
-  TFile *infSub = TFile::Open(TString::Format("%s/TagAndProbeHisto_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data()));
-
-  const int NVAR =9;
+  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_SubdominantBkgs.root",year.Data()));
+  const int NVAR =8;
   TString regions[2] = {"hSRBTightAndSR_", "hSRBTightAndProbe_"};
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "mTop", "jetMassSoftDrop"};
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ", "jetPt0", "jetPt1", "jetY0", "jetY1", "mTop_Leading"};
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
     for(int i = 0; i<2; i++)
@@ -43,7 +42,7 @@ void plotStackHisto(TString year)
 
 void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, TString regions)
 {
-  initFilesMapping(false);
+  initFilesMapping();
   //now get the histograms
   TH1F *hData, *hTT, *hQCD, *hSub;
   hData = (TH1F*)infData->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
@@ -54,35 +53,46 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hSub = (TH1F*)infSub->Get(TString::Format("%s%s_expYield", regions.Data(),variable.Data()));
 
   //scale ttbar with signal strength
-  if(regions.EqualTo("hSRBTightAndSR_")) hTT->Scale(signalStrengthSR[year]);
-  else hTT->Scale(signalStrengthProbe[year]);
+  if(regions.EqualTo("hSRBTightAndSR_")) hTT->Scale(ttbarSigStrength_TagNSR[year]);
+  else hTT->Scale(ttbarSigStrength_TagNProbe[year]);
 
+  // get the NQCD 
+  TFile *masFitResultsFile = TFile::Open(TString::Format("%s/Nominal/MassFitResults_%sSignalTemplates_.root",
+                                                        year.Data(), 
+                                                        regions.Data()));
+  RooWorkspace *w = (RooWorkspace*)masFitResultsFile->Get("w");
+  RooRealVar *value = (RooRealVar *)w->var("nFitQCD_2b");
+
+  float val = value->getValV();
+  float error = value->getError();
+  masFitResultsFile->Close();
+  // scale qcd with data driven method
+  hQCD->Scale(val/hQCD->Integral());
   //scale qcd with Data
   //we use a k-factor
-
-  // scale this to shape
   TH1F *hQCD_tempFromData = (TH1F*)hData->Clone("hQCD_tempFromData");
   // hQCD_tempFromData scale this with the NQCD
-  // hQCD_tempFromData->Add(hTT,-1);
-  // hQCD_tempFromData->Add(hSub,-1);
-
+  hQCD_tempFromData->Add(hTT,-1);
+  hQCD_tempFromData->Add(hSub,-1);
 
   float qcdScaleFactor = hQCD_tempFromData->Integral()/hQCD->Integral();
   cout<<"qcdScaleFactor: "<<qcdScaleFactor<<endl;
   if(qcdScaleFactor > 0) hQCD->Scale(qcdScaleFactor);
   // cout<<"--------"<<endl;
   //cout<<regions<<endl;
-  if(variable.EqualTo("mTop") || variable.EqualTo("jetMassSoftDrop"))
+  
+
+  if(variable.Contains("mTop"))
   {
     //cout<<"hQCD_tempFromData->Integral(): "<<hQCD_tempFromData->Integral()<<endl;
     // cout<<"hData->Integral(): "<<hData->Integral()<<endl;
     // cout<<"hTT->Integral(): "<<hTT->Integral()<<endl;
     // cout<<"hSub->Integral(): "<<hSub->Integral()<<endl;
     // cout<<"hQCD->Integral(): "<<hQCD->Integral()<<endl;
-    hData->Rebin(2);
-    hTT->Rebin(2);
-    hQCD->Rebin(2);
-    hSub->Rebin(2);
+    hData->Rebin(4);
+    hTT->Rebin(4);
+    hQCD->Rebin(4);
+    hSub->Rebin(4);
   }
 
   //make them pretty :D
@@ -125,7 +135,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->GetYaxis()->SetTitleSize(20);
   hData->GetYaxis()->SetTitleFont(43);
   hData->GetYaxis()->SetTitleOffset(1.4);
-  hData->GetYaxis()->SetRangeUser(0, hData->GetMaximum() * 1.2);
+  hData->GetYaxis()->SetRangeUser(0, hData->GetMaximum() * 2);
 
   leg->AddEntry(hData, "Data", "lep");
   leg->AddEntry(hTT, "TTbar", "f");
@@ -158,6 +168,6 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetLabelSize(13);
 
   hNum->Draw();
-  can->Print(TString::Format("%s/plots/TagAndProbe_%s%s.pdf",year.Data(),  regions.Data(), variable.Data()),"pdf");
+  can->Print(TString::Format("%s/Nominal/plots/stacks/TagAndProbe_%s%s.pdf",year.Data(),  regions.Data(), variable.Data()),"pdf");
 
 }

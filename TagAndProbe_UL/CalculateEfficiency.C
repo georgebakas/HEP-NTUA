@@ -10,17 +10,22 @@
 */
 
 #include <stdio.h>
+#include "TemplateConstants.h"
 
 void CalculateEfficiency(TString year = "2016")
 {
-  //get the files:
-  TFile *infData = TFile::Open(TString::Format("%s/TagAndProbeHisto_Data_%s_100_reduced_UnequalBinning.root", year.Data(), year.Data()));
+  initFilesMapping();
+  //get the files from the directory
+  //data file
+  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
+  //tt nominal file:
+  TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
+  //qcd mc file
+  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()));
+  //subdominant file:
+  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_SubdominantBkgs.root",year.Data()));
 
-  TFile *infQCD = TFile::Open(TString::Format("%s/TagAndProbeHisto_QCD_HT300toInf_100_reduced_UnequalBinning.root", year.Data())); //qcd file
-  TFile *infTT = TFile::Open(TString::Format("%s/TagAndProbeHisto_TT_NominalMC_100_reduced_UnequalBinning.root", year.Data())); //ttbar file
-  TFile *infSub = TFile::Open(TString::Format("%s/TagAndProbeHisto_SubdominantBkgs_100_reduced_UnequalBinning.root", year.Data())); //subdominant file
-
-
+  TString regions[2] = {"hSRBTightAndProbe_", "hSRBTightAndSR_"};
   //get the histograms for the jetPt0 variable
   //[0] is denominator and [1] is numerator
   TH1F *hData[2], *hQCD[2], *hSub[2], *hTT[2];
@@ -47,13 +52,32 @@ void CalculateEfficiency(TString year = "2016")
 
   cout<<"hTT Numerator: "<<hTT[1]->Integral()<<endl;
   cout<<"hTT denominator: "<<hTT[0]->Integral()<<endl;
-
-  //remove bkg contributions from data
+  /*
   for(int i =0; i<2; i++)
-  {
+  { 
+    // scale QCD to its shape
+    // get the NQCD 
+    TFile *masFitResultsFile = TFile::Open(TString::Format("%s/Nominal/MassFitResults_%sSignalTemplates_.root",
+                                                          year.Data(), 
+                                                          regions[i].Data()));
+    RooWorkspace *w = (RooWorkspace*)masFitResultsFile->Get("w");
+    RooRealVar *value = (RooRealVar *)w->var("nFitQCD_2b");
+
+    float val = value->getValV();
+    float error = value->getError();
+    masFitResultsFile->Close();
+    hQCD[i]->Scale(val/hQCD[i]->Integral());
+  
+  } */
+  for(int i =0; i<2; i++)
+  { 
     hData[i]->Add(hSub[i],-1);
     hData[i]->Add(hQCD[i],-1);
   }
+
+  //scale the ttbar with its signal strength
+  hTT[0]->Scale(ttbarSigStrength_TagNProbe[year.Data()]);
+  hTT[1]->Scale(ttbarSigStrength_TagNSR[year.Data()]);
 
   //now measure the efficiency for data and ttbar files
   float eff_data = hData[1]->Integral() / hData[0]->Integral();
@@ -85,8 +109,9 @@ void CalculateEfficiency(TString year = "2016")
   float eff_tt_errorPtRegions[3];
 
 
-  float start[3] = {1,9,13};
-  float end[3] = {8,12,21};
+  float start[3] = {1,5,6};
+  float end[3] = {4,5,7};
+  // {450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
   //loop on all regions
   for(int ipt=0; ipt<3;ipt++)
   {
@@ -151,6 +176,6 @@ void CalculateEfficiency(TString year = "2016")
   mg->Draw("ap");
   leg->Draw();
   can->Update();
-  can->Print(TString::Format("%s/plots/Efficiency_perPtRegion.pdf",year.Data()),"pdf");
+  can->Print(TString::Format("%s/Nominal/plots/Efficiency_perPtRegion.pdf",year.Data()),"pdf");
 
 }

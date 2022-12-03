@@ -15,6 +15,10 @@ map<TString, int> variableConstant;
 map<int, TString> vars;
 map<TString, map<TString, TString>> ttNominalFiles;
 map<TString, float> ttbarSigStrength;
+map<TString, float> ttbarSigStrength_TagNProbe;
+map<TString, float> ttbarSigStrength_TagNProbe_error;
+map<TString, float> ttbarSigStrength_TagNSR;
+map<TString, float> ttbarSigStrength_TagNSR_error;
 
 void initFilesMapping()
 {
@@ -146,6 +150,42 @@ void initFilesMapping()
 	ttbarSigStrength.insert(pair<TString,float>("2017", 0.665));
 	ttbarSigStrength.insert(pair<TString,float>("2018", 0.675));
 
+	/*
+	Tag And Probe
+	2016_preVFP r = 1.34724 ± 0.10047, NQCD: 7.0420e+02 +/-  6.38e+01
+	2016_postVFP r = 1.34027 ± 0.54429, NQCD: 3.7016e+02 +/-  2.25e+02
+	2017 r = 1.082 ± 0.0489592, NQCD: 5.1038e+02 +/-  6.46e+01
+	2018 r = 1.15833 ± 0.0513207, NQCD: 9.9425e+02 +/-  9.31e+01
 
+	*/
+
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2016_preVFP", 1.34724));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2016_postVFP", 1.14027));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2017", 1.082));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2018", 1.15833));
+
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2016_preVFP", 0.10047));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2016_postVFP", 0.54429));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2017", 0.0489592));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2018", 0.0513207));
+
+	/*
+	Tag And SR
+	2016_preVFP r = 0.92289 ± 0.0615054, NQCD: 1.4292e+02 +/-  4.36e+01
+	2016_postVFP r = 0.865609 ± 0.0482924, NQCD: 7.1322e+01 +/-  2.43e+01
+	2017 r = 0.773381 ± 0.0286949, NQCD: 7.6489e+01 +/-  3.23e+01
+	2018 r = 0.821202 ± 0.0697879, NQCD: 2.7940e+02 +/-  8.30e+01
+
+	*/
+
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2016_preVFP", 0.92289));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2016_postVFP", 0.865609));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2017", 0.773381));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2018", 0.821202));
+
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2016_preVFP", 0.0615054));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2016_postVFP", 0.0482924));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2017", 0.0286949));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2018", 0.0697879));
 
 }

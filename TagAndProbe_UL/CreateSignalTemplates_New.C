@@ -137,7 +137,7 @@ void CreateSignalTemplates_New(TString year, TString dir, TString inputFile, TSt
     frameS->GetXaxis()->SetTitle("m_{t} (GeV)");
     frameS->Draw();
     gPad->Update();
-    canS->Print(TString::Format("%s/%s/plots/templateResults/"+TString(canS->GetName())+".pdf",year.Data(), dir.Data()));
+    canS->Print(TString::Format("%s/%s/plots/templateResults/"+TString(canS->GetName())+selectedRegion+".pdf",year.Data(), dir.Data()));
 
     RooArgSet *parsSig = (RooArgSet*)signal->getParameters(roohMC);
     parsSig->setAttribAll("Constant",true);
