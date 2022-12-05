@@ -59,7 +59,7 @@ void CalculateEfficiency(TString year = "2016")
     // scale QCD to its shape
     // get the NQCD 
     TFile *masFitResultsFile = TFile::Open(TString::Format("%s/Nominal/MassFitResults_%sSignalTemplates_.root",
-                                                          year.Data(), 
+                                                          year.Data(),  
                                                           regions[i].Data()));
     RooWorkspace *w = (RooWorkspace*)masFitResultsFile->Get("w");
     RooRealVar *value = (RooRealVar *)w->var("nFitQCD_2b");
@@ -110,8 +110,8 @@ void CalculateEfficiency(TString year = "2016")
   float eff_tt_errorPtRegions[3];
 
 
-  float start[3] = {1,5,6};
-  float end[3] = {4,5,7};
+  float start[3] = {1,3,5};
+  float end[3] = {2,4,6};
   // {450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
   //loop on all regions
   for(int ipt=0; ipt<3;ipt++)

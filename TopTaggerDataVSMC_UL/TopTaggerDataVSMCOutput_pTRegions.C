@@ -24,7 +24,8 @@ TString eosPath;
 TString year;
 int selection;
 
-void initFileNames()
+
+void initFileNames(TString year)
 {
 
   if(selection ==0) //data
@@ -35,10 +36,11 @@ void initFileNames()
   else if(selection ==1) //signal ttbar mc mtt
   {
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
-    cout<<eosPath<<endl;
-    cout<<mttFiles[year.Data()]["700-1000"]<<endl;
-    listOfFiles.push_back(mttFiles[year.Data()]["700-1000"]);
-    listOfFiles.push_back(mttFiles[year.Data()]["1000-Inf"]);
+    // cout<<eosPath<<endl;
+    // cout<<mttFiles[year.Data()]["700-1000"]<<endl;
+    //listOfFiles.push_back(mttFiles[year.Data()][""]);
+    //listOfFiles.push_back(mttFiles[year.Data()][""]);
+    //listOfFiles.push_back(mttFiles[year.Data()][""]);
   }
   else if(selection ==2) //bkg mc
   {
@@ -53,52 +55,35 @@ void initFileNames()
   else if(selection ==3) //subdominant bkgs
   {
     eosPath = TString::Format("%s%s/Bkg/",eosPathMC.Data(), year.Data());
-    if(year.EqualTo("2016"))
-    {
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT180"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
-    }
-    else
-    {
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["DY"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT400"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT600"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
-      listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
-      if(year.EqualTo("2018"))
-      {
-        listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
-        listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
-      }
-    }
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_top_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_tW_antitop_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_4f"]);
+    if (!year.EqualTo("2017")) listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_4f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_top_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["ST_t-channel_antitop_5f"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-200to400"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-400to600"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-600to800"]);
+    listOfFiles.push_back(subdominantBkgFiles[year.Data()]["WJetsToQQ_HT-800toInf"]);
   }
   else if(selection ==4) //signal ttbar mc nominal
   {
     cout<<"nominal!!!"<<endl;
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
     cout<<eosPath<<endl;
-    if(year.EqualTo("2016")) listOfFiles.push_back(ttNominalFiles[year.Data()]["TTNominal"]);
-    else
-    {
-      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic"]);
-      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic"]);
-      listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu"]);
-    }
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu"]);
   }
 }
 
-void initXsections()
+void initXsections(TString year)
 {
   if(selection ==1) //signal ttbar mc
   {
-    XSEC.push_back(mttXSEC[year.Data()]["700-1000"]);
-    XSEC.push_back(mttXSEC[year.Data()]["1000-Inf"]);
+    //XSEC.push_back(XSECAll[year.Data()]["TTToHadronic"]);
+    //XSEC.push_back(XSECAll[year.Data()]["TTToSemiLeptonic"]);
+    //XSEC.push_back(XSECAll[year.Data()]["TTTo2L2Nu"]);
   }
   else if(selection ==2) //bkg mc
   {
@@ -111,45 +96,28 @@ void initXsections()
   }
   else if(selection ==3) //subdominant bkgs
   {
-    if(year.EqualTo("2016"))
-    {
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["DY"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT180"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
-    }
-    else
-    {
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["DY"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT400"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT600"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
-      XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
-      if(year.EqualTo("2018"))
-      {
-        XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
-        XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
-      }
-    }
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_top_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_tW_antitop_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_4f"]);
+    if (!year.EqualTo("2017")) XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_4f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_top_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["ST_t-channel_antitop_5f"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-200to400"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-400to600"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-600to800"]);
+    XSEC.push_back(subdominantBkgXSEC[year.Data()]["WJetsToQQ_HT-800toInf"]);
   }
   else if(selection ==4)
   {
-    if(year.EqualTo("2016")) XSEC.push_back(ttNominalXSEC[year.Data()]["TTNominal"]);
-    else
-    {
-      XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic"]);
-      XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic"]);
-      XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu"]);
-    }
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu"]);
+
   }
 
 }
 
-void initHistoNames()
+void initHistoNames(TString year)
 {
 
   if(selection ==0) histoNames.push_back(TString::Format("Data_%s", year.Data()));
@@ -169,51 +137,33 @@ void initHistoNames()
   }
   else if(selection ==3)
   {
-
-    if(year.EqualTo("2016"))
-    {
-       histoNames.push_back("DYJetsToQQ_HT180");
-       histoNames.push_back("WJetsToQQ_HT180");
-       histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-       histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
-    }
-    else
-    {
-       histoNames.push_back("DYJetsToQQ_HT180");
-       histoNames.push_back("WJetsToQQ_HT400");
-       histoNames.push_back("WJetsToQQ_HT600");
-       histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
-       histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
-       histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
-      if(year.EqualTo("2018"))
-      {
-        histoNames.push_back("ST_t-channel_top_5f");
-        histoNames.push_back("ST_t-channel_antitop_5f");
-      }
-    }
+    histoNames.push_back("ST_tW_top_5f_inclusiveDecays");
+    histoNames.push_back("ST_tW_antitop_5f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_top_4f_inclusiveDecays");
+    if (!year.EqualTo("2017")) histoNames.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_top_5f_inclusiveDecays");
+    histoNames.push_back("ST_t-channel_antitop_5f_inclusiveDecays");
+    histoNames.push_back("WJetsToQQ_HT-200to400");
+    histoNames.push_back("WJetsToQQ_HT-400to600");
+    histoNames.push_back("WJetsToQQ_HT-600to800");
+    histoNames.push_back("WJetsToQQ_HT-800toInf");
   }
   else if(selection ==4)
   {
-    if(year.EqualTo("2016")) histoNames.push_back("TTNominal");
-    else
-    {
-      histoNames.push_back("TTHadronic");
-      histoNames.push_back("TTSemiLeptonic");
-      histoNames.push_back("TTTo2L2Nu");
-    }
+    histoNames.push_back("TTHadronic");
+    histoNames.push_back("TTSemiLeptonic");
+    histoNames.push_back("TTTo2L2Nu");
   }
 
 }
 
-void initGlobals()
+void initGlobals(TString year)
 {
-  initFileNames();
-  initXsections();
-  initHistoNames();
+  initFileNames(year);
+  initXsections(year);
+  initHistoNames(year);
 }
+
 
 void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoose=false)
 {
@@ -223,7 +173,7 @@ void TopTaggerDataVSMCOutput_pTRegions(TString y="2016", int sel = 0, bool isLoo
   selection = sel;
   LUMI = luminosity[year.Data()];
   LUMI_CR = luminosityCR[year.Data()];
-  initGlobals();
+  initGlobals(y);
   gStyle->SetOptStat(0);
   const int NPARTITIONS =4;
   const int N_MVA = 50;
