@@ -37,10 +37,11 @@ void initFileNames(TString year)
   else if(selection ==1) //signal ttbar mc mtt
   {
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
-    cout<<eosPath<<endl;
-    cout<<mttFiles[year.Data()]["700-1000"]<<endl;
-    listOfFiles.push_back(mttFiles[year.Data()]["700-1000"]);
-    listOfFiles.push_back(mttFiles[year.Data()]["1000-Inf"]);
+    // cout<<eosPath<<endl;
+    // cout<<mttFiles[year.Data()]["700-1000"]<<endl;
+    //listOfFiles.push_back(mttFiles[year.Data()][""]);
+    //listOfFiles.push_back(mttFiles[year.Data()][""]);
+    //listOfFiles.push_back(mttFiles[year.Data()][""]);
   }
   else if(selection ==2) //bkg mc
   {
@@ -71,9 +72,9 @@ void initFileNames(TString year)
     cout<<"nominal!!!"<<endl;
     eosPath = TString::Format("%s%s/Signal/",eosPathMC.Data(), year.Data());
     cout<<eosPath<<endl;
-    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic_0"]);
-    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic_0"]);
-    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu_0"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTHadronic"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTSemiLeptonic"]);
+    listOfFiles.push_back(ttNominalFiles[year.Data()]["TTTo2L2Nu"]);
   }
 }
 
@@ -81,8 +82,9 @@ void initXsections(TString year)
 {
   if(selection ==1) //signal ttbar mc
   {
-    XSEC.push_back(mttXSEC[year.Data()]["700-1000"]);
-    XSEC.push_back(mttXSEC[year.Data()]["1000-Inf"]);
+    //XSEC.push_back(XSECAll[year.Data()]["TTToHadronic"]);
+    //XSEC.push_back(XSECAll[year.Data()]["TTToSemiLeptonic"]);
+    //XSEC.push_back(XSECAll[year.Data()]["TTTo2L2Nu"]);
   }
   else if(selection ==2) //bkg mc
   {
@@ -108,9 +110,9 @@ void initXsections(TString year)
   }
   else if(selection ==4)
   {
-    XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic_0"]);
-    XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic_0"]);
-    XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu_0"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTHadronic"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTSemiLeptonic"]);
+    XSEC.push_back(ttNominalXSEC[year.Data()]["TTTo2L2Nu"]);
 
   }
 
@@ -149,9 +151,9 @@ void initHistoNames(TString year)
   }
   else if(selection ==4)
   {
-    histoNames.push_back("TTHadronic_0");
-    histoNames.push_back("TTSemiLeptonic_0");
-    histoNames.push_back("TTTo2L2Nu_0");
+    histoNames.push_back("TTHadronic");
+    histoNames.push_back("TTSemiLeptonic");
+    histoNames.push_back("TTTo2L2Nu");
   }
 
 }
@@ -357,11 +359,6 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
 
       int leadingPt = 0;
       int subleadingPt = 1;
-      if((*jetPt)[0] < (*jetPt)[1])
-      {
-        leadingPt = 1;
-        subleadingPt = 0;
-      }
 
       TRandom2 *randJet = new TRandom2();
       int tightJet=0;

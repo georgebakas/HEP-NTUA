@@ -202,12 +202,6 @@ void TagAndProbe_nominal(TString file_name, TString ttbar_process, TString year 
         {
             int leadingPt = 0;
             int subleadingPt = 1;
-            
-            if((*jetPt)[0] < (*jetPt)[1])
-            {
-                subleadingPt = 0;
-                leadingPt = 1;
-            }
 
             TRandom2 *randJet = new TRandom2();
             int tightJet=0;
@@ -276,27 +270,22 @@ void TagAndProbe_nominal(TString file_name, TString ttbar_process, TString year 
 
             bool btagCut;
             btagCut = deepCSV;
-            
-            //Probe Region 2btags
-            if(recoCuts && btagCut && (*bit)[triggerFloat])
+            for(int ivar = 0; ivar < xRecoAll.size(); ivar++)
             {
-                if(tTaggerTight > tightTopTaggerCut)
+                //Probe Region 2btags
+                if(recoCuts && btagCut && (*bit)[triggerFloat])
                 {
-                    for(int ivar = 0; ivar < NVAR; ivar++)
+                    if(tTaggerTight > tightTopTaggerCut)
                     {
                         double weights_temp = genEvtWeight * bTagEvntWeight;
                         h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
                     }
-                }
-                if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
-                {
-                    for(int ivar = 0; ivar < NVAR; ivar++)
+                    if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
                     {
                         double weights_temp = genEvtWeight * bTagEvntWeight;
                         h_Numerator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
                     }
                 }
-                
             }
 
             // fill tagNprobe 

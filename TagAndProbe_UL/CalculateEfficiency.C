@@ -29,17 +29,17 @@ void CalculateEfficiency(TString year = "2016")
   //get the histograms for the jetPt0 variable
   //[0] is denominator and [1] is numerator
   TH1F *hData[2], *hQCD[2], *hSub[2], *hTT[2];
-  hData[0] = (TH1F*)infData->Get("hSRBTightAndProbe_jetPt0_expYield");
-  hData[1] = (TH1F*)infData->Get("hSRBTightAndSR_jetPt0_expYield");
+  hData[0] = (TH1F*)infData->Get("hSRBTightAndProbe_mJJ_expYield");
+  hData[1] = (TH1F*)infData->Get("hSRBTightAndSR_mJJ_expYield");
 
-  hTT[0] = (TH1F*)infTT->Get("hSRBTightAndProbe_jetPt0_expYield");
-  hTT[1] = (TH1F*)infTT->Get("hSRBTightAndSR_jetPt0_expYield");
+  hTT[0] = (TH1F*)infTT->Get("hSRBTightAndProbe_mJJ_expYield");
+  hTT[1] = (TH1F*)infTT->Get("hSRBTightAndSR_mJJ_expYield");
 
-  hSub[0] = (TH1F*)infSub->Get("hSRBTightAndProbe_jetPt0_expYield");
-  hSub[1] = (TH1F*)infSub->Get("hSRBTightAndSR_jetPt0_expYield");
+  hSub[0] = (TH1F*)infSub->Get("hSRBTightAndProbe_mJJ_expYield");
+  hSub[1] = (TH1F*)infSub->Get("hSRBTightAndSR_mJJ_expYield");
 
-  hQCD[0] = (TH1F*)infQCD->Get("hSRBTightAndProbe_jetPt0_expYield");
-  hQCD[1] = (TH1F*)infQCD->Get("hSRBTightAndSR_jetPt0_expYield");
+  hQCD[0] = (TH1F*)infQCD->Get("hSRBTightAndProbe_mJJ_expYield");
+  hQCD[1] = (TH1F*)infQCD->Get("hSRBTightAndSR_mJJ_expYield");
 
   cout<<"hData Numerator: "<<hData[1]->Integral()<<endl;
   cout<<"hData denominator: "<<hData[0]->Integral()<<endl;
