@@ -152,40 +152,40 @@ void initFilesMapping()
 
 	/*
 	Tag And Probe
-	2016_preVFP r = 1.34724 ± 0.10047, NQCD: 7.0420e+02 +/-  6.38e+01
-	2016_postVFP r = 1.34027 ± 0.54429, NQCD: 3.7016e+02 +/-  2.25e+02
-	2017 r = 1.082 ± 0.0489592, NQCD: 5.1038e+02 +/-  6.46e+01
-	2018 r = 1.15833 ± 0.0513207, NQCD: 9.9425e+02 +/-  9.31e+01
+	2016_preVFP r = 0.862379 ± 0.064456, NQCD: 3.0036e+02 +/-  5.09e+01
+	2016_postVFP r = 0.773358 ± 0.0512602, NQCD: 1.6215e+02 +/-  3.32e+01
+	2017 r = 0.671044 ± 0.0272732, NQCD: 1.4710e+02 +/-  3.57e+01
+	2018 r = 0.723161 ± 0.0270328, NQCD: 2.6508e+02 +/-  5.03e+01
 
 	*/
 
-	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2016_preVFP", 1.34724));
-	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2016_postVFP", 1.14027));
-	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2017", 1.082));
-	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2018", 1.15833));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2016_preVFP", 0.862379));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2016_postVFP", 0.773358));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2017", 0.671044));
+	ttbarSigStrength_TagNProbe.insert(pair<TString,float>("2018", 0.723161));
 
-	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2016_preVFP", 0.10047));
-	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2016_postVFP", 0.54429));
-	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2017", 0.0489592));
-	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2018", 0.0513207));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2016_preVFP", 0.064456));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2016_postVFP", 0.0512602));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2017", 0.0272732));
+	ttbarSigStrength_TagNProbe_error.insert(pair<TString,float>("2018", 0.0270328));
 
 	/*
 	Tag And SR
-	2016_preVFP r = 0.92289 ± 0.0615054, NQCD: 1.4292e+02 +/-  4.36e+01
-	2016_postVFP r = 0.865609 ± 0.0482924, NQCD: 7.1322e+01 +/-  2.43e+01
-	2017 r = 0.773381 ± 0.0286949, NQCD: 7.6489e+01 +/-  3.23e+01
-	2018 r = 0.821202 ± 0.0697879, NQCD: 2.7940e+02 +/-  8.30e+01
+	2016_preVFP r = 0.642022 ± 0.0553583, NQCD: 1.2588e+02 +/-  4.93e+01
+	2016_postVFP r = 0.600255 ± 0.0336771, NQCD: 4.5327e+01 +/-  1.70e+01
+	2017 r = 0.564674 ± 0.0216536, NQCD: 2.9664e+01 +/-  2.53e+01
+	2018 r = 0.57452 ± 0.0202039, NQCD: 1.2441e+02 +/-  3.31e+01
 
 	*/
 
-	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2016_preVFP", 0.92289));
-	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2016_postVFP", 0.865609));
-	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2017", 0.773381));
-	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2018", 0.821202));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2016_preVFP", 0.642022));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2016_postVFP", 0.600255));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2017", 0.564674));
+	ttbarSigStrength_TagNSR.insert(pair<TString,float>("2018", 0.57452));
 
-	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2016_preVFP", 0.0615054));
-	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2016_postVFP", 0.0482924));
-	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2017", 0.0286949));
-	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2018", 0.0697879));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2016_preVFP", 0.0553583));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2016_postVFP", 0.0336771));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2017", 0.0216536));
+	ttbarSigStrength_TagNSR_error.insert(pair<TString,float>("2018", 0.0202039));
 
 }

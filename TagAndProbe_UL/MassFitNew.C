@@ -96,7 +96,6 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
   TFile *fTemplatesSig = TFile::Open(year+"/"+weightType+"/"+inputFile);
   RooWorkspace *wTemplatesBkg = (RooWorkspace*)fTemplatesBkg->Get("w");
   RooWorkspace *wTemplatesSig = (RooWorkspace*)fTemplatesSig->Get("w");
-  cout<<"edw eimai"<<endl;
   RooRealVar *x = (RooRealVar*)wTemplatesSig->var("mTop");
   RooRealVar *yieldTT = (RooRealVar*)wTemplatesSig->var("YieldTT_2btag");
 
@@ -104,7 +103,6 @@ void MassFitNew(TString year = "2016", TString weightType= "", TString inputFile
   RooRealVar *kMassResol = (RooRealVar*)wTemplatesSig->var("kMassResol");
   kMassScale->setConstant(false);
   kMassResol->setConstant(false);
-  cout<<"edw eimai 2"<<endl;
   
   RooDataHist *roohist_data_2b = new RooDataHist("roohist_data_2b","roohist_data_2b",*x,h2b);
   RooCategory sample("sample","sample");

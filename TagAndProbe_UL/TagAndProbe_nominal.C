@@ -272,20 +272,20 @@ void TagAndProbe_nominal(TString file_name, TString ttbar_process, TString year 
             btagCut = deepCSV;
             for(int ivar = 0; ivar < xRecoAll.size(); ivar++)
             {
-                //Probe Region 2btags
-                if(recoCuts && btagCut && (*bit)[triggerFloat])
-                {
-                    if(tTaggerTight > tightTopTaggerCut)
-                    {
-                        double weights_temp = genEvtWeight * bTagEvntWeight;
-                        h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                    }
-                    if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
-                    {
-                        double weights_temp = genEvtWeight * bTagEvntWeight;
-                        h_Numerator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                    }
-                }
+              //Probe Region 2btags
+              if(recoCuts && btagCut && (*bit)[triggerFloat])
+              {
+                  if(tTaggerTight > tightTopTaggerCut)
+                  {
+                      double weights_temp = genEvtWeight * bTagEvntWeight;
+                      h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                  }
+                  if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
+                  {
+                      double weights_temp = genEvtWeight * bTagEvntWeight;
+                      h_Numerator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                  }
+              }
             }
 
             // fill tagNprobe 

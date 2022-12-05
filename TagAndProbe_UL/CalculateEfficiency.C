@@ -20,6 +20,7 @@ void CalculateEfficiency(TString year = "2016")
   TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
   //tt nominal file:
   TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
+  //TFile *infTT = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
   //qcd mc file
   TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()));
   //subdominant file:
@@ -29,17 +30,17 @@ void CalculateEfficiency(TString year = "2016")
   //get the histograms for the jetPt0 variable
   //[0] is denominator and [1] is numerator
   TH1F *hData[2], *hQCD[2], *hSub[2], *hTT[2];
-  hData[0] = (TH1F*)infData->Get("hSRBTightAndProbe_mJJ_expYield");
-  hData[1] = (TH1F*)infData->Get("hSRBTightAndSR_mJJ_expYield");
+  hData[0] = (TH1F*)infData->Get("hSRBTightAndProbe_jetPt0_expYield");
+  hData[1] = (TH1F*)infData->Get("hSRBTightAndSR_jetPt0_expYield");
 
-  hTT[0] = (TH1F*)infTT->Get("hSRBTightAndProbe_mJJ_expYield");
-  hTT[1] = (TH1F*)infTT->Get("hSRBTightAndSR_mJJ_expYield");
+  hTT[0] = (TH1F*)infTT->Get("hSRBTightAndProbe_jetPt0_expYield");
+  hTT[1] = (TH1F*)infTT->Get("hSRBTightAndSR_jetPt0_expYield");
 
-  hSub[0] = (TH1F*)infSub->Get("hSRBTightAndProbe_mJJ_expYield");
-  hSub[1] = (TH1F*)infSub->Get("hSRBTightAndSR_mJJ_expYield");
+  hSub[0] = (TH1F*)infSub->Get("hSRBTightAndProbe_jetPt0_expYield");
+  hSub[1] = (TH1F*)infSub->Get("hSRBTightAndSR_jetPt0_expYield");
 
-  hQCD[0] = (TH1F*)infQCD->Get("hSRBTightAndProbe_mJJ_expYield");
-  hQCD[1] = (TH1F*)infQCD->Get("hSRBTightAndSR_mJJ_expYield");
+  hQCD[0] = (TH1F*)infQCD->Get("hSRBTightAndProbe_jetPt0_expYield");
+  hQCD[1] = (TH1F*)infQCD->Get("hSRBTightAndSR_jetPt0_expYield");
 
   cout<<"hData Numerator: "<<hData[1]->Integral()<<endl;
   cout<<"hData denominator: "<<hData[0]->Integral()<<endl;
@@ -52,7 +53,7 @@ void CalculateEfficiency(TString year = "2016")
 
   cout<<"hTT Numerator: "<<hTT[1]->Integral()<<endl;
   cout<<"hTT denominator: "<<hTT[0]->Integral()<<endl;
-  /*
+  
   for(int i =0; i<2; i++)
   { 
     // scale QCD to its shape
@@ -68,7 +69,7 @@ void CalculateEfficiency(TString year = "2016")
     masFitResultsFile->Close();
     hQCD[i]->Scale(val/hQCD[i]->Integral());
   
-  } */
+  } 
   for(int i =0; i<2; i++)
   { 
     hData[i]->Add(hSub[i],-1);
@@ -76,8 +77,8 @@ void CalculateEfficiency(TString year = "2016")
   }
 
   //scale the ttbar with its signal strength
-  hTT[0]->Scale(ttbarSigStrength_TagNProbe[year.Data()]);
-  hTT[1]->Scale(ttbarSigStrength_TagNSR[year.Data()]);
+  //hTT[0]->Scale(ttbarSigStrength_TagNProbe[year.Data()]);
+  //hTT[1]->Scale(ttbarSigStrength_TagNSR[year.Data()]);
 
   //now measure the efficiency for data and ttbar files
   float eff_data = hData[1]->Integral() / hData[0]->Integral();

@@ -386,7 +386,7 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
     recoCuts   = fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 450 && (*jetPt)[1] > 400 &&  mJJ > 1000 && nLeptons==0;
     triggerSR  = (*bit)[triggerSRConst[year.Data()]];
     triggerCR  = (*bit)[triggerCRConst[year.Data()]];
-    massCut    = (*jetMassSoftDrop)[0] > 50 && (*jetMassSoftDrop)[0] < 300 && (*jetMassSoftDrop)[1] > 50 && (*jetMassSoftDrop)[1] < 300;
+    massCut    = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
     tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
     //2 btag category with csvv2 and deepCSV
     deepCSV    = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
@@ -438,7 +438,7 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
     for(int ivar = 0; ivar <xRecoAll.size(); ivar ++)
     {
       //Probe Region 2btags
-      if(recoCuts && btagCut && triggerSR)
+      if(recoCuts && btagCut && triggerSR && massCut)
       {
           if (selection == 0)
           {
@@ -497,6 +497,8 @@ void TagAndProbe(TString y="2016_preVFP", int sel = 0)
     outFile = new TFile(TString::Format("../%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()), "RECREATE");
   else if(selection == 3)
     outFile = new TFile(TString::Format("../%s/TagAndProbeHisto_SubdominantBkgs.root",year.Data()), "RECREATE");
+  else if(selection == 4)
+    outFile = new TFile(TString::Format("../%s/TagAndProbeHisto_1000_TT_Nominal.root",year.Data()), "RECREATE");
 
 
   for(int ivar = 0; ivar<NVAR; ivar++)
