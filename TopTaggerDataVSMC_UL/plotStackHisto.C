@@ -53,15 +53,39 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   //if use data, uncomment
   TString qcdStr = "qcdMC";
   hQCD = (TH1F*)infQCD->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
+  // hQCD = (TH1F*)infData->Get(TString::Format("hWt_%s_0btag_expYield_%s", variable.Data(),leadingStr.Data()));
 
   hSub = (TH1F*)infSub->Get(TString::Format("hWt_%s_2btag_expYield_%s", variable.Data(),leadingStr.Data()));
 
+  // get qcd 
 
   //scale ttbar with signal strength
-  hTT->Scale(signalStrenth[year]);
+  hTT->Scale(ttbarSigStrength[year]);
 
   //scale qcd with Data
-  //we use a k-factor
+
+  //open the file to get the Ryield
+  TFile *infRyield = TFile::Open(TString::Format("../MassFit/%s/Ryield/TransferFactor_HT300toInf_100_jetPt0.root",year.Data()));
+  //TH1F *hRyield = (TH1F*)infRyield->Get("ClosureTest_TransferFactor");
+  TH1F *hRyield = (TH1F*)infRyield->Get("CorrectedRYield");
+
+  float corrected_rYield = hRyield->GetBinContent(1);
+  float corrected_error = hRyield->GetBinError(1);
+
+  cout<<variable<<endl;
+  cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
+
+  //open the file to get the Nbkg and scale QCD 
+  TFile *fitFile = TFile::Open(TString::Format("../VariationHandling/%s/Nominal/MassFitResults_SignalTemplates_.root",year.Data()));
+  RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
+  RooWorkspace  *w = (RooWorkspace*)fitFile->Get("w");
+  RooRealVar *value = (RooRealVar*)w->var("nFitQCD_2b");
+  float NQCD = value->getValV();
+  // hQCD->Scale(NQCD/hQCD->Integral());
+  // hQCD->Scale(corrected_rYield);
+
+  //we use a k-factor to scale to data
+  
   TH1F *hQCD_tempFromData = (TH1F*)hData->Clone("hQCD_tempFromData");
   hQCD_tempFromData->Add(hTT, -1);
   hQCD_tempFromData->Add(hSub, -1);

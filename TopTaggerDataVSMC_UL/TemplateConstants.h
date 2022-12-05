@@ -25,6 +25,7 @@ map<TString, float> deepCSVFloatMap;
 map<TString, float> topTaggerCuts;
 map<TString, int> triggerSRConst;
 map<TString, int> triggerCRConst;
+map<TString, float> ttbarSigStrength;
 TString eosDataPath, eosPathMC;
 
 void initFilesMapping(bool isLoose)
@@ -402,4 +403,9 @@ void initFilesMapping(bool isLoose)
 	BND[variableConstant["jetY0"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY0
 	BND[variableConstant["jetY1"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY1
 	*/
+
+	ttbarSigStrength.insert(pair<TString,float>("2016_preVFP", 0.691));
+	ttbarSigStrength.insert(pair<TString,float>("2016_postVFP", 0.640));
+	ttbarSigStrength.insert(pair<TString,float>("2017", 0.665));
+	ttbarSigStrength.insert(pair<TString,float>("2018", 0.675));
 }
