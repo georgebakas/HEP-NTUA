@@ -76,7 +76,8 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   cout<<"corrected Ryield: "<<corrected_rYield<<" ± "<<corrected_error<<endl;
 
   //open the file to get the Nbkg and scale QCD 
-  TFile *fitFile = TFile::Open(TString::Format("../VariationHandling/%s/Nominal/MassFitResults_SignalTemplates_.root",year.Data()));
+  //TFile *fitFile = TFile::Open(TString::Format("../VariationHandling/%s/Nominal/MassFitResults_SignalTemplates_.root",year.Data()));
+  TFile *fitFile = TFile::Open(TString::Format("%s/MassFitResults__.root",year.Data()));
   RooFitResult  *fitResult = (RooFitResult*)fitFile->Get(TString::Format("fitResults_%s", year.Data()));
   RooWorkspace  *w = (RooWorkspace*)fitFile->Get("w");
   RooRealVar *value = (RooRealVar*)w->var("nFitQCD_2b");

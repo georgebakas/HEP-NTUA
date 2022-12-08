@@ -62,7 +62,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hSub->Add(hSub_subleading);
 
   //scale ttbar with signal strength
-  hTT->Scale(signalStrenth[year]);
+  hTT->Scale(ttbarSigStrength[year]);
   TString tempStr = "combinedLeadingSubleading";
   //scale qcd with Data
   //we use a k-factor

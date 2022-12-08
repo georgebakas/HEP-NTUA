@@ -403,9 +403,12 @@ void initFilesMapping(bool isLoose)
 	BND[variableConstant["jetY0"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY0
 	BND[variableConstant["jetY1"]].push_back({0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0,2.2,2.4}); //jetY1
 	*/
-
-	ttbarSigStrength.insert(pair<TString,float>("2016_preVFP", 0.691));
-	ttbarSigStrength.insert(pair<TString,float>("2016_postVFP", 0.640));
-	ttbarSigStrength.insert(pair<TString,float>("2017", 0.665));
-	ttbarSigStrength.insert(pair<TString,float>("2018", 0.675));
+	// r = 0.744688 ± 0.0935408
+	ttbarSigStrength.insert(pair<TString,float>("2016_preVFP", 0.744688));
+	// r = 0.72385 ± 0.097141
+	ttbarSigStrength.insert(pair<TString,float>("2016_postVFP", 0.72385));
+	// r = 0.726718 ± 0.060982
+	ttbarSigStrength.insert(pair<TString,float>("2017", 0.726718));
+	// r = 0.708156 ± 0.0524409
+	ttbarSigStrength.insert(pair<TString,float>("2018", 0.708156));
 }
