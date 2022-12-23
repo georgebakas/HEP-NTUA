@@ -20,13 +20,12 @@ TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector
 
 TString globalYear;
 
-void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TString year = "2016", float mJJCut = 1000)
+void TagAndProbe_extra_data(TString file_name, TString year = "2016", float mJJCut = 1000)
 {
   globalYear = year;
   initFilesMapping();
   cout<<"YEAR: "<<year<<endl;
   cout<<"file_name: "<<file_name<<endl;
-  cout<<"ttbar_process: "<<ttbar_process<<endl;
   float triggerFloat;
   float triggerFloatCR;
   if(year.Contains("2016"))
@@ -44,14 +43,11 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   float LUMI_CR = luminosityCR[TString::Format("luminosity%s", year.Data())];
-  float XSEC = XSECAll[year.Data()][ttbar_process.Data()];
   float tightTopTaggerCut = 0.8;
-  cout<<"XSEC: "<<XSEC<<endl;
   const int NVAR = 3;
   int NBINS = 20;
   TString varReco[NVAR]   = {"jetPt", "jetEta", "topTagger"};
 
-  float weights;
   // I need the following histograms 
   // 1. Eta, JetPt and Top Tagging for MC filled with probe jets from events passing tight + probe 
   // 2. Eta, JetPt and Top Tagging double filled with events passing SR + SR --> double fill 
@@ -105,7 +101,6 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
     vector<bool>  *bit(0),*matchedJet(0);
     //reco vars:
     std::vector<float> *jetPt(0), *jetY(0), *jetEta(0), *jetPhi(0), *jetTtag(0), *deepAK8(0);;
-    float genEvtWeight(0);
     double  bTagEvntWeight(0);
     float mJJ(0), ptJJ(0), yJJ(0),mva(0);
     vector<float> *tau3(0),*tau2(0),*tau1(0);
@@ -139,7 +134,6 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
     //trIN->SetBranchAddress("jetTau2"        ,&tau2);
     //trIN->SetBranchAddress("jetTau1"        ,&tau1);
     trIN->SetBranchAddress("triggerBit"     ,&bit);
-    trIN->SetBranchAddress("genEvtWeight"   ,&genEvtWeight);
     trIN->SetBranchAddress("bTagEvntWeight", &bTagEvntWeight);
     //trIN->SetBranchAddress("jetMassSub0"    ,&jetMassSub0);
     //trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
@@ -160,24 +154,8 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
     int evtNo;
 	trIN->SetBranchAddress("evtNo", &evtNo);
 
-    //parton
-	trIN->SetBranchAddress("mTTbarParton"	,&mTTbarParton);
-	trIN->SetBranchAddress("yTTbarParton"	,&yTTbarParton);
-	trIN->SetBranchAddress("ptTTbarParton"	,&ptTTbarParton);
-	trIN->SetBranchAddress("partonPt"	    ,&partonPt);
-	trIN->SetBranchAddress("partonEta"		,&partonEta);
-	trIN->SetBranchAddress("partonMass"     ,&partonMass);
-	trIN->SetBranchAddress("partonMatchDR"  ,&partonMatchDR);
-	trIN->SetBranchAddress("partonMatchIdx" ,&partonMatchIdx);
-	trIN->SetBranchAddress("partonPhi"      ,&partonPhi);
-
     float tTaggerTight = 0;
     float tTaggerOther = 0;
-
-    float norm = ((TH1F*)file->Get("eventCounter/GenEventWeight"))->GetSumOfWeights();
-	float weight = XSEC/norm;
-	weights = weight;
-    cout<<"norm: "<<norm<<endl;
 
     int decade(0);
     int NN = trIN->GetEntries();
@@ -268,18 +246,15 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
                   // tight and probe region 
                   if(tTaggerTight > tightTopTaggerCut)
                   {
-                      double weights_temp = genEvtWeight * bTagEvntWeight;
-                      //h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                      h_Probe[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                      h_Probe[ivar]->Fill(xRecoAll[ivar]);
                   }
                   // SR and SR region 
                   if(tTaggerTight > selMvaCut && tTaggerOther > selMvaCut)
                   {
-                      double weights_temp = genEvtWeight * bTagEvntWeight;
-                      h_SR_random[ivar]->Fill(xRecoAll_random[ivar], genEvtWeight*bTagEvntWeight);
+                      h_SR_random[ivar]->Fill(xRecoAll_random[ivar]);
                       //double fill 
-                      h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar], genEvtWeight*bTagEvntWeight);
-                      h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar+3], genEvtWeight*bTagEvntWeight);
+                      h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar]);
+                      h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar+3]);
                   }
               }
             }
@@ -292,22 +267,19 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
                 // tight and probe region 
                 if(tTaggerTight > tightTopTaggerCut)
                 {
-                    double weights_temp = genEvtWeight * bTagEvntWeight;
-                    //h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                    hPtTopTagger_probe->Fill(xRecoAll[0], xRecoAll[2], genEvtWeight*bTagEvntWeight);
-                    hEtaTopTagger_probe->Fill(xRecoAll[1], xRecoAll[2], genEvtWeight*bTagEvntWeight);
+                    hPtTopTagger_probe->Fill(xRecoAll[0], xRecoAll[2]);
+                    hEtaTopTagger_probe->Fill(xRecoAll[1], xRecoAll[2]);
                 }
                 // SR and SR region 
                 if(tTaggerTight > selMvaCut && tTaggerOther > selMvaCut)
                 {
-                    double weights_temp = genEvtWeight * bTagEvntWeight;
-                    hPtTopTagger_random->Fill(xRecoAll_random[0], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
-                    hEtaTopTagger_random->Fill(xRecoAll_random[1], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
+                    hPtTopTagger_random->Fill(xRecoAll_random[0], xRecoAll_random[2]);
+                    hEtaTopTagger_random->Fill(xRecoAll_random[1], xRecoAll_random[2]);
                     //double fill 
-                    hPtTopTagger_double->Fill(xRecoAll_random[0], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
-                    hPtTopTagger_double->Fill(xRecoAll_random[3], xRecoAll_random[5], genEvtWeight*bTagEvntWeight);
-                    hEtaTopTagger_double->Fill(xRecoAll_random[1], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
-                    hEtaTopTagger_double->Fill(xRecoAll_random[4], xRecoAll_random[5], genEvtWeight*bTagEvntWeight);
+                    hPtTopTagger_double->Fill(xRecoAll_random[0], xRecoAll_random[2]);
+                    hPtTopTagger_double->Fill(xRecoAll_random[3], xRecoAll_random[5]);
+                    hEtaTopTagger_double->Fill(xRecoAll_random[1], xRecoAll_random[2]);
+                    hEtaTopTagger_double->Fill(xRecoAll_random[4], xRecoAll_random[5]);
                 }
             }
 
@@ -317,22 +289,8 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
     }//---end the event for
 
 
-    for(int ivar =0; ivar<NVAR; ivar++)
-    {
-        h_Probe[ivar]->Scale(weights*LUMI);
-        h_SR_random[ivar]->Scale(weights*LUMI);
-        h_SR_double[ivar]->Scale(weights*LUMI);
-    }
-    hPtTopTagger_probe->Scale(weights*LUMI);
-    hPtTopTagger_random->Scale(weights*LUMI);
-    hPtTopTagger_double->Scale(weights*LUMI);
-    hEtaTopTagger_probe->Scale(weights*LUMI);
-    hEtaTopTagger_random->Scale(weights*LUMI);
-    hEtaTopTagger_double->Scale(weights*LUMI);
-
-
     TFile *outFile;
-    outFile = TFile::Open(TString::Format("%s/Nominal/TTbarExtraAnalysis_%s.root", year.Data(), ttbar_process.Data()), "RECREATE");
+    outFile = TFile::Open(TString::Format("%s/TTbarExtraAnalysis_data.root", year.Data()), "RECREATE");
 
     for(int ivar =0; ivar<NVAR; ivar++)
     {
