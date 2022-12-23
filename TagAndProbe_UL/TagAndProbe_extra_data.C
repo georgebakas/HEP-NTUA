@@ -276,10 +276,10 @@ void TagAndProbe_extra_data(TString file_name, TString year = "2016", float mJJC
                     hPtTopTagger_random->Fill(xRecoAll_random[0], xRecoAll_random[2]);
                     hEtaTopTagger_random->Fill(xRecoAll_random[1], xRecoAll_random[2]);
                     //double fill 
-                    hPtTopTagger_double->Fill(xRecoAll_random[0], xRecoAll_random[2]);
-                    hPtTopTagger_double->Fill(xRecoAll_random[3], xRecoAll_random[5]);
-                    hEtaTopTagger_double->Fill(xRecoAll_random[1], xRecoAll_random[2]);
-                    hEtaTopTagger_double->Fill(xRecoAll_random[4], xRecoAll_random[5]);
+                    hPtTopTagger_double->Fill(xRecoAllSR_double[0], xRecoAllSR_double[2]);
+                    hPtTopTagger_double->Fill(xRecoAllSR_double[3], xRecoAllSR_double[5]);
+                    hEtaTopTagger_double->Fill(xRecoAllSR_double[1], xRecoAllSR_double[2]);
+                    hEtaTopTagger_double->Fill(xRecoAllSR_double[4], xRecoAllSR_double[5]);
                 }
             }
 

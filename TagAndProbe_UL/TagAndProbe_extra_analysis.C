@@ -183,7 +183,7 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
     int NN = trIN->GetEntries();
     //NN = 100000;
     std::cout<<"Entries: "<<NN<<std::endl;
-	  std::vector<float> xRecoAll(0);
+	std::vector<float> xRecoAll(0);
     std::vector<float> xRecoAll_random(0);
     std::vector<float> xRecoAllSR_double(0);
 
@@ -304,10 +304,10 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
                     hPtTopTagger_random->Fill(xRecoAll_random[0], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
                     hEtaTopTagger_random->Fill(xRecoAll_random[1], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
                     //double fill 
-                    hPtTopTagger_double->Fill(xRecoAll_random[0], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
-                    hPtTopTagger_double->Fill(xRecoAll_random[3], xRecoAll_random[5], genEvtWeight*bTagEvntWeight);
-                    hEtaTopTagger_double->Fill(xRecoAll_random[1], xRecoAll_random[2], genEvtWeight*bTagEvntWeight);
-                    hEtaTopTagger_double->Fill(xRecoAll_random[4], xRecoAll_random[5], genEvtWeight*bTagEvntWeight);
+                    hPtTopTagger_double->Fill(xRecoAllSR_double[0], xRecoAllSR_double[2], genEvtWeight*bTagEvntWeight);
+                    hPtTopTagger_double->Fill(xRecoAllSR_double[3], xRecoAllSR_double[5], genEvtWeight*bTagEvntWeight);
+                    hEtaTopTagger_double->Fill(xRecoAllSR_double[1], xRecoAllSR_double[2], genEvtWeight*bTagEvntWeight);
+                    hEtaTopTagger_double->Fill(xRecoAllSR_double[4], xRecoAllSR_double[5], genEvtWeight*bTagEvntWeight);
                 }
             }
 
