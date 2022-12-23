@@ -15,6 +15,10 @@ map<TString, int> variableConstant;
 map<int, TString> vars;
 map<TString, map<TString, TString>> ttNominalFiles;
 map<TString, float> ttbarSigStrength;
+map<TString, float> topTaggerSF_data;
+map<TString, float> topTaggerSF_data_error;
+map<TString, float> topTaggerSF_sim;
+map<TString, float> topTaggerSF_sim_error;
 
 void initFilesMapping()
 {
@@ -145,7 +149,24 @@ void initFilesMapping()
 	ttbarSigStrength.insert(pair<TString,float>("2016_postVFP", 0.640));
 	ttbarSigStrength.insert(pair<TString,float>("2017", 0.665));
 	ttbarSigStrength.insert(pair<TString,float>("2018", 0.675));
+	
+	topTaggerSF_data.insert(pair<TString,float>("2016_preVFP", 0.757));
+	topTaggerSF_data.insert(pair<TString,float>("2016_postVFP", 0.79));
+	topTaggerSF_data.insert(pair<TString,float>("2017", 0.814));
+	topTaggerSF_data.insert(pair<TString,float>("2018", 0.792));
 
+	topTaggerSF_sim.insert(pair<TString,float>("2016_preVFP", 0.788));
+	topTaggerSF_sim.insert(pair<TString,float>("2016_postVFP", 0.781));
+	topTaggerSF_sim.insert(pair<TString,float>("2017", 0.859));
+	topTaggerSF_sim.insert(pair<TString,float>("2018", 0.815));
+	
+	topTaggerSF_data_error.insert(pair<TString,float>("2016_preVFP", 0.058));
+	topTaggerSF_data_error.insert(pair<TString,float>("2016_postVFP", 0.052));
+	topTaggerSF_data_error.insert(pair<TString,float>("2017", 0.033));
+	topTaggerSF_data_error.insert(pair<TString,float>("2018", 0.03));
 
-
+	topTaggerSF_sim_error.insert(pair<TString,float>("2016_preVFP", 0.01));
+	topTaggerSF_sim_error.insert(pair<TString,float>("2016_postVFP", 0.009));
+	topTaggerSF_sim_error.insert(pair<TString,float>("2017", 0.007));
+	topTaggerSF_sim_error.insert(pair<TString,float>("2018", 0.006));
 }

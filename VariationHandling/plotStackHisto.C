@@ -15,10 +15,9 @@ using std::cout;
 using std::endl;
 #include "TemplateConstants.h"
 int mass, width;
+void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int btagFlag, bool topTaggerSF);
 
-void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int mJJCut);
-
-void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR")
+void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR", bool topTaggerSF = false)
 {
   initFilesMapping();
   //setTDRStyle();
@@ -49,12 +48,12 @@ void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR")
 
   for(int ivar = 0; ivar< NVAR; ivar++)
   {
-    plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], btagFlag);
+    plotStackHisto_Variable(year, infData, infTT, infQCD, infSub, varReco[ivar], btagFlag, topTaggerSF);
   }
 }
 
 
-void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int btagFlag)
+void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *infQCD, TFile *infSub, TString variable, int btagFlag, bool topTaggerSF)
 {
   //initFilesMapping();
   //now get the histograms
@@ -84,6 +83,25 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   //scale ttbar with signal strength when using MC
   hTT->Scale(ttbarSigStrength[year]);
+
+
+  // this is needed only if I want to plot the stuff related with the scale factors
+  if (topTaggerSF)
+  {
+    float top_tagger_sf = (topTaggerSF_data[year.Data()]/topTaggerSF_sim[year.Data()]);
+    float top_tagger_sf_error = TMath::Sqrt( 
+                                TMath::Power(topTaggerSF_data_error[year.Data()]/topTaggerSF_sim[year.Data()],2) +
+                                TMath::Power(topTaggerSF_data[year.Data()]*topTaggerSF_sim_error[year.Data()]/TMath::Power(topTaggerSF_sim[year.Data()],2),2));
+    //now apply these errors accordingly
+    for(int ibin=1; ibin<=hTT->GetNbinsX(); ibin++)
+    { 
+        float new_value = hTT->GetBinContent(ibin) * top_tagger_sf;
+        float new_error = TMath::Sqrt(TMath::Power(hTT->GetBinError(ibin) ,2)+ 
+                                      TMath::Power(top_tagger_sf_error ,2));
+        hTT->SetBinError(ibin, new_error);
+        hTT->SetBinContent(ibin, new_value);
+    }
+  }
 
   //scale qcd with Data
   //we use a k-factor
@@ -202,6 +220,12 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   int iPos = 0;
   writeExtraText=true;
   CMS_lumi(closure_pad1, year, iPos);
-  can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%dbTag.pdf",year.Data(), variable.Data(), btagFlag),"pdf");
+
+  if (topTaggerSF)
+  {
+    can->Print(TString::Format("%s/StackPlots_TopTagSF/DatavsMC_%s_%dbTag.pdf",year.Data(), variable.Data(), btagFlag),"pdf");
+  }
+  else
+    can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%dbTag.pdf",year.Data(), variable.Data(), btagFlag),"pdf");
 
 }

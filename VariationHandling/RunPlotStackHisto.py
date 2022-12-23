@@ -7,6 +7,7 @@ for year in years:
     os.system(f'rm {year}/StackPlots/*.pdf')
     for region in btagvar:
         print('year', year)
-        os.system(f'root -l -b -q \'plotStackHisto.C(\"{year}\",1000, \"{region}\")\'')
+        os.system(f'root -l -b -q \'plotStackHisto.C(\"{year}\",1000, \"{region}\", false)\'')
+        os.system(f'root -l -b -q \'plotStackHisto.C(\"{year}\",1000, \"{region}\", true)\'')
         #break
     #break

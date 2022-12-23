@@ -65,17 +65,43 @@ void CalculateEfficiency(TString year = "2016")
     RooRealVar *value = (RooRealVar *)w->var("nFitQCD_2b");
 
     float val = value->getValV();
-    float error = value->getError();
+    float nqcd_error = value->getError();
     masFitResultsFile->Close();
-    hQCD[i]->Scale(val/hQCD[i]->Integral());
+    
+    
+    Double_t integral_error;
+    float integral_qcd = hQCD[i]->IntegralAndError(1, hQCD[i]->GetNbinsX(), integral_error);
+    for(int ibin=1; ibin<=hQCD[i]->GetNbinsX(); ibin++)
+    {
+      float error = hQCD[i]->GetBinError(ibin);
+      float bin_value = hQCD[i]->GetBinContent(ibin);
+      float new_error = TMath::Sqrt(TMath::Power((error*val)/integral_qcd,2) + 
+                              TMath::Power((nqcd_error*bin_value)/integral_qcd, 2) + 
+                              TMath::Power(bin_value*val*integral_error/TMath::Power(integral_qcd,2),2));
+      hQCD[i]->SetBinError(ibin, new_error);
+      hQCD[i]->SetBinContent(ibin, val*hQCD[i]->GetBinContent(ibin)/integral_qcd);
+    }
+    //hQCD[i]->Scale(val/integral_qcd);
   
   } 
   for(int i =0; i<2; i++)
   { 
-    hData[i]->Add(hSub[i],-1);
-    hData[i]->Add(hQCD[i],-1);
+
+    for(int ibin=1; ibin<=hData[i]->GetNbinsX(); ibin++)
+    { 
+        float new_error = TMath::Sqrt(TMath::Power(hQCD[i]->GetBinError(ibin) ,2)+ 
+                                TMath::Power(hSub[i]->GetBinError(ibin) ,2) +
+                                TMath::Power(hData[i]->GetBinError(ibin), 2));
+        hData[i]->SetBinError(ibin, new_error);
+        hData[i]->SetBinContent(ibin, hData[i]->GetBinContent(ibin) - hSub[i]->GetBinContent(ibin) - hQCD[i]->GetBinContent(ibin));
+    }
+    
+    //hData[i]->Add(hSub[i],-1);
+    //hData[i]->Add(hQCD[i],-1);
   }
 
+
+  
   //scale the ttbar with its signal strength
   //hTT[0]->Scale(ttbarSigStrength_TagNProbe[year.Data()]);
   //hTT[1]->Scale(ttbarSigStrength_TagNSR[year.Data()]);
@@ -128,7 +154,11 @@ void CalculateEfficiency(TString year = "2016")
     //eff_PtRegionsTT[ipt] = integralPtRegionsTT[ipt][1]/integralPtRegionsTT[ipt][0];
     eff_PtRegionsTT[ipt] = ttbar_mc_tagnprobe_eff[year.Data()][start[ipt]];
     
-    eff_data_errorPtRegions[ipt] = TMath::Sqrt( TMath::Power(integralPtRegionsData_error[ipt][1]/integralPtRegionsData[ipt][0],2) + TMath::Power(integralPtRegionsData_error[ipt][0] * integralPtRegionsData[ipt][1]/ TMath::Power(integralPtRegionsData[ipt][0],2),2));
+    eff_data_errorPtRegions[ipt] = TMath::Sqrt( 
+                      TMath::Power(integralPtRegionsData_error[ipt][1]/integralPtRegionsData[ipt][0],2) +  // 
+                      TMath::Power(integralPtRegionsData_error[ipt][0] * integralPtRegionsData[ipt][1]/ TMath::Power(integralPtRegionsData[ipt][0],2),2)
+                      
+                      );
     // this is statistical error
     eff_tt_errorPtRegions[ipt] = TMath::Sqrt( TMath::Power(integralPtRegionsTT_error[ipt][1]/integralPtRegionsTT[ipt][0],2) + TMath::Power(integralPtRegionsTT_error[ipt][0] * integralPtRegionsTT[ipt][1]/ TMath::Power(integralPtRegionsTT[ipt][0],2),2));
     // this is systematic error
@@ -148,10 +178,10 @@ void CalculateEfficiency(TString year = "2016")
   fprintf(fp, "eff ttbar pT[400-600]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][1], eff_tt_errorPtRegions[0], eff_tt_errorPtRegions_systematic[0]);
   fprintf(fp, "-----------\n" );
   fprintf(fp, "eff data pT[600-800]: %f ± %f\n",eff_PtRegionsData[1], eff_data_errorPtRegions[1]);
-  fprintf(fp, "eff ttbar pT[600-800]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][2], eff_tt_errorPtRegions[1], eff_tt_errorPtRegions_systematic[1]);
+  fprintf(fp, "eff ttbar pT[600-800]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][3], eff_tt_errorPtRegions[1], eff_tt_errorPtRegions_systematic[1]);
   fprintf(fp, "-----------\n" );
   fprintf(fp, "eff data pT[800-Inf]: %f ± %f\n",eff_PtRegionsData[2], eff_data_errorPtRegions[2]);
-  fprintf(fp, "eff ttbar pT[800-Inf]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][3], eff_tt_errorPtRegions[2], eff_tt_errorPtRegions_systematic[2]);
+  fprintf(fp, "eff ttbar pT[800-Inf]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][5], eff_tt_errorPtRegions[2], eff_tt_errorPtRegions_systematic[2]);
 
   cout<<"eff data: "<<eff_data<<" ± "<<eff_data_error<<endl;
   cout<<"eff ttbar: "<<eff_tt<<" ± "<<eff_tt_error<<endl;
@@ -160,7 +190,9 @@ void CalculateEfficiency(TString year = "2016")
 
 
   TCanvas *can = new TCanvas("effCanPt", "effCanPt", 800, 600);
-  TLegend *leg = new TLegend(0.5, 0.75, 0.7, 0.9);
+  TLegend *leg;
+  if (year.Contains("2016")) leg = new TLegend(0.5, 0.75, 0.7, 0.9);
+  else leg = new TLegend(0.5, 0.25, 0.7, 0.4);
 
   int n = 3;
   float xData[] = {1,2,3};
@@ -174,7 +206,7 @@ void CalculateEfficiency(TString year = "2016")
 
   leg->AddEntry(grData,"Data", "lep");
   leg->AddEntry(grTT,"TT Statistical", "lep");
-  leg->AddEntry(grTT_systematic,"TT (Sys) + (Sta)", "lep");
+  leg->AddEntry(grTT_systematic,"TT (Sys) + (Stat)", "lep");
   TMultiGraph *mg = new TMultiGraph();
   grData->SetTitle("TGraphErrors Example");
   grData->SetMarkerColor(kBlue);
