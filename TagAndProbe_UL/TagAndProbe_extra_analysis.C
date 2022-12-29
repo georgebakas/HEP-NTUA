@@ -186,6 +186,8 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
 	std::vector<float> xRecoAll(0);
     std::vector<float> xRecoAll_random(0);
     std::vector<float> xRecoAllSR_double(0);
+    TRandom3 *randJet = new TRandom3();
+    TRandom3 *ran = new TRandom3();
 
     for(int iev=0;iev<NN;iev++)
     {
@@ -205,8 +207,6 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
         {
             int leadingPt = 0;
             int subleadingPt = 1;
-
-            TRandom2 *randJet = new TRandom2();
             int tightJet=0;
             int otherJet=0;
             if (randJet->Rndm() > 0.5)
@@ -228,7 +228,6 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
             xRecoAll.push_back((*jetTtag)[otherJet]);
 
             //for random jet in SR
-            TRandom2 *ran = new TRandom2();
             int rndm_jet = ran->Integer(2);
             xRecoAll_random.push_back((*jetPt)[rndm_jet]);
             xRecoAll_random.push_back(fabs((*jetEta)[rndm_jet]));
@@ -263,25 +262,25 @@ void TagAndProbe_extra_analysis(TString file_name, TString ttbar_process, TStrin
             for(int ivar = 0; ivar < xRecoAll.size(); ivar++)
             {
               //Probe Region 2btags
-              if(recoCuts && btagCut && (*bit)[triggerFloat])
-              { 
-                  // tight and probe region 
-                  if(tTaggerTight > tightTopTaggerCut)
-                  {
-                      double weights_temp = genEvtWeight * bTagEvntWeight;
-                      //h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                      h_Probe[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
-                  }
-                  // SR and SR region 
-                  if(tTaggerTight > selMvaCut && tTaggerOther > selMvaCut)
-                  {
-                      double weights_temp = genEvtWeight * bTagEvntWeight;
-                      h_SR_random[ivar]->Fill(xRecoAll_random[ivar], genEvtWeight*bTagEvntWeight);
-                      //double fill 
-                      h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar], genEvtWeight*bTagEvntWeight);
-                      h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar+3], genEvtWeight*bTagEvntWeight);
-                  }
-              }
+                if(recoCuts && btagCut && (*bit)[triggerFloat])
+                { 
+                    // tight and probe region 
+                    if(tTaggerTight > tightTopTaggerCut)
+                    {
+                        double weights_temp = genEvtWeight * bTagEvntWeight;
+                        //h_Denominator[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                        h_Probe[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                    }
+                    // SR and SR region 
+                    if(tTaggerTight > selMvaCut && tTaggerOther > selMvaCut)
+                    {
+                        double weights_temp = genEvtWeight * bTagEvntWeight;
+                        h_SR_random[ivar]->Fill(xRecoAll_random[ivar], genEvtWeight*bTagEvntWeight);
+                        //double fill 
+                        h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar], genEvtWeight*bTagEvntWeight);
+                        h_SR_double[ivar]->Fill(xRecoAllSR_double[ivar+3], genEvtWeight*bTagEvntWeight);
+                    }
+                }
             }
 
             // 2D plots here 

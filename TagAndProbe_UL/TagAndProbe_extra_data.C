@@ -164,6 +164,8 @@ void TagAndProbe_extra_data(TString file_name, TString year = "2016", float mJJC
 	  std::vector<float> xRecoAll(0);
     std::vector<float> xRecoAll_random(0);
     std::vector<float> xRecoAllSR_double(0);
+    TRandom2 *randJet = new TRandom2();
+    TRandom2 *ran = new TRandom2();
 
     for(int iev=0;iev<NN;iev++)
     {
@@ -183,8 +185,6 @@ void TagAndProbe_extra_data(TString file_name, TString year = "2016", float mJJC
         {
             int leadingPt = 0;
             int subleadingPt = 1;
-
-            TRandom2 *randJet = new TRandom2();
             int tightJet=0;
             int otherJet=0;
             if (randJet->Rndm() > 0.5)
@@ -206,7 +206,6 @@ void TagAndProbe_extra_data(TString file_name, TString year = "2016", float mJJC
             xRecoAll.push_back((*jetTtag)[otherJet]);
 
             //for random jet in SR
-            TRandom2 *ran = new TRandom2();
             int rndm_jet = ran->Integer(2);
             xRecoAll_random.push_back((*jetPt)[rndm_jet]);
             xRecoAll_random.push_back(fabs((*jetEta)[rndm_jet]));
