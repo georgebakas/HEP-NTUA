@@ -30,4 +30,5 @@ for ifile in  all_files[year]:
     print(ifile)
     for mjj_cut in mJJCuts:
         print('Current mjj cut:', mjj_cut)
-        os.system(f'root -l -b -q \'TagAndProbe_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')
+        # os.system(f'root -l -b -q \'TagAndProbe_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')
+        os.system(f'root -l -b -q \'TagAndProbe_nominal_newBins.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\",{mjj_cut})\'')

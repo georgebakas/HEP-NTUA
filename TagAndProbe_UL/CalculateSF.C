@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "TemplateConstants.h"
 
-void CalculateEfficiency_newRegions(TString year = "2017")
+void CalculateSF(TString year = "2017")
 {
   initFilesMapping();
   //get the files from the directory
@@ -123,6 +123,13 @@ void CalculateEfficiency_newRegions(TString year = "2017")
   float eff_data_error = TMath::Sqrt( TMath::Power(error_data[1]/intData[0],2) + TMath::Power(error_data[0] * intData[1]/ TMath::Power(intData[0],2),2));
   float eff_tt_error = TMath::Sqrt( TMath::Power(error_tt[1]/intTT[0],2) + TMath::Power(error_tt[0] * intTT[1]/ TMath::Power(intTT[0],2),2));
 
+  // calculate top taggger SF inclusive
+  // calculate the SF error here 
+  float top_tagger_sf_error_incl = TMath::Sqrt( 
+                                TMath::Power(eff_data_error/eff_tt,2) +
+                                TMath::Power(eff_data*eff_tt_error/TMath::Power(eff_tt,2),2));
+  float top_tagger_sf_incl = (eff_data/eff_tt);
+
   //now calculate it per pT region:
   //jetPt0 binning: {400,425,450,475,500,535,570,610,650,700,750,800,850,900,950,1025,1100,1200,1300,1400,1500}
   //[i][0] is the ptregion i, denominator and [i][1] is pt region i, numerator
@@ -135,17 +142,27 @@ void CalculateEfficiency_newRegions(TString year = "2017")
   float eff_data_errorPtRegions[3];
   float eff_tt_errorPtRegions[3];
   float eff_tt_errorPtRegions_systematic[3];
+  // scale factor calculation per pt region:
+  float top_tagger_sf_error[3];
+  float top_tagger_sf[3];
 
-
-  float start[3] = {1,3,4};
-  float end[3] = {2,4,7};
-  // {450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
-  // 450, 500
-  // 500, 570, 650
-  // 650, 800, 1100, 1500
+  float start[3] = {1,3,5};
+  float end[3] = {2,4,6};
+  // {400, 450, 500, 550, 600, 1100, 1500}, //jetPt0
+  // integralAndError is integral from [bin1, bin2]
+  // 400, 450, 500
+  // 500, 550, 600
+  // 600, 1100, 1500
   // loop on all regions
+  
+  for(int ibin=1; ibin<=hData[0]->GetNbinsX(); ibin++)
+  {
+    cout<< "ibin "<< ibin <<": Content: "<< hData[0]->GetBinContent(ibin)<<endl;
+  }
+    
   for(int ipt=0; ipt<3;ipt++)
   {
+    cout<< "integal"<< hData[0]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsData_error[ipt][0])<<endl; 
     integralPtRegionsData[ipt][0] = hData[0]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsData_error[ipt][0]);
     integralPtRegionsData[ipt][1] = hData[1]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsData_error[ipt][1]);
 
@@ -165,30 +182,30 @@ void CalculateEfficiency_newRegions(TString year = "2017")
     eff_tt_errorPtRegions[ipt] = TMath::Sqrt( TMath::Power(integralPtRegionsTT_error[ipt][1]/integralPtRegionsTT[ipt][0],2) + TMath::Power(integralPtRegionsTT_error[ipt][0] * integralPtRegionsTT[ipt][1]/ TMath::Power(integralPtRegionsTT[ipt][0],2),2));
     // this is systematic error
     eff_tt_errorPtRegions_systematic[ipt] = ttbar_mc_tagnprobe_eff_error[year.Data()][start[ipt]];
+
+    // calculate the SF error here 
+    top_tagger_sf_error[ipt] = TMath::Sqrt( 
+                                TMath::Power(eff_data_errorPtRegions[ipt]/eff_PtRegionsTT[ipt],2) +
+                                TMath::Power(eff_PtRegionsData[ipt]*eff_tt_errorPtRegions[ipt]/TMath::Power(eff_PtRegionsTT[ipt],2),2));
+    top_tagger_sf[ipt] = (eff_PtRegionsData[ipt]/eff_PtRegionsTT[ipt]);  
+    
   }
 
 
   FILE *fp;
-  TString str = TString::Format("%s/Output_%s_newRegions.txt",year.Data(), year.Data());
+  TString str = TString::Format("%s/Output_ScaleFactor_%s.txt",year.Data(), year.Data());
   fp = fopen(str.Data(),"w");
-  fprintf(fp, "Efficiency--\n" );
-  fprintf(fp, "eff data: %f ± %f\n",eff_data, eff_data_error);
-  fprintf(fp, "eff ttbar: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][0], eff_tt_error, ttbar_mc_tagnprobe_eff_error[year.Data()][0]);
+  fprintf(fp, "Top Tagger SF--\n" );
+  fprintf(fp, ": %f ± %f\n",top_tagger_sf_incl, top_tagger_sf_error_incl);
   fprintf(fp, "-----------\n" );
-  fprintf(fp, "Efficiency per Pt region\n");
-  fprintf(fp, "eff data pT[400-500]: %f ± %f\n",eff_PtRegionsData[0], eff_data_errorPtRegions[0]);
-  fprintf(fp, "eff ttbar pT[400-500]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][1], eff_tt_errorPtRegions[0], eff_tt_errorPtRegions_systematic[0]);
+  fprintf(fp, "Top Tagger SF per Pt region\n");
+  fprintf(fp, "Top Tagger SF pT[400-500]: %f ± %f\n",top_tagger_sf[0], top_tagger_sf_error[0]);
   fprintf(fp, "-----------\n" );
-  fprintf(fp, "eff data pT[500-600]: %f ± %f\n",eff_PtRegionsData[1], eff_data_errorPtRegions[1]);
-  fprintf(fp, "eff ttbar pT[500-600]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][3], eff_tt_errorPtRegions[1], eff_tt_errorPtRegions_systematic[1]);
+  fprintf(fp, "Top Tagger SF pT[500-600]: %f ± %f\n",top_tagger_sf[1], top_tagger_sf_error[1]);
   fprintf(fp, "-----------\n" );
-  fprintf(fp, "eff data pT[600-Inf]: %f ± %f\n",eff_PtRegionsData[2], eff_data_errorPtRegions[2]);
-  fprintf(fp, "eff ttbar pT[600-Inf]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][5], eff_tt_errorPtRegions[2], eff_tt_errorPtRegions_systematic[2]);
+  fprintf(fp, "Top Tagger SF pT[600-Inf]: %f ± %f\n",top_tagger_sf[2], top_tagger_sf_error[2]);
 
-  cout<<"eff data: "<<eff_data<<" ± "<<eff_data_error<<endl;
-  cout<<"eff ttbar: "<<eff_tt<<" ± "<<eff_tt_error<<endl;
   fclose(fp);
-
 
 
   TCanvas *can = new TCanvas("effCanPt", "effCanPt", 800, 600);
@@ -203,27 +220,27 @@ void CalculateEfficiency_newRegions(TString year = "2017")
   float xTT_systematic[] = {1.4,2.4,3.4};
   std::vector<TString> x_labels = {"pT[400-500]", "pT[500-600]", "pT[600-Inf]"};
   float ex[]= {0,0,0};
-  TGraphErrors *grData = new TGraphErrors(n,xData,eff_PtRegionsData,ex,eff_data_errorPtRegions);
-  TGraphErrors *grTT = new TGraphErrors(n,xTT,eff_PtRegionsTT,ex,eff_tt_errorPtRegions);
-  TGraphErrors *grTT_systematic = new TGraphErrors(n,xTT_systematic,eff_PtRegionsTT,ex,eff_tt_errorPtRegions_systematic);
+  TGraphErrors *grData = new TGraphErrors(n,xData,top_tagger_sf,ex,top_tagger_sf_error);
+  // TGraphErrors *grTT = new TGraphErrors(n,xTT,eff_PtRegionsTT,ex,eff_tt_errorPtRegions);
+  // TGraphErrors *grTT_systematic = new TGraphErrors(n,xTT_systematic,eff_PtRegionsTT,ex,eff_tt_errorPtRegions_systematic);
 
-  leg->AddEntry(grData,"Data", "lep");
-  leg->AddEntry(grTT,"TT Statistical", "lep");
-  leg->AddEntry(grTT_systematic,"TT (Sys) + (Stat)", "lep");
+  leg->AddEntry(grData,"pT dep. SF", "lep");
+  // leg->AddEntry(grTT,"TT Statistical", "lep");
+  // leg->AddEntry(grTT_systematic,"TT (Sys) + (Stat)", "lep");
   TMultiGraph *mg = new TMultiGraph();
   grData->SetTitle("TGraphErrors Example");
   grData->SetMarkerColor(kBlue);
   grData->SetMarkerStyle(21);
-  grTT->SetMarkerColor(kRed);
-  grTT->SetMarkerStyle(20);
-  grTT_systematic->SetMarkerColor(kMagenta);
-  grTT_systematic->SetMarkerStyle(22);
+  // grTT->SetMarkerColor(kRed);
+  // grTT->SetMarkerStyle(20);
+  // grTT_systematic->SetMarkerColor(kMagenta);
+  // grTT_systematic->SetMarkerStyle(22);
 
-  // data central line 
+  // SF central line 
   Double_t plotX_data[3] = {1, 2, 4};
-  Double_t plotY_data[3] = {eff_data, eff_data, eff_data};
+  Double_t plotY_data[3] = {top_tagger_sf_incl, top_tagger_sf_incl, top_tagger_sf_incl};
   Double_t plotX_data_error[3] = {0, 0, 0};
-  Double_t plotY_data_error[3] = {eff_data_error, eff_data_error, eff_data_error};
+  Double_t plotY_data_error[3] = {top_tagger_sf_error_incl, top_tagger_sf_error_incl, top_tagger_sf_error_incl};
   TGraphErrors *data_central_err = new TGraphErrors(3,plotX_data,plotY_data, plotX_data_error, plotY_data_error);
   data_central_err->SetFillColor(kBlue);
   data_central_err->SetLineColor(kBlue);
@@ -231,24 +248,24 @@ void CalculateEfficiency_newRegions(TString year = "2017")
   data_central_err->SetFillStyle(3004);
 
   // MC central line 
-  Double_t plotX_mc[3] = {1, 2, 4};
-  Double_t plotY_mc[3] = {ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0]};
-  Double_t plotX_mc_error[3] = {0, 0, 0};
-  Double_t plotY_mc_error[3] = {ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0]};
-  TGraphErrors *mc_central_err = new TGraphErrors(3,plotX_mc,plotY_mc, plotX_mc_error, plotY_mc_error);
-  mc_central_err->SetFillColor(kMagenta);
-  mc_central_err->SetLineColor(kMagenta);
-  mc_central_err->SetLineWidth(2.0);
-  mc_central_err->SetFillStyle(3005);
+  // Double_t plotX_mc[3] = {1, 2, 4};
+  // Double_t plotY_mc[3] = {ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0]};
+  // Double_t plotX_mc_error[3] = {0, 0, 0};
+  // Double_t plotY_mc_error[3] = {ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0]};
+  // TGraphErrors *mc_central_err = new TGraphErrors(3,plotX_mc,plotY_mc, plotX_mc_error, plotY_mc_error);
+  // mc_central_err->SetFillColor(kMagenta);
+  // mc_central_err->SetLineColor(kMagenta);
+  // mc_central_err->SetLineWidth(2.0);
+  // mc_central_err->SetFillStyle(3005);
 
-  leg->AddEntry(data_central_err,"Total Eff. Data", "f");
-  leg->AddEntry(mc_central_err,"Total Eff. MC", "f");
+  leg->AddEntry(data_central_err,"Inclusice Top Tagger SF", "f");
+  // leg->AddEntry(mc_central_err,"Total Eff. MC", "f");
 
   mg->Add(grData, "AP");
-  mg->Add(grTT, "AP");
-  mg->Add(grTT_systematic, "AP");
+  // mg->Add(grTT, "AP");
+  // mg->Add(grTT_systematic, "AP");
   mg->Add(data_central_err, "A3L");
-  mg->Add(mc_central_err, "same A3L");
+  // mg->Add(mc_central_err, "same A3L");
   
   mg->GetYaxis()->SetRangeUser(0.4, 1.05);
   mg->Draw("a");
@@ -262,6 +279,6 @@ void CalculateEfficiency_newRegions(TString year = "2017")
   } 
   leg->Draw();
   can->Update();
-  can->Print(TString::Format("%s/Nominal/plots/Efficiency_perPtRegion_newRegions.pdf",year.Data()),"pdf");
+  can->Print(TString::Format("%s/Nominal/plots/SF_perPtRegion.pdf",year.Data()),"pdf");
 
 }

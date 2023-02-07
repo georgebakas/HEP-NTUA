@@ -165,7 +165,7 @@ void initGlobals(TString year)
   initHistoNames(year);
 }
 
-void TagAndProbe(TString y="2016_preVFP", int sel = 0)
+void TagAndProbe_newBins(TString y="2016_preVFP", int sel = 0)
 {
   year =y;
   initFilesMapping(false);
