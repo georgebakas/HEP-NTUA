@@ -17,14 +17,14 @@ void CalculateEfficiency(TString year = "2016")
   initFilesMapping();
   //get the files from the directory
   //data file
-  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
+  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data_newBins.root", year.Data()));
   //tt nominal file:
-  TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
+  TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal_newBins.root", year.Data()));
   //TFile *infTT = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
   //qcd mc file
-  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()));
+  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf_newBins.root",year.Data()));
   //subdominant file:
-  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_SubdominantBkgs.root",year.Data()));
+  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_SubdominantBkgs_newBins.root",year.Data()));
 
   TString regions[2] = {"hSRBTightAndProbe_", "hSRBTightAndSR_"};
   //get the histograms for the jetPt0 variable
@@ -139,7 +139,11 @@ void CalculateEfficiency(TString year = "2016")
 
   float start[3] = {1,3,5};
   float end[3] = {2,4,6};
-  // {450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
+  // {400, 450, 500, 550, 600, 1100, 1500}, //jetPt0
+  // integralAndError is integral from [bin1, bin2]
+  // 400, 450, 500, 550, 600
+  // 600, 1100, 1500
+  // loop on all regions
   // loop on all regions
   for(int ipt=0; ipt<3;ipt++)
   {
