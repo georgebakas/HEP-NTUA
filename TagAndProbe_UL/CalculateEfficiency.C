@@ -191,8 +191,9 @@ void CalculateEfficiency(TString year = "2016")
 
   TCanvas *can = new TCanvas("effCanPt", "effCanPt", 800, 600);
   TLegend *leg;
-  if (year.Contains("2016")) leg = new TLegend(0.5, 0.75, 0.7, 0.9);
-  else leg = new TLegend(0.5, 0.25, 0.7, 0.4);
+  //if (year.Contains("2016")) leg = new TLegend(0.5, 0.75, 0.7, 0.9);
+  //else 
+  leg = new TLegend(0.5, 0.15, 0.7, 0.3);
 
   int n = 3;
   float xData[] = {1,2,3};
@@ -216,10 +217,41 @@ void CalculateEfficiency(TString year = "2016")
   grTT_systematic->SetMarkerColor(kMagenta);
   grTT_systematic->SetMarkerStyle(22);
 
-  mg->Add(grData);
-  mg->Add(grTT);
-  mg->Add(grTT_systematic);
-  mg->Draw("ap");
+  // data central line 
+  Double_t plotX_data[3] = {1, 2, 4};
+  Double_t plotY_data[3] = {eff_data, eff_data, eff_data};
+  Double_t plotX_data_error[3] = {0, 0, 0};
+  Double_t plotY_data_error[3] = {eff_data_error, eff_data_error, eff_data_error};
+  TGraphErrors *data_central_err = new TGraphErrors(3,plotX_data,plotY_data, plotX_data_error, plotY_data_error);
+  data_central_err->SetFillColor(kBlue);
+  data_central_err->SetLineColor(kBlue);
+  data_central_err->SetLineWidth(2.0);
+  data_central_err->SetFillStyle(3004);
+
+  // MC central line 
+  Double_t plotX_mc[3] = {1, 2, 4};
+  Double_t plotY_mc[3] = {ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0]};
+  Double_t plotX_mc_error[3] = {0, 0, 0};
+  Double_t plotY_mc_error[3] = {ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0]};
+  TGraphErrors *mc_central_err = new TGraphErrors(3,plotX_mc,plotY_mc, plotX_mc_error, plotY_mc_error);
+  mc_central_err->SetFillColor(kMagenta);
+  mc_central_err->SetLineColor(kMagenta);
+  mc_central_err->SetLineWidth(2.0);
+  mc_central_err->SetFillStyle(3005);
+
+  leg->AddEntry(data_central_err,"Total Eff. Data", "f");
+  leg->AddEntry(mc_central_err,"Total Eff. MC", "f");
+
+  mg->Add(grData, "AP");
+  mg->Add(grTT, "AP");
+  mg->Add(grTT_systematic, "AP");
+  mg->Add(data_central_err, "A3L");
+  mg->Add(mc_central_err, "same A3L");
+  
+  mg->GetYaxis()->SetRangeUser(0.4, 1.05);
+  mg->Draw("a");
+  //data_central_err->Draw("same a3");
+  
   for (int i=0;i<n;i++)
   {
     //cout<<mg->GetXaxis()->GetBinLabel(i+1)<<endl;

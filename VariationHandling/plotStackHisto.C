@@ -84,11 +84,20 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   //scale ttbar with signal strength when using MC
   hTT->Scale(ttbarSigStrength[year]);
 
+  //scale qcd with Data
+  //we use a k-factor
+  TH1F *hQCD_tempFromData = (TH1F*)hData->Clone("hQCD_tempFromData");
+  hQCD_tempFromData->Add(hTT, -1);
+  hQCD_tempFromData->Add(hSub, -1);
 
   // this is needed only if I want to plot the stuff related with the scale factors
   if (topTaggerSF)
   {
     float top_tagger_sf = (topTaggerSF_data[year.Data()]/topTaggerSF_sim[year.Data()]);
+    cout<<top_tagger_sf<<endl;
+    cout<< topTaggerSF_data[year.Data()]<<endl;
+    cout<< topTaggerSF_sim[year.Data()]<<endl;
+    cout<<"----------------------"<<endl;
     float top_tagger_sf_error = TMath::Sqrt( 
                                 TMath::Power(topTaggerSF_data_error[year.Data()]/topTaggerSF_sim[year.Data()],2) +
                                 TMath::Power(topTaggerSF_data[year.Data()]*topTaggerSF_sim_error[year.Data()]/TMath::Power(topTaggerSF_sim[year.Data()],2),2));
@@ -102,12 +111,6 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
         hTT->SetBinContent(ibin, new_value);
     }
   }
-
-  //scale qcd with Data
-  //we use a k-factor
-  TH1F *hQCD_tempFromData = (TH1F*)hData->Clone("hQCD_tempFromData");
-  hQCD_tempFromData->Add(hTT, -1);
-  hQCD_tempFromData->Add(hSub, -1);
 
   float qcdScaleFactor = hQCD_tempFromData->Integral()/hQCD->Integral();
   cout<<"qcdScaleFactor: "<<qcdScaleFactor<<endl;

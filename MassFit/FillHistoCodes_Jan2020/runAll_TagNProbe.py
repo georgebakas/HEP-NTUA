@@ -10,4 +10,5 @@ for i in range(4):
     if i != 1: 
     #if i != 4:
     #    continue
-        os.system(f'root -l -b -q \'TagAndProbe.C(\"{year}\",{i})\'')
+        # os.system(f'root -l -b -q \'TagAndProbe.C(\"{year}\",{i})\'')
+        os.system(f'root -l -b -q \'TagAndProbe_newBins.C(\"{year}\",{i})\'')
