@@ -17,14 +17,14 @@ void CalculateSF(TString year = "2017")
   initFilesMapping();
   //get the files from the directory
   //data file
-  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data.root", year.Data()));
+  TFile *infData = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_Data_newBins.root", year.Data()));
   //tt nominal file:
-  TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
+  TFile *infTT = TFile::Open(TString::Format("%s/Nominal/combined/TagAndProbeHisto_1000_TT_Nominal_newBins.root", year.Data()));
   //TFile *infTT = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_1000_TT_Nominal.root", year.Data()));
   //qcd mc file
-  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf.root",year.Data()));
+  TFile *infQCD = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_QCD_HT300toInf_newBins.root",year.Data()));
   //subdominant file:
-  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_SubdominantBkgs.root",year.Data()));
+  TFile *infSub = TFile::Open(TString::Format("../MassFit/%s/TagAndProbeHisto_SubdominantBkgs_newBins.root",year.Data()));
 
   TString regions[2] = {"hSRBTightAndProbe_", "hSRBTightAndSR_"};
   //get the histograms for the jetPt0 variable
@@ -146,12 +146,12 @@ void CalculateSF(TString year = "2017")
   float top_tagger_sf_error[3];
   float top_tagger_sf[3];
 
-  float start[3] = {1,3,5};
-  float end[3] = {2,4,6};
+  float start[3] = {1,5,6};
+  float end[3] = {4,5,7};
   // {400, 450, 500, 550, 600, 1100, 1500}, //jetPt0
   // integralAndError is integral from [bin1, bin2]
-  // 400, 450, 500
-  // 500, 550, 600
+  // 400, 450, 500, 550, 600
+  // 600, 800
   // 600, 1100, 1500
   // loop on all regions
   
@@ -199,11 +199,11 @@ void CalculateSF(TString year = "2017")
   fprintf(fp, ": %f ± %f\n",top_tagger_sf_incl, top_tagger_sf_error_incl);
   fprintf(fp, "-----------\n" );
   fprintf(fp, "Top Tagger SF per Pt region\n");
-  fprintf(fp, "Top Tagger SF pT[400-500]: %f ± %f\n",top_tagger_sf[0], top_tagger_sf_error[0]);
+  fprintf(fp, "Top Tagger SF pT[400-600]: %f ± %f\n",top_tagger_sf[0], top_tagger_sf_error[0]);
   fprintf(fp, "-----------\n" );
-  fprintf(fp, "Top Tagger SF pT[500-600]: %f ± %f\n",top_tagger_sf[1], top_tagger_sf_error[1]);
+  fprintf(fp, "Top Tagger SF pT[600-800]: %f ± %f\n",top_tagger_sf[1], top_tagger_sf_error[1]);
   fprintf(fp, "-----------\n" );
-  fprintf(fp, "Top Tagger SF pT[600-Inf]: %f ± %f\n",top_tagger_sf[2], top_tagger_sf_error[2]);
+  fprintf(fp, "Top Tagger SF pT[800-Inf]: %f ± %f\n",top_tagger_sf[2], top_tagger_sf_error[2]);
 
   fclose(fp);
 
@@ -267,7 +267,7 @@ void CalculateSF(TString year = "2017")
   mg->Add(data_central_err, "A3L");
   // mg->Add(mc_central_err, "same A3L");
   
-  mg->GetYaxis()->SetRangeUser(0.4, 1.05);
+  mg->GetYaxis()->SetRangeUser(0.5, 1.2);
   mg->Draw("a");
   //data_central_err->Draw("same a3");
   

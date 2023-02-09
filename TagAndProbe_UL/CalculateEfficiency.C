@@ -137,12 +137,13 @@ void CalculateEfficiency(TString year = "2016")
   float eff_tt_errorPtRegions_systematic[3];
 
 
-  float start[3] = {1,3,5};
-  float end[3] = {2,4,6};
+  float start[3] = {1,5,6};
+  float end[3] = {4,5,7};
   // {400, 450, 500, 550, 600, 1100, 1500}, //jetPt0
   // integralAndError is integral from [bin1, bin2]
   // 400, 450, 500, 550, 600
-  // 600, 1100, 1500
+  // 600, 800
+  // 800, 1100, 1500
   // loop on all regions
   // loop on all regions
   for(int ipt=0; ipt<3;ipt++)
@@ -153,10 +154,17 @@ void CalculateEfficiency(TString year = "2016")
     integralPtRegionsTT[ipt][0] = hTT[0]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsTT_error[ipt][0]);
     integralPtRegionsTT[ipt][1] = hTT[1]->IntegralAndError(start[ipt],end[ipt],integralPtRegionsTT_error[ipt][1]);
 
+    cout<<"--------------------"<<endl;
+    cout<< "starts at: "<<start[ipt]<< " ends at: "<<end[ipt]<<endl;
+    cout<< "ipt: "<<ipt<<endl;
+    cout<< "0: "<<integralPtRegionsTT[ipt][0]<<endl;
+    cout<< "1: "<<integralPtRegionsTT[ipt][1]<<endl;
+    cout<< "eff ttbar: "<<integralPtRegionsTT[ipt][1]/integralPtRegionsTT[ipt][0]<<endl;
+    cout<<"*************"<<endl;
 
     eff_PtRegionsData[ipt] = integralPtRegionsData[ipt][1]/integralPtRegionsData[ipt][0];
-    //eff_PtRegionsTT[ipt] = integralPtRegionsTT[ipt][1]/integralPtRegionsTT[ipt][0];
-    eff_PtRegionsTT[ipt] = ttbar_mc_tagnprobe_eff[year.Data()][start[ipt]];
+    eff_PtRegionsTT[ipt] = integralPtRegionsTT[ipt][1]/integralPtRegionsTT[ipt][0];
+    //eff_PtRegionsTT[ipt] = ttbar_mc_tagnprobe_eff[year.Data()][start[ipt]];
     
     eff_data_errorPtRegions[ipt] = TMath::Sqrt( 
                       TMath::Power(integralPtRegionsData_error[ipt][1]/integralPtRegionsData[ipt][0],2) +  // 
@@ -166,7 +174,8 @@ void CalculateEfficiency(TString year = "2016")
     // this is statistical error
     eff_tt_errorPtRegions[ipt] = TMath::Sqrt( TMath::Power(integralPtRegionsTT_error[ipt][1]/integralPtRegionsTT[ipt][0],2) + TMath::Power(integralPtRegionsTT_error[ipt][0] * integralPtRegionsTT[ipt][1]/ TMath::Power(integralPtRegionsTT[ipt][0],2),2));
     // this is systematic error
-    eff_tt_errorPtRegions_systematic[ipt] = ttbar_mc_tagnprobe_eff_error[year.Data()][start[ipt]];
+    //cout<<"error "<<ipt<<" "<<eff_tt_errorPtRegions[ipt]<<endl;
+    eff_tt_errorPtRegions_systematic[ipt] = ttbar_mc_tagnprobe_eff_error[year.Data()][ipt] + eff_tt_errorPtRegions[ipt];
   }
 
 
@@ -175,17 +184,17 @@ void CalculateEfficiency(TString year = "2016")
   fp = fopen(str.Data(),"w");
   fprintf(fp, "Efficiency--\n" );
   fprintf(fp, "eff data: %f ± %f\n",eff_data, eff_data_error);
-  fprintf(fp, "eff ttbar: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][0], eff_tt_error, ttbar_mc_tagnprobe_eff_error[year.Data()][0]);
+  fprintf(fp, "eff ttbar: %f ± (stat) %f ± (systematic) %f\n",eff_tt, eff_tt_error, ttbar_mc_tagnprobe_eff_error[year.Data()][0]);
   fprintf(fp, "-----------\n" );
   fprintf(fp, "Efficiency per Pt region\n");
   fprintf(fp, "eff data pT[400-600]: %f ± %f\n",eff_PtRegionsData[0], eff_data_errorPtRegions[0]);
-  fprintf(fp, "eff ttbar pT[400-600]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][1], eff_tt_errorPtRegions[0], eff_tt_errorPtRegions_systematic[0]);
+  fprintf(fp, "eff ttbar pT[400-600]: %f ± (stat) %f ± (systematic) %f\n",eff_PtRegionsTT[0], eff_tt_errorPtRegions[0], eff_tt_errorPtRegions_systematic[0]);
   fprintf(fp, "-----------\n" );
   fprintf(fp, "eff data pT[600-800]: %f ± %f\n",eff_PtRegionsData[1], eff_data_errorPtRegions[1]);
-  fprintf(fp, "eff ttbar pT[600-800]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][3], eff_tt_errorPtRegions[1], eff_tt_errorPtRegions_systematic[1]);
+  fprintf(fp, "eff ttbar pT[600-800]: %f ± (stat) %f ± (systematic) %f\n",eff_PtRegionsTT[1], eff_tt_errorPtRegions[1], eff_tt_errorPtRegions_systematic[1]);
   fprintf(fp, "-----------\n" );
   fprintf(fp, "eff data pT[800-Inf]: %f ± %f\n",eff_PtRegionsData[2], eff_data_errorPtRegions[2]);
-  fprintf(fp, "eff ttbar pT[800-Inf]: %f ± (stat) %f ± (systematic) %f\n",ttbar_mc_tagnprobe_eff[year.Data()][5], eff_tt_errorPtRegions[2], eff_tt_errorPtRegions_systematic[2]);
+  fprintf(fp, "eff ttbar pT[800-Inf]: %f ± (stat) %f ± (systematic) %f\n",eff_PtRegionsTT[2], eff_tt_errorPtRegions[2], eff_tt_errorPtRegions_systematic[2]);
 
   cout<<"eff data: "<<eff_data<<" ± "<<eff_data_error<<endl;
   cout<<"eff ttbar: "<<eff_tt<<" ± "<<eff_tt_error<<endl;
@@ -234,9 +243,9 @@ void CalculateEfficiency(TString year = "2016")
 
   // MC central line 
   Double_t plotX_mc[3] = {1, 2, 4};
-  Double_t plotY_mc[3] = {ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0], ttbar_mc_tagnprobe_eff[year.Data()][0]};
+  Double_t plotY_mc[3] = {eff_tt, eff_tt, eff_tt};
   Double_t plotX_mc_error[3] = {0, 0, 0};
-  Double_t plotY_mc_error[3] = {ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0], ttbar_mc_tagnprobe_eff_error[year.Data()][0]};
+  Double_t plotY_mc_error[3] = {eff_tt_error, eff_tt_error, eff_tt_error};
   TGraphErrors *mc_central_err = new TGraphErrors(3,plotX_mc,plotY_mc, plotX_mc_error, plotY_mc_error);
   mc_central_err->SetFillColor(kMagenta);
   mc_central_err->SetLineColor(kMagenta);

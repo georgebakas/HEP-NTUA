@@ -147,8 +147,8 @@ void CalculateSF_newBins(TString year = "2017")
   float top_tagger_sf[3];
 
   float start[3] = {1,3,5};
-  float end[3] = {2,4,6};
-  // {400, 450, 500, 550, 600, 1100, 1500}, //jetPt0
+  float end[3] = {2,4,7};
+  // {400, 450, 500, 550, 600, 800, 1100, 1500}, //jetPt0
   // integralAndError is integral from [bin1, bin2]
   // 400, 450, 500
   // 500, 550, 600
@@ -267,7 +267,7 @@ void CalculateSF_newBins(TString year = "2017")
   mg->Add(data_central_err, "A3L");
   // mg->Add(mc_central_err, "same A3L");
   
-  mg->GetYaxis()->SetRangeUser(0.4, 1.05);
+  mg->GetYaxis()->SetRangeUser(0.5, 1.2);
   mg->Draw("a");
   //data_central_err->Draw("same a3");
   

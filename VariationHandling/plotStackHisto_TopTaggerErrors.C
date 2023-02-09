@@ -174,6 +174,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   leg->AddEntry(hTT, "TTbar", "f");
   leg->AddEntry(hQCD, "QCD", "f");
   leg->AddEntry(hSub, "Subdominant", "f");
+  leg->AddEntry(hSum, "Total Stack", "lep");
 
 
   hs->Draw("hist");

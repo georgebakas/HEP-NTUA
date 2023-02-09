@@ -9,5 +9,6 @@ for year in years:
         print('year', year)
         os.system(f'root -l -b -q \'plotStackHisto.C(\"{year}\",1000, \"{region}\", false)\'')
         os.system(f'root -l -b -q \'plotStackHisto.C(\"{year}\",1000, \"{region}\", true)\'')
+        # os.system(f'root -l -b -q \'plotStackHisto_TopTaggerErrors.C(\"{year}\",1000, \"{region}\", true)\'')
         #break
     #break

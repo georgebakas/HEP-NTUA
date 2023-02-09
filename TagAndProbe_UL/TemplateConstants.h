@@ -219,25 +219,25 @@ void initFilesMapping()
 	ttbar_mc_tagnprobe_eff.insert(pair<TString, map<int, float>>("2018", ttbar_mc_tagnprobe_eff_2018));
 
 	//errors 
-	map<int, float> ttbar_mc_tagnprobe_eff_2016_pre_error = {{1,  0.0133676},
-													{3, 0.0155603},
-													{5, 0.0515904},
-													{0, 0.0100559}};
+	map<int, float> ttbar_mc_tagnprobe_eff_2016_pre_error = {{1,  0.009},
+													{2, 0.01},
+													{3, 0.012},
+													{0, 0.01}};
 
-	map<int, float> ttbar_mc_tagnprobe_eff_2016_post_error = {{1, 0.0133698},
-													{3, 0.0132745},
-													{5, 0.0373185},
-													{0, 0.00920022}};
+	map<int, float> ttbar_mc_tagnprobe_eff_2016_post_error = {{1, 0.008},
+													{2, 0.012},
+													{3, 0.013},
+													{0, 0.011}};
 
-	map<int, float> ttbar_mc_tagnprobe_eff_2017_error = {{1,  0.010053},
-													{3, 0.010742},
-													{5, 0.0319696},
-													{0, 0.00717723}};
+	map<int, float> ttbar_mc_tagnprobe_eff_2017_error = {{1,  0.009},
+													{2, 0.008},
+													{3, 0.01},
+													{0, 0.009}};
 
-	map<int, float> ttbar_mc_tagnprobe_eff_2018_error = {{1, 0.00765933},
-													{3, 0.0116614},
-													{5, 0.0291132},
-													{0, 0.00642836}};
+	map<int, float> ttbar_mc_tagnprobe_eff_2018_error = {{1, 0.01},
+													{2, 0.012},
+													{3, 0.011},
+													{0, 0.008}};
 
 
 	ttbar_mc_tagnprobe_eff_error.insert(pair<TString, map<int, float>>("2016_preVFP", ttbar_mc_tagnprobe_eff_2016_pre_error));
