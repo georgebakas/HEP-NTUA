@@ -1,16 +1,10 @@
 
-Processing GetHistograms_PS_PDF.C("/eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root","TTJets","2018","ScaleWeights")...
+Processing GetHistograms_PS_PDF.C("/eos/home-i/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root","TTJets","2018","ScaleWeights")...
 YEAR: 2018
-file_name: /eos/cms/store/user/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root
+file_name: /eos/home-i/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root
 ttbar_process: TTJets
 XSEC: 832
-Error in <TTree::SetBranchAddress>: unknown branch -> jetTau3
-Error in <TTree::SetBranchAddress>: unknown branch -> jetTau2
-Error in <TTree::SetBranchAddress>: unknown branch -> jetTau1
-Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub0
-Error in <TTree::SetBranchAddress>: unknown branch -> jetMassSub1
-Error in <TTree::SetBranchAddress>: unknown branch -> jetBtagSub0
-Entries: 11328392
+Entries: 10562884
 10 %
 20 %
 30 %
@@ -20,8 +14,7 @@ Entries: 11328392
 70 %
 80 %
 90 %
-Error in <TTree::SetBranchAddress>: unknown branch -> psWeights
 Number of arguments 3
 Argument list: ['RunGetHistograms_PS_PDF.py', '2018', 'ScaleWeights']
 TTJets
-TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root
+TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root

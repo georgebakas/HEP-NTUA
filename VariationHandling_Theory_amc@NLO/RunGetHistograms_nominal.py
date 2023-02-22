@@ -11,9 +11,10 @@ allFiles = []
 all_files = {"2016_preVFP":['TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root'],
              "2016_postVFP":['TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root'],
              "2017":['TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root'],
-             "2018":['TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8.root']}
+             "2018":['TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root']}
 
-eospath = '/eos/cms/store/user/ipapakri/ttbar/MC/Signal/{}/'.format(year)
+
+eospath = '/eos/home-i/ipapakri/ttbar/MC/Signal/{}/'.format(year)
 
 for ifile in  all_files[year]:
     split_file_underscore = ifile.split('_')

@@ -1,5 +1,5 @@
 
-Processing GetHistograms_PS_PDF.C("/eos/home-i/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root","TTJets","2018","PDFWeights")...
+Processing GetHistograms_PS_PDF.C("/eos/home-i/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root","TTJets","2018","PSWeights")...
 YEAR: 2018
 file_name: /eos/home-i/ipapakri/ttbar/MC/Signal/2018/TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root
 ttbar_process: TTJets
@@ -15,6 +15,6 @@ Entries: 10562884
 80 %
 90 %
 Number of arguments 3
-Argument list: ['RunGetHistograms_PS_PDF.py', '2018', 'PDFWeights']
+Argument list: ['RunGetHistograms_PS_PDF.py', '2018', 'PSWeights']
 TTJets
 TTJets_TuneCP5_13TeV-amcatnloFXFX-MiniAODv2-pythia8_20UL_2018.root
