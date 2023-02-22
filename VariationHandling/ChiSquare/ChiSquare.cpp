@@ -68,8 +68,8 @@ void ChiSquare(TString subDir = "")
                                                     baseDir.Data(),
                                                     partonParticle.Data()));
   TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
-                                                       baseDir.Data(),
-                                                       partonParticle.Data())); 
+                                                      baseDir.Data(),
+                                                      partonParticle.Data())); 
                                                   
   TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
                             "../../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
@@ -96,8 +96,6 @@ void ChiSquare(TString subDir = "")
     TH1F *finalTheory = (TH1F *)theoryHistogram->Clone(TString::Format("FinalTheory%s_%s",
                                                                     (normalized ? "Norm" : ""),
                                                                     variable.Data()));
-
-
 
     TH1F *theoryAmcAtNloHistogram;
     if (partonParticle.EqualTo("Parton")) theoryAmcAtNloHistogram = (TH1F *)theoryFileAmcAtNlo->Get(TString::Format("hParton_%s", 
