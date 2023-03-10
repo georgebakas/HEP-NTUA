@@ -1,99 +1,113 @@
 #!/bin/sh
 
-# Create Combined Files
+# # Create Combined Files
 
-# Nominal files
+# # Nominal files
 
-python3 combineFiles.py 2016_preVFP Nominal True
-python3 combineFiles.py 2016_postVFP Nominal True
-python3 combineFiles.py 2017 Nominal True
-python3 combineFiles.py 2018 Nominal True
+# python3 combineFiles.py 2016_preVFP Nominal True
+# python3 combineFiles.py 2016_postVFP Nominal True
+# python3 combineFiles.py 2017 Nominal True
+# python3 combineFiles.py 2018 Nominal True
 
-# bTagVariation
+# # bTagVariation
 
-python3 combineFiles.py 2016_preVFP bTagVariation True
-python3 combineFiles.py 2016_postVFP bTagVariation True
-python3 combineFiles.py 2017 bTagVariation True
-python3 combineFiles.py 2018 bTagVariation True
+# python3 combineFiles.py 2016_preVFP bTagVariation True
+# python3 combineFiles.py 2016_postVFP bTagVariation True
+# python3 combineFiles.py 2017 bTagVariation True
+# python3 combineFiles.py 2018 bTagVariation True
 
-# PS Weights
+# TopTagVariation
 
-python3 combineFiles.py 2016_preVFP PSWeights True
-python3 combineFiles.py 2016_postVFP PSWeights True
-python3 combineFiles.py 2017 PSWeights True
-python3 combineFiles.py 2018 PSWeights True
+python3 combineFiles.py 2016_preVFP topTagVariation True
+python3 combineFiles.py 2016_postVFP topTagVariation True
+python3 combineFiles.py 2017 topTagVariation True
+python3 combineFiles.py 2018 topTagVariation True
 
-# Scale Weights 
+# # PS Weights
 
-python3 combineFiles.py 2016_preVFP ScaleWeights True
-python3 combineFiles.py 2016_postVFP ScaleWeights True
-python3 combineFiles.py 2017 ScaleWeights True
-python3 combineFiles.py 2018 ScaleWeights True
+# python3 combineFiles.py 2016_preVFP PSWeights True
+# python3 combineFiles.py 2016_postVFP PSWeights True
+# python3 combineFiles.py 2017 PSWeights True
+# python3 combineFiles.py 2018 PSWeights True
 
-# PDF Weights
+# # Scale Weights 
 
-python3 combineFiles.py 2016_preVFP PDFWeights True
-python3 combineFiles.py 2016_postVFP PDFWeights True
-python3 combineFiles.py 2017 PDFWeights True
-python3 combineFiles.py 2018 PDFWeights True
+# python3 combineFiles.py 2016_preVFP ScaleWeights True
+# python3 combineFiles.py 2016_postVFP ScaleWeights True
+# python3 combineFiles.py 2017 ScaleWeights True
+# python3 combineFiles.py 2018 ScaleWeights True
 
-# Mass Variation Files 
+# # PDF Weights
 
-python3 combineFiles.py 2016_preVFP SystematicsFiles True
-python3 combineFiles.py 2016_postVFP SystematicsFiles True
-python3 combineFiles.py 2017 SystematicsFiles True
-python3 combineFiles.py 2018 SystematicsFiles True
+# python3 combineFiles.py 2016_preVFP PDFWeights True
+# python3 combineFiles.py 2016_postVFP PDFWeights True
+# python3 combineFiles.py 2017 PDFWeights True
+# python3 combineFiles.py 2018 PDFWeights True
+
+# # Mass Variation Files 
+
+# python3 combineFiles.py 2016_preVFP SystematicsFiles True
+# python3 combineFiles.py 2016_postVFP SystematicsFiles True
+# python3 combineFiles.py 2017 SystematicsFiles True
+# python3 combineFiles.py 2018 SystematicsFiles True
 
 
-# Create Combined Files (Reduced)
+# # Create Combined Files (Reduced)
 
-# Nominal files
+# # Nominal files
 
-python3 combineFiles.py 2016_preVFP Nominal False
-python3 combineFiles.py 2016_postVFP Nominal False
-python3 combineFiles.py 2017 Nominal False
-python3 combineFiles.py 2018 Nominal False
+# python3 combineFiles.py 2016_preVFP Nominal False
+# python3 combineFiles.py 2016_postVFP Nominal False
+# python3 combineFiles.py 2017 Nominal False
+# python3 combineFiles.py 2018 Nominal False
 
-# bTagVariation
+# # bTagVariation
 
-python3 combineFiles.py 2016_preVFP bTagVariation False
-python3 combineFiles.py 2016_postVFP bTagVariation False
-python3 combineFiles.py 2017 bTagVariation False
-python3 combineFiles.py 2018 bTagVariation False
+# python3 combineFiles.py 2016_preVFP bTagVariation False
+# python3 combineFiles.py 2016_postVFP bTagVariation False
+# python3 combineFiles.py 2017 bTagVariation False
+# python3 combineFiles.py 2018 bTagVariation False
 
-# PS Weights
+# TopTagVariation
 
-python3 combineFiles.py 2016_preVFP PSWeights False
-python3 combineFiles.py 2016_postVFP PSWeights False
-python3 combineFiles.py 2017 PSWeights False
-python3 combineFiles.py 2018 PSWeights False
+python3 combineFiles.py 2016_preVFP topTagVariation False
+python3 combineFiles.py 2016_postVFP topTagVariation False
+python3 combineFiles.py 2017 topTagVariation False
+python3 combineFiles.py 2018 topTagVariation False
 
-# EXTENDED 
+# # PS Weights
 
-# Scale Weights 
+# python3 combineFiles.py 2016_preVFP PSWeights False
+# python3 combineFiles.py 2016_postVFP PSWeights False
+# python3 combineFiles.py 2017 PSWeights False
+# python3 combineFiles.py 2018 PSWeights False
 
-python3 combineFiles.py 2016_preVFP ScaleWeights False
-python3 combineFiles.py 2016_postVFP ScaleWeights False
-python3 combineFiles.py 2017 ScaleWeights False
-python3 combineFiles.py 2018 ScaleWeights False
+# # EXTENDED 
 
-# PDF Weights
+# # Scale Weights 
 
-python3 combineFiles.py 2016_preVFP PDFWeights False
-python3 combineFiles.py 2016_postVFP PDFWeights False
-python3 combineFiles.py 2017 PDFWeights False
-python3 combineFiles.py 2018 PDFWeights False
+# python3 combineFiles.py 2016_preVFP ScaleWeights False
+# python3 combineFiles.py 2016_postVFP ScaleWeights False
+# python3 combineFiles.py 2017 ScaleWeights False
+# python3 combineFiles.py 2018 ScaleWeights False
 
-# JES Weights
+# # PDF Weights
 
-python3 combineFiles.py 2016_preVFP JES False
-python3 combineFiles.py 2016_postVFP JES False
-python3 combineFiles.py 2017 JES False
-python3 combineFiles.py 2018 JES False
+# python3 combineFiles.py 2016_preVFP PDFWeights False
+# python3 combineFiles.py 2016_postVFP PDFWeights False
+# python3 combineFiles.py 2017 PDFWeights False
+# python3 combineFiles.py 2018 PDFWeights False
 
-# Mass Variation Files 
+# # JES Weights
 
-python3 combineFiles.py 2016_preVFP SystematicsFiles False
-python3 combineFiles.py 2016_postVFP SystematicsFiles False
-python3 combineFiles.py 2017 SystematicsFiles False
-python3 combineFiles.py 2018 SystematicsFiles False
+# python3 combineFiles.py 2016_preVFP JES False
+# python3 combineFiles.py 2016_postVFP JES False
+# python3 combineFiles.py 2017 JES False
+# python3 combineFiles.py 2018 JES False
+
+# # Mass Variation Files 
+
+# python3 combineFiles.py 2016_preVFP SystematicsFiles False
+# python3 combineFiles.py 2016_postVFP SystematicsFiles False
+# python3 combineFiles.py 2017 SystematicsFiles False
+# python3 combineFiles.py 2018 SystematicsFiles False

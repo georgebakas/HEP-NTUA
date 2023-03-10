@@ -20,7 +20,7 @@ map<TString, float> ttbarSigStrength_TagNProbe_error;
 map<TString, float> ttbarSigStrength_TagNSR;
 map<TString, float> ttbarSigStrength_TagNSR_error;
 
-
+map<TString, float> static_topTaggerSF_error;
 map<TString, map<int, float>> ttbar_mc_tagnprobe_eff_error;
 map<TString, map<int, float>> ttbar_mc_tagnprobe_eff;
 
@@ -244,4 +244,10 @@ void initFilesMapping()
 	ttbar_mc_tagnprobe_eff_error.insert(pair<TString, map<int, float>>("2016_postVFP", ttbar_mc_tagnprobe_eff_2016_post_error));
 	ttbar_mc_tagnprobe_eff_error.insert(pair<TString, map<int, float>>("2017", ttbar_mc_tagnprobe_eff_2017_error));
 	ttbar_mc_tagnprobe_eff_error.insert(pair<TString, map<int, float>>("2018", ttbar_mc_tagnprobe_eff_2018_error));
+
+
+	static_topTaggerSF_error.insert(pair<TString,float>("2016_preVFP", 0.26));
+	static_topTaggerSF_error.insert(pair<TString,float>("2016_postVFP", 0.3));
+	static_topTaggerSF_error.insert(pair<TString,float>("2017", 0.16));
+	static_topTaggerSF_error.insert(pair<TString,float>("2018", 0.13));
 }

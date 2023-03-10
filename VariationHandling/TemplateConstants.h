@@ -19,6 +19,10 @@ map<TString, float> topTaggerSF_data;
 map<TString, float> topTaggerSF_data_error;
 map<TString, float> topTaggerSF_sim;
 map<TString, float> topTaggerSF_sim_error;
+map<TString, float> static_topTaggerSF_error; 
+map<TString, std::vector<float>> topTaggerSF_error_1;
+map<TString, std::vector<float>> topTaggerSF_error_2;
+map<TString, std::vector<float>> topTaggerSF_error_3;
 
 void initFilesMapping()
 {
@@ -169,4 +173,28 @@ void initFilesMapping()
 	topTaggerSF_sim_error.insert(pair<TString,float>("2016_postVFP", 0.009));
 	topTaggerSF_sim_error.insert(pair<TString,float>("2017", 0.007));
 	topTaggerSF_sim_error.insert(pair<TString,float>("2018", 0.006));
+
+	static_topTaggerSF_error.insert(pair<TString,float>("2016_preVFP", 0.26));
+	static_topTaggerSF_error.insert(pair<TString,float>("2016_postVFP", 0.3));
+	static_topTaggerSF_error.insert(pair<TString,float>("2017", 0.16));
+	static_topTaggerSF_error.insert(pair<TString,float>("2018", 0.13));
+
+	// 1st bin 
+	topTaggerSF_error_1.insert(pair<TString,std::vector<float>>("2016_preVFP", {0.937, 0.085}));
+	topTaggerSF_error_1.insert(pair<TString,std::vector<float>>("2016_postVFP", {0.983, 0.078}));
+	topTaggerSF_error_1.insert(pair<TString,std::vector<float>>("2017", {0.935, 0.046}));
+	topTaggerSF_error_1.insert(pair<TString,std::vector<float>>("2018", {0.956, 0.048}));
+
+	// 2nd bin 
+	topTaggerSF_error_2.insert(pair<TString,std::vector<float>>("2016_preVFP", {0.981, 0.17}));
+	topTaggerSF_error_2.insert(pair<TString,std::vector<float>>("2016_postVFP", {1.04, 0.135}));
+	topTaggerSF_error_2.insert(pair<TString,std::vector<float>>("2017", {0.95, 0.059}));
+	topTaggerSF_error_2.insert(pair<TString,std::vector<float>>("2018", {0.967, 0.062}));
+
+	// 3rd bin
+	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2016_preVFP", {1.06, 0.26}));
+	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2016_postVFP", {1.12, 0.34}));
+	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2017", {0.912, 0.155}));
+	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2018", {0.914, 0.13}));
+	
 }

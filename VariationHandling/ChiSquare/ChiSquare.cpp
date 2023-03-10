@@ -48,13 +48,13 @@ void ChiSquare(TString subDir = "")
   TString theoryYear = "2018";
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-  TString partonParticle = "Parton";
+  TString partonParticle = "Particle";
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
   
   TString baseInputDir = baseDir;
   /*baseInputDir = TString::Format("%s/Unfolding/results/combined%s",
-                                 baseInputDir.Data(),
-                                 (AnalysisConstants::isUL ? "/UL" : ""));*/
+                                baseInputDir.Data(),
+                                (AnalysisConstants::isUL ? "/UL" : ""));*/
 
   TString outputDir = TString::Format("%s/ChiSquare/results/",
                                       baseDir.Data());
@@ -73,6 +73,9 @@ void ChiSquare(TString subDir = "")
                                                   
   TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
                             "../../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
+
+  TFile *theoryFileHerwig = TFile::Open(TString::Format(
+                            "../../VariationHandling_Theory_Herwig/%s/Nominal/Histograms_TT.root", theoryYear.Data()));
 
   for (int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
@@ -97,6 +100,7 @@ void ChiSquare(TString subDir = "")
                                                                     (normalized ? "Norm" : ""),
                                                                     variable.Data()));
 
+    // theory amc@NLO 
     TH1F *theoryAmcAtNloHistogram;
     if (partonParticle.EqualTo("Parton")) theoryAmcAtNloHistogram = (TH1F *)theoryFileAmcAtNlo->Get(TString::Format("hParton_%s", 
                                                             AnalysisConstants::partonVariables[var].Data()));
@@ -109,22 +113,37 @@ void ChiSquare(TString subDir = "")
                                                                         (normalized ? "Norm" : ""),
                                                                         variable.Data()));
 
+    //herwig 
+    TH1F *theoryHerwigHistogram;
+    if (partonParticle.EqualTo("Parton")) theoryHerwigHistogram = (TH1F *)theoryFileHerwig->Get(TString::Format("hParton_%s", 
+                                                            AnalysisConstants::partonVariables[var].Data()));
+    else theoryHerwigHistogram = (TH1F *)theoryFileHerwig->Get(TString::Format("hParticle_%s", 
+                                    AnalysisConstants::particleVariables[var].Data()));
+    
+    theoryHerwigHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+
+    TH1F *finalTheoryHerwig = (TH1F *)theoryHerwigHistogram->Clone(TString::Format("FinalTheoryHerwig%s_%s",
+                                                                        (normalized ? "Norm" : ""),
+                                                                        variable.Data()));
 
     if (variable.Contains("jetY"))
     {
       nominalHistogram->Scale(1 / 2.);
       theoryHistogram->Scale(1. / 2.);
       theoryAmcAtNloHistogram->Scale(1. / 2.);
+      theoryHerwigHistogram->Scale(1. / 2.);
     }
 
     TMatrixD *covariance = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     TMatrixD *covarianceTheory = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     TMatrixD *covarianceTheoryAmcAtNlo = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
+    TMatrixD *covarianceTheoryHerwig = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     for (int bin = 1; bin <= nominalHistogram->GetNbinsX(); bin++)
     {
       covariance->operator()(bin - 1, bin - 1) = TMath::Power(nominalHistogram->GetBinError(bin), 2);
       covarianceTheory->operator()(bin - 1, bin - 1) = TMath::Power(theoryHistogram->GetBinError(bin), 2);
       covarianceTheoryAmcAtNlo->operator()(bin - 1, bin - 1) = TMath::Power(theoryAmcAtNloHistogram->GetBinError(bin), 2);
+      covarianceTheoryHerwig->operator()(bin - 1, bin - 1) = TMath::Power(theoryHerwigHistogram->GetBinError(bin), 2);
     }
 
     for (unsigned int v = 0; v < AnalysisConstants::variations.size(); v++)
@@ -241,15 +260,37 @@ void ChiSquare(TString subDir = "")
           variationFileTheoryDown->Close();
       }
       // here we handle only pdf and scale weights which have NO up and down
-      // this means that we need--> calculated (unfolded), theory and amc@nlo variations
-      if (tempVariation.Contains("PDF") || tempVariation.Contains("Scale"))
+      // this means that we need--> calculated (unfolded), theory and amc@nlo variations and herwig variations
+      if (tempVariation.Contains("PDF") || tempVariation.Contains("Scale"))// || tempVariation.Contains("PS"))
       {
-        cout<<variation<<" --> pdf or scale"<<endl;
+        if (variation.Contains("pdf_99")) continue;
+        if (variation.Contains("pdf_98")) continue;
+        if (variation.Contains("pdf_100")) continue;
+        if (variation.Contains("pdf_1")) continue;
+        if (variation.Contains("pdf_35")) continue;
+        if (variation.Contains("pdf_40")) continue;
+        if (variation.Contains("pdf_56")) continue;
+        if (variation.Contains("pdf_57")) continue;
+        if (variation.Contains("pdf_59")) continue;
+        if (variation.Contains("pdf_62")) continue;
+        if (variation.Contains("pdf_83")) continue;
+        if (variation.Contains("pdf_86")) continue;
+        if (variation.Contains("pdf_85")) continue;
+        if (variation.Contains("pdf_76")) continue;
+        if (variation.Contains("pdf_42")) continue;
+        if (variation.Contains("pdf_58")) continue;
+        if (variation.Contains("pdf_69")) continue;
+        if (variation.Contains("pdf_93")) continue; 
+        cout<<variation<<" --> pdf or scale or ps"<<endl;
         TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
                                                                 tempVariation.Data(),
                                                                 partonParticle.Data(),
                                                                 variation.Data()));
+
+        cout<<TString::Format("hUnfold%s_%s",
+              (normalized ? "Norm" : "Final"), 
+              variable.Data())<<endl;
         TH1F *variationHistogram = (TH1F *)variationFile->Get(TString::Format("hUnfold%s_%s",
                                                                             (normalized ? "Norm" : "Final"), 
                                                                             variable.Data()));
@@ -298,13 +339,29 @@ void ChiSquare(TString subDir = "")
                                           variation.Data()));
           variationHistogramTheoryAmc->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
 
+
+          // herwig variations
+          TFile *variationFileTheoryHerwig = TFile::Open(TString::Format(
+                                      "../../VariationHandling_Theory_Herwig/%s/%s/Histograms_TT_%s.root",
+                                      theoryYear.Data(),
+                                      tempVariation.Data(),
+                                      variation.Data()));
+        
+          TH1F *variationHistogramTheoryHerwig;
+          if (partonParticle.EqualTo("Parton")) variationHistogramTheoryHerwig = (TH1F *)variationFileTheoryHerwig->Get(TString::Format("hParton_%s_%s", 
+                                                                  AnalysisConstants::partonVariables[var].Data(),
+                                                                  variation.Data()));
+          else variationHistogramTheoryHerwig = (TH1F *)variationFileTheoryHerwig->Get(TString::Format("hParticle_%s_%s", 
+                                          AnalysisConstants::particleVariables[var].Data(),
+                                          variation.Data()));
+          variationHistogramTheoryHerwig->Scale(1. / AnalysisConstants::luminositiesSR[theoryYear], "width");
+
         if (variable.Contains("jetY"))
         {
           variationHistogramTheory->Scale(1. / 2.);
           variationHistogramTheoryAmc->Scale(1. / 2.);
+          variationHistogramTheoryHerwig->Scale(1. / 2.);
         }
-
-        variationHistogramTheoryAmc->Scale(2.);
 
           for (int binI = 1; binI <= variationHistogramTheory->GetNbinsX(); binI++)
           {
@@ -312,19 +369,27 @@ void ChiSquare(TString subDir = "")
                                         variationHistogramTheory->GetBinContent(binI));
             covarianceTheory->operator()(binI - 1, binI - 1) += (error_up * error_up);
 
+            //amc@nlo
             float error_amc = TMath::Abs(theoryAmcAtNloHistogram->GetBinContent(binI) -
-                                         variationHistogramTheoryAmc->GetBinContent(binI));
+                                        variationHistogramTheoryAmc->GetBinContent(binI));
 
             covarianceTheoryAmcAtNlo->operator()(binI - 1, binI - 1) += (error_amc * error_amc);
+
+            //herwig
+            float error_herwig = TMath::Abs(theoryHerwigHistogram->GetBinContent(binI) -
+                                        variationHistogramTheoryHerwig->GetBinContent(binI));
+
+            covarianceTheoryHerwig->operator()(binI - 1, binI - 1) += (error_herwig * error_herwig);
           }
           variationFileTheory->Close();
           variationFileTheoryAmc->Close();
+          variationFileTheoryHerwig->Close();
 
       }
       // now
       // here we handle only ps which have NO up and down 
       // this means that we need--> calculated (unfolded), and theory variations
-      if (tempVariation.Contains("PS"))
+      /*if (tempVariation.Contains("PS"))
       {
         cout<<variation<<" --> ps weights"<<endl;
         TFile *variationFile = TFile::Open(TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
@@ -380,7 +445,7 @@ void ChiSquare(TString subDir = "")
           variationFileTheory->Close();
           //variationFileTheoryAmc->Close();
         
-      }
+      }*/
     }
 
     TCanvas *c1 = new TCanvas(TString::Format("c_%s",
@@ -389,12 +454,13 @@ void ChiSquare(TString subDir = "")
                                               variable.Data()),
                               600, 600);
     TLegend *leg = new TLegend(AnalysisConstants::ChiSquareConstants::legendPositions[var][0],
-                               AnalysisConstants::ChiSquareConstants::legendPositions[var][1],
-                               AnalysisConstants::ChiSquareConstants::legendPositions[var][2],
-                               AnalysisConstants::ChiSquareConstants::legendPositions[var][3]);
+                              AnalysisConstants::ChiSquareConstants::legendPositions[var][1],
+                              AnalysisConstants::ChiSquareConstants::legendPositions[var][2],
+                              AnalysisConstants::ChiSquareConstants::legendPositions[var][3]);
 
     covarianceTheory->operator+=(*covariance);
     covarianceTheoryAmcAtNlo->operator+=(*covariance);
+    covarianceTheoryHerwig->operator+=(*covariance);
 
     finalResult->Draw("E2");
     nominalHistogram->Draw("SAME EP");
@@ -410,10 +476,13 @@ void ChiSquare(TString subDir = "")
     leg->AddEntry(finalResult, "Total unc.", "f");
     TMatrixD *chiSquare = CalculateChiSquare(*covarianceTheory, nominalHistogram, theoryHistogram, "POW + PY8", leg);
     TMatrixD *chiSquareAmc = CalculateChiSquare(*covarianceTheoryAmcAtNlo, nominalHistogram, theoryAmcAtNloHistogram, "AMC + PY8", leg);
+    TMatrixD *chiSquareHerwig = CalculateChiSquare(*covarianceTheoryHerwig, nominalHistogram, theoryHerwigHistogram, "POW + Herwig", leg);
     theoryHistogram->SetLineColor(kRed);
     theoryHistogram->Draw("SAME");
     theoryAmcAtNloHistogram->SetLineColor(kGreen);
     theoryAmcAtNloHistogram->Draw("SAME");
+    theoryHerwigHistogram->SetLineColor(kMagenta);
+    theoryHerwigHistogram->Draw("SAME");
     leg->Draw();
 
     cmsTextSize = 0.5;
@@ -437,6 +506,8 @@ void ChiSquare(TString subDir = "")
     chiSquare->Write(TString::Format("chiSquare_%s",
                                      variable.Data()));
     chiSquareAmc->Write(TString::Format("chiSquare_%s_amc",
+                                        variable.Data()));
+    chiSquareHerwig->Write(TString::Format("chiSquare_%s_herwig",
                                         variable.Data()));
   }
   outputFile->Close();

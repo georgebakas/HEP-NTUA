@@ -3,10 +3,10 @@
 # Runs the entire pipeline if we want to re-run out analysis!
 
 # Create all files for extended and reduced
-#./runAll.sh
+./runAll.sh
 
 # Create all response matrices and efficiency/acceptance
-#./runAllResponses.sh
+./runAllResponses.sh
 
 # Create all combined files for reduced and extended 
 # This step is needed only if you combine files BEFORE signal extraction!!!

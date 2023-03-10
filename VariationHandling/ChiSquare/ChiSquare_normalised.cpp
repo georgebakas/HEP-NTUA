@@ -49,7 +49,7 @@ void ChiSquare_normalised(TString subDir = "")
 
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-  TString partonParticle = "Parton";
+  TString partonParticle = "Particle";
   bool normalized = true;
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
   TString outputDir = TString::Format("%s/ChiSquare/results/",
@@ -70,6 +70,10 @@ void ChiSquare_normalised(TString subDir = "")
                                                   
   TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
                             "../../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
+
+
+  TFile *theoryFileHerwig = TFile::Open(TString::Format(
+                            "../../VariationHandling_Theory_Herwig/%s/Nominal/Histograms_TT.root", theoryYear.Data()));
 
   for (int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
@@ -98,14 +102,30 @@ void ChiSquare_normalised(TString subDir = "")
         theoryAmcAtNloHistogram->Scale(1 / theoryAmcAtNloYield);
     }
 
+    //herwig
+    TH1F *theoryHerwigHistogram;
+    if (partonParticle.EqualTo("Parton")) theoryHerwigHistogram = (TH1F *)theoryFileHerwig->Get(TString::Format("hParton_%s", 
+                                                            AnalysisConstants::partonVariables[var].Data()));
+    else theoryHerwigHistogram = (TH1F *)theoryFileHerwig->Get(TString::Format("hParticle_%s", 
+                                    AnalysisConstants::particleVariables[var].Data()));
+    
+    theoryHerwigHistogram->Scale(1. / AnalysisConstants::luminositiesSR["2018"], "width");
+    float_t theoryHerwigYield = theoryHerwigHistogram->Integral();
+    if (normalized)
+    {
+        theoryHerwigHistogram->Scale(1 / theoryHerwigYield);
+    }
+
     TMatrixD *covariance = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     TMatrixD *covarianceTheory = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     TMatrixD *covarianceTheoryAmcAtNlo = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
+    TMatrixD *covarianceTheoryHerwig = new TMatrixD(nominalHistogram->GetNbinsX(), nominalHistogram->GetNbinsX());
     for (int bin = 1; bin <= nominalHistogram->GetNbinsX(); bin++)
     {
       covariance->operator()(bin - 1, bin - 1) = TMath::Power(nominalHistogram->GetBinError(bin), 2);
       covarianceTheory->operator()(bin - 1, bin - 1) = TMath::Power(theoryHistogram->GetBinError(bin), 2);
       covarianceTheoryAmcAtNlo->operator()(bin - 1, bin - 1) = TMath::Power(theoryAmcAtNloHistogram->GetBinError(bin), 2);
+      covarianceTheoryHerwig->operator()(bin - 1, bin - 1) = TMath::Power(theoryHerwigHistogram->GetBinError(bin), 2);
     }
 
     for (unsigned int v = 0; v < AnalysisConstants::variations.size(); v++)
@@ -185,6 +205,21 @@ void ChiSquare_normalised(TString subDir = "")
         if (variation.Contains("pdf_99")) continue;
         if (variation.Contains("pdf_98")) continue;
         if (variation.Contains("pdf_100")) continue;
+        if (variation.Contains("pdf_1")) continue;
+        if (variation.Contains("pdf_35")) continue;
+        if (variation.Contains("pdf_40")) continue;
+        if (variation.Contains("pdf_56")) continue;
+        if (variation.Contains("pdf_57")) continue;
+        if (variation.Contains("pdf_59")) continue;
+        if (variation.Contains("pdf_62")) continue;
+        if (variation.Contains("pdf_83")) continue;
+        if (variation.Contains("pdf_86")) continue;
+        if (variation.Contains("pdf_85")) continue;
+        if (variation.Contains("pdf_76")) continue;
+        if (variation.Contains("pdf_42")) continue;
+        if (variation.Contains("pdf_58")) continue;
+        if (variation.Contains("pdf_69")) continue;
+        if (variation.Contains("pdf_93")) continue; 
 
         /*cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
@@ -235,6 +270,7 @@ void ChiSquare_normalised(TString subDir = "")
 
     covarianceTheory->operator+=(*covariance);
     covarianceTheoryAmcAtNlo->operator+=(*covariance);
+    covarianceTheoryHerwig->operator+=(*covariance);
 
     finalResult->Draw("E2");
     nominalHistogram->Draw("SAME EP");
@@ -247,10 +283,13 @@ void ChiSquare_normalised(TString subDir = "")
     leg->AddEntry(finalResult, "Total unc.", "f");
     TMatrixD *chiSquare = CalculateChiSquare(*covariance, nominalHistogram, theoryHistogram, "POW + PY8", leg);
     TMatrixD *chiSquareAmc = CalculateChiSquare(*covariance, nominalHistogram, theoryAmcAtNloHistogram, "AMC + PY8", leg);
+    TMatrixD *chiSquareHerwig = CalculateChiSquare(*covarianceTheoryHerwig, nominalHistogram, theoryHerwigHistogram, "POW + Hewig", leg);
     theoryHistogram->SetLineColor(kRed);
     theoryHistogram->Draw("SAME");
     theoryAmcAtNloHistogram->SetLineColor(kGreen);
     theoryAmcAtNloHistogram->Draw("SAME");
+    theoryHerwigHistogram->SetLineColor(kMagenta);
+    theoryHerwigHistogram->Draw("SAME");
     leg->Draw();
 
     cmsTextSize = 0.5;
@@ -274,6 +313,8 @@ void ChiSquare_normalised(TString subDir = "")
     chiSquare->Write(TString::Format("chiSquare_%s_normalized",
                                      variable.Data()));
     chiSquareAmc->Write(TString::Format("chiSquare_%s_amc_normalized",
+                                        variable.Data()));
+    chiSquareHerwig->Write(TString::Format("chiSquare_%s_herwig_normalized",
                                         variable.Data()));
   }
   outputFile->Close();

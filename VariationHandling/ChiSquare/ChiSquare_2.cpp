@@ -58,6 +58,10 @@ void ChiSquare_2()
                                                           GetInputFilesPath(theoryYear).Data(),
                                                           theoryYear.Data()));
 
+  TFile *theoryFileHerwigAtNlo = TFile::Open(TString::Format("%s/EfficiencyAcceptance_amcatnlo_Nominal_%s.root",
+                                                          GetInputFilesPath(theoryYear).Data(),
+                                                          theoryYear.Data()));
+
   for (int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
   {
     TString variable = AnalysisConstants::unfoldingVariables[var];

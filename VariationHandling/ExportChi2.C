@@ -27,7 +27,7 @@ void ExportChi2(TString partonParticle = "Parton")
     ofstream myfile;
     myfile.open (TString::Format("FinalResults/resultsChi2/%sAnalytical_results.txt", partonParticle.Data()));
     myfile<<"------------"<< "\n";    
-    myfile<<"Variable & "<<"NDOF & chi2 Theory & chi2 Theory AMC@NLO & P-value Theory & P-value AMC@NLO \\\\" <<"\n";
+    myfile<<"Variable & "<<"NDOF & chi2 Theory & chi2 Theory AMC@NLO  &  chi2 Theory Powheg+Herwig  & P-value Theory & P-value AMC@NLO & P-value Powheg+Herwig\\\\" <<"\n";
 
 
     for (int i = 0; i < AnalysisConstants::unfoldingVariables.size(); i++)
@@ -38,17 +38,22 @@ void ExportChi2(TString partonParticle = "Parton")
         TMatrixD *chiSquare_amc = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_amc",
                                                                                 variable.Data()));
 
+        TMatrixD *chiSquare_herwig = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_herwig",
+                                                                                variable.Data()));                                                           
+
         TH1F *f = (TH1F *)resultsFile->Get(TString::Format("FinalResult_%s",
                                                     variable.Data()));
 
         Double_t chi2Theory = chiSquare->operator()(0, 0);
         Double_t chi2Theory_amcNlo = chiSquare_amc->operator()(0, 0);
+        Double_t chi2Theory_herwig = chiSquare_herwig->operator()(0, 0);
         Int_t ndof = f->GetNbinsX();
 
         Double_t p_valTheory = TMath::Prob(chi2Theory, ndof);
         Double_t p_valTheory_amcNlo = TMath::Prob(chi2Theory_amcNlo, ndof);
+        Double_t p_valTheory_herwig = TMath::Prob(chi2Theory_herwig, ndof);
 
-        myfile<<variable<<" & "<<ndof <<" & "<<chi2Theory<<" & "<<chi2Theory_amcNlo<<" & "<<p_valTheory <<" & "<< p_valTheory_amcNlo <<" \\\\ " <<"\n";
+        myfile<<variable<<" & "<<ndof <<" & "<<chi2Theory<<" & "<<chi2Theory_amcNlo<<" & "<<chi2Theory_herwig<<" & "<<p_valTheory <<" & "<< p_valTheory_amcNlo <<" & "<<p_valTheory_herwig<<" \\\\ " <<"\n";
         myfile<<"\\hline"<< "\n";
     }
     myfile.close();

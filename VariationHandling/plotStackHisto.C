@@ -140,8 +140,9 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
   TCanvas *can = new TCanvas(TString::Format("can_%s",variable.Data()), TString::Format("can_%s",variable.Data()), 800, 600);
   TLegend *leg;
-  if(variable.Contains("cos"))leg = new TLegend(0.40,0.7,0.65,0.9);
-  else leg = new TLegend(0.7,0.7,0.9,0.9);
+  // if(variable.Contains("cos"))leg = new TLegend(0.20,0.7,0.45,0.9);
+  // else leg = new TLegend(0.7,0.7,0.9,0.9);
+  leg = new TLegend(0.7,0.7,0.9,0.9);
   can->cd();
   TPad *closure_pad2 = new TPad(TString::Format("cp2_%s",variable.Data()),TString::Format("cp2_%s",variable.Data()),0.,0.,1.,0.3);
   closure_pad2->Draw();
@@ -158,7 +159,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->GetYaxis()->SetTitleSize(20);
   hData->GetYaxis()->SetTitleFont(43);
   hData->GetYaxis()->SetTitleOffset(1.4);
-  hData->GetYaxis()->SetRangeUser(0.01, hData->GetMaximum() * 1.2);
+  //hData->GetYaxis()->SetRangeUser(0.01, hData->GetMaximum() * 1.2);
 
 
 
@@ -172,8 +173,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->Draw("hist same E");
   hs->GetYaxis()->SetTitle("Number of Events");
   
-  if (variable.EqualTo("chi")) hs->SetMaximum(hs->GetMaximum());
-  else hs->SetMaximum(hs->GetMaximum()* 2);
+  hs->SetMaximum(hs->GetMaximum() * 1.4);
   hs->SetMinimum(0.001);
   leg->Draw();
 
@@ -185,26 +185,56 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   TH1F *hNum = (TH1F*)hData->Clone("hNum");
   hNum->Divide(hDenom);
   hNum->SetTitle("");
-  hNum->GetYaxis()->SetRangeUser(0.01,3);
   hNum->GetYaxis()->SetTitle("#frac{Data}{MC}");
-  if (variable.EqualTo("chi"))
+  if (variable.EqualTo("chi")){
     hNum->GetXaxis()->SetTitle("#chi");
-  else if (variable.Contains("cosTheta"))
+    hNum->GetYaxis()->SetRangeUser(0.5, 1.5);
+    }
+  
+  else if (variable.Contains("cosTheta")){
     hNum->GetXaxis()->SetTitle("|cos(#theta^{*})|");
-  else if (variable.Contains("jetY0"))
+    hNum->GetYaxis()->SetRangeUser(0.8, 1.2);
+    }
+
+  else if (variable.Contains("jetY0")){
     hNum->GetXaxis()->SetTitle("Leading Jet abs Y");
-  else if (variable.Contains("jetY0"))
-    hNum->GetXaxis()->SetTitle("Leading Jet abs Y");
-  else if (variable.Contains("jetY1"))
+    hNum->GetYaxis()->SetRangeUser(0.8, 1.3);
+    }
+  
+  else if (variable.Contains("jetY1")){
     hNum->GetXaxis()->SetTitle("Second Leading Jet abs Y");
-  else if (variable.Contains("jetPt0"))
-    hNum->GetXaxis()->SetTitle("Leading Jet p_{T}");
-  else if (variable.Contains("jetPt1"))
-    hNum->GetXaxis()->SetTitle("Second Leading Jet p_{T}");
-  else if (variable.Contains("yJJ"))
+    hNum->GetYaxis()->SetRangeUser(0.6, 1.3);
+    }
+  
+  else if (variable.Contains("jetPt0")){
+      hNum->GetXaxis()->SetTitle("Leading Jet p_{T}");
+      hNum->GetYaxis()->SetRangeUser(0.8, 1.5);
+    }
+  
+  else if (variable.Contains("jetPt1")){
+      hNum->GetXaxis()->SetTitle("Second Leading Jet p_{T}");
+      hNum->GetYaxis()->SetRangeUser(0.5, 1.5);
+    }
+    
+  else if (variable.Contains("yJJ")){
     hNum->GetXaxis()->SetTitle(variable);
-  else 
+    hNum->GetYaxis()->SetRangeUser(0.3, 1.5);
+  }
+
+  else if (variable.Contains("mJJ")){
+    hNum->GetXaxis()->SetTitle(variable);
+    hNum->GetYaxis()->SetRangeUser(0.5, 2);
+  }
+
+  else if (variable.Contains("ptJJ")){
+    hNum->GetXaxis()->SetTitle(variable);
+    hNum->GetYaxis()->SetRangeUser(0.5, 2);
+  }
+  else {
+    hNum->GetYaxis()->SetRangeUser(0.4, 2);
     hNum->GetXaxis()->SetTitle(TString::Format("%s (GeV)",variable.Data()));
+  }
+
   hNum->GetYaxis()->SetTitleSize(20);
   hNum->GetYaxis()->SetTitleFont(43);
   hNum->GetYaxis()->SetTitleOffset(1.3);
@@ -213,7 +243,10 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hNum->GetXaxis()->SetTitleSize(0.1);
   hNum->GetXaxis()->SetLabelFont(43);
   hNum->GetXaxis()->SetLabelSize(13);
-  hNum->Draw();
+  hNum->SetFillStyle(3001);
+  hNum->SetFillColor(kGray+3);
+  // hNum->GetYaxis()->SetRangeUser(hNum->GetBinContent(hNum->GetMinimumBin())* 0.9, hNum->GetBinContent(hNum->GetMaximumBin())*1.18);
+  hNum->Draw("E2");
 
   TString lumi_str = TString::Format("%0.1f", luminosity["luminosity"+year]/1000);
   lumi_13TeV = lumi_str+" fb^{-1}";

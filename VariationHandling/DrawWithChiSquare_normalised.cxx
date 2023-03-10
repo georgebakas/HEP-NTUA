@@ -9,139 +9,208 @@
 #include "../CMS_plots/CMS_lumi.C"
 #include "../CMS_plots/tdrstyle.C"
 
-void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, TString partonParticle)
+void DrawWithRatio(TCanvas *can, std::vector<TH1F *> histograms, int index, double chiSquare, double chiSquareAmc, double chiSquareHerwig, TString partonParticle)
 {
-  std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kBlue, kBlue};
-  std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kBlue, kBlue};
-  std::vector<Int_t> markerStyle = {20, 1, 1, 1, 1, 1};
-  std::vector<int> fillStyles = {1001, 1001, 3675, 3675, 3257, 3257};
-  std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME E2", "SAME EP", "SAME E2", "SAME EP"};
-  std::vector<bool> draw = {true, true, false, true, false, true};
-  std::vector<bool> drawRatio = {true, true, false, true, false, true};
-  std::vector<bool> putInLegend = {true, true, true, false, true, false};
+  std::vector<Color_t> colors = {kBlack, kBlack, kRed, kRed, kGreen, kGreen, kBlue, kBlue};
+  std::vector<Color_t> fillColors = {kGray, kGray, kRed, kRed, kGreen, kGreen, kBlue, kBlue};
+  std::vector<Int_t> markerStyle = {20, 1, 22, 1, 24, 1, 26, 1};
+  std::vector<int> fillStyles = {1001, 1001, 3475, 3475, 3495, 3495, 3457, 3457};
+  std::vector<TString> drawOptions = {"E2", "SAME EP", "SAME EP", "SAME", "SAME EP", "SAME", "SAME EP", "SAME"};
+  std::vector<bool> drawRatio = {true, true, true, false, true, false, true, false};
+  std::vector<bool> putInLegend = {true, true, true, false, true, false, true, false};
   std::vector<TString> legendTitles = {"Data", "Total unc.",
-                                      TString::Format("amc@NLO+Pythia8 %.2f", chiSquareAmc),
+                                      TString::Format("amc@NLO+Pythia8 %.2f #chi^{2}", chiSquareAmc),
                                       "amc@NLO+Pythia8 unc",
-                                      TString::Format("Powheg+Pythia8 %.2f", chiSquare),
+                                      TString::Format("Powheg+Herwig %.2f #chi^{2}", chiSquareHerwig),
+                                      "Powheg+Herwig unc",
+                                      TString::Format("Powheg+Pythia8 %.2f #chi^{2}", chiSquare),
                                       "Powheg+Pythia8 unc"};
-  std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f"};
+  std::vector<TString> legendDrawOption = {"EP", "f", "EL", "f", "EL", "f", "EL", "f"};
 
-  TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
-  upperPad->SetBottomMargin(0.05);
-  upperPad->Draw();
-  upperPad->cd();
-  if (AnalysisConstants::axisInLogScale[index])
-  {
-    upperPad->SetLogy();
-  }
-  can->cd();
-  TPad *lowerPad = new TPad("lowerPad", "lowerPad", 0, 0.05, 1, 0.3);
-  lowerPad->SetBottomMargin(0.22);
-  lowerPad->SetTopMargin(0.03);
-  lowerPad->Draw();
-  lowerPad->SetGridy();
-  lowerPad->cd();
-
-  TLegend *leg1 = new TLegend(AnalysisConstants::FinalResultsConstans::legendPositions[index][0],
-                              AnalysisConstants::FinalResultsConstans::legendPositions[index][1],
-                              AnalysisConstants::FinalResultsConstans::legendPositions[index][2],
-                              AnalysisConstants::FinalResultsConstans::legendPositions[index][3]);
-
-  TH1F *dataHist = (TH1F *)histograms[1]->Clone("DataHist");
-
-  for (unsigned int i = 0; i < histograms.size(); i++)
-  {
-    can->cd();
+     TPad *upperPad = new TPad("upperPad", "upperPad", 0, 0.3, 1, 1.0);
+    upperPad->SetBottomMargin(0.05);
+    upperPad->Draw();
     upperPad->cd();
     if (AnalysisConstants::axisInLogScale[index])
     {
-      upperPad->SetLogy();
+        upperPad->SetLogy();
     }
-    TH1F *hist = histograms[i];
+    can->cd();
+    TPad *lowerPad = new TPad("lowerPad", "lowerPad", 0, 0.05, 1, 0.3);
+    lowerPad->SetBottomMargin(0.22);
+    lowerPad->SetTopMargin(0.03);
+    lowerPad->Draw();
+    lowerPad->SetGridy();
+    lowerPad->cd();
 
-    hist->SetMarkerColor(colors[i]);
-    hist->SetLineColor(colors[i]);
-    hist->SetFillColor(fillColors[i]);
-    hist->SetMarkerStyle(markerStyle[i]);
-    hist->SetLineWidth(2);
-    hist->SetFillStyle(fillStyles[i]);
-    if (partonParticle.Contains("Particle"))
-    {
-      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][0],
-                                     AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][1]);
-    }
-    else
-    {
-      hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
-                                     AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
-    }
+  TLegend *leg1 = new TLegend(AnalysisConstants::FinalResultsConstans::legendPositions[index][0],
+                                AnalysisConstants::FinalResultsConstans::legendPositions[index][1],
+                                AnalysisConstants::FinalResultsConstans::legendPositions[index][2],
+                                AnalysisConstants::FinalResultsConstans::legendPositions[index][3]);
+  TH1F *dataHist = (TH1F *)histograms[1]->Clone("DataHist");
 
-    TH1F *ratio = (TH1F *)hist->Clone("ratio");
-    std::cout << can->GetName() << " " << ratio->GetNbinsX() << " " << hist->GetNbinsX() << std::endl;
-    ratio->Divide(dataHist);
-    for (int bin = 1; bin <= hist->GetNbinsX(); bin++)
+    for (unsigned int i = 0; i < histograms.size(); i++)
     {
-      ratio->SetBinContent(bin, ratio->GetBinContent(bin) - 1);
-    }
-    hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
-                                  AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
-    if (draw[i])
-    {
-      hist->Draw(drawOptions[i]);
+        can->cd();
+        upperPad->cd();
+        if (AnalysisConstants::axisInLogScale[index])
+        {
+        upperPad->SetLogy();
+        }
+        TH1F *hist = histograms[i];
+        //cout<<hist->GetTitle()<<endl;
+        hist->SetTitle("");
+        hist->SetMarkerColor(colors[i]);
+        hist->SetLineColor(colors[i]);
+        hist->SetFillColor(fillColors[i]);
+        hist->SetMarkerStyle(markerStyle[i]);
+        hist->SetLineWidth(2);
+        hist->SetFillStyle(fillStyles[i]);
+        
+        if (partonParticle.EqualTo("Parton")){
+          hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][0],
+                                            AnalysisConstants::FinalResultsConstans::partonYAxisValuesNormalized[index][1]);
+          hist->GetYaxis()->SetTitle("#frac{1}{#sigma}#frac{d#sigma}{dX}");
+            
+        }
+        else{
+          hist->GetYaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][0],
+                                            AnalysisConstants::FinalResultsConstans::particleYAxisValuesNormalized[index][1]);
+          hist->GetYaxis()->SetTitle("#frac{1}{#sigma}#frac{d#sigma}{dX}");
+        }
+        hist->GetYaxis()->SetLabelSize(0.035);
+        hist->GetYaxis()->SetTitleSize(0.042);
+        hist->GetYaxis()->SetTitleOffset(1);
+
+        TH1F *ratio = (TH1F *)hist->Clone("ratio");
+        ratio->Divide(dataHist);
+        for (int bin = 1; bin <= hist->GetNbinsX(); bin++)
+        {
+        ratio->SetBinContent(bin, ratio->GetBinContent(bin) - 1);
+        }
+        if (partonParticle.EqualTo("Parton")){
+        hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
+                                    AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+        }
+        else{
+            hist->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                    AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+        }
+
+        if (i < 2) {
+            hist->Draw(drawOptions[i]);
+        }
+        else {
+            if (i % 2 == 0)
+            {
+                TGraphAsymmErrors *gr = new TGraphAsymmErrors(hist->GetNbinsX());
+
+                for (int j = 1; j <= hist->GetNbinsX(); j++)
+                {
+                float binWidth = hist->GetBinWidth(j);
+                float x = hist->GetBinLowEdge(j) + binWidth / 3. * (i / 2);
+                if (x == hist->GetBinLowEdge(j + 1))
+                {
+                    x -= binWidth / 10.;
+                }
+                gr->SetPoint(j - 1, x, hist->GetBinContent(j));
+                gr->SetPointEXhigh(j - 1, 0);
+                gr->SetPointEXlow(j - 1, 0);
+                gr->SetPointEYhigh(j - 1, hist->GetBinError(j));
+                gr->SetPointEYlow(j - 1, hist->GetBinError(j));
+                }
+                gr->SetMarkerStyle(hist->GetMarkerStyle());
+                gr->SetMarkerColor(hist->GetMarkerColor());
+                gr->SetLineColor(hist->GetLineColor());
+                gr->Draw(drawOptions[i]);
+            }
+        }
+        // hist->Draw(drawOptions[i]);
+
+        can->cd();
+        lowerPad->cd();
+
+        if (drawRatio[i])
+        {
+            ratio->GetYaxis()->SetRangeUser(-2, 2);
+            ratio->GetYaxis()->SetNdivisions(505);
+            ratio->GetYaxis()->SetLabelSize(0.1);
+            ratio->GetYaxis()->SetTitle("The./data - 1");
+            ratio->GetYaxis()->SetTitleSize(0.115);
+            ratio->GetYaxis()->SetTitleOffset(0.35);
+            ratio->GetYaxis()->CenterTitle(true);
+            ratio->GetXaxis()->SetTitleSize(0.115);
+            ratio->GetXaxis()->SetTitleOffset(1.);
+            ratio->GetXaxis()->SetLabelSize(0.12);
+            ratio->GetXaxis()->SetLabelOffset(0.015);
+            if (partonParticle.EqualTo("Parton")){
+                ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
+                ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
+                                                AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
+            }
+            else{
+                ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
+                ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
+                                                AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
+            }
+            
+            if (i < 2) {
+                ratio->Draw(drawOptions[i]);
+            }
+            else {
+                TGraphAsymmErrors *gr = new TGraphAsymmErrors(ratio->GetNbinsX());
+
+                for (int j = 1; j <= ratio->GetNbinsX(); j++)
+                {
+                float binWidth = ratio->GetBinWidth(j);
+                float x = ratio->GetBinLowEdge(j) + binWidth / 3. * (i / 2);
+                if (x == ratio->GetBinLowEdge(j + 1))
+                {
+                    x -= binWidth / 10.;
+                }
+                gr->SetPoint(j - 1, x, ratio->GetBinContent(j));
+                gr->SetPointEXhigh(j - 1, 0);
+                gr->SetPointEXlow(j - 1, 0);
+                gr->SetPointEYhigh(j - 1, ratio->GetBinError(j));
+                gr->SetPointEYlow(j - 1, ratio->GetBinError(j));
+                }
+                gr->SetMarkerStyle(ratio->GetMarkerStyle());
+                gr->SetMarkerColor(ratio->GetMarkerColor());
+                gr->SetLineColor(ratio->GetLineColor());
+                gr->Draw(drawOptions[i]);
+            }
+            if (i > 2 && (i % 2 != 0))
+            {
+            continue;
+            }
+            // ratio->Draw(drawOptions[i]);
+        }
+
+        if (putInLegend[i])
+        {
+        leg1->AddEntry(hist, legendTitles[i], legendDrawOption[i]);
+        }
     }
 
     can->cd();
-    lowerPad->cd();
+    upperPad->cd();
+    leg1->SetBorderSize(0);
+    leg1->Draw();
 
-    if (drawRatio[i])
+    TList *primitives = upperPad->GetListOfPrimitives();
+
+    for (int i = 0; i < primitives->GetSize(); i++)
     {
-      ratio->GetYaxis()->SetRangeUser(-2, 2);
-      ratio->GetYaxis()->SetNdivisions(505);
-      ratio->GetYaxis()->SetLabelSize(0.1);
-      ratio->GetYaxis()->SetTitle("The./data - 1");
-      ratio->GetYaxis()->SetTitleSize(0.115);
-      ratio->GetYaxis()->SetTitleOffset(0.35);
-      ratio->GetYaxis()->CenterTitle(true);
-      ratio->GetXaxis()->SetTitleSize(0.115);
-      ratio->GetXaxis()->SetTitleOffset(1.);
-      ratio->GetXaxis()->SetLabelSize(0.12);
-      ratio->GetXaxis()->SetLabelOffset(0.015);
-      if (partonParticle.Contains("Particle"))
-      {
-        ratio->GetXaxis()->SetTitle(AnalysisConstants::particleAxisTitles[index]);
-        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][0],
-                                      AnalysisConstants::FinalResultsConstans::particleXAxisValues[index][1]);
-      }
-      else
-      {
-        ratio->GetXaxis()->SetTitle(AnalysisConstants::partonAxisTitles[index]);
-        ratio->GetXaxis()->SetRangeUser(AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][0],
-                                      AnalysisConstants::FinalResultsConstans::partonXAxisValues[index][1]);
-      }
-      ratio->Draw(drawOptions[i]);
+        std::cout << primitives->At(i)->GetName() << std::endl;
     }
 
-    if (putInLegend[i])
-    {
-      leg1->AddEntry(hist, legendTitles[i], legendDrawOption[i]);
-    }
-  }
-
-  can->cd();
-  upperPad->cd();
-  leg1->SetBorderSize(0);
-  leg1->Draw();
-
-  /*TList *primitives = upperPad->GetListOfPrimitives();
-
-  for (int i = 0; i < primitives->GetSize(); i++)
-  {
-    std::cout << primitives->At(i)->GetName() << std::endl;
-  }*/
-
-  extraTextFactor = 0.14;
-  writeExtraText = true;
-  CMS_lumi(upperPad, "combined", 0);
+    // lumi_13TeV = TString::Format("%0.1f fb^{-1}", luminosity["luminosityAll"]/1000);
+    int iPeriod = 13;
+    int iPos = 0;
+    extraTextFactor = 0.14;
+    writeExtraText=true;
+        
+    CMS_lumi(upperPad, "combined", iPos);
 }
 
 void DrawWithChiSquare_normalised(TString partonParticle = "Parton", TString subDir = "")
@@ -161,9 +230,7 @@ void DrawWithChiSquare_normalised(TString partonParticle = "Parton", TString sub
   TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),
                                                     partonParticle.Data()));
-                                                  
-  TFile *theoryFileAmcAtNlo = TFile::Open(TString::Format(
-                            "../VariationHandling_Theory_amc@NLO/%s/Nominal/Histograms_TTJets.root", theoryYear.Data()));
+                                                
 
   for (int i = 0; i < AnalysisConstants::unfoldingVariables.size(); i++)
   {
@@ -194,11 +261,23 @@ void DrawWithChiSquare_normalised(TString partonParticle = "Parton", TString sub
                                                 variable.Data()));
     histograms.push_back(f);
 
+    // get nominal herwig
+    f = (TH1F *)resultsFile->Get(TString::Format("finalTheoryHerwig%s",
+                                                variable.Data()));
+    histograms.push_back(f);
+
+    // herwig values 
+    f = (TH1F *)resultsFile->Get(TString::Format("theoryHerwigHistogramValue%s",
+                                                variable.Data()));
+    histograms.push_back(f);
+
+    // pythia, powheg
     f = (TH1F *)resultsFile->Get(TString::Format("finalTheory%s",
                                                 variable.Data()));
     histograms.push_back(f);
 
-    f = (TH1F *)nominalFile->Get(TString::Format("hTheoryNorm_%s",
+    // pythia, powheg
+    f = (TH1F *)resultsFile->Get(TString::Format("theoryHistogramValue%s",
                                                 variable.Data()));
     histograms.push_back(f);
 
@@ -206,7 +285,9 @@ void DrawWithChiSquare_normalised(TString partonParticle = "Parton", TString sub
                                                                           variable.Data()));
     TMatrixD *chiSquare_amc = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_amc_normalized",
                                                                               variable.Data()));
-    DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), partonParticle);
+    TMatrixD *chiSquare_herwig = (TMatrixD *)chiSquareFiles->Get(TString::Format("chiSquare_%s_herwig_normalized",
+                                                                              variable.Data()));                                                                              
+    DrawWithRatio(c, histograms, i, chiSquare->operator()(0, 0), chiSquare_amc->operator()(0, 0), chiSquare_herwig->operator()(0, 0), partonParticle);
 
     c->SaveAs(TString::Format("%s/FinalResults/resultsChi2/%sFinalResult_%s_chiSquare_normalized.pdf",
                               baseDir.Data(),
