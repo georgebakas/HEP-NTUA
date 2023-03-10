@@ -1,0 +1,98 @@
+
+Processing FillHistograms_Reduced_topTagging.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root","TTToHadronic","2017","up",1000)...
+YEAR: 2017
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTToHadronic
+XSEC: 377.96
+EEntries: 1055194310 %
+220 %330 %40 %
+550 %660 %70 %
+80 %
+90 %
+
+
+Processing FillHistograms_Extended_topTagging.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root","TTToSemiLeptonic","2017","up",1000)..YEAR: 2017
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTToSemiLeptonic
+XSEC: 365.34
+EnEntries: 65597510 %
+2020 30 %
+4040 50 %
+60 %
+7070 8080 9090 
+Processing FillHistograms_Reduced_topTagging.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root","TTTo2L2Nu","2017","up",1000)...
+YEAR: 2017
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTTo2L2Nu
+XSEC: 88.29
+EntEntries: 911210 1020 2030 3040 %
+50 5060 6070 %
+80 8090 %
+
+Pr
+Processing FillHistograms_Extended_topTagging.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root","TTToHadronic","2017","down",1000)YEARYEAR: 2017
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTToHadronic
+XSEC: 377EntrEntries: 1055110 %
+20 %230 %
+40 %
+50 %
+60 %
+70 %
+80 %890 %9
+Processing FillHistograms_Reduced_topTagging.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root","TTToSemiLeptonic","2017","down",1000)...
+YEAR:YEAR: 2017
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTToSemiLeptonic
+XSEC: 36Entries: 6559751
+10 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+
+Proc
+Processing FillHistograms_Extended_topTagging.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root","TTTo2L2Nu","2017","down",100YEAR: 2017
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2017/Signal/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTTo2L2Nu
+XSEC: 88.29
+EntrieEntries: 910 %
+20 %
+30 %
+40 %
+50 %
+60 %
+70 %
+80 %
+90 %
+Number of arguments 3
+Argument list: ['RunFillHisto_topTag.py', '2017', 'False']
+variation is: up
+TTToHadronic
+TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root
+Current mjj cut: 1000
+variation is: up
+TTToSemiLeptonic
+TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root
+Current mjj cut: 1000
+variation is: up
+TTTo2L2Nu
+TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root
+Current mjj cut: 1000
+variation is: down
+TTToHadronic
+TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root
+Current mjj cut: 1000
+variation is: down
+TTToSemiLeptonic
+TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root
+Current mjj cut: 1000
+variation is: down
+TTTo2L2Nu
+TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root
+Current mjj cut: 1000
+1000

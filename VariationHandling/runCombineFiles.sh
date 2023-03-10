@@ -16,12 +16,12 @@
 # python3 combineFiles.py 2017 bTagVariation True
 # python3 combineFiles.py 2018 bTagVariation True
 
-# TopTagVariation
+# topTaggingVariation
 
-python3 combineFiles.py 2016_preVFP topTagVariation True
-python3 combineFiles.py 2016_postVFP topTagVariation True
-python3 combineFiles.py 2017 topTagVariation True
-python3 combineFiles.py 2018 topTagVariation True
+python3 combineFiles.py 2016_preVFP topTaggingVariation True
+python3 combineFiles.py 2016_postVFP topTaggingVariation True
+python3 combineFiles.py 2017 topTaggingVariation True
+python3 combineFiles.py 2018 topTaggingVariation True
 
 # # PS Weights
 
@@ -68,12 +68,12 @@ python3 combineFiles.py 2018 topTagVariation True
 # python3 combineFiles.py 2017 bTagVariation False
 # python3 combineFiles.py 2018 bTagVariation False
 
-# TopTagVariation
+# topTaggingVariation
 
-python3 combineFiles.py 2016_preVFP topTagVariation False
-python3 combineFiles.py 2016_postVFP topTagVariation False
-python3 combineFiles.py 2017 topTagVariation False
-python3 combineFiles.py 2018 topTagVariation False
+python3 combineFiles.py 2016_preVFP topTaggingVariation False
+python3 combineFiles.py 2016_postVFP topTaggingVariation False
+python3 combineFiles.py 2017 topTaggingVariation False
+python3 combineFiles.py 2018 topTaggingVariation False
 
 # # PS Weights
 

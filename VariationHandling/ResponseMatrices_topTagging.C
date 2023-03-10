@@ -14,7 +14,7 @@ using std::endl;
 
 #include "TemplateConstants.h"
 TVector3 getBoostVector(TLorentzVector p4_1, TLorentzVector p4_2, TLorentzVector &p4CombinedVector);
-float getTopTaggerEfficiency(float pt, TString year, TString variation)
+float getTopTaggerEfficiency(float pt, TString year, TString variation);
 
 
 TString globalYear;

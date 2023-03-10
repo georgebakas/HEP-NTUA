@@ -16,6 +16,15 @@ python3 MassFit.py 2016_postVFP bTagVariation
 python3 MassFit.py 2017 bTagVariation
 python3 MassFit.py 2018 bTagVariation
 
+# topTaggingVariation
+
+python3 MassFit.py 2016_preVFP topTaggingVariation
+python3 MassFit.py 2016_postVFP topTaggingVariation
+python3 MassFit.py 2017 topTaggingVariation
+python3 MassFit.py 2018 topTaggingVariation
+
+
+
 # PS Weights
 
 python3 MassFit.py 2016_preVFP PSWeights

@@ -21,6 +21,7 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   else if (dir.EqualTo("ScaleWeights")) tempFileName = "_scale_"+inputFile;
   else if (dir.EqualTo("Nominal")) tempFileName = "";
   else if (dir.EqualTo("bTagVariation")) tempFileName = "_bTagVariation_"+inputFile;
+  else if (dir.EqualTo("topTaggingVariation")) tempFileName = "_topTaggingVariation_"+inputFile;
   else if (dir.EqualTo("PSWeights")) tempFileName = "_PSWeights_"+inputFile;
   else if (dir.EqualTo("JES")) tempFileName = "_JES_"+inputFile;
   else tempFileName = "_"+inputFile;

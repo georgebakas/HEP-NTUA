@@ -187,8 +187,8 @@ void CombineFiducialMeasurements_new()
     TFile *outFile = new TFile("testFile_.root", "RECREATE");
     AnalysisConstants::initConstants();
 
-    //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-    TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+    TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+    //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
     baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
     // Define formats for Figures and Latex file
@@ -198,7 +198,7 @@ void CombineFiducialMeasurements_new()
     const TString ForRho = "%1.2f";
     const TString ForPul = ForRho;
     const TString ForUni = "pb";
-    std::vector<TString> variation_dirs = {"Nominal", "PSWeights", "bTagVariation", "JES",  "ScaleWeights", "PDFWeights"/*"SystematicsFiles",*/ };
+    std::vector<TString> variation_dirs = {"Nominal", "PSWeights", "bTagVariation", "topTaggingVariation", "JES",  "ScaleWeights", "PDFWeights"/*"SystematicsFiles",*/ };
 
     const int num_years = 4; 
     TString NamEst[num_years];

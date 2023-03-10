@@ -43,7 +43,7 @@ for ifile, file_name in enumerate(glob.iglob('{}/{}/combined/Histo_1000_*.root'.
         dot_split = split_file_underscore[-1].split('.')
         weight_sufix = dot_split[0]
         print(weight_sufix)
-
+    # print(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
     os.system(f'root -l -b -q \'CreateSignalTemplates.C(\"{year}\",\"{weightType}\",\"{weight_sufix}\")\'')
 
 exit()
