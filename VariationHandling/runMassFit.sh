@@ -9,6 +9,13 @@ python3 MassFit.py 2016_postVFP Nominal
 python3 MassFit.py 2017 Nominal
 python3 MassFit.py 2018 Nominal
 
+# Nominal files with Top Tag SF
+
+python3 MassFit.py 2016_preVFP NominalTopSF
+python3 MassFit.py 2016_postVFP NominalTopSF
+python3 MassFit.py 2017 NominalTopSF
+python3 MassFit.py 2018 NominalTopSF
+
 # bTagVariation
 
 python3 MassFit.py 2016_preVFP bTagVariation

@@ -9,6 +9,13 @@
 # nohup python3 RunResponses_nominal.py 2017 > nom_responses_17.out &
 # nohup python3 RunResponses_nominal.py 2018 > nom_responses_18.out &
 
+# Nomial TopTag SF
+
+nohup python3 RunResponses_nominalTopSF.py 2016_preVFP > NomTopTag_responses_16pre.out &
+nohup python3 RunResponses_nominalTopSF.py 2016_postVFP > NomTopTag_responses_16post.out &
+nohup python3 RunResponses_nominalTopSF.py 2017 > NomTopTag_responses_17.out &
+nohup python3 RunResponses_nominalTopSF.py 2018 > NomTopTag_responses_18.out &
+
 # # bTag Variation
 
 # nohup python3 RunResponses_bTag.py 2016_preVFP > btag_responses_16pre.out &
@@ -18,10 +25,10 @@
 
 # topTag Variation
 
-nohup python3 RunResponses_topTag.py 2016_preVFP > topTag_responses_16pre.out &
-nohup python3 RunResponses_topTag.py 2016_postVFP > topTag_responses_16post.out &
-nohup python3 RunResponses_topTag.py 2017 > topTag_responses_17.out &
-nohup python3 RunResponses_topTag.py 2018 > topTag_responses_18.out &
+# nohup python3 RunResponses_topTag.py 2016_preVFP > topTag_responses_16pre.out &
+# nohup python3 RunResponses_topTag.py 2016_postVFP > topTag_responses_16post.out &
+# nohup python3 RunResponses_topTag.py 2017 > topTag_responses_17.out &
+# nohup python3 RunResponses_topTag.py 2018 > topTag_responses_18.out &
 
 # # PS Weights
 

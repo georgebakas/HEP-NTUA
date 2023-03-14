@@ -9,6 +9,13 @@
 # python3 combineFiles.py 2017 Nominal True
 # python3 combineFiles.py 2018 Nominal True
 
+# Nominal SF
+
+python3 combineFiles.py 2016_preVFP NominalTopSF True
+python3 combineFiles.py 2016_postVFP NominalTopSF True
+python3 combineFiles.py 2017 NominalTopSF True
+python3 combineFiles.py 2018 NominalTopSF True
+
 # # bTagVariation
 
 # python3 combineFiles.py 2016_preVFP bTagVariation True
@@ -16,12 +23,12 @@
 # python3 combineFiles.py 2017 bTagVariation True
 # python3 combineFiles.py 2018 bTagVariation True
 
-# topTaggingVariation
+# # topTaggingVariation
 
-python3 combineFiles.py 2016_preVFP topTaggingVariation True
-python3 combineFiles.py 2016_postVFP topTaggingVariation True
-python3 combineFiles.py 2017 topTaggingVariation True
-python3 combineFiles.py 2018 topTaggingVariation True
+# python3 combineFiles.py 2016_preVFP topTaggingVariation True
+# python3 combineFiles.py 2016_postVFP topTaggingVariation True
+# python3 combineFiles.py 2017 topTaggingVariation True
+# python3 combineFiles.py 2018 topTaggingVariation True
 
 # # PS Weights
 
@@ -61,6 +68,13 @@ python3 combineFiles.py 2018 topTaggingVariation True
 # python3 combineFiles.py 2017 Nominal False
 # python3 combineFiles.py 2018 Nominal False
 
+# Nominal SF
+
+python3 combineFiles.py 2016_preVFP NominalTopSF False
+python3 combineFiles.py 2016_postVFP NominalTopSF False
+python3 combineFiles.py 2017 NominalTopSF False
+python3 combineFiles.py 2018 NominalTopSF False
+
 # # bTagVariation
 
 # python3 combineFiles.py 2016_preVFP bTagVariation False
@@ -70,10 +84,10 @@ python3 combineFiles.py 2018 topTaggingVariation True
 
 # topTaggingVariation
 
-python3 combineFiles.py 2016_preVFP topTaggingVariation False
-python3 combineFiles.py 2016_postVFP topTaggingVariation False
-python3 combineFiles.py 2017 topTaggingVariation False
-python3 combineFiles.py 2018 topTaggingVariation False
+# python3 combineFiles.py 2016_preVFP topTaggingVariation False
+# python3 combineFiles.py 2016_postVFP topTaggingVariation False
+# python3 combineFiles.py 2017 topTaggingVariation False
+# python3 combineFiles.py 2018 topTaggingVariation False
 
 # # PS Weights
 
