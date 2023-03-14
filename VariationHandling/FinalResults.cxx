@@ -417,14 +417,20 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             TString tempVariation = "";
             if (variation.Contains("isr") || variation.Contains("fsr"))             
                 tempVariation = "PSWeights";
-            else if (variation.Contains("up") || variation.Contains("down"))
+            else if (variation.EqualTo("up") || variation.EqualTo("down"))
                 tempVariation = "bTagVariation";
+            else if (variation.Contains("topTaggingup") || variation.Contains("topTaggingdown"))
+            {
+                tempVariation = "topTaggingVariation";
+                if (variation.Contains("topTaggingup")) variation = "up";
+                else if (variation.Contains("topTaggingdown")) variation = "down";
+            }
             else if (variation.Contains("pdf"))
                 tempVariation = "PDFWeights";
             else if (variation.Contains("scale"))
                 tempVariation = "ScaleWeights";
             else tempVariation = "JES";
-
+            
             if (variation.Contains("pdf_99")) continue;
             if (variation.Contains("pdf_98")) continue;
             if (variation.Contains("pdf_100")) continue;

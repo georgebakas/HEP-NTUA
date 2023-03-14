@@ -43,9 +43,9 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
   initFilesMapping();
   AnalysisConstants_UL::initConstants();
   //setTDRStyle();
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
-  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
-  std::vector<int> groupColors = {kBlack, kRed, kGreen, kBlue, kOrange};
+  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "topTaggingVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
+  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Top Tagging", "Parton Shower", "Hard Scattering"};
+  std::vector<int> groupColors = {kBlack, kRed, kGreen, kMagenta, kBlue, kOrange};
 
   //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
   TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling/";
@@ -125,10 +125,12 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("PS"))
+      if (variation.Contains("topTaggingVariation"))
         group = 3;
-      if (variation.Contains("PDF") || variation.Contains("Scale"))
+      if (variation.Contains("PS"))
         group = 4;
+      if (variation.Contains("PDF") || variation.Contains("Scale"))
+        group = 5;
       if (variation.Contains("SystematicsFiles"))
         group = -1;
 
@@ -157,6 +159,26 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_98.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_99.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_100.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_83.root", isParton.Data()))) continue;
+        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
+        if (fileName.Contains("pdf_99")) continue;
+        if (fileName.Contains("pdf_98")) continue;
+        if (fileName.Contains("pdf_100")) continue;
+        if (fileName.Contains("pdf_1")) continue;
+        if (fileName.Contains("pdf_35")) continue;
+        if (fileName.Contains("pdf_40")) continue;
+        if (fileName.Contains("pdf_56")) continue;
+        if (fileName.Contains("pdf_57")) continue;
+        if (fileName.Contains("pdf_59")) continue;
+        if (fileName.Contains("pdf_62")) continue;
+        if (fileName.Contains("pdf_83")) continue;
+        if (fileName.Contains("pdf_86")) continue;
+        if (fileName.Contains("pdf_85")) continue;
+        if (fileName.Contains("pdf_76")) continue;
+        if (fileName.Contains("pdf_42")) continue;
+        if (fileName.Contains("pdf_58")) continue;
+        if (fileName.Contains("pdf_69")) continue;
+        if (fileName.Contains("pdf_93")) continue; 
 
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PSWeights/OutputFile%s_nom0.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PSWeights/OutputFile%s_nom1.root", isParton.Data()))) continue;

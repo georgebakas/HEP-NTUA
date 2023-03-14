@@ -41,9 +41,9 @@ void Systematics_levels(TString year)
   gStyle->SetOptStat(0);
   TString isParton = "Parton";
   initFilesMapping();
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
-  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering"};
-  std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange};
+  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation" "topTaggingVariation", "SystematicsFiles", "PSWeights", "PDFWeights", "ScaleWeights"};
+  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Top Tagging", "Parton Shower", "Hard Scattering"};
+  std::vector<int> groupColors = {kBlack, kRed, kBlue, kMagenta, kGreen, kOrange};
 
   TString outputDirectory = TString::Format("%s/results_fiducial/", year.Data());
   //CheckAndCreateDirectory(outputDirectory);
@@ -121,10 +121,12 @@ void Systematics_levels(TString year)
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("SystematicsFiles") || variation.Contains("PS"))
+      if (variation.Contains("topTaggingVariation"))
         group = 3;
-      if (variation.Contains("PDF") || variation.Contains("Scale"))
+      if (variation.Contains("SystematicsFiles") || variation.Contains("PS"))
         group = 4;
+      if (variation.Contains("PDF") || variation.Contains("Scale"))
+        group = 5;
 
       cout<<variation<<" group: "<<group <<endl;
 

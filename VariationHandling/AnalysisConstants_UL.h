@@ -571,7 +571,9 @@ namespace AnalysisConstants_UL
         "isrConLo",
         "fsrConLo", //~
         "up",
-        "down"};
+        "down",
+        "topTaggingup",
+        "topTaggingdown"};
       
       variationsFiducial = {
         /*"amcatnlo",
@@ -600,7 +602,9 @@ namespace AnalysisConstants_UL
         "isrConLo",
         "fsrConLo", //~
         "bTagup",
-        "bTagdown"};
+        "bTagdown",
+        "up",
+        "down"};
 
     appendJESWeights(variations);
     appendScaleVariations(variations);

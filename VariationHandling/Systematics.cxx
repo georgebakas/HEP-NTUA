@@ -1,6 +1,6 @@
 #include "TemplateConstants.h"
 #include "../CMS_plots/tdrstyle.C"
-#include "../CMS_plots/CMS_lumi.C"
+#include "../CMS_lumi.C"
 
 //We split the uncertaintied in 5 groups and we create a histogram for each group
 //1. Statistical which is basically the error bars of the unfolded histograms

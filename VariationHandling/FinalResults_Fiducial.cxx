@@ -231,8 +231,10 @@ void FinalResults_Fiducial(bool normalized = false)
             TString tempVariation = "";
             if (variation.Contains("isr") || variation.Contains("fsr"))
                 tempVariation = "PSWeights";
-            else if (variation.Contains("up") || variation.Contains("down"))
+            else if (variation.Contains("bTagup") || variation.Contains("bTagdown"))
                 tempVariation = "bTagVariation";
+            else if (variation.EqualTo("up") || variation.EqualTo("down"))
+                tempVariation = "topTaggingVariation";
             else if (variation.Contains("pdf"))
                 tempVariation = "PDFWeights";
             else if (variation.Contains("scale"))
@@ -256,6 +258,8 @@ void FinalResults_Fiducial(bool normalized = false)
             if (variation.Contains("pdfVariation100")) continue;
             if (variation.Contains("pdfVariation69")) continue;
             if (variation.Contains("pdfVariation83")) continue;
+            if (variation.Contains("pdfVariation96")) continue;
+            if (variation.Contains("pdfVariation97")) continue;
             if (variation.Contains("pdfVariation86")) continue;
 
             /* cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",

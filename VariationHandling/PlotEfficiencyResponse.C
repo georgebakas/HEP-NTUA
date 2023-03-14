@@ -44,7 +44,7 @@ void PlotEfficiencyResponse(bool isParton = false)
 
     TString years[4] = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
     
-    TString variations[5] = {"bTagVariation", "JES", "PDFWeights", "PSWeights", "ScaleWeights"};
+    TString variations[6] = {"bTagVariation", "topTaggingVariation", "JES", "PDFWeights", "PSWeights", "ScaleWeights"};
     TH1D *purityParton[NVAR], *stabilityParton[10];
 
     //write to a txt file the Kolmogorov tests
