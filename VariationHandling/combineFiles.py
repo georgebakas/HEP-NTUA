@@ -20,7 +20,7 @@ ps_weights = {2:"isrRedHi", 3:"fsrRedHi", 4:"isrRedLo", 5:"fsrRedLo", 6:"isrDefH
             8:"isrDefLo", 9:"fsrDefLo", 10:"isrConHi", 11:"fsrConHi", 12:"isrConLo", 13:"fsrConLo"}
 
 mJJCuts = [1000] #, 1200, 1400, 1600, 1800, 2000]
-vars_ = ['PSWeights', 'bTagVariation', 'Nominal', 'JES', 'SystematicsFiles', 'topTaggingVariation']
+vars_ = ['PSWeights', 'bTagVariation', 'Nominal', 'NominalTopSF', 'JES', 'SystematicsFiles', 'topTaggingVariation']
 
 for mJJCut in mJJCuts:
     for ifile, file_name in enumerate(glob.iglob('{}/{}/Histo{}_{}_TTToHadronic*.root'.format(year,weightType,tof,mJJCut), recursive=True)):
@@ -79,6 +79,16 @@ for mJJCut in mJJCuts:
             print(weight_sufix)
             os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
         
+        elif weightType == 'NominalTopSF':
+            print(ifile, file_name)
+            print(weightType)
+            print("THIS IS THE WEIGHT NominalTopSF")
+            # dot_split = split_file_underscore[3].split('.')
+            # weight_sufix = dot_split[0]
+            # print(weight_sufix)
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu.root')
+
+
         else:
             print(ifile, file_name)
             os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu.root')

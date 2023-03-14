@@ -9,6 +9,13 @@ python3 SignalExtraction.py 2016_postVFP Nominal
 python3 SignalExtraction.py 2017 Nominal
 python3 SignalExtraction.py 2018 Nominal
 
+# Nominal files topTagger SF
+
+python3 SignalExtraction.py 2016_preVFP NominalTopSF
+python3 SignalExtraction.py 2016_postVFP NominalTopSF
+python3 SignalExtraction.py 2017 NominalTopSF
+python3 SignalExtraction.py 2018 NominalTopSF
+
 # bTagVariation
 
 python3 SignalExtraction.py 2016_preVFP bTagVariation

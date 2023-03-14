@@ -198,7 +198,7 @@ void CombineFiducialMeasurements_new()
     const TString ForRho = "%1.2f";
     const TString ForPul = ForRho;
     const TString ForUni = "pb";
-    std::vector<TString> variation_dirs = {"Nominal", "PSWeights", "bTagVariation", "topTaggingVariation", "JES",  "ScaleWeights", "PDFWeights"/*"SystematicsFiles",*/ };
+    std::vector<TString> variation_dirs = {"Nominal", "NominalTopSF", "PSWeights", "bTagVariation", "topTaggingVariation", "JES",  "ScaleWeights", "PDFWeights"/*"SystematicsFiles",*/ };
 
     const int num_years = 4; 
     TString NamEst[num_years];
