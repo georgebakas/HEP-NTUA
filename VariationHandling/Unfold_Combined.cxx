@@ -46,6 +46,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
   if(dir.EqualTo("PDFWeights")) tempFileName = "_pdf_"+inputFile;
   else if (dir.EqualTo("ScaleWeights")) tempFileName = "_scale_"+inputFile;
   else if (dir.EqualTo("Nominal")) tempFileName = "";
+  else if (dir.EqualTo("NominalTopSF")) tempFileName = "";
   else tempFileName = "_"+inputFile;
 
   std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
@@ -203,6 +204,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
     if(dir.EqualTo("PDFWeights")) tempFileName_signal = "_pdfVariation"+inputFile;
     else if (dir.EqualTo("ScaleWeights")) tempFileName_signal = "_scaleWeight"+inputFile;
     else if (dir.EqualTo("Nominal")) tempFileName_signal = "";
+    else if (dir.EqualTo("NominalTopSF")) tempFileName_signal = "";
     else if (dir.EqualTo("bTagVariation"))
     {
       if (inputFile.Contains("up")) inputFile = "up";
@@ -210,6 +212,10 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true")
       tempFileName_signal = "_bTag"+inputFile;
     } 
     else tempFileName_signal = "_"+inputFile;
+
+    // cout<<"this is for me"<<endl;
+    // cout<<dir<<endl;
+    // cout<<tempFileName_signal<<endl;
 
     if (dir.EqualTo("Nominal"))
     {

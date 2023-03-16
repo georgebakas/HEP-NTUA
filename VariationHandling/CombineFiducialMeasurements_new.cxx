@@ -187,8 +187,8 @@ void CombineFiducialMeasurements_new()
     TFile *outFile = new TFile("testFile_.root", "RECREATE");
     AnalysisConstants::initConstants();
 
-    TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
-    //TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
+    // TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
+    TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/";
     baseInputDir = TString::Format("%s/VariationHandling/", baseInputDir.Data());
 
     // Define formats for Figures and Latex file
@@ -215,6 +215,7 @@ void CombineFiducialMeasurements_new()
     for (unsigned int var = 0; var < AnalysisConstants::unfoldingVariables.size(); var++)
     {
         std::vector<TH1F *> originalHistograms;
+        std::vector<TH1F *> originalHistogramsTopSF;
     
         std::vector<TH1F *> uncHistograms16pre;
         std::vector<TH1F *> uncHistograms16post;
@@ -249,8 +250,23 @@ void CombineFiducialMeasurements_new()
             originalHistograms.push_back(f);
             file->Close();
 
+            // Step 2 is to handle the nominal histograms with top Tagger SF       
+            TFile *fileTSF = TFile::Open(TString::Format("%s/%s/NominalTopSF/FiducialMeasurement/SignalHistograms_%s_MassFitResults_SignalTemplates_NominalTopSF.root",
+                                                baseInputDir.Data(),
+                                                AnalysisConstants::years[y].Data(),
+                                                variable.Data()));
+            TH1F *fSF = (TH1F *)fileTSF->Get(TString::Format("hSignal_%s",
+                                                variable.Data()));
+            fSF->SetDirectory(0);
+            fSF->SetName(TString::Format("%s_%s_NominalTopSF",
+                                        variable.Data(),
+                                        AnalysisConstants::years[y].Data()));
+            originalHistogramsTopSF.push_back(fSF);
+            fileTSF->Close();
+
+
             //loop on all variation directories 
-            for (unsigned int i = 1; i < variation_dirs.size(); i++)
+            for (unsigned int i = 2; i < variation_dirs.size(); i++)
             {
                 //search on a STATIC year for the vaiation name!!
                 TString testYear = "2016_postVFP";
@@ -262,7 +278,7 @@ void CombineFiducialMeasurements_new()
                 
                 for (int jvar=0; jvar<variationFiles.size(); jvar++)
                 {
-                    //cout<<variationFiles[jvar] <<endl;
+                    cout<<variationFiles[jvar] <<endl;
                     if (variationFiles[jvar].Contains("nom0") || variationFiles[jvar].Contains("nom1")) continue;
                     TFile *file = TFile::Open(TString::Format("%s/%s/%s/FiducialMeasurement/%s",
                                                             baseInputDir.Data(),
@@ -312,8 +328,17 @@ void CombineFiducialMeasurements_new()
                                     originalHistograms[0]->GetNbinsX(),
                                     bins);
 
+        // create a combined results histogram for each variable (nominal TopTagSF) 
+        TH1F *resultsHistoTopSF = new TH1F(TString::Format("combined_%s_NominalTopSF",
+                                                    AnalysisConstants::unfoldingVariables[var].Data()),
+                                    TString::Format("combined_%s_NominalTopSF",
+                                                    AnalysisConstants::unfoldingVariables[var].Data()),
+                                    originalHistogramsTopSF[0]->GetNbinsX(),
+                                    bins);
+
         cout<< "--------------------------------" << endl;
-        for (int ibin = 1; ibin <=originalHistograms[0]->GetNbinsX(); ibin++)
+        // combine the central values of all the years using their correlations 
+        for (int ibin = 1; ibin <=originalHistogramsTopSF[0]->GetNbinsX(); ibin++)
         {
             resultsHisto -> SetBinContent(ibin, originalHistograms[0]->GetBinContent(ibin) + 
                                     originalHistograms[1]->GetBinContent(ibin) +
@@ -331,6 +356,27 @@ void CombineFiducialMeasurements_new()
                                     2*(AnalysisConstants::correlations["Nominal"]).correlations[7]*originalHistograms[1]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin) + 
                                     2*(AnalysisConstants::correlations["Nominal"]).correlations[11]*originalHistograms[2]->GetBinError(ibin)*originalHistograms[3]->GetBinError(ibin));        
             cout<< resultsHisto ->GetBinContent(ibin) << " with error "<<resultsHisto->GetBinError(ibin)<<endl;
+        }
+
+        // combine the central values of all the years using their correlations 
+        for (int ibin = 1; ibin <=originalHistograms[0]->GetNbinsX(); ibin++)
+        {
+            resultsHistoTopSF -> SetBinContent(ibin, originalHistogramsTopSF[0]->GetBinContent(ibin) + 
+                                    originalHistogramsTopSF[1]->GetBinContent(ibin) +
+                                    originalHistogramsTopSF[2]->GetBinContent(ibin) +
+                                    originalHistogramsTopSF[3]->GetBinContent(ibin));
+            resultsHistoTopSF -> SetBinError(ibin, TMath::Sqrt(TMath::Power(originalHistograms[0]->GetBinError(ibin), 2) + 
+                                    TMath::Power(originalHistogramsTopSF[1]->GetBinError(ibin), 2) +
+                                    TMath::Power(originalHistogramsTopSF[2]->GetBinError(ibin), 2) +
+                                    TMath::Power(originalHistogramsTopSF[3]->GetBinError(ibin), 2)) + 
+                                    // I have to input here the correlation coefficients 
+                                    2*(AnalysisConstants::correlations["Nominal"]).correlations[1]*originalHistogramsTopSF[0]->GetBinError(ibin)*originalHistogramsTopSF[1]->GetBinError(ibin) + 
+                                    2*(AnalysisConstants::correlations["Nominal"]).correlations[2]*originalHistogramsTopSF[0]->GetBinError(ibin)*originalHistogramsTopSF[2]->GetBinError(ibin) + 
+                                    2*(AnalysisConstants::correlations["Nominal"]).correlations[3]*originalHistogramsTopSF[0]->GetBinError(ibin)*originalHistogramsTopSF[3]->GetBinError(ibin) + 
+                                    2*(AnalysisConstants::correlations["Nominal"]).correlations[6]*originalHistogramsTopSF[1]->GetBinError(ibin)*originalHistogramsTopSF[2]->GetBinError(ibin) + 
+                                    2*(AnalysisConstants::correlations["Nominal"]).correlations[7]*originalHistogramsTopSF[1]->GetBinError(ibin)*originalHistogramsTopSF[3]->GetBinError(ibin) + 
+                                    2*(AnalysisConstants::correlations["Nominal"]).correlations[11]*originalHistogramsTopSF[2]->GetBinError(ibin)*originalHistogramsTopSF[3]->GetBinError(ibin));        
+            cout<< resultsHistoTopSF ->GetBinContent(ibin) << " with error "<<resultsHistoTopSF->GetBinError(ibin)<<endl;
         }
         
         //now deal with the variations 
@@ -387,6 +433,7 @@ void CombineFiducialMeasurements_new()
 
         outFile->cd();
         resultsHisto->Write();
+        resultsHistoTopSF->Write();
         for (int unc = 0; unc<AnalysisConstants::variations.size(); unc++)
         {
             //cout<<"NAME "<<uncHistograms_total[unc]->GetName()<<endl;
@@ -395,6 +442,7 @@ void CombineFiducialMeasurements_new()
 
         delete bins;
         delete resultsHisto;
+        delete resultsHistoTopSF;
         
         uncHistograms16pre.clear();
         uncHistograms16post.clear();

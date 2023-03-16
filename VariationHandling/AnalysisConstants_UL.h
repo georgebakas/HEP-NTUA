@@ -710,6 +710,11 @@ namespace AnalysisConstants_UL
                                                                           0., 0., 1., 0.,
                                                                           0., 0., 0., 1.}));
 
+    correlations.insert(std::pair<TString, correlationMatrix>("NominalTopSF", {1., 0., 0., 0.,
+                                                                          0., 1., 0., 0.,
+                                                                          0., 0., 1., 0.,
+                                                                          0., 0., 0., 1.}));
+
     correlations.insert(std::pair<TString, correlationMatrix>("bTagUp", {1., .5, .5, .5,
                                                                          .5, 1., .5, .5,
                                                                          .5, .5, 1., .5,

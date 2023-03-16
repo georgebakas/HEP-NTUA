@@ -57,7 +57,9 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
   const int NVAR = 10;
 
   TString fileName = TString::Format("%sUnfoldedCombined/Nominal/OutputFile%s.root", baseInputDir.Data(), isParton.Data());
+  TString fileNameTopSF = TString::Format("%sUnfoldedCombined/NominalTopSF/OutputFile%s.root", baseInputDir.Data(), isParton.Data());
   TFile *fNominal = TFile::Open(fileName);
+  TFile *fNominalTopSF = TFile::Open(fileNameTopSF);
 
   for (int i = 0; i<NVAR; i++)
   {
@@ -68,8 +70,12 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
     std::vector<TH1F *> groupHistogramsSym;
 
     TH1F *hNominal = (TH1F *)fNominal->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
+    TH1F *hNominalTopSF = (TH1F *)fNominalTopSF->Get(TString::Format("%s%s", histo_name.Data(), vars[i].Data()));
     if(isNorm)
+    {
       hNominal->Scale(1./hNominal->Integral());
+      hNominalTopSF->Scale(1./hNominalTopSF->Integral());
+    }
 
     //initialize group histograms
     for (int group = 0; group < groups.size(); group++)
@@ -156,11 +162,6 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         TFile *f = TFile::Open(fileName);
         
         cout<<fileName<<endl;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_98.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_99.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_100.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_83.root", isParton.Data()))) continue;
-        if (fileName.EqualTo(TString::Format("UnfoldedCombined/PDFWeights/OutputFile%s_pdf_1.root", isParton.Data()))) continue;
         if (fileName.Contains("pdf_99")) continue;
         if (fileName.Contains("pdf_98")) continue;
         if (fileName.Contains("pdf_100")) continue;
@@ -189,8 +190,14 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
 
         for (int bin = 0; bin < groupHistogramsUp[group]->GetNbinsX(); bin++)
         {
-          double nominalValue = hNominal->GetBinContent(bin + 1);
+          double nominalValue = hNominal->GetBinContent(bin + 1); 
           double nominalError = hNominal->GetBinError(bin + 1);
+          if (variation.Contains("topTaggingVariation"))
+          {
+            nominalValue = hNominalTopSF->GetBinContent(bin + 1);
+            nominalError = hNominalTopSF->GetBinError(bin + 1);
+          }
+          
           double variationValue = hVariation->GetBinContent(bin + 1);
           double valuePull = (variationValue - nominalValue) / nominalValue;
           double variationErrorUp = groupHistogramsUp[group]->GetBinContent(bin + 1);

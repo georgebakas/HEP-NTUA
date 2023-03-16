@@ -1,7 +1,7 @@
 import os
 
-types = ['Nominal', 'bTagVariation', 'topTaggingVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
-types = ['topTaggingVariation']
+types = ['Nominal', 'NominalTopSF', 'bTagVariation', 'topTaggingVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
+types = ['NominalTopSF']
 
 parton_particle_types = ['Parton', 'Particle']
 

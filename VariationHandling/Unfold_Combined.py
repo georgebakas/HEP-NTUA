@@ -8,8 +8,10 @@ ps_weights = {2:"isrRedHi", 3:"fsrRedHi", 4:"isrRedLo", 5:"fsrRedLo", 6:"isrDefH
             8:"isrDefLo", 9:"fsrDefLo", 10:"isrConHi", 11:"fsrConHi", 12:"isrConLo", 13:"fsrConLo"}
 
 def unfold(year, weightType, isParton):
+    
     for ifile, file_name in enumerate(glob.iglob('{}/Responses{}/*TTToHadronic*.root'.format(year,weightType), recursive=True)):
         print(file_name)
+        print(weightType)
         if weightType != 'SystematicsFiles':
             split_file_name = file_name.split('/')
             split_file_underscore = split_file_name[-1].split('_')
@@ -63,14 +65,15 @@ def unfold(year, weightType, isParton):
 
 if __name__ == '__main__':
     
-    types = ['Nominal', 'bTagVariation', 'topTaggingVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
-    types = ['topTaggingVariation']
+    types = ['Nominal', 'NominalTopSF','bTagVariation', 'topTaggingVariation', 'PSWeights', 'ScaleWeights', 'PDFWeights', 'JES']
+    types = ['NominalTopSF']
     year = '2017'
     parton_particle_types = ['Parton', 'Particle']
     
     #unfold('2017', 'PDFWeights', 'true')
     #exit()
     for itype in types:
+        print(itype)
         #if 'ScaleWeights' in itype: 
         unfold(year, itype, 'true')
         unfold(year, itype, 'false')

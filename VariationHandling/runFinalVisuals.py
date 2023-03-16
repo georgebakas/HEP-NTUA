@@ -3,21 +3,27 @@ import os
 
 years = ["2016_preVFP", "2016_postVFP", "2017", "2018"]
 
-for year in years:
-    os.system(f'root -l -b -q \'PlotMassDiff.C(\"{year}\")\'')
+# for year in years:
+#     os.system(f'root -l -b -q \'PlotMassDiff.C(\"{year}\")\'')
 
-# Stack histograms
-# void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR")
+# # Stack histograms
+# # void plotStackHisto(TString year, int mJJCut = 1000, TString region = "SR")
 
-# Final Results Fiducial
-norms = ['false', 'true']
-for norm in norms:
-    os.system(f'root -l -b -q \'FinalResults_Fiducial.cxx(\"{norm}\")\'')
-    os.system(f'root -l -b -q \'Fiducial_Basic.C(\"{norm}\")\'')
+# # Final Results Fiducial
+# norms = ['false', 'true']
+# for norm in norms:
+#     os.system(f'root -l -b -q \'FinalResults_Fiducial.cxx(\"{norm}\")\'')
+#     os.system(f'root -l -b -q \'Fiducial_Basic.C(\"{norm}\")\'')
 
 phase_space = ['Parton', 'Particle']
 
 for p in phase_space:
+
+    # Systematics Levels 
+    norm = 'false'
+    os.system(f'root -l -b -q \'SystematicsUnfolding_levels.cxx(\"{p}\",{norm})\'')
+    norm = 'true'
+    os.system(f'root -l -b -q \'SystematicsUnfolding_levels.cxx(\"{p}\",{norm})\'')
 
     # Final Results 
     norm = 'false'
