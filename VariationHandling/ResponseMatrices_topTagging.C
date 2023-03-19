@@ -235,6 +235,7 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
 	std::vector<float> xRecoAll(0);
 	std::vector<float> xPartonAll(0);
 	std::vector<float> xParticleAll(0);
+  std::vector<float> topTagWeights(0);
 
     for(int iev=0;iev<NN;iev++)
     {
@@ -268,6 +269,7 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
 
 	   xPartonAll.clear();
 	   xRecoAll.clear();
+     topTagWeights.clear();
 	   xParticleAll.clear();
 
 	if(nJets > 1)
@@ -323,6 +325,20 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
     xRecoAll.push_back(yStarExp); //this is chi
     xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
     xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
+
+    float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year, variation);
+    float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year, variation);
+
+    topTagWeights.push_back(topTag_1*topTag_2);
+		topTagWeights.push_back(topTag_1*topTag_2);
+		topTagWeights.push_back(topTag_1*topTag_2);
+		topTagWeights.push_back(topTag_1); // leading jet pT
+		topTagWeights.push_back(topTag_2); // subleading jet pT
+		topTagWeights.push_back(topTag_1); // leading jet Y
+		topTagWeights.push_back(topTag_2); // subleading jet Y
+    topTagWeights.push_back(topTag_1*topTag_2); //this is chi
+    topTagWeights.push_back(topTag_1); //this is |cos(theta*)| leading
+    topTagWeights.push_back(topTag_2); //this is |cos(theta*)| subleading
 
 	  //now parton
 		TLorentzVector p4TParton[2], p4T_ZMFParton[2], p4TTbarParton;
@@ -387,8 +403,7 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
 
       bool btagCut;
 	  btagCut = deepCSV;
-    float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year, variation);
-    float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year, variation);
+    
 	  //qcout<<"----------"<<endl;
 		  //fill the denominators
 		  //1. denominator passing only reco cuts for topTagger (same for parton and particle)
@@ -396,7 +411,7 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
 		  {
 		  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-				hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
+				hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
 			}
 		  }
 		  //2. fill the histograms pass reco and parton cuts numerators for efficiencies and acceptance
@@ -405,10 +420,10 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
 		  {
 			  	for(int ivar = 0; ivar < NVAR; ivar++)
 	  			{
-				   hPartonReco[ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
-				   hRecoParton[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
+				   hPartonReco[ivar]->Fill(xPartonAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
+				   hRecoParton[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
 
-				   hPartonResponse[ivar]->Fill(xPartonAll[ivar],xRecoAll[ivar], genEvtWeight *weights*LUMI*bTagEvntWeight*topTag_1*topTag_2);
+				   hPartonResponse[ivar]->Fill(xPartonAll[ivar],xRecoAll[ivar], genEvtWeight *weights*LUMI*bTagEvntWeight*topTagWeights[ivar]);
 				}//---- end of the ivar loop
 
 	      }//----- end of selection cuts parton and reco
@@ -418,10 +433,10 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
 	      {
 	      	for(int ivar = 0; ivar < NVAR; ivar++)
 	  		{
-	      		hParticleReco[ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
-	      		hRecoParticle[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
+	      		hParticleReco[ivar]->Fill(xParticleAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
+	      		hRecoParticle[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
 
-	      		hParticleResponse[ivar]->Fill(xParticleAll[ivar],xRecoAll[ivar], genEvtWeight*weights*LUMI*bTagEvntWeight*topTag_1*topTag_2);
+	      		hParticleResponse[ivar]->Fill(xParticleAll[ivar],xRecoAll[ivar], genEvtWeight*weights*LUMI*bTagEvntWeight*topTagWeights[ivar]);
 	      	}
 	      }
 	      if(particleCuts)

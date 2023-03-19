@@ -172,6 +172,7 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
     //NN = 100000;
     std::cout<<"Entries: "<<NN<<std::endl;
 	std::vector<float> xRecoAll(0);
+  std::vector<float> topTagWeights(0);
 
     for(int iev=0;iev<NN;iev++)
     {
@@ -184,6 +185,7 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
 		int isMatched =0;
 
 	   xRecoAll.clear();
+     topTagWeights.clear();
 
 	if(nJets> 1)
     {
@@ -239,12 +241,23 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
 	btagCut = deepCSV;
     float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year);
     float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year);
+
+    topTagWeights.push_back(topTag_1*topTag_2);
+		topTagWeights.push_back(topTag_1*topTag_2);
+		topTagWeights.push_back(topTag_1*topTag_2);
+		topTagWeights.push_back(topTag_1); // leading jet pT
+		topTagWeights.push_back(topTag_2); // subleading jet pT
+		topTagWeights.push_back(topTag_1); // leading jet Y
+		topTagWeights.push_back(topTag_2); // subleading jet Y
+    topTagWeights.push_back(topTag_1*topTag_2); //this is chi
+    topTagWeights.push_back(topTag_1); //this is |cos(theta*)| leading
+    topTagWeights.push_back(topTag_2); //this is |cos(theta*)| subleading
     //Signal Region 2btags
 		if(recoCuts && btagCut && tTaggerCut && (*bit)[triggerFloat])
 		{
 		  for(int ivar = 0; ivar < NVAR; ivar++)
 	  	{
-		    hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
+		    hReco[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
 		  }
 	  }
     //Control Region 0btag
@@ -252,7 +265,7 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
 	  {
 	  	for(int ivar = 0; ivar < NVAR; ivar++)
   		{
-		    hRecoCR[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTag_1*topTag_2);
+		    hRecoCR[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight*topTagWeights[ivar]);
 		  }
 	  }
 
