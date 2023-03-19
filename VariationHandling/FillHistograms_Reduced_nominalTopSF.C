@@ -238,7 +238,7 @@ void FillHistograms_Reduced_nominalTopSF(TString file_name, TString ttbar_proces
 
     bool revertBtag = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
     bool btagCut;
-	btagCut = deepCSV;
+	  btagCut = deepCSV;
     float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year);
     float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year);
 

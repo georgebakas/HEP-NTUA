@@ -252,6 +252,8 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
     topTagWeights.push_back(topTag_1*topTag_2); //this is chi
     topTagWeights.push_back(topTag_1); //this is |cos(theta*)| leading
     topTagWeights.push_back(topTag_2); //this is |cos(theta*)| subleading
+    topTagWeights.push_back(topTag_1); //this is mass leading
+    topTagWeights.push_back(topTag_2); //this is mass subleading
     //Signal Region 2btags
 		if(recoCuts && btagCut && tTaggerCut && (*bit)[triggerFloat])
 		{
