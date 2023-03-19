@@ -25,10 +25,10 @@ python3 combineFiles.py 2018 NominalTopSF True
 
 # # topTaggingVariation
 
-# python3 combineFiles.py 2016_preVFP topTaggingVariation True
-# python3 combineFiles.py 2016_postVFP topTaggingVariation True
-# python3 combineFiles.py 2017 topTaggingVariation True
-# python3 combineFiles.py 2018 topTaggingVariation True
+python3 combineFiles.py 2016_preVFP topTaggingVariation True
+python3 combineFiles.py 2016_postVFP topTaggingVariation True
+python3 combineFiles.py 2017 topTaggingVariation True
+python3 combineFiles.py 2018 topTaggingVariation True
 
 # # PS Weights
 
@@ -84,10 +84,10 @@ python3 combineFiles.py 2018 NominalTopSF False
 
 # topTaggingVariation
 
-# python3 combineFiles.py 2016_preVFP topTaggingVariation False
-# python3 combineFiles.py 2016_postVFP topTaggingVariation False
-# python3 combineFiles.py 2017 topTaggingVariation False
-# python3 combineFiles.py 2018 topTaggingVariation False
+python3 combineFiles.py 2016_preVFP topTaggingVariation False
+python3 combineFiles.py 2016_postVFP topTaggingVariation False
+python3 combineFiles.py 2017 topTaggingVariation False
+python3 combineFiles.py 2018 topTaggingVariation False
 
 # # PS Weights
 

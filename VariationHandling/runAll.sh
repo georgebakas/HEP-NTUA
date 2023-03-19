@@ -25,10 +25,10 @@ nohup python3 RunFillHisto_nominalTopSF.py 2018 True > NomTopTag_ext_18.out &
 
 # # TopTagger SF Variation
 
-# nohup python3 RunFillHisto_topTag.py 2016_preVFP True> topTag_ext_16pre.out &
-# nohup python3 RunFillHisto_topTag.py 2016_postVFP True > topTag_ext_16post.out &
-# nohup python3 RunFillHisto_topTag.py 2017 True > topTag_ext_17.out &
-# nohup python3 RunFillHisto_topTag.py 2018 True > topTag_ext_18.out &
+nohup python3 RunFillHisto_topTag.py 2016_preVFP True> topTag_ext_16pre.out &
+nohup python3 RunFillHisto_topTag.py 2016_postVFP True > topTag_ext_16post.out &
+nohup python3 RunFillHisto_topTag.py 2017 True > topTag_ext_17.out &
+nohup python3 RunFillHisto_topTag.py 2018 True > topTag_ext_18.out &
 
 # # PS Weights
 
@@ -90,10 +90,10 @@ nohup python3 RunFillHisto_nominalTopSF.py 2018 False > NomTopTag_red_18.out &
 
 # # TopTagger SF Variation
 
-# nohup python3 RunFillHisto_topTag.py 2016_preVFP False > topTag_red_16pre.out &
-# nohup python3 RunFillHisto_topTag.py 2016_postVFP False > topTag_red_16post.out &
-# nohup python3 RunFillHisto_topTag.py 2017 False > topTag_red_17.out &
-# nohup python3 RunFillHisto_topTag.py 2018 False > topTag_red_18.out &
+nohup python3 RunFillHisto_topTag.py 2016_preVFP False > topTag_red_16pre.out &
+nohup python3 RunFillHisto_topTag.py 2016_postVFP False > topTag_red_16post.out &
+nohup python3 RunFillHisto_topTag.py 2017 False > topTag_red_17.out &
+nohup python3 RunFillHisto_topTag.py 2018 False > topTag_red_18.out &
 
 # # PS Weights
 
