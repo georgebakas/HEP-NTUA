@@ -20,7 +20,7 @@ void CreateSignalTemplates(TString year, TString dir, TString inputFile, TString
   if(dir.EqualTo("PDFWeights")) tempFileName = "_pdf_"+inputFile;
   else if (dir.EqualTo("ScaleWeights")) tempFileName = "_scale_"+inputFile;
   else if (dir.EqualTo("Nominal")) tempFileName = "";
-  else if (dir.EqualTo("NominalTopSF")) tempFileName = "_NominalTopSF";
+  else if (dir.EqualTo("NominalTopSF")) tempFileName = "";
   else if (dir.EqualTo("bTagVariation")) tempFileName = "_bTagVariation_"+inputFile;
   else if (dir.EqualTo("topTaggingVariation")) tempFileName = "_topTaggingVariation_"+inputFile;
   else if (dir.EqualTo("PSWeights")) tempFileName = "_PSWeights_"+inputFile;
