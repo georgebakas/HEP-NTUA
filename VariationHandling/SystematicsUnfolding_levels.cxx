@@ -43,9 +43,9 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
   initFilesMapping();
   AnalysisConstants_UL::initConstants();
   //setTDRStyle();
-  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "topTaggingVariation", "PSWeights", "PDFWeights", "ScaleWeights"};
-  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Top Tagging", "Parton Shower", "Hard Scattering"};
-  std::vector<int> groupColors = {kBlack, kRed, kGreen, kMagenta, kBlue, kOrange};
+  std::vector<TString> dirs = {"Nominal", "JES", "bTagVariation", "PSWeights", "PDFWeights", "ScaleWeights", "topTaggingVariation"};
+  std::vector<TString> groups = {"Stat. Uncertainty", "JES+JER+Pileup", "Flavor Tagging", "Parton Shower", "Hard Scattering", "Top Tagging"};
+  std::vector<int> groupColors = {kBlack, kRed, kBlue, kGreen, kOrange-3};
 
   //TString baseInputDir = "/afs/cern.ch/work/g/gbakas/public/HEP-NTUA/";
   TString baseInputDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling/";
@@ -93,6 +93,10 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
       hSystematicsDown->SetLineColor(groupColors[group-1]);
       hSystematicsSym->SetLineColor(groupColors[group-1]);
 
+      cout<<"GROUP SETTINGS"<<endl;
+      cout<<groupColors[group-1]<<endl;
+      cout<<group<<endl;
+
       hSystematicsUp->SetLineWidth(3);
       hSystematicsDown->SetLineWidth(3);
       hSystematicsSym->SetLineWidth(3);
@@ -131,11 +135,11 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         group = 1;
       if (variation.Contains("bTagVariation"))
         group = 2;
-      if (variation.Contains("topTaggingVariation"))
-        group = 3;
       if (variation.Contains("PS"))
-        group = 4;
+        group = 3;
       if (variation.Contains("PDF") || variation.Contains("Scale"))
+        group = 4;
+      if (variation.Contains("topTaggingVariation"))
         group = 5;
       if (variation.Contains("SystematicsFiles"))
         group = -1;
@@ -257,10 +261,11 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
     //groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
     groupHistogramsSym[0]->SetTitle("");
     groupHistogramsSym[0]->SetLineWidth(0);
-    if (isParton.Contains("Parton"))
-      groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::partonAxisTitles[i]);
-    else 
-      groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::particleAxisTitles[i]);
+    // if (isParton.Contains("Parton"))
+    //   groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::partonAxisTitles[i]);
+    // else 
+    //   groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::particleAxisTitles[i]);
+    groupHistogramsSym[0]->GetXaxis()->SetTitle(vars[i]);
 
     groupHistogramsSym[0]->GetXaxis()->SetLabelSize(0.035);
     std::cout << groupHistogramsSym[0]->GetYaxis()->GetLabelSize() << std::endl;

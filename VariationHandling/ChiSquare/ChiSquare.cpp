@@ -42,13 +42,12 @@ TMatrixD *CalculateChiSquare(TMatrixD covariance, TH1F *nominalHistogram, TH1F *
   return chiSquare;
 }
 
-void ChiSquare(TString subDir = "")
+void ChiSquare(TString subDir = "", TString partonParticle = "Particle")
 {
-  bool normalized = false;
   TString theoryYear = "2018";
+  bool normalized = false;
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-  TString partonParticle = "Particle";
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
   
   TString baseInputDir = baseDir;
@@ -67,6 +66,11 @@ void ChiSquare(TString subDir = "")
   TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),
                                                     partonParticle.Data()));
+
+  TFile *nominalFileTopSF = TFile::Open(TString::Format("%s/UnfoldedCombined/NominalTopSF/OutputFile%s.root",
+                                                    baseDir.Data(),
+                                                    partonParticle.Data()));
+
   TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFile.root",
                                                       baseDir.Data(),
                                                       partonParticle.Data())); 
@@ -86,6 +90,9 @@ void ChiSquare(TString subDir = "")
     cout << variable << endl;
 
     TH1F *nominalHistogram = (TH1F *)nominalFile->Get(TString::Format("hUnfold%s_%s",
+                                                                        (normalized ? "Norm" : "Final"), 
+                                                                        variable.Data()));
+    TH1F *nominalHistogramTopSF = (TH1F *)nominalFileTopSF->Get(TString::Format("hUnfold%s_%s",
                                                                         (normalized ? "Norm" : "Final"), 
                                                                         variable.Data()));
 
@@ -129,6 +136,7 @@ void ChiSquare(TString subDir = "")
     if (variable.Contains("jetY"))
     {
       nominalHistogram->Scale(1 / 2.);
+      nominalHistogramTopSF->Scale(1/2.);
       theoryHistogram->Scale(1. / 2.);
       theoryAmcAtNloHistogram->Scale(1. / 2.);
       theoryHerwigHistogram->Scale(1. / 2.);
@@ -148,27 +156,42 @@ void ChiSquare(TString subDir = "")
 
     for (unsigned int v = 0; v < AnalysisConstants::variations.size(); v++)
     {
+      
+
       TString variation = AnalysisConstants::variations[v];
       TString tempVariation = "";
       if (variation.Contains("isr") || variation.Contains("fsr"))
           tempVariation = "PSWeights";
-      else if (variation.Contains("up") || variation.Contains("down"))
+      else if (variation.EqualTo("bTag_up") || variation.EqualTo("bTag_down"))
           tempVariation = "bTagVariation";
+      else if (variation.EqualTo("up") || variation.EqualTo("down"))
+          tempVariation = "topTaggingVariation";
       else if (variation.Contains("pdf"))
           tempVariation = "PDFWeights";
       else if (variation.Contains("scale"))
           tempVariation = "ScaleWeights";
       else tempVariation = "JES";
 
+      if (tempVariation.Contains("topTagging"))
+            nominalHistogram = nominalHistogramTopSF;
 
       if (variation.Contains("pdf_99")) continue;
       if (variation.Contains("pdf_98")) continue;
       if (variation.Contains("pdf_100")) continue;
+      if (variation.EqualTo("topTaggingup")) continue;
+      if (variation.EqualTo("topTaggingdown")) continue;
+      cout<<'----'<<endl;
+      cout<<variation.Data()<<endl;
+      cout<<tempVariation.Data()<<endl;
+
+
 
       // here we handle only btag and JES which have up and down
       // this means that we need--> calculated (unfolded), and theory variations
-      if (tempVariation.Contains("bTag") || tempVariation.Contains("JES"))
+      if (tempVariation.Contains("bTag") || tempVariation.Contains("JES") || tempVariation.Contains("topTagging"))
       {
+        if (variation.Contains("bTag")) variation = variation.ReplaceAll("bTag_", "");
+
         TString variationDown = variation;
         if (variation.Contains("Up"))
         {

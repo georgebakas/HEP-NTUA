@@ -32,3 +32,4 @@ python3 CombineEfficiencyAcceptance.py
 python3 Unfold_Combined.py
 
 # now draw 
+python3 runFinalVisuals.py

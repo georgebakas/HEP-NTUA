@@ -43,13 +43,12 @@ TMatrixD *CalculateChiSquare(TMatrixD covariance, TH1F *nominalHistogram, TH1F *
   return chiSquare;
 }
 
-void ChiSquare_normalised(TString subDir = "")
+void ChiSquare_normalised(TString subDir = "", TString partonParticle = "Particle")
 {
   TString theoryYear = "2018";
 
   AnalysisConstants::subDir = subDir;
   AnalysisConstants::initConstants();
-  TString partonParticle = "Particle";
   bool normalized = true;
   TString baseDir = "/Users/georgebakas/Documents/HEP-NTUA_ul/VariationHandling";
   TString outputDir = TString::Format("%s/ChiSquare/results/",
@@ -64,6 +63,11 @@ void ChiSquare_normalised(TString subDir = "")
   TFile *nominalFile = TFile::Open(TString::Format("%s/UnfoldedCombined/Nominal/OutputFile%s.root",
                                                     baseDir.Data(),
                                                     partonParticle.Data()));
+
+  TFile *nominalFileTopSF = TFile::Open(TString::Format("%s/UnfoldedCombined/NominalTopSF/OutputFile%s.root",
+                                                    baseDir.Data(),
+                                                    partonParticle.Data()));
+
   TFile *finalResultFile = TFile::Open(TString::Format("%s/FinalResults/results/%s_outputFileNorm.root",
                                                        baseDir.Data(),
                                                        partonParticle.Data())); 
@@ -84,6 +88,10 @@ void ChiSquare_normalised(TString subDir = "")
     TH1F *nominalHistogram = (TH1F *)nominalFile->Get(TString::Format("hUnfold%s_%s",
                                                                     (normalized ? "Norm" : "Final"), 
                                                                     variable.Data()));
+
+    TH1F *nominalHistogramTopSF = (TH1F *)nominalFileTopSF->Get(TString::Format("hUnfold%s_%s",
+                                                                        (normalized ? "Norm" : "Final"), 
+                                                                        variable.Data()));
 
     TH1F *theoryHistogram = (TH1F *)nominalFile->Get(TString::Format("hTheory%s_%s",
                                                                     (normalized ? "Norm" : ""),
@@ -136,16 +144,31 @@ void ChiSquare_normalised(TString subDir = "")
       TString tempVariation = "";
       if (variation.Contains("isr") || variation.Contains("fsr"))
           tempVariation = "PSWeights";
-      else if (variation.Contains("up") || variation.Contains("down"))
+      else if (variation.EqualTo("bTag_up") || variation.EqualTo("bTag_down"))
           tempVariation = "bTagVariation";
+      else if (variation.EqualTo("up") || variation.EqualTo("down"))
+          tempVariation = "topTaggingVariation";
       else if (variation.Contains("pdf"))
           tempVariation = "PDFWeights";
       else if (variation.Contains("scale"))
           tempVariation = "ScaleWeights";
       else tempVariation = "JES";
 
+      cout<<"----"<<endl;
+      cout<<variation.Data()<<endl;
+      cout<<tempVariation.Data()<<endl;
+
+      if (tempVariation.Contains("topTagging"))
+            nominalHistogram = nominalHistogramTopSF;
+
+
+      if (variation.EqualTo("topTaggingup")) continue;
+      if (variation.EqualTo("topTaggingdown")) continue;
+      
       if (tempVariation.Contains("bTag") || variation.Contains("JES"))
       {
+        if (variation.Contains("bTag")) variation = variation.ReplaceAll("bTag_", "");
+        
         TString variationDown = variation;
         if (variation.Contains("Up"))
         {
@@ -155,7 +178,7 @@ void ChiSquare_normalised(TString subDir = "")
         {
           variationDown.ReplaceAll("up", "down");
         }
-        else
+        else 
         {
           variationDown.ReplaceAll("UP", "DOWN");
         }

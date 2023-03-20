@@ -558,7 +558,9 @@ namespace AnalysisConstants_UL
         "fsrConHi",
         "isrConLo",
         "fsrConLo", //~
-        "up",
+        "bTag_up",
+        "bTag_down", 
+        "up", 
         "down"};
       
       variationsFiducial = {
