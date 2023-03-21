@@ -261,11 +261,11 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
     //groupHistogramsSym[0]->GetYaxis()->SetRangeUser(0, 120);
     groupHistogramsSym[0]->SetTitle("");
     groupHistogramsSym[0]->SetLineWidth(0);
-    // if (isParton.Contains("Parton"))
-    //   groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::partonAxisTitles[i]);
-    // else 
-    //   groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::particleAxisTitles[i]);
-    groupHistogramsSym[0]->GetXaxis()->SetTitle(vars[i]);
+    if (isParton.Contains("Parton"))
+      groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::partonAxisTitles[i]);
+    else 
+      groupHistogramsSym[0]->GetXaxis()->SetTitle(AnalysisConstants_UL::particleAxisTitles[i]);
+    // groupHistogramsSym[0]->GetXaxis()->SetTitle(vars[i]);
 
     groupHistogramsSym[0]->GetXaxis()->SetLabelSize(0.035);
     std::cout << groupHistogramsSym[0]->GetYaxis()->GetLabelSize() << std::endl;

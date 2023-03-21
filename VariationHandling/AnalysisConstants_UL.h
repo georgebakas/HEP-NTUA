@@ -36,7 +36,7 @@ namespace AnalysisConstants_UL
   std::vector<TString> fiducialAxisTitles;
 
   std::vector<TString> particleAxisTitles;
-
+  map<int, TString> vars;
 
   std::vector<bool> axisInLogScale;
 
@@ -445,6 +445,17 @@ namespace AnalysisConstants_UL
     particleAxisTitles.push_back("Particle #chi ");
     particleAxisTitles.push_back("Leading particle  jet |cos(#theta*)|");
     particleAxisTitles.push_back("Subleading particle jet |cos(#theta*)|");
+
+    vars.insert(pair<int, TString>(0, "jetPt0"));
+    vars.insert(pair<int, TString>(1, "jetPt1"));
+    vars.insert(pair<int, TString>(2, "yJJ"));
+    vars.insert(pair<int, TString>(1, "ptJJ"));
+    vars.insert(pair<int, TString>(0, "mJJ"));
+    vars.insert(pair<int, TString>(2, "jetY0"));
+    vars.insert(pair<int, TString>(3, "jetY1"));
+    vars.insert(pair<int, TString>(7, "chi"));
+    vars.insert(pair<int, TString>(8, "cosTheta_0"));
+    vars.insert(pair<int, TString>(9, "cosTheta_1"));
 
     axisLowValues.push_back(-10);
     axisLowValues.push_back(-10);

@@ -240,8 +240,8 @@ void CalculateSF_newBins(TString year = "2017")
   Double_t plotX_data[3] = {1, 2, 4};
   Double_t plotY_data[3] = {top_tagger_sf_incl, top_tagger_sf_incl, top_tagger_sf_incl};
   Double_t plotX_data_error[3] = {0, 0, 0};
-  // Double_t plotY_data_error[3] = {top_tagger_sf_error_incl, top_tagger_sf_error_incl, top_tagger_sf_error_incl};
-  Double_t plotY_data_error[3] = {static_topTaggerSF_error[year.Data()], static_topTaggerSF_error[year.Data()], static_topTaggerSF_error[year.Data()]};
+  Double_t plotY_data_error[3] = {top_tagger_sf_error_incl, top_tagger_sf_error_incl, top_tagger_sf_error_incl};
+  // Double_t plotY_data_error[3] = {static_topTaggerSF_error[year.Data()], static_topTaggerSF_error[year.Data()], static_topTaggerSF_error[year.Data()]};
   TGraphErrors *data_central_err = new TGraphErrors(3,plotX_data,plotY_data, plotX_data_error, plotY_data_error);
   data_central_err->SetFillColor(kBlue);
   data_central_err->SetLineColor(kBlue);
