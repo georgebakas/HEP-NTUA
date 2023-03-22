@@ -31,7 +31,7 @@ void ResponseMatrices_nominalTopSF(TString file_name, TString ttbar_process, TSt
   float triggerFloat;
   if(year.Contains("2016")) triggerFloat = 2;
   else triggerFloat = 5;
-
+  cout<<"top_tagger_sf_incl "<<top_tagger_sf_incl[year.Data()]<<endl;
   float deepCSVFloat = floatConstants[TString::Format("btagWP%s",year.Data())];
   float selMvaCut = topTaggerConstants[TString::Format("topTagger%s",year.Data())];
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
@@ -326,8 +326,10 @@ void ResponseMatrices_nominalTopSF(TString file_name, TString ttbar_process, TSt
     xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
     xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
 
-    float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year);
-    float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year);
+    // float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year);
+    // float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year);
+    float topTag_1 = top_tagger_sf_incl[year.Data()];
+    float topTag_2 = top_tagger_sf_incl[year.Data()];
 
     topTagWeights.push_back(topTag_1*topTag_2);
 		topTagWeights.push_back(topTag_1*topTag_2);

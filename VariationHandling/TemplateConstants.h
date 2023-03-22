@@ -20,6 +20,7 @@ map<TString, float> topTaggerSF_data_error;
 map<TString, float> topTaggerSF_sim;
 map<TString, float> topTaggerSF_sim_error;
 map<TString, float> static_topTaggerSF_error; 
+map<TString, float> top_tagger_sf_incl;
 map<TString, std::vector<float>> topTaggerSF_error_1;
 map<TString, std::vector<float>> topTaggerSF_error_2;
 map<TString, std::vector<float>> topTaggerSF_error_3;
@@ -196,5 +197,11 @@ void initFilesMapping()
 	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2016_postVFP", {1.12, 0.34}));
 	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2017", {0.912, 0.155}));
 	topTaggerSF_error_3.insert(pair<TString,std::vector<float>>("2018", {0.914, 0.13}));
+
+	// inclusive SF 
+	top_tagger_sf_incl.insert(pair<TString,float>("2016_preVFP", 0.957));
+	top_tagger_sf_incl.insert(pair<TString,float>("2016_postVFP", 1.00475));
+	top_tagger_sf_incl.insert(pair<TString,float>("2017", 0.93808));
+	top_tagger_sf_incl.insert(pair<TString,float>("2018", 0.957457));
 	
 }

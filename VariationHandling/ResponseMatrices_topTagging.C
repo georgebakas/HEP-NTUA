@@ -61,6 +61,12 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
                                                 {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
                                                 {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
 
+  // get the SF file  
+  TFile *file_sf = TFile::Open(TString::Format("../VariationHandling/%s/TopTaggerUncertainty_FitValues.root", year.Data()));
+  // read the TF1 objects 
+  TF1 *topTagSF_function = (TF1*)file_sf->Get(TString::Format("f%s", variation.Data()));
+
+
   int NBINS[BND_reco.size()];
   for (int i = 0; i<BND_reco.size(); i++) NBINS[i] = BND_reco[i].size()-1;
 
@@ -326,8 +332,10 @@ void ResponseMatrices_topTagging(TString file_name, TString ttbar_process, TStri
     xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[0].Theta()))); //this is |cos(theta*)| leading
     xRecoAll.push_back(fabs(TMath::Cos(p4T_ZMF[1].Theta()))); //this is |cos(theta*)| subleading
 
-    float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year, variation);
-    float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year, variation);
+    // float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year, variation);
+    // float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year, variation);
+    float topTag_1 = topTagSF_function->Eval((*jetPt)[leadingPt]);
+    float topTag_2 = topTagSF_function->Eval((*jetPt)[subleadingPt]);
 
     topTagWeights.push_back(topTag_1*topTag_2);
 		topTagWeights.push_back(topTag_1*topTag_2);

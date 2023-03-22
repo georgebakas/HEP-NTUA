@@ -28,6 +28,7 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
   cout<<"YEAR: "<<year<<endl;
   cout<<"file_name: "<<file_name<<endl;
   cout<<"ttbar_process: "<<ttbar_process<<endl;
+  cout<<"top_tagger_sf_incl "<<top_tagger_sf_incl[year.Data()]<<endl;
   float triggerFloat;
   float triggerFloatCR;
   if(year.Contains("2016"))
@@ -239,8 +240,10 @@ void FillHistograms_Extended_nominalTopSF(TString file_name, TString ttbar_proce
     bool revertBtag = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
     bool btagCut;
 	btagCut = deepCSV;
-    float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year);
-    float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year);
+    // float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year);
+    // float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year);
+    float topTag_1 = top_tagger_sf_incl[year.Data()];
+    float topTag_2 = top_tagger_sf_incl[year.Data()];
 
     topTagWeights.push_back(topTag_1*topTag_2);
 		topTagWeights.push_back(topTag_1*topTag_2);

@@ -59,6 +59,11 @@ void FillHistograms_Extended_topTagging(TString file_name, TString ttbar_process
                        {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
                        {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
 
+  // get the SF file  
+  TFile *file_sf = TFile::Open(TString::Format("../VariationHandling/%s/TopTaggerUncertainty_FitValues.root", year.Data()));
+  // read the TF1 objects 
+  TF1 *topTagSF_function = (TF1*)file_sf->Get(TString::Format("f%s", variation.Data()));
+
   int NBINS[BND.size()+2];
   for (int i = 0; i<BND.size()+2; i++)
   {
@@ -238,9 +243,11 @@ void FillHistograms_Extended_topTagging(TString file_name, TString ttbar_process
 
     bool revertBtag = (dCSVScoreSub0[0] < deepCSVFloat &&  dCSVScoreSub1[0] < deepCSVFloat) && (dCSVScoreSub0[1] < deepCSVFloat && dCSVScoreSub1[1] < deepCSVFloat);
     bool btagCut;
-	btagCut = deepCSV;
-    float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year, variation);
-    float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year, variation);
+	  btagCut = deepCSV;
+    // float topTag_1 = getTopTaggerEfficiency((*jetPt)[leadingPt], year, variation);
+    // float topTag_2 = getTopTaggerEfficiency((*jetPt)[subleadingPt], year, variation);
+    float topTag_1 = topTagSF_function->Eval((*jetPt)[leadingPt]);
+    float topTag_2 = topTagSF_function->Eval((*jetPt)[subleadingPt]);
 
     topTagWeights.push_back(topTag_1*topTag_2);
 		topTagWeights.push_back(topTag_1*topTag_2);
