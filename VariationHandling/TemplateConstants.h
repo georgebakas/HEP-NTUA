@@ -99,24 +99,24 @@ void initFilesMapping()
 	scale_weights.insert(pair<int, TString>(3, "scale_5"));
 	scale_weights.insert(pair<int, TString>(4, "scale_7"));
 	scale_weights.insert(pair<int, TString>(5, "scale_9"));
-
-	variableConstant.insert(pair<TString, int>("mJJ",  0));
-	variableConstant.insert(pair<TString, int>("ptJJ", 1));
+	
+	variableConstant.insert(pair<TString, int>("jetPt0", 0));
+	variableConstant.insert(pair<TString, int>("jetPt1", 1));
 	variableConstant.insert(pair<TString, int>("yJJ",  2));
-	variableConstant.insert(pair<TString, int>("jetPt0", 3));
-	variableConstant.insert(pair<TString, int>("jetPt1", 4));
+	variableConstant.insert(pair<TString, int>("ptJJ", 3));
+	variableConstant.insert(pair<TString, int>("mJJ",  4));
 	variableConstant.insert(pair<TString, int>("jetY0", 5));
 	variableConstant.insert(pair<TString, int>("jetY1", 6));
 	variableConstant.insert(pair<TString, int>("chi", 7));
 	variableConstant.insert(pair<TString, int>("cosTheta_0", 8));
 	variableConstant.insert(pair<TString, int>("cosTheta_1", 9));
 	
-
-	vars.insert(pair<int, TString>(0, "mJJ"));
-	vars.insert(pair<int, TString>(1, "ptJJ"));
+	
+	vars.insert(pair<int, TString>(0, "jetPt0"));
+	vars.insert(pair<int, TString>(1, "jetPt1"));
 	vars.insert(pair<int, TString>(2, "yJJ"));
-	vars.insert(pair<int, TString>(3, "jetPt0"));
-	vars.insert(pair<int, TString>(4, "jetPt1"));
+	vars.insert(pair<int, TString>(3, "ptJJ"));
+	vars.insert(pair<int, TString>(4, "mJJ"));
 	vars.insert(pair<int, TString>(5, "jetY0"));
 	vars.insert(pair<int, TString>(6, "jetY1"));
 	vars.insert(pair<int, TString>(7, "chi"));

@@ -63,7 +63,9 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
 
   for (int i = 0; i<NVAR; i++)
   {
+    cout<< "------"<<endl;
     std::cout << "Variable: " << vars[i]<< std::endl;
+    std::cout << AnalysisConstants_UL::partonAxisTitles[i]<<endl;
 
     std::vector<TH1F *> groupHistogramsUp;
     std::vector<TH1F *> groupHistogramsDown;
