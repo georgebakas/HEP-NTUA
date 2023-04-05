@@ -190,7 +190,21 @@ void CalculateSF_FitProcess_JMAR(TString year = "2017")
         // error = central value * error_pct 
         // where error_pct = top_tagger_sf_error[ipt] / top_tagger_sf[ipt]
         // error = top_tagger_sf_incl * (top_tagger_sf_error[ipt]/top_tagger_sf[ipt])
-        hTopSF->SetBinError(ibin+1, top_tagger_sf_incl * (top_tagger_sf_error[ibin]/top_tagger_sf[ibin]));
+
+        // this is error 1:
+        float error_1 = top_tagger_sf_incl * (top_tagger_sf_error[ibin]/top_tagger_sf[ibin]);
+
+        // this is error 2:
+        // this is central inclusive plus its error
+        float error_2 = top_tagger_sf_incl + top_tagger_sf_error_incl;
+        cout<<"type 1: "<<error_1<<" type 2:"<<error_2<<endl;
+
+        if error_1 >= error_2{
+            hTopSF->SetBinError(ibin+1, error_1);
+        }
+        else{
+            hTopSF->SetBinError(ibin+1, error_2);
+        }
     }
 
     std::vector<float> y_up_values, y_down_values;

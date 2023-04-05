@@ -177,7 +177,7 @@ void CalculateSF_FitProcess(TString year = "2017")
 
 
     // create a histogram 
-    Float_t xbins[4] = {400, 600, 800, 1500};
+    Float_t xbins[4] = {200, 600, 800, 1500};
     int NBINS = 3;
     TH1F *hTopSF = new TH1F("h_topTaggerSF","h_topTaggerSF", NBINS, xbins);
     
@@ -188,7 +188,23 @@ void CalculateSF_FitProcess(TString year = "2017")
         // error = central value * error_pct 
         // where error_pct = top_tagger_sf_error[ipt] / top_tagger_sf[ipt]
         // error = top_tagger_sf_incl * (top_tagger_sf_error[ipt]/top_tagger_sf[ipt])
-        hTopSF->SetBinError(ibin+1, top_tagger_sf_incl * (top_tagger_sf_error[ibin]/top_tagger_sf[ibin]));
+
+        // this is error 1:
+        float error_1 = top_tagger_sf_incl * (top_tagger_sf_error[ibin]/top_tagger_sf[ibin]);
+
+        // this is error 2:
+        // this is central inclusive plus its error
+        float error_2 = top_tagger_sf_error_incl;
+        cout<<"type 1: "<<error_1<<" type 2:"<<error_2<<endl;
+    
+        // set ONLY for the 1st bin the pt Inclusive value error
+        if (ibin !=0){
+            hTopSF->SetBinError(ibin+1, error_1);
+        }
+        else{
+            hTopSF->SetBinError(ibin+1, error_2);
+        }
+        
     }
 
     std::vector<float> y_up_values, y_down_values;
@@ -302,6 +318,12 @@ void CalculateSF_FitProcess(TString year = "2017")
 
     // save the TF1s
     TFile *fit_file = new TFile(TString::Format("../VariationHandling/%s/TopTaggerUncertainty_FitValues.root",year.Data()),"RECREATE");
+    fit_file->cd();
+    fup->Write("fup");
+    fdown->Write("fdown");
+
+    // save the TF1s for Giannis
+    TFile *fit_file = new TFile(TString::Format("../VariationHandling/%s/TopTaggerUncertainty_FitValues_%s.root",year.Data(), year.Data()),"RECREATE");
     fit_file->cd();
     fup->Write("fup");
     fdown->Write("fdown");
