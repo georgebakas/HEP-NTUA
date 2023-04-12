@@ -23,13 +23,15 @@
 
 # Combine Fiducial Measurements into 1 files per variation
 # I need to manually create this step so this is tbd 
-root -l CombineFiducialMeasurements_new.cxx
+root -l -b -q CombineFiducialMeasurements_new.cxx
 
 # Combine Acceptance and Efficiency 
 python3 CombineEfficiencyAcceptance.py
 
 # Unfolding Parton and Particle 
 python3 Unfold_Combined.py
+
+# don't forget to run Chi2 results before running visuals
 
 # now draw 
 python3 runFinalVisuals.py

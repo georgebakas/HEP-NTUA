@@ -20,7 +20,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
 void plotStackHisto_ZprimeInc(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
 {
-  setTDRStyle();
+  // setTDRStyle();
   initFilesMapping(false);
   mass = selMass;
   width = selWidth;
@@ -180,7 +180,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   int iPeriod = 4;
   int iPos = 0;
   //writeExtraText=true;
-  CMS_lumi(closure_pad1, iPeriod, iPos);
+  // CMS_lumi(closure_pad1, iPeriod, iPos);
   can->Print(TString::Format("%s/StackPlots_ZprimeInStack/DatavsMC_%s_%d_M%dW%d.pdf",year.Data(), variable.Data(), mJJCut, mass, width),"pdf");
 
 }

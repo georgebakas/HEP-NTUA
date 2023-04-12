@@ -20,7 +20,7 @@ void plotStackSensitivity_Variable(TString year, TFile *infData, TFile *infTT, T
 
 void plotStackSensitivity(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
 {
-  setTDRStyle();
+  // setTDRStyle();
   initFilesMapping(false);
   mass = selMass;
   width = selWidth;
@@ -142,7 +142,7 @@ void plotStackSensitivity_Variable(TString year, TFile *infData, TFile *infTT, T
   int iPeriod = 4;
   int iPos = 0;
   //writeExtraText=true;
-  CMS_lumi(can, iPeriod, iPos);
+  // CMS_lumi(can, iPeriod, iPos);
   can->Print(TString::Format("%s/SensitivityPlots/DatavsMC_%s_%d_M%dW%d.pdf",year.Data(), variable.Data(), mJJCut, mass, width),"pdf");
 
 }

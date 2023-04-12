@@ -20,7 +20,7 @@ void plotStackSensitivity_Variable(TString year, TFile *infTT, TString variable,
 
 void plotSensitivity_Zprime_TTbar(TString year, int mJJCut = 2000, int selMass= 2500, int selWidth=25)
 {
-  setTDRStyle();
+  // setTDRStyle();
   initFilesMapping(false);
   mass = selMass;
   width = selWidth;
@@ -82,6 +82,9 @@ void plotStackSensitivity_Variable(TString year, TFile *infTT, TString variable,
   leg->AddEntry(hTT, "TTbar", "f");
   leg->AddEntry(hZ, "Zprime", "lep");
 
+  hTT->SetNameTitle(TString::Format("Sensitivity: t#bar{t} vs Z', for %s", year.Data()), 
+                    TString::Format("Sensitivity: t#bar{t} vs Z', for %s", year.Data()));
+
   hTT->Draw("hist");
   hZ->Draw("hist same E");
   hTT->SetMaximum(hTT->GetMaximum()* 2);
@@ -94,7 +97,7 @@ void plotStackSensitivity_Variable(TString year, TFile *infTT, TString variable,
   int iPeriod = 4;
   int iPos = 0;
   //writeExtraText=true;
-  CMS_lumi(can, iPeriod, iPos);
+  // CMS_lumi(can, iPeriod, iPos);
   can->Print(TString::Format("%s/SensitivityPlots/TTbar_Vs_Zprime_%s_%d_M%dW%d.pdf",year.Data(), variable.Data(), mJJCut, mass, width),"pdf");
 
 

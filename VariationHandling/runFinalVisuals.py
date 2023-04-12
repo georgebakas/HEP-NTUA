@@ -26,15 +26,15 @@ for p in phase_space:
     os.system(f'root -l -b -q \'SystematicsUnfolding_levels.cxx(\"{p}\",{norm})\'')
 
     # # Final Results 
-    # norm = 'false'
-    # os.system(f'root -l -b -q \'FinalResults.cxx(\"{p}\",{norm})\'')
-    # norm = 'true'
-    # os.system(f'root -l -b -q \'FinalResults.cxx(\"{p}\",{norm})\'')
+    norm = 'false'
+    os.system(f'root -l -b -q \'FinalResults.cxx(\"{p}\",{norm})\'')
+    norm = 'true'
+    os.system(f'root -l -b -q \'FinalResults.cxx(\"{p}\",{norm})\'')
 
     # # Chi Square evaluation and results 
-    # os.system(f'root -l -b -q \'ExportChi2.C(\"{p}\")\'')
-    # os.system(f'root -l -b -q \'ExportChi2Norm.C(\"{p}\")\'')
+    os.system(f'root -l -b -q \'ExportChi2.C(\"{p}\")\'')
+    os.system(f'root -l -b -q \'ExportChi2Norm.C(\"{p}\")\'')
 
     # # Final Results 
-    # os.system(f'root -l -b -q \'DrawWithChiSquare.cxx(\"{p}\")\'')
-    # os.system(f'root -l -b -q \'DrawWithChiSquare_normalised.cxx(\"{p}\")\'')
+    os.system(f'root -l -b -q \'DrawWithChiSquare.cxx(\"{p}\")\'')
+    os.system(f'root -l -b -q \'DrawWithChiSquare_normalised.cxx(\"{p}\")\'')

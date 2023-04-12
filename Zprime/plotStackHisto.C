@@ -20,7 +20,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
 
 void plotStackHisto(TString year, int mJJCut = 1000, int selMass= 2500, int selWidth=25)
 {
-  setTDRStyle();
+  // setTDRStyle();
   initFilesMapping(false);
   mass = selMass;
   width = selWidth;
@@ -121,7 +121,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->GetYaxis()->SetTitleSize(20);
   hData->GetYaxis()->SetTitleFont(43);
   hData->GetYaxis()->SetTitleOffset(1.4);
-  hData->GetYaxis()->SetRangeUser(0.01, hData->GetMaximum() * 1.2);
+  hData->GetYaxis()->SetRangeUser(0.01, hData->GetMaximum() * 1.4);
   
   //add the Zprime contribution
   TFile *infZprime;
@@ -150,7 +150,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   hData->Draw("hist same E");
   hs->GetYaxis()->SetTitle("Number of Events");
   
-  if (variable.EqualTo("chi")) hs->SetMaximum(hs->GetMaximum());
+  if (variable.EqualTo("chi")) hs->SetMaximum(hs->GetMaximum()*1.2);
   else hs->SetMaximum(hs->GetMaximum()* 2);
   hs->SetMinimum(0.001);
   leg->Draw();
@@ -183,7 +183,7 @@ void plotStackHisto_Variable(TString year, TFile *infData, TFile *infTT, TFile *
   int iPeriod = 4;
   int iPos = 0;
   //writeExtraText=true;
-  CMS_lumi(closure_pad1, iPeriod, iPos);
+  // CMS_lumi(closure_pad1, iPeriod, iPos);
   can->Print(TString::Format("%s/StackPlots/DatavsMC_%s_%d_M%dW%d.pdf",year.Data(), variable.Data(), mJJCut, mass, width),"pdf");
 
 }
