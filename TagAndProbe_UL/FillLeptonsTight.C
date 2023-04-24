@@ -170,7 +170,8 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
     int NN = trIN->GetEntries();
     //NN = 100000;
     std::cout<<"Entries: "<<NN<<std::endl;
-	std::vector<float> xRecoAll(0);
+	  std::vector<float> xRecoAll(0);
+    TRandom2 *randJet = new TRandom2();
 
     for(int iev=0;iev<NN;iev++)
     {
@@ -185,19 +186,13 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
         xRecoAll.clear();
         if(nJets>0)
         {
-            int leadingPt = 0;
-            int subleadingPt = 1;
+            int tightJet=0;
             if (nJets >1)
-            {
-              int tightJet=0;
-              if ((*jetTtag)[leadingPt] > (*jetTtag)[subleadingPt]);
-              {
-                  tightJet = 0;
-              }
-              else
-              {
+            { 
+              if (randJet->Rndm() > 0.5)
                   tightJet = 1;
-              }
+              else
+                  tightJet = 0;
             }
             else 
               tightJet = 0;
@@ -205,7 +200,7 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
             tTaggerTight = (*jetTtag)[tightJet];
 
             // fill only the 1 jet
-            xRecoAll.push_back((*jetPt)[leadingPt]);
+            xRecoAll.push_back((*jetPt)[tightJet]);
 
             float dCSVScoreSub0[2], dCSVScoreSub1[2];
             dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb)[tightJet] + (*jetBtagSub0DCSVbbb)[tightJet];

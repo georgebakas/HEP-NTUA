@@ -186,7 +186,7 @@ void TagAndProbe_nominal(TString file_name, TString ttbar_process, TString year 
     //NN = 100000;
     std::cout<<"Entries: "<<NN<<std::endl;
 	std::vector<float> xRecoAll(0);
-
+  TRandom2 *randJet = new TRandom2();
     for(int iev=0;iev<NN;iev++)
     {
         tTaggerTight = 0;
@@ -203,7 +203,7 @@ void TagAndProbe_nominal(TString file_name, TString ttbar_process, TString year 
             int leadingPt = 0;
             int subleadingPt = 1;
 
-            TRandom2 *randJet = new TRandom2();
+            
             int tightJet=0;
             int otherJet=0;
             if (randJet->Rndm() > 0.5)
