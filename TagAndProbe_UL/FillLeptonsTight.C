@@ -47,7 +47,7 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
   float XSEC = XSECAll[year.Data()][ttbar_process.Data()];
   float tightTopTaggerCut = 0.8;
   cout<<"XSEC: "<<XSEC<<endl;
-  const int NVAR = 14;
+  const int NVAR = 1;
   std::vector< std::vector <Float_t> > const BND = {{450, 500, 570, 650, 800, 1100, 1500}};//jetPt0
 
 
@@ -60,18 +60,20 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
   TString varReco[NVAR]   = {"jetPt0"};
 
   float weights;
-  TH1F *hLeptons[NVAR];
+  TH1F *hLeptons[NVAR], *hHadronic[NVAR];
   int maxJetMass = 220;
   int minJetMass = 120;
   	//declare the histograms
   	for(int ivar =0; ivar<NVAR; ivar++)
   	{
       int sizeBins = NBINS[ivar];
-      int sizeBins = NBINS[ivar];
       float tempBND[NBINS[ivar]+1];
       std::copy(BND[ivar].begin(), BND[ivar].end(), tempBND);
       hLeptons[ivar] = new TH1F(TString::Format("hLeptons%s", varReco[ivar].Data()), TString::Format("hLeptons%s",varReco[ivar].Data()), sizeBins, tempBND);
       hLeptons[ivar]->Sumw2();
+
+      hHadronic[ivar] = new TH1F(TString::Format("hHadronic%s", varReco[ivar].Data()), TString::Format("hHadronic%s",varReco[ivar].Data()), sizeBins, tempBND);
+      hHadronic[ivar]->Sumw2();
     }
     int nJets,nLeptons, category(0);
     vector<bool>  *bit(0),*matchedJet(0);
@@ -104,8 +106,6 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
 
     TTree *trIN = (TTree*)file->Get("boosted/events");
 
-
-
 	//------- input tree --------------
     trIN->SetBranchAddress("nJets"          ,&nJets);
     trIN->SetBranchAddress("nLeptons"       ,&nLeptons);
@@ -123,9 +123,9 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
     //trIN->SetBranchAddress("jetMassSub1"    ,&jetMassSub1);
 
     //lepton vars 
-    trIN->SetBranchAddress("lepId"     ,&lepId);
-    trIN->SetBranchAddress("lepPt"     ,&lepPt);
-    trIN->SetBranchAddress("lepEta"   ,&lepEta);
+    trIN->SetBranchAddress("lepId" ,&lepId);
+    trIN->SetBranchAddress("lepPt" ,&lepPt);
+    trIN->SetBranchAddress("lepEta",&lepEta);
     trIN->SetBranchAddress("lepPhi", &lepPhi);
     trIN->SetBranchAddress("lepE", &lepE);
 
@@ -170,7 +170,7 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
     int NN = trIN->GetEntries();
     //NN = 100000;
     std::cout<<"Entries: "<<NN<<std::endl;
-	  std::vector<float> xRecoAll(0);
+	  std::vector<float> xRecoAll(0), xRecoAll_hadronic(0);
     TRandom2 *randJet = new TRandom2();
 
     for(int iev=0;iev<NN;iev++)
@@ -184,6 +184,7 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
         decade = k;
         trIN->GetEntry(iev);
         xRecoAll.clear();
+        xRecoAll_hadronic.clear();
         if(nJets>0)
         {
             int tightJet=0;
@@ -208,7 +209,13 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
 
             // needed for leptons + jets
             bool massCut_leptons = (*jetMassSoftDrop)[tightJet] > 120 && (*jetMassSoftDrop)[tightJet] < 220;
-            bool recoCuts_leptons = nJets > 0 && (*jetPt)[tightJet] > 450 && nLeptons==1 && lepId==13 && lepPt > 35;
+            // for (int l=0; l<lepId->size(); l++)
+            // {
+            //   cout<<"----------------"<<endl;
+            //   cout<<"lepId: "<<(*lepId)[l]<<endl;
+            //   cout<<"lepPt: "<<(*lepPt)[l]<<endl;
+            // }
+            bool recoCuts_leptons = nJets > 0 && (*jetPt)[tightJet] > 450 && nLeptons==1 && fabs((*lepId)[0])==13 && (*lepPt)[0] > 35;
             
             // common requirements 
             bool btagCut = (((*jetBtagSub0DCSVbb)[tightJet] + (*jetBtagSub0DCSVbbb)[tightJet])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[tightJet] + (*jetBtagSub1DCSVbbb)[tightJet])> deepCSVFloat);            
@@ -228,12 +235,69 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
             } 
 
         }//---end nJets>0
+
+
+        // now check hadronic channel tight
+        if(nJets>1)
+        {
+            int tightJet=0;
+            int otherJet=0;
+            if (randJet->Rndm() > 0.5)
+            {
+                tightJet = 1;
+                otherJet = 0;
+            }
+            else
+            {
+                tightJet = 0;
+                otherJet = 1;
+            }
+
+            tTaggerTight = (*jetTtag)[tightJet];
+            tTaggerOther = (*jetTtag)[otherJet];
+
+            xRecoAll_hadronic.push_back((*jetPt)[tightJet]);
+
+
+            float dCSVScoreSub0[2], dCSVScoreSub1[2];
+            dCSVScoreSub0[0] = (*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0];
+            dCSVScoreSub0[1] = (*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1];
+            dCSVScoreSub1[0] = (*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0];
+            dCSVScoreSub1[1] = (*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1];
+
+            bool massCut = (*jetMassSoftDrop)[0] > 120 && (*jetMassSoftDrop)[0] < 220 && (*jetMassSoftDrop)[1] > 120 && (*jetMassSoftDrop)[1] < 220;
+            bool tTaggerCut = (*jetTtag)[0] > selMvaCut && (*jetTtag)[1] > selMvaCut;
+            bool recoCuts = nJets > 1 && fabs((*jetEta)[0]) < 2.4 && fabs((*jetEta)[1]) <2.4 && (*jetPt)[0] > 450 && (*jetPt)[1] > 400 && mJJ> 1000 && massCut && nLeptons==0;
+            bool btagCut = (((*jetBtagSub0DCSVbb)[0] + (*jetBtagSub0DCSVbbb)[0])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[0] + (*jetBtagSub1DCSVbbb)[0])> deepCSVFloat) &&
+                            (((*jetBtagSub0DCSVbb)[1] + (*jetBtagSub0DCSVbbb)[1])> deepCSVFloat || ((*jetBtagSub1DCSVbb)[1] + (*jetBtagSub1DCSVbbb)[1])> deepCSVFloat);
+
+
+            for(int ivar = 0; ivar < xRecoAll_hadronic.size(); ivar++)
+            {
+              //Probe Region 2btags
+              if(recoCuts && btagCut && (*bit)[triggerFloat])
+              {
+                  if(tTaggerTight > tightTopTaggerCut && tTaggerOther > tightTopTaggerCut)
+                  {
+                      double weights_temp = genEvtWeight * bTagEvntWeight;
+                      hHadronic[ivar]->Fill(xRecoAll_hadronic[ivar], genEvtWeight*bTagEvntWeight);
+                  }
+
+              }
+            }
+        }//---end nJets>1
+
+
+
+        
+
     }//---end the event for
 
 
     for(int ivar =0; ivar<NVAR; ivar++)
     {
         hLeptons[ivar]->Scale(weights*LUMI);
+        hHadronic[ivar]->Scale(weights*LUMI);
     }
 
 
@@ -243,6 +307,7 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
     for(int ivar = 0; ivar<NVAR; ivar++)
     {
         hLeptons[ivar]->Write(TString::Format("hLeptons%s_expYield", varReco[ivar].Data()));
+        hHadronic[ivar]->Write(TString::Format("hHadronic%s_expYield", varReco[ivar].Data()));
     }//end of ivar
 
  }

@@ -1,0 +1,22 @@
+
+Processing FillLeptonsTight.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root","TTToHadronic","2018")...
+YEAR: 2018
+file_name: /eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root
+ttbar_process: TTToHadronic
+XSEC: 377.96
+norm: 1.08661e+11
+Entries: 14574293
+
+ *** Break *** keyboard interrupt
+
+Processing FillLeptonsTight.C("/eos/cms/store/user/gbakas/ttbar/topTagger/ul-2018/Signal/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root","TTToSemiLeptonic","2018")...
+
+ *** Break *** keyboard interrupt
+Number of arguments 2
+Argument list: ['runLeptons.py', '2018']
+TTToHadronic
+TTToHadronic_TuneCP5_13TeV-powheg-pythia8.root
+TTToSemiLeptonic
+TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.root
+TTTo2L2Nu
+TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8.root
