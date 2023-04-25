@@ -60,7 +60,8 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
   TString varReco[NVAR]   = {"jetPt0"};
 
   float weights;
-  TH1F *hLeptons[NVAR], *hHadronic[NVAR];
+  TH1F *hLeptons[NVAR], *hLeptons_Trigger[NVAR];
+  TH1F *hHadronic[NVAR], *hHadronic_TightReg[NVAR], *hHadronic_TightProbe[NVAR];
   int maxJetMass = 220;
   int minJetMass = 120;
   	//declare the histograms
@@ -72,8 +73,19 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
       hLeptons[ivar] = new TH1F(TString::Format("hLeptons%s", varReco[ivar].Data()), TString::Format("hLeptons%s",varReco[ivar].Data()), sizeBins, tempBND);
       hLeptons[ivar]->Sumw2();
 
+      hLeptons_Trigger[ivar] = new TH1F(TString::Format("hLeptons_Trigger%s", varReco[ivar].Data()), TString::Format("hLeptons_Trigger%s",varReco[ivar].Data()), sizeBins, tempBND);
+      hLeptons_Trigger[ivar]->Sumw2();
+
+
+      // hadronic 
       hHadronic[ivar] = new TH1F(TString::Format("hHadronic%s", varReco[ivar].Data()), TString::Format("hHadronic%s",varReco[ivar].Data()), sizeBins, tempBND);
       hHadronic[ivar]->Sumw2();
+
+      hHadronic_TightReg[ivar] = new TH1F(TString::Format("hHadronic_TightReg%s", varReco[ivar].Data()), TString::Format("hHadronic_TightReg%s",varReco[ivar].Data()), sizeBins, tempBND);
+      hHadronic_TightReg[ivar]->Sumw2();
+
+      hHadronic_TightProbe[ivar] = new TH1F(TString::Format("hHadronic_TightProbe%s", varReco[ivar].Data()), TString::Format("hHadronic_TightProbe%s",varReco[ivar].Data()), sizeBins, tempBND);
+      hHadronic_TightProbe[ivar]->Sumw2();
     }
     int nJets,nLeptons, category(0);
     vector<bool>  *bit(0),*matchedJet(0);
@@ -185,12 +197,14 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
         trIN->GetEntry(iev);
         xRecoAll.clear();
         xRecoAll_hadronic.clear();
+        
+        Double_t randomNumber = randJet->Rndm();
         if(nJets>0)
         {
             int tightJet=0;
             if (nJets >1)
             { 
-              if (randJet->Rndm() > 0.5)
+              if (randomNumber > 0.5)
                   tightJet = 1;
               else
                   tightJet = 0;
@@ -231,6 +245,12 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
                       double weights_temp = genEvtWeight * bTagEvntWeight;
                       hLeptons[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
                   }
+                  // tight 
+                  if(tTaggerTight > tightTopTaggerCut && (*bit)[triggerFloat])
+                  {
+                      double weights_temp = genEvtWeight * bTagEvntWeight;
+                      hLeptons_Trigger[ivar]->Fill(xRecoAll[ivar], genEvtWeight*bTagEvntWeight);
+                  }
               }
             } 
 
@@ -242,7 +262,7 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
         {
             int tightJet=0;
             int otherJet=0;
-            if (randJet->Rndm() > 0.5)
+            if (randomNumber > 0.5)
             {
                 tightJet = 1;
                 otherJet = 0;
@@ -282,7 +302,16 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
                       double weights_temp = genEvtWeight * bTagEvntWeight;
                       hHadronic[ivar]->Fill(xRecoAll_hadronic[ivar], genEvtWeight*bTagEvntWeight);
                   }
-
+                  if(tTaggerTight > tightTopTaggerCut && tTaggerOther > selMvaCut)
+                  {
+                      double weights_temp = genEvtWeight * bTagEvntWeight;
+                      hHadronic_TightReg[ivar]->Fill(xRecoAll_hadronic[ivar], genEvtWeight*bTagEvntWeight);
+                  }
+                  if(tTaggerTight > tightTopTaggerCut)
+                  {
+                      double weights_temp = genEvtWeight * bTagEvntWeight;
+                      hHadronic_TightProbe[ivar]->Fill(xRecoAll_hadronic[ivar], genEvtWeight*bTagEvntWeight);
+                  }
               }
             }
         }//---end nJets>1
@@ -297,7 +326,10 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
     for(int ivar =0; ivar<NVAR; ivar++)
     {
         hLeptons[ivar]->Scale(weights*LUMI);
+        hLeptons_Trigger[ivar]->Scale(weights*LUMI);
         hHadronic[ivar]->Scale(weights*LUMI);
+        hHadronic_TightReg[ivar]->Scale(weights*LUMI);
+        hHadronic_TightProbe[ivar]->Scale(weights*LUMI);
     }
 
 
@@ -308,6 +340,10 @@ void FillLeptonsTight(TString file_name, TString ttbar_process, TString year = "
     {
         hLeptons[ivar]->Write(TString::Format("hLeptons%s_expYield", varReco[ivar].Data()));
         hHadronic[ivar]->Write(TString::Format("hHadronic%s_expYield", varReco[ivar].Data()));
+
+        hLeptons_Trigger[ivar]->Write(TString::Format("hLeptons_Trigger%s_expYield", varReco[ivar].Data()));
+        hHadronic_TightReg[ivar]->Write(TString::Format("hHadronic_TightReg%s_expYield", varReco[ivar].Data()));
+        hHadronic_TightProbe[ivar]->Write(TString::Format("hHadronic_TightProbe%s_expYield", varReco[ivar].Data()));
     }//end of ivar
 
  }
