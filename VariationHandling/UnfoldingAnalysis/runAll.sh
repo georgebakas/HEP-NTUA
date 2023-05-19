@@ -4,10 +4,10 @@
 
 # # Nominal files
 
-nohup python3 RunFillHisto_nominal.py 2016_preVFP True > nom_ext_16pre.out &
-nohup python3 RunFillHisto_nominal.py 2016_postVFP True > nom_ext_16post.out &
-nohup python3 RunFillHisto_nominal.py 2017 True > nom_ext_17.out &
-nohup python3 RunFillHisto_nominal.py 2018 True > nom_ext_18.out &
+# nohup python3 RunFillHisto_nominal.py 2016_preVFP True > nom_ext_16pre.out &
+# nohup python3 RunFillHisto_nominal.py 2016_postVFP True > nom_ext_16post.out &
+# nohup python3 RunFillHisto_nominal.py 2017 True > nom_ext_17.out &
+# nohup python3 RunFillHisto_nominal.py 2018 True > nom_ext_18.out &
 
 # # Reduced files needed for the analysis
 

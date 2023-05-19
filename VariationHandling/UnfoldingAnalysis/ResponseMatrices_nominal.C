@@ -59,9 +59,9 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   //                                                       {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
   //                                                       {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
    // will be used for reco
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2700, 3000, 4000, 5000}, //mJJ
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2700, 3000, 4000, 5000}, //mJJ
                        {0, 30, 60, 100, 150, 225, 300, 375, 450, 600, 850, 1000, 1300}, //ptJJ
-                       {-2.4, -2.0, -1.8, -1.5, -1.3, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0, 1.3, 1.5, 1.8, 2.0, 2.4}, // yJJ
+                       {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
                        {450, 475, 500, 535, 570, 610, 650, 700, 750, 800, 850, 900, 950, 1000, 1100, 1200, 1300, 1500, 2000}, //jetPt0
                        {400, 425, 450, 475, 500, 535, 570, 610, 650, 700, 800, 1000, 1100, 1300, 1600}, //jetPt1
                        {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.4}, //jetY0
@@ -236,7 +236,7 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 	std::vector<float> xPartonAll(0);
 	std::vector<float> xParticleAll(0);
 
-    for(int iev=0;iev<NN;iev++)
+    for(int iev=0;iev<NN/2;iev++)
     {
 		double progress = 10.0*iev/(1.0*NN);
       int k = TMath::FloorNint(progress);
@@ -660,56 +660,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
 
   }//end of Nvars
 
-  //for purity and stability
-  //purity: sum all over the columns and find binContent(i,j)/SumOfColumn(j) for all vars
-  //stability: sum all over the lines and find binContent/SumOfLine(i) for all vars
-  TH1F *purityParton[NVAR], *stabilityParton[NVAR];
-  TH1F *purityParticle[NVAR], *stabilityParticle[NVAR];
-
-  for(int ivar = 0; ivar<NVAR; ivar++)
-  {
-	int sizeBins = NBINS[ivar];
-  	float tempBND[NBINS[ivar]+1];
-    std::copy(BND_gen[ivar].begin(), BND_gen[ivar].end(), tempBND);
-  	purityParton[ivar] 	  = new TH1F(TString::Format("PurityParton_%s", varReco[ivar].Data()),TString::Format("PurityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
-  	stabilityParton[ivar] = new TH1F(TString::Format("StabilityParton_%s", varReco[ivar].Data()),TString::Format("StabilityParton_%s", varReco[ivar].Data()), sizeBins, tempBND);
-
-  	purityParticle[ivar] 	  = new TH1F(TString::Format("PurityParticle_%s", varReco[ivar].Data()),TString::Format("PurityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
-  	stabilityParticle[ivar] = new TH1F(TString::Format("StabilityParticle_%s", varReco[ivar].Data()),TString::Format("StabilityParticle_%s", varReco[ivar].Data()), sizeBins, tempBND);
-  	//this is now for purity and stability for each variable
-	//first find sums
-	float bins[sizeBins+1];
-	for(int i=0; i<sizeBins+1; i++)
-	{
-	  	bins[i]=i+1;
-	}
-
-	float sumOfRowsParton[sizeBins], sumOfColsParton[sizeBins];
-	float sumOfRowsParticle[sizeBins], sumOfColsParticle[sizeBins];
-	for(int i=1; i<=sizeBins; i++)
-	{
-	    sumOfColsParton[i] = ((TH1D*)hPartonResponse[ivar]->ProjectionX())->GetBinContent(i);
-	    sumOfRowsParton[i] = ((TH1D*)hPartonResponse[ivar]->ProjectionY())->GetBinContent(i);
-
-		  sumOfColsParticle[i] = ((TH1D*)hParticleResponse[ivar]->ProjectionX())->GetBinContent(i);
-	    sumOfRowsParticle[i] = ((TH1D*)hParticleResponse[ivar]->ProjectionY())->GetBinContent(i);
-
-	    for(int j=1; j<=sizeBins; j++)
-	    {
-	    	if(i==j)
-	        {
-	            float initContentParton = hPartonResponse[ivar]->GetBinContent(i,j);
-	            purityParton[ivar]->SetBinContent(i,initContentParton/sumOfColsParton[i]);
-	            stabilityParton[ivar]->SetBinContent(i,initContentParton/sumOfRowsParton[i]);
-
-	            float initContentParticle = hParticleResponse[ivar]->GetBinContent(i,j);
-	            purityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfColsParticle[i]);
-	            stabilityParticle[ivar]->SetBinContent(i,initContentParticle/sumOfRowsParticle[i]);
-	        }
-	    }
-	}
-
-  } // end of NVAR
 
   TFile *outFile = TFile::Open(TString::Format("%s/ResponsesNominal/ResponsesEfficiency_%s.root", year.Data(), ttbar_process.Data()), "RECREATE");
   //outFile->cd();
@@ -725,11 +675,6 @@ void ResponseMatrices_nominal(TString file_name, TString ttbar_process, TString 
   	hPartonResponse[ivar]->Write(TString::Format("hPartonResponse_%s", varReco[ivar].Data()));
   	hParticleResponse[ivar]->Write(TString::Format("hParticleResponse_%s", varReco[ivar].Data()));
 
-    stabilityParton[ivar]->Write(TString::Format("StabilityParton_%s",varReco[ivar].Data()));
-    purityParton[ivar]->Write(TString::Format("PurityParton_%s",varReco[ivar].Data()));
-
-    stabilityParticle[ivar]->Write(TString::Format("StabilityParticle_%s",varReco[ivar].Data()));
-    purityParticle[ivar]->Write(TString::Format("PurityParticle_%s",varReco[ivar].Data()));
   }//end of ivar
 
   outFile->Close();

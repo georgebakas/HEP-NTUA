@@ -61,7 +61,7 @@ void FillHistograms_Extended_nominal(TString file_name, TString ttbar_process, T
 
 
   // will be used for reco
-  std::vector< std::vector <Float_t> > const BND = {{1000, 100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2700, 3000, 4000, 5000}, //mJJ
+  std::vector< std::vector <Float_t> > const BND = {{1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2700, 3000, 4000, 5000}, //mJJ
                        {0, 30, 60, 100, 150, 225, 300, 375, 450, 600, 850, 1000, 1300}, //ptJJ
                        {-2.4, -2.0, -1.8, -1.5, -1.3, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0, 1.3, 1.5, 1.8, 2.0, 2.4}, // yJJ
                        {450, 475, 500, 535, 570, 610, 650, 700, 750, 800, 850, 900, 950, 1000, 1100, 1200, 1300, 1500, 2000}, //jetPt0
@@ -78,7 +78,7 @@ void FillHistograms_Extended_nominal(TString file_name, TString ttbar_process, T
   {
     NBINS[i] = BND[i].size()-1;
   }
-  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","chi","cosThetEta0", "cosThetEta1"};
+  TString varReco[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1","chi","cosTheta0", "cosTheta1"};
 
   float weights;
   TH1F *hReco[NVAR], *hRecoCR[NVAR];
@@ -179,9 +179,10 @@ void FillHistograms_Extended_nominal(TString file_name, TString ttbar_process, T
     std::cout<<"Entries: "<<NN<<std::endl;
 	std::vector<float> xRecoAll(0);
 
-    for(int iev=0;iev<NN;iev++)
+    for(int iev=NN/2;iev<NN;iev++)
     {
-		double progress = 10.0*iev/(1.0*NN);
+		  
+      double progress = 10.0*iev/(1.0*NN);
       int k = TMath::FloorNint(progress);
       if (k > decade)
         cout<<10*k<<" %"<<endl;
