@@ -27,4 +27,5 @@ for ifile in  all_files[year]:
     split_file_underscore = ifile.split('_')
     print(split_file_underscore[0])
     print(ifile)
-    os.system(f'root -l -b -q \'ResponseMatrices_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\")\'')
+#     os.system(f'root -l -b -q \'ResponseMatrices_nominal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\")\'')
+    os.system(f'root -l -b -q \'ResponseMatrices_nominal_orthogonal.C(\"{eospath+ifile}\",\"{split_file_underscore[0]}\",\"{year}\")\'')

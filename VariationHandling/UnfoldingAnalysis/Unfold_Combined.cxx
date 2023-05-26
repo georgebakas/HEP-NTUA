@@ -131,9 +131,9 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
   TFile *inf_sem = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data()));
   TFile *inf_dil = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data()));
 
-  TFile *inf_had_orthogonal = TFile::Open(TString::Format("../%s/Responses%s/ResponsesEfficiency_TTToHadronic%s.root", year.Data(), dir.Data(), tempFileName.Data()));
-  TFile *inf_sem_orthogonal = TFile::Open(TString::Format("../%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic%s.root", year.Data(), dir.Data(), tempFileName.Data()));
-  TFile *inf_dil_orthogonal = TFile::Open(TString::Format("../%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu%s.root", year.Data(), dir.Data(), tempFileName.Data()));
+  TFile *inf_had_orthogonal = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToHadronic%s_orthogonal.root", year.Data(), dir.Data(), tempFileName.Data()));
+  TFile *inf_sem_orthogonal = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTToSemiLeptonic%s_orthogonal.root", year.Data(), dir.Data(), tempFileName.Data()));
+  TFile *inf_dil_orthogonal = TFile::Open(TString::Format("%s/Responses%s/ResponsesEfficiency_TTTo2L2Nu%s_orthogonal.root", year.Data(), dir.Data(), tempFileName.Data()));
 
   float LUMI = luminosity[TString::Format("luminosity%s", year.Data())];
   //get response matrix
@@ -300,7 +300,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
     
     //unfold with methods:
 
-    hUnf[ivar] = UnfoldDensity_regular(hResponse[ivar], hSig[ivar], variable[ivar], tempVar);
+    hUnf[ivar] = UnfoldDensity_regular(hResponse[ivar], hSig_orthogonal[ivar], variable[ivar], tempVar);
     
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
