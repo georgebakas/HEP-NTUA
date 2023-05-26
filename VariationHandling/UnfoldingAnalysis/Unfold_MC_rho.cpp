@@ -63,30 +63,44 @@ TH1F *getRebinned(TH1F *h, float BND[], int N)
 }
 
 
-void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMethod=3)
+void Unfold_MC_rho_test(TString inYear = "2018", bool isParton = true, int unfoldMethod=3)
 {
   bool isNorm = false;
   year = inYear;
   initFilesMapping();
   gStyle->SetOptStat(0);
-  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 5000}, //mjj
+  std::vector< std::vector <Float_t> > const BND_gen = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                         {0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt0
-                                                        {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetpt1
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+                                                        {450, 500, 570, 650, 750, 850, 950, 1100, 1300, 1500, 2000}, //jetPt0
+                                                        {400, 450, 500, 570, 650, 800, 1100, 1600}, //jetPt1
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
+                                                        {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
+                                                        {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
+                                                        {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
 
-
-
-
-  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000},
-                                                {0, 60, 150, 300, 450, 600, 850, 1100, 1300}, //mJJ
-                                                {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt0
-                                                {400, 450, 500, 570, 650, 800, 1000, 1250, 1500}, //jetPt1
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}, //jetY0
-                                                {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.1, 2.4}}; //jetY1
+  // std::vector< std::vector <Float_t> > const BND_reco ={{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
+  //                                                       {0, 60, 150, 300, 450, 850, 1300}, //ptJJ
+  //                                                       {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+  //                                                       {450, 500, 570, 650, 800, 1100, 1500}, //jetPt0
+  //                                                       {400, 450, 500, 570, 650, 800, 1100, 1500}, //jetPt1
+  //                                                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY0
+  //                                                       {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}, //jetY1
+  //                                                       {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
+  //                                                       {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
+  //                                                       {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}}; //|cosTheta*| subleading
+   // will be used for reco
+  std::vector< std::vector <Float_t> > const BND_reco = {{1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2700, 3000, 4000, 5000}, //mJJ
+                       {0, 30, 60, 100, 150, 225, 300, 375, 450, 600, 850, 1000, 1300}, //ptJJ
+                       {-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
+                       {450, 475, 500, 535, 570, 610, 650, 700, 750, 800, 850, 900, 950, 1000, 1100, 1200, 1300, 1500, 2000}, //jetPt0
+                       {400, 425, 450, 475, 500, 535, 570, 610, 650, 700, 800, 1000, 1100, 1300, 1600}, //jetPt1
+                       {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.4}, //jetY0
+                       {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.4}, //jetY1
+                       {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 11, 13, 14, 16}, //chi
+                       {0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1}, //|cosTheta*| leading
+                       {0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1}}; //|cosTheta*| subleading
 
   float LUMI = luminosity[year];
   //get the files:
@@ -99,7 +113,7 @@ void Unfold_MC_rho(TString inYear = "2016", bool isParton = true, int unfoldMeth
   //TFile *signalFile = TFile::Open(TString::Format("../MassFit/%s/FiducialMeasurement/UnequalBinning/SignalHistograms.root",
                     //year.Data()));
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
-  TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
+  TFile *effAccInf = TFile::Open(TString::Format("/%s/ResponsesNominal/UnequalBins/ResponsesEfficiencyNominalMC_%s.root", year.Data(), year.Data()));
   //TFile *effAccInf = TFile::Open(TString::Format("../ResponseMatrices/%s/UnequalBins/ResponsesEfficiency_%s.root", year.Data(), year.Data()));
   //3. This file is the theoretical parton/particle file that we use for comparison
   TFile *infTheory = TFile::Open(TString::Format("%s/TheoryTemplatesNominalMC.root", year.Data()));
