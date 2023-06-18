@@ -276,7 +276,7 @@ TH1 *UnfoldDensity_complex(TH2F *responseMatrix, TH1F *recoHistogram, TString va
   canvas.cd(6);
   // canvas.SetLogz();
   // gStyle->SetLogz();
-  covMatrix->Draw("COLZ 1");
+  covMatrix->Draw("COLZ 1 text");
 
   canvas.Print("complex_unfolding.ps");
 
@@ -285,7 +285,7 @@ TH1 *UnfoldDensity_complex(TH2F *responseMatrix, TH1F *recoHistogram, TString va
 
   TCanvas *can = new TCanvas("test", "test", 800, 600);
   can->SetLogz();
-  covMatrix->Draw("COLZ 1");
+  covMatrix->Draw("COLZ 1 text");
 
 
   return unfoldedHistogram;
@@ -397,7 +397,7 @@ TH1 *UnfoldDensity_regular(TH2F *responseMatrix, TH1F *recoHistogram, TString va
   // (6) covariance matrix 
   canvas.cd(4);
   // canvas.SetLogz();
-  covMatrix->Draw("COLZ 1");
+  covMatrix->Draw("COLZ 1 text");
 
   canvas.Print("regular_unfolding.ps");
 
@@ -406,7 +406,7 @@ TH1 *UnfoldDensity_regular(TH2F *responseMatrix, TH1F *recoHistogram, TString va
 
   TCanvas *can = new TCanvas("test regular", "test regular", 800, 600);
   can->SetLogz();
-  covMatrix->Draw("COLZ 1");
+  covMatrix->Draw("COLZ 1 text");
 
 
   // return histogram 
@@ -633,7 +633,7 @@ TH1* UnfoldDensity_lcurve(TH2F *responseMatrix, TH1F *recoHistogram, TString var
 
   // (6) covariance matrix 
   canvas.cd(6);
-  covMatrix->Draw("COLZ 1");
+  covMatrix->Draw("COLZ 1 text");
 
   canvas.Print("lcurve_unfolding.ps");
 
@@ -642,7 +642,7 @@ TH1* UnfoldDensity_lcurve(TH2F *responseMatrix, TH1F *recoHistogram, TString var
 
   TCanvas *can = new TCanvas("test lcurve_unfolding", "test lcurve_unfolding", 800, 600);
   can->SetLogz();
-  covMatrix->Draw("COLZ 1");
+  covMatrix->Draw("COLZ 1 text");
 
 
   return unfoldedHistogram; 

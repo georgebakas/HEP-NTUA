@@ -40,13 +40,13 @@ for mJJCut in mJJCuts:
             else:
                 pdf_or_scale = 'scale'
             #print(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_TTToHadronic_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_TTToSemiLeptonic_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_TTTo2L2Nu_{pdf_or_scale}_{weight_sufix}.root')
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{pdf_or_scale}_{weight_sufix}.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal_{pdf_or_scale}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal_{pdf_or_scale}_{weight_sufix}.root')
         
         elif weightType == 'PSWeights':
             dot_split = split_file_underscore[3].split('.')
             weight_sufix = dot_split[0]
             print(weight_sufix)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal_{weight_sufix}.root')
 
         elif weightType == 'bTagVariation':
             print(ifile, file_name)
@@ -54,7 +54,7 @@ for mJJCut in mJJCuts:
             dot_split = split_file_underscore[3].split('.')
             weight_sufix = dot_split[0]
             print(weight_sufix)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal_{weight_sufix}.root')
 
         elif weightType == 'topTaggingVariation':
             print(ifile, file_name)
@@ -63,21 +63,21 @@ for mJJCut in mJJCuts:
             dot_split = split_file_underscore[3].split('.')
             weight_sufix = dot_split[0]
             print(weight_sufix)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal_{weight_sufix}.root')
 
         elif weightType == 'JES':
             print(ifile, file_name)
             dot_split = split_file_underscore[3].split('.')
             weight_sufix = dot_split[0]
             print(weight_sufix)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weightType}_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal_{weight_sufix}.root')
         
         elif weightType == 'SystematicsFiles':
             print(ifile, file_name)
             dot_split = split_file_underscore[3].split('.')
             weight_sufix = dot_split[0]
             print(weight_sufix)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_{weight_sufix}.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal_{weight_sufix}.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal_{weight_sufix}.root')
         
         elif weightType == 'NominalTopSF':
             print(ifile, file_name)
@@ -86,12 +86,12 @@ for mJJCut in mJJCuts:
             # dot_split = split_file_underscore[3].split('.')
             # weight_sufix = dot_split[0]
             # print(weight_sufix)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal.root')
 
 
         else:
             print(ifile, file_name)
-            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu.root')
+            os.system(f'hadd -f {year}/{weightType}/combined/Histo{tof}_{mJJCut}_TT_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToHadronic_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTToSemiLeptonic_orthogonal.root {year}/{weightType}/Histo{tof}_{mJJCut}_TTTo2L2Nu_orthogonal.root')
         
         
     break

@@ -450,6 +450,15 @@ void FinalResults(TString partonParticle = "Parton", bool normalized = false)
             if (variation.Contains("pdf_69")) continue;
             if (variation.Contains("pdf_93")) continue; 
 
+            if (variation.Contains("isrDefHi")) continue;
+            if (variation.Contains("fsrDefHi")) continue;
+            if (variation.Contains("isrDefLo")) continue;
+            if (variation.Contains("fsrDefLo")) continue;
+            if (variation.Contains("isrConHi")) continue;
+            if (variation.Contains("fsrConHi")) continue;
+            if (variation.Contains("isrConLo")) continue;
+            if (variation.Contains("fsrConLo")) continue; 
+
             cout<<TString::Format("%s/UnfoldedCombined/%s/OutputFile%s_%s.root",
                                                                 baseDir.Data(),
                                                                 tempVariation.Data(),

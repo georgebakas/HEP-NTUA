@@ -187,6 +187,15 @@ void SystematicsUnfolding_levels(TString isParton = "Particle", bool isNorm = fa
         if (fileName.Contains("pdf_69")) continue;
         if (fileName.Contains("pdf_93")) continue; 
 
+        if (fileName.Contains("isrDefHi")) continue;
+        if (fileName.Contains("fsrDefHi")) continue;
+        if (fileName.Contains("isrDefLo")) continue;
+        if (fileName.Contains("fsrDefLo")) continue;
+        if (fileName.Contains("isrConHi")) continue;
+        if (fileName.Contains("fsrConHi")) continue;
+        if (fileName.Contains("isrConLo")) continue;
+        if (fileName.Contains("fsrConLo")) continue; 
+
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PSWeights/OutputFile%s_nom0.root", isParton.Data()))) continue;
         if (fileName.EqualTo(TString::Format("UnfoldedCombined/PSWeights/OutputFile%s_nom1.root", isParton.Data()))) continue;
 

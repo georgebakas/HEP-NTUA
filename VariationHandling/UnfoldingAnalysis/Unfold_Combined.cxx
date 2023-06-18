@@ -51,9 +51,9 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
   std::vector< std::vector <Float_t> > const BND_gen = {//{1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000, 5000}, //mJJ
                                                         //{0, 60, 150, 300, 450, 850, 1300}, //ptjj
                                                         //{-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                                                        // {450, 500, 570, 650, 750, 850, 950, 1100, 1300, 1500, 2000}}; //jetPt0
+                                                        {450, 500, 570, 650, 750, 850, 950, 1100, 1300, 1500, 2000}}; //jetPt0
                                                         // {400, 450, 500, 570, 650, 800, 1100, 1600}}; //jetPt1
-                                                        {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY0
+                                                        // {0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY0
                                                         //{0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.4}}; //jetY1
                                                         // {1,2,3,4,5,6,7,8,9,10,13,16}, //chi
                                                         // {0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1}, //|cosTheta*| leading
@@ -73,9 +73,9 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
   std::vector< std::vector <Float_t> > const BND_reco = { //{1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2700, 3000, 4000, 5000}, //mJJ
                        //{0, 30, 60, 100, 150, 225, 300, 375, 450, 600, 850, 1000, 1300}, //ptJJ
                        //{-2.4, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.4}, //yjj
-                      //  {450, 475, 500, 535, 570, 610, 650, 700, 750, 800, 850, 900, 950, 1000, 1100, 1200, 1300, 1500, 2000}}; //jetPt0
+                       {450, 475, 500, 535, 570, 610, 650, 700, 750, 800, 850, 900, 950, 1000, 1100, 1200, 1300, 1500, 2000}}; //jetPt0
                       //  {400, 425, 450, 475, 500, 535, 570, 610, 650, 700, 800, 1000, 1100, 1300, 1600}}; //jetPt1
-                       {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.4}}; //jetY0
+                      //  {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.4}}; //jetY0
                        //{0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2.0, 2.4}}; //jetY1
                       //  {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 11, 13, 14, 16}, //chi
                       //  {0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1}, //|cosTheta*| leading
@@ -104,12 +104,9 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
   // TString variable[NVAR]   = {"mJJ", "ptJJ", "yJJ","jetPt0","jetPt1", "jetY0", "jetY1"};
   // TString variableParton[NVAR] = {"mTTbarParton", "ptTTbarParton", "yTTbarParton","partonPt0", "partonPt1", "partonY0", "partonY1"};
   // TString variableGen[NVAR] = {"mJJGen", "ptJJGen", "yJJGen","genjetPt0", "genjetPt1", "genjetY0", "genjetY1"};
-  // TString variable[NVAR]   = {"jetPt0"};
-  // TString variableParton[NVAR] = {"partonPt0"};
-  // TString variableGen[NVAR] = {"genjetPt0"};
-  TString variable[NVAR]   = {"jetY0"};
-  TString variableParton[NVAR] = {"partonY0"};
-  TString variableGen[NVAR] = {"genjetY0"};
+  TString variable[NVAR]   = {"jetPt0"};
+  TString variableParton[NVAR] = {"partonPt0"};
+  TString variableGen[NVAR] = {"genjetPt0"};
   //2. This file has the response matrices as well as the efficiency and acceptance for the signal procedure
   //handle responses efficiency, acceptance
   TH2F *hResponse[BND_reco.size()], *hResponse_orthogonal[BND_reco.size()];
@@ -219,19 +216,10 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
 
   // this is the file that contains all combined fiducial measurements
   signalFile = TFile::Open(TString::Format("%s/Nominal/combined/HistoReduced_1000_TT.root", year.Data()));
+  TFile *signalFile_orthogonal = TFile::Open(TString::Format("%s/Nominal/combined/HistoReduced_1000_TT_orthogonal.root", year.Data()));
 
   TFile *outf = TFile::Open(TString::Format("UnfoldedCombined/%s/OutputFile%s%s.root", year.Data(), varParton.Data(), tempFileName.Data()),"RECREATE");
 
-  // read the files from our analysis
-  // TFile *inf_ttX = TFile::Open("UnfoldingResults_ttX.root");
-  TFile *signalFile_orthogonal = TFile::Open(TString::Format("../%s/Nominal/combined/HistoReduced_1000_TT.root", year.Data()));
-
-  // get the file after acceptance and unfold 
-  // TH1F *httX = (TH1F*)inf_ttX->Get("Common_leadingJetPt");
-  // get also histogram after unfolding
-  // TH1F *httX = (TH1F*)inf_ttX->Get("hWt_jetPt0_2btag");
-  // TH1F *httX_CS = (TH1F*)inf_ttX->Get("unfoldedHistogram_leadingJetPt");
-  // TH1F *httX_theory = (TH1F*)inf_ttX->Get("theory_leadingJetPt");
 
   // loop on each variable
   for(int ivar = 0; ivar<BND_reco.size(); ivar++)
@@ -257,6 +245,15 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
     TH1F *hSignal_orthogonal_init = (TH1F*)hSig_orthogonal[ivar]->Clone(TString::Format("hSig_init_%s", variable[ivar].Data()));
     //set the new content and get acceptance
     cout<<"The variable is: "<<variable[ivar]<<endl;
+
+    for(int j =1; j<hSig_orthogonal[ivar]->GetNbinsX()+1; j++)
+    {
+      cout<<"Orthogonal "<< hSig_orthogonal[ivar]->GetBinContent(j)<<endl;
+    }
+    for(int j =1; j<hSig[ivar]->GetNbinsX()+1; j++)
+    {
+      cout<<"Double bins "<< hSig[ivar]->GetBinContent(j)<<endl;
+    }
 
     for(int j =1; j<hSig[ivar]->GetNbinsX()+1; j++)
     {
@@ -300,7 +297,7 @@ void Unfold_Combined(TString dir, TString inputFile, TString isParton = "true", 
     
     //unfold with methods:
 
-    hUnf[ivar] = UnfoldDensity_regular(hResponse[ivar], hSig_orthogonal[ivar], variable[ivar], tempVar);
+    hUnf[ivar] = UnfoldDensity_regular(hResponse_orthogonal[ivar], hSig_orthogonal[ivar], variable[ivar], tempVar);
     
     hUnf[ivar]->GetYaxis()->SetTitle(TString::Format("#frac{d#sigma}{d#chi} %s", varParton.Data()));
     hUnf[ivar]->GetYaxis()->SetTitleOffset(1.4);
@@ -570,13 +567,16 @@ void PlotHistogramErrors(TH1F* hist1, TH1F *hist2, TH1F *hist3)
     // Set only the errors
     for (int i = 1; i <= hist1->GetNbinsX(); i++) {
         double binError = hist1->GetBinError(i);
-        histErrors1->SetBinContent(i, binError);
+        double binContent = hist1->GetBinContent(i);
+        histErrors1->SetBinContent(i, binError*100/binContent);
 
         binError = hist2->GetBinError(i);
-        histErrors2->SetBinContent(i, binError);
+        binContent = hist2->GetBinContent(i);
+        histErrors2->SetBinContent(i, binError*100/binContent);
 
         binError = hist3->GetBinError(i);
-        histErrors3->SetBinContent(i, binError);
+        binContent = hist3->GetBinContent(i);
+        histErrors3->SetBinContent(i, binError*100/binContent);
 
     }
 
